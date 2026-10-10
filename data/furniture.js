@@ -12,10 +12,10 @@
 //          "homeChest", see js/storage.js)
 //   min_part  optional: keep smaller loose bits too (like shadows); default 0.05
 GAME_DATA.furniture = [
-  { "place": "rec_room", "id": "snack_table", "name": "Snack Table",  "box": [8, 13, 36, 40] },
-  { "place": "rec_room", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51] },
-  { "place": "rec_room", "id": "bookshelf",  "name": "Bookshelf",    "box": [79, 50, 97, 86] },
-  { "place": "rec_room", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88] },
+  { "place": "hut", "id": "snack_table", "name": "Snack Table",  "box": [8, 13, 36, 40] },
+  { "place": "hut", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51] },
+  { "place": "hut", "id": "bookshelf",  "name": "Bookshelf",    "box": [79, 50, 97, 86] },
+  { "place": "hut", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88] },
 
   { "place": "cabin", "id": "table",    "name": "Little Table", "box": [7, 63, 22, 78] },
   { "place": "cabin", "id": "stool",    "name": "Stool",       "box": [22, 69, 30, 78] },

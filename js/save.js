@@ -62,7 +62,20 @@ function fillIn(save) {
   if (!save.dirt) save.dirt = {};
   if (!save.dirtSeconds) save.dirtSeconds = {};
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
+  renamePlace(save, "rec_room", "hut"); // the Rec Room drawing became the Snowy Hut itself
   return save;
+}
+
+// When a place is renamed, games that were there or left things there follow it.
+function renamePlace(save, oldId, newId) {
+  if (save.at === oldId) save.at = newId;
+  Object.keys(save.spots).forEach(function (map) { if (save.spots[map] === oldId) save.spots[map] = newId; });
+  ["stored", "furniture", "dirt", "dirtSeconds"].forEach(function (field) {
+    if (save[field] && save[field][oldId]) {
+      save[field][newId] = save[field][oldId];
+      delete save[field][oldId];
+    }
+  });
 }
 
 // When an item is replaced by a new drawing, games that owned it get the new one.
@@ -114,7 +127,7 @@ function newPlayer(playerName, characterId, kind) {
     homeChest: [],            // finds put away in the treasure chest at Home
     satchel: [],              // bones (and later other materials) from the Crystal Cave, carried
     homeMaterials: [],        // materials put away at the Spell Book Table at Home, for spells
-    furniture: {},            // where furniture was moved: { "rec_room": { "armchair": [x, y] } }
+    furniture: {},            // where furniture was moved: { "hut": { "armchair": [x, y] } }
     chorePoints: 0,           // earned by doing chores, like cleaning your room (js/chores.js)
     dirt: {},                 // how dirty each room is: { "home": 2 } (0 is clean)
     dirtSeconds: {},          // seconds spent in each room since it last got dirtier

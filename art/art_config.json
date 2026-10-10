@@ -126,15 +126,6 @@
       97
     ]
   },
-  "place_rec_room": {
-    "rotate": 180,
-    "crop": [
-      1,
-      9,
-      99,
-      95
-    ]
-  },
   "place_dock": {
     "rotate": 180,
     "crop": [
@@ -408,6 +399,33 @@
       6,
       99,
       99.6
+    ]
+  },
+  "place_hut": {
+    "rotate": 180,
+    "crop": [
+      1,
+      9,
+      99,
+      95
+    ]
+  },
+  "place_snack_shack": {
+    "rotate": 90,
+    "crop": [
+      0,
+      3,
+      94,
+      95
+    ]
+  },
+  "place_snack_shack_upstairs": {
+    "rotate": 90,
+    "crop": [
+      3,
+      2,
+      94,
+      98
     ]
   }
 }

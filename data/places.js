@@ -19,7 +19,7 @@
 //               three items to a gap (press P to find the numbers)
 //   perRow      store shelves only: how many items stand in each gap (3 if not set)
 //   says        people only: what they say when you click them
-//   opens       go straight into this place instead (the Snowy Hut opens the Rec Room)
+//   opens       go straight into this place instead of showing this one
 //
 // Pictures: maps use art/processed/map_<id>.png and places use
 // art/processed/place_<id>.png. Draw one and save it in art/raw with that
@@ -68,17 +68,19 @@ GAME_DATA.places = [
     "description": "The walls sparkle with crystals. Take a pickaxe and mine for crystals and bones." },
   { "id": "peak",      "name": "Windy Peak",     "type": "place", "in": "mountain", "x": 49, "y": 10,
     "description": "You can see the whole world from up here!" },
-  { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40, "opens": "rec_room",
-    "description": "Warm cocoa and a crackling fire. The Rec Room is through the door." },
+  { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40,
+    "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59,
-    "description": "Hot snacks for cold skiers." },
+    "description": "Floor 1: mugs of cocoa on the table and snacks on the shelves. Hot snacks for cold skiers." },
   { "id": "ski_reserve", "name": "Ski Reserve",  "type": "place", "in": "mountain", "x": 82, "y": 16, "shelf": "Ski Gear",
     "rows": [[34, 76]],
     "description": "Ski outfits in size 1 and size 2. Pay the fox at the check-out counter." },
   { "id": "mountain_house", "name": "Mountain House", "type": "place", "in": "mountain", "x": 80, "y": 62,
     "description": "A cosy green house on the mountainside." },
-  { "id": "rec_room",  "name": "Rec Room",       "type": "place", "in": "hut", "x": 50, "y": 55,
-    "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
+  { "id": "snack_shack_upstairs", "name": "Snack Shack Floor 2", "type": "place", "in": "snack_shack", "x": 70, "y": 86,
+    "description": "Floor 2: cookies, chips, chocolate, candy and fruit gummies, and food for 10 gems." },
+  { "id": "snack_keeper", "name": "Shopkeeper", "type": "person", "in": "snack_shack", "x": 45, "y": 52,
+    "says": "Have a nice day! Crystals here, please." },
 
   { "id": "dock",      "name": "Dock",           "type": "place", "in": "lake", "x": 22, "y": 74, "start": true,
     "description": "Click a Lucky Rod to go fishing. Fish go in your cooler." },

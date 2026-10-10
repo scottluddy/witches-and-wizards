@@ -35,7 +35,7 @@ function characterPicture(character) {
 function goTo(id) {
   const place = findPlace(id);
   if (!place) return showMap("world");
-  if (place.opens) return goTo(place.opens); // e.g. the Snowy Hut opens straight into the Rec Room
+  if (place.opens) return goTo(place.opens); // skip straight into the place it opens
   if (place.type === "map") showMap(id);
   else showPlace(id);
 }
