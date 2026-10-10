@@ -57,7 +57,9 @@
     <span class="status-item">Grade <b id="status-grade"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png" alt="Gems"> <b id="status-gems"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack</button>
+    <button id="btn-cooler" class="small-button">🧊 Cooler</button>
   </header>
 
   <!-- Pop-up: one item from a shelf (take it free, or buy it) -->
@@ -82,6 +84,29 @@
       <div id="backpack-items" class="item-row"></div>
       <div id="backpack-elsewhere" class="elsewhere"></div>
       <button id="btn-backpack-close" class="big-button secondary">Close</button>
+    </div>
+  </div>
+
+  <!-- Pop-up: fishing (wait for a bite, then reel it in) -->
+  <div id="fishing-panel" class="overlay" hidden>
+    <div class="panel">
+      <div id="fishing-art" class="panel-art"></div>
+      <h2 id="fishing-title"></h2>
+      <p id="fishing-message" class="panel-message"></p>
+      <div class="button-row">
+        <button id="btn-fishing-stop" class="big-button secondary">Stop fishing</button>
+        <button id="btn-fishing-reel" class="big-button">Reel it in!</button>
+        <button id="btn-fishing-again" class="big-button">Fish again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up: the cooler, where caught fish go -->
+  <div id="cooler-panel" class="overlay" hidden>
+    <div class="panel panel-wide">
+      <h2>🧊 Cooler</h2>
+      <div id="cooler-fish" class="item-row"></div>
+      <button id="btn-cooler-close" class="big-button secondary">Close</button>
     </div>
   </div>
 
@@ -130,12 +155,14 @@
   <script src="data/places.js"></script>
   <script src="data/paths.js"></script>
   <script src="data/items.js"></script>
+  <script src="data/fish.js"></script>
   <script src="data/drawn.js"></script>
 
   <!-- Game code -->
   <script src="js/save.js"></script>
   <script src="js/world.js"></script>
   <script src="js/items.js"></script>
+  <script src="js/fishing.js"></script>
   <script src="js/game.js"></script>
 </body>
 </html>

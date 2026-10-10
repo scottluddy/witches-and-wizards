@@ -19,6 +19,8 @@ We build in stages and stop after each one to play-test.
 4. Store and belongings (done 2026-10-08): items stand on the shelf pictures (`SHELF_ROWS` in `js/items.js`, or `shelfX`/`shelfY` per item). One free item per category (Scholarship), then items cost Crystals. 🎒 Backpack button at the top right; put things down inside any place (not maps or shelves) and pick them up again.
    The girls' shelf drawing (2026-10-10) is used for all six shelves (`also_as` in art/art_config.json); each shelf's `rows` in places.js says which gaps the items stand in.
 
+Drawings batch (2026-10-10): Levitating Potion, Wizard Essentials Spellbook and Healing Turtle (priced in Gems), new Winky, Rosy and Lisley, Rec Room in the Snowy Hut, inside of Toadstool Cottage (was Little Cabin), the Dock with fishing at two Lucky Rods (Bubble, Dream and Crystal Fish into the cooler), Tiny Island, and a "Saved for later" catalog section (gem, second shelf drawing, first Winky).
+
 ## Next
 5. Progress: 3 Adventure Points raise the Grade with a celebration; earning Crystals; hidden debug key (D) for +1 Adventure Point and +10 Crystals.
 

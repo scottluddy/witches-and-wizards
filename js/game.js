@@ -13,7 +13,7 @@ function showScreen(id) {
   updateStatus();
 }
 
-// Fill in the status bar: character, player's name, Grade, Adventure Points (3 stars) and Crystals.
+// Fill in the status bar: character, player's name, Grade, Adventure Points (3 stars), Crystals and Gems.
 function updateStatus() {
   if (!player) return;
   const character = findCharacter(player.characterId);
@@ -23,6 +23,7 @@ function updateStatus() {
   document.getElementById("status-points").textContent =
     "★".repeat(player.adventurePoints) + "☆".repeat(3 - player.adventurePoints);
   document.getElementById("status-crystals").textContent = player.crystals;
+  document.getElementById("status-gems").textContent = player.gems;
 }
 
 function findCharacter(id) {

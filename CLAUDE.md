@@ -16,14 +16,19 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 
 ## World structure
 
-- `data/places.js` is one list of every place, nested with `in`: World map → territory maps → locations → spots inside (store shelves). `type: "map"` = walkable with roads from `data/paths.js`; `type: "place"` = picture with clickable spots; `type: "person"` = someone in a picture who talks (`says`) when clicked.
+- `data/places.js` is one list of every place, nested with `in`: World map → territory maps → locations → spots inside (store shelves). `type: "map"` = walkable with roads from `data/paths.js`; `type: "place"` = picture with clickable spots; `type: "person"` = someone in a picture who talks (`says`) when clicked; `type: "fishing"` = a fishing spot (the Lucky Rods at the Dock).
 - The player types their own name (`playerName`); character names are fixed in `data/characters.js`.
 - Items: `data/items.js`. The character's backpack is unseen (`player.backpack`); items can be put down at places (`player.stored[placeId]`).
+- Two kinds of money (Scott, 2026-10-10): Crystals (`price`, 💎) and Gems (`gems`, shown with the girls' gem drawing). Gems are rarer and earned by fishing. The girls write prices in gems on their drawings.
+- Fishing: `data/fish.js` (fish, their gems and `chance`, and the 5 to 20 second wait). Caught fish go in `player.cooler` and earn their gems. Code in `js/fishing.js`.
+- Drawings not used yet are listed in `data/extras.js` and shown in the catalog's "Saved for later" section.
 - `js/save.js` has `SAVE_VERSION`; bump it when the save's shape changes (old saves are then ignored).
 
 ## Art
 
-- Kids' drawings go in `art/raw`. Run `python3 tools/process_art.py` (needs `pip install pillow numpy`) to make `art/processed` and `data/drawn.js`.
+- Kids' drawings go in `art/raw`. Photos often arrive sideways or upside down; fix with `rotate` in art_config.json (pages) or when cutting a sticker out.
+- A photo with several drawings on it is kept whole in `art/raw/sheets` (not processed); each drawing is cut out, turned upright and saved in `art/raw` under its own name.
+- Run `python3 tools/process_art.py` (needs `pip install pillow numpy`) to make `art/processed` and `data/drawn.js`.
 - Names: `<character id>.jpg` and `<item id>.jpg` become stickers; `map_<place id>.jpg` and `place_<place id>.jpg` become whole pictures on parchment (colour kept).
 - Anything not drawn gets a placeholder picture (items show their emoji instead). The game and catalog use `data/drawn.js` to tell drawings from placeholders.
 - Per-drawing settings (crop, rotate, erase, washes, gap, min_part, also_as) live in `art/art_config.json`. `also_as` reuses one drawing under other names (the one shelf drawing serves all six store shelves).
@@ -38,7 +43,7 @@ index.html        the game
 catalog.html      list of everything in the game and what still needs drawing
 css/  js/         style and code
 data/             editable game content
-art/raw/          original drawings (photos)
+art/raw/          original drawings (photos); art/raw/sheets holds whole multi-drawing photos
 art/processed/    game-ready PNGs (generated)
 tools/            the art script
 ```

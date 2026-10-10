@@ -108,6 +108,11 @@
     .card .price { font-variant-numeric: tabular-nums; }
     h3 { font-size: 1.2rem; margin-block: 24px 10px; color: var(--accent); }
 
+    .card.wide { grid-column: span 2; }
+    .card.wide .art { height: 240px; }
+    .card.wide .art img { max-height: 240px; border-radius: 8px; }
+    @media (max-width: 440px) { .card.wide { grid-column: auto; } }
+
     .howto { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 4px 20px 12px; }
     .howto li { margin-block: 6px; }
   </style>
@@ -128,6 +133,14 @@
     <h2>Store Items</h2>
     <div id="items"></div>
 
+    <h2>Fish</h2>
+    <p class="lede">Caught with the Lucky Rods at the Dock after a wait of a few seconds. Each one goes in the cooler and earns gems.</p>
+    <div id="fish" class="grid"></div>
+
+    <h2>Saved for later</h2>
+    <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
+    <div id="extras" class="grid"></div>
+
     <h2>Adding something new</h2>
     <div class="howto">
       <ol>
@@ -142,6 +155,8 @@
   <script src="data/characters.js"></script>
   <script src="data/places.js"></script>
   <script src="data/items.js"></script>
+  <script src="data/fish.js"></script>
+  <script src="data/extras.js"></script>
   <script src="data/drawn.js"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
@@ -172,6 +187,7 @@
 
     function kindOf(place) {
       if (place.type === "person") return "person: says \u201c" + (place.says || "") + "\u201d";
+      if (place.type === "fishing") return "fishing spot";
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
       if (place.shelf) return "store shelf: " + place.shelf;
@@ -181,7 +197,7 @@
     function placeRow(place) {
       const li = el("li");
       const row = el("div", "row");
-      const isPerson = place.type === "person";
+      const isPerson = place.type === "person" || place.type === "fishing"; // part of the picture
       const picName = (place.type === "map" ? "map_" : "place_") + place.id;
       const img = el(isPerson ? "span" : "img");
       if (!isPerson) {
@@ -246,11 +262,25 @@
       const grid = el("div", "grid");
       GAME_DATA.items.filter(function (i) { return i.category === category; }).forEach(function (item) {
         grid.appendChild(card(item.name, item.id, item.emoji || "✨", [
-          el("span", "price", "💎 " + item.price + " Crystals"),
+          el("span", "price", item.gems !== undefined ? "🔷 " + item.gems + " Gems" : "💎 " + item.price + " Crystals"),
           item.description ? el("span", "kind", item.description) : null
         ]));
       });
       itemsBox.appendChild(grid);
+    });
+
+    (GAME_DATA.fish || []).forEach(function (fish) {
+      document.getElementById("fish").appendChild(card(fish.name, fish.id, fish.emoji || "🐟", [
+        el("span", "price", "+" + fish.gems + " Gems"),
+        el("span", "kind", fish.description + " (bites " + fish.chance + " out of " +
+          GAME_DATA.fish.reduce(function (n, f) { return n + f.chance; }, 0) + " times)")
+      ]));
+    });
+
+    (GAME_DATA.extras || []).forEach(function (extra) {
+      const c = card(extra.name, extra.id, "✨", [el("span", "kind", extra.note)]);
+      if (extra.id.indexOf("place_") === 0) c.classList.add("wide");
+      document.getElementById("extras").appendChild(c);
     });
 
     const territories = places.filter(function (p) { return p.type === "map" && p.in; }).length;
@@ -260,6 +290,7 @@
     const tally = [
       [territories, "territories"], [locations, "locations"], [shelves, "store shelves"],
       [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "items"],
+      [(GAME_DATA.fish || []).length, "fish"],
       [needed, "drawings to make"]
     ];
     tally.forEach(function (t) {

@@ -5,5 +5,6 @@
 GAME_DATA.characters = [
   { "id": "charmy",  "name": "Charmy", "description": "Cheerful and brave, with bouncy pigtails." },
   { "id": "winky",   "name": "Winky",  "description": "Sparkly eyes that never miss a thing." },
-  { "id": "mystery", "name": "Mystery Wizard", "description": "Waiting to be drawn and named!" }
+  { "id": "rosy",    "name": "Rosy",   "description": "Long flowing hair and a frilly party dress." },
+  { "id": "lisley",  "name": "Lisley", "description": "Cosy in a red sweater with a heart, ready for snow." }
 ];

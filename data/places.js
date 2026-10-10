@@ -5,6 +5,7 @@
 //   type        "map"    = the character walks between the places on it
 //               "place"  = a picture with spots you can click
 //               "person" = someone in a picture who talks when clicked ("says")
+//               "fishing" = a fishing spot: click it to go fishing (fish are in data/fish.js)
 //   in          the place it sits inside (left out for the world)
 //   x, y        where it sits on that picture, as percentages across and down
 //               (press P in the game and click to find numbers)
@@ -38,7 +39,7 @@ GAME_DATA.places = [
   { "id": "shelf_brooms",  "name": "Broomsticks",   "type": "place", "in": "store", "x": 13, "y": 35, "shelf": "Broomstick",
     "rows": [[49, 60], [64, 78]] },
   { "id": "shelf_pets",    "name": "Pets",          "type": "place", "in": "store", "x": 40, "y": 51, "shelf": "Pet",
-    "rows": [[64, 78]] },
+    "rows": [[49, 60], [64, 78]] },
   { "id": "shelf_potions", "name": "Potions",       "type": "place", "in": "store", "x": 44, "y": 22, "shelf": "Potion",
     "rows": [[64, 78]] },
   { "id": "shelf_hats",    "name": "Hats",          "type": "place", "in": "store", "x": 78, "y": 33, "shelf": "Hat",
@@ -48,8 +49,8 @@ GAME_DATA.places = [
   { "id": "shelf_special", "name": "Special Items", "type": "place", "in": "store", "x": 77, "y": 72, "shelf": "Special Item",
     "rows": [[64, 78]] },
 
-  { "id": "cabin",     "name": "Little Cabin",   "type": "place", "in": "forest", "x": 28, "y": 68, "start": true,
-    "description": "A tiny cabin between the trees. Who lives here?" },
+  { "id": "cabin",     "name": "Toadstool Cottage", "type": "place", "in": "forest", "x": 28, "y": 68, "start": true,
+    "description": "Inside the toadstool cottage: books, a comfy blue sofa and a little table. You can leave things here." },
   { "id": "old_oak",   "name": "Old Oak",        "type": "place", "in": "forest", "x": 62, "y": 34,
     "description": "The oldest tree in the forest. Some say it whispers." },
   { "id": "mushrooms", "name": "Mushroom Ring",  "type": "place", "in": "forest", "x": 76, "y": 74,
@@ -60,12 +61,16 @@ GAME_DATA.places = [
   { "id": "peak",      "name": "Windy Peak",     "type": "place", "in": "mountain", "x": 58, "y": 24,
     "description": "You can see the whole world from up here!" },
   { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 80, "y": 66,
-    "description": "Warm cocoa and a crackling fire." },
+    "description": "Warm cocoa and a crackling fire. The Rec Room is through the door." },
+  { "id": "rec_room",  "name": "Rec Room",       "type": "place", "in": "hut", "x": 50, "y": 55,
+    "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
 
   { "id": "dock",      "name": "Dock",           "type": "place", "in": "lake", "x": 22, "y": 74, "start": true,
-    "description": "Little boats bob on the water." },
+    "description": "Click a Lucky Rod to go fishing. Fish go in your cooler." },
+  { "id": "rod_1",     "name": "Lucky Rod #1",   "type": "fishing", "in": "dock", "x": 35, "y": 33 },
+  { "id": "rod_2",     "name": "Lucky Rod #2",   "type": "fishing", "in": "dock", "x": 12, "y": 33 },
   { "id": "island",    "name": "Tiny Island",    "type": "place", "in": "lake", "x": 58, "y": 42,
-    "description": "Just big enough for one tree and a picnic." },
+    "description": "Just big enough for one tree, a picnic and a fishing rod." },
   { "id": "beach",     "name": "Pebble Beach",   "type": "place", "in": "lake", "x": 80, "y": 78,
     "description": "Smooth pebbles, perfect for skipping." }
 ];

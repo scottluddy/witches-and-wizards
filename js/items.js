@@ -27,6 +27,38 @@ function itemArt(item) {
   return span;
 }
 
+// ---------------------------------------------------------------- prices
+
+// Most items cost Crystals ("price"); some cost Gems instead ("gems").
+function priceOf(item) {
+  if (item.gems !== undefined) return { amount: item.gems, money: "gems", name: "Gems" };
+  return { amount: item.price, money: "crystals", name: "Crystals" };
+}
+
+function canAfford(item) {
+  const cost = priceOf(item);
+  return player[cost.money] >= cost.amount;
+}
+
+// The little money picture: 💎 for Crystals, the girls' gem drawing for Gems.
+function moneyIcon(money) {
+  if (money === "gems") {
+    const img = document.createElement("img");
+    img.className = "gem-icon";
+    img.src = picture("extra_gem");
+    img.alt = "Gems";
+    return img;
+  }
+  return document.createTextNode("💎");
+}
+
+// "💎 12" or "(gem) 3", as something to put on the page.
+function moneyLabel(money, amount) {
+  const span = document.createElement("span");
+  span.append(moneyIcon(money), " " + amount);
+  return span;
+}
+
 // ---------------------------------------------------------------- owning things
 
 function freePicks() {
@@ -90,8 +122,9 @@ function showShelfItems(place) {
     art.appendChild(itemArt(item));
     const tag = document.createElement("span");
     tag.className = "price-tag";
-    tag.textContent = owns(item.id) ? "Yours ✓"
-      : hasFreePick(item.category) ? "FREE" : "💎 " + item.price;
+    if (owns(item.id)) tag.textContent = "Yours ✓";
+    else if (hasFreePick(item.category)) tag.textContent = "FREE";
+    else tag.appendChild(moneyLabel(priceOf(item).money, priceOf(item).amount));
     button.append(art, tag);
     button.title = item.name;
     button.addEventListener("click", function () {
@@ -102,7 +135,7 @@ function showShelfItems(place) {
 
   note.textContent = hasFreePick(place.shelf)
     ? "Your Scholarship gives you one " + place.shelf + " for FREE! Click one to choose it."
-    : "Click an item to see it. Items cost Crystals.";
+    : "Click an item to see it. Items cost Crystals or Gems.";
 }
 
 // Things the player put down here, with a way to pick them back up.
@@ -167,14 +200,21 @@ function openItemPanel(itemId) {
   } else if (hasFreePick(item.category)) {
     message.textContent = "This can be your free " + item.category + ". You only get one, so choose carefully!";
     getButton.textContent = "Take it for FREE";
-  } else if (player.crystals >= item.price) {
-    message.textContent = "It costs 💎 " + item.price + ". You have 💎 " + player.crystals + ".";
-    getButton.textContent = "Buy for 💎 " + item.price;
   } else {
-    message.textContent = "It costs 💎 " + item.price + ", but you have 💎 " + player.crystals +
-      ". Go on adventures to earn more Crystals!";
-    getButton.textContent = "Not enough Crystals";
-    getButton.disabled = true;
+    const cost = priceOf(item);
+    const have = player[cost.money];
+    message.textContent = "";
+    message.append("It costs ", moneyLabel(cost.money, cost.amount), ". You have ",
+      moneyLabel(cost.money, have), ".");
+    if (canAfford(item)) {
+      getButton.textContent = "Buy for " + cost.amount + " " + cost.name;
+    } else {
+      message.append(cost.money === "gems"
+        ? " Go fishing at the Dock to earn Gems!"
+        : " Go on adventures to earn more Crystals!");
+      getButton.textContent = "Not enough " + cost.name;
+      getButton.disabled = true;
+    }
   }
   document.getElementById("item-panel").hidden = false;
 }
@@ -192,8 +232,8 @@ document.getElementById("btn-item-get").addEventListener("click", function () {
   if (hasFreePick(item.category)) {
     freePicks()[item.category] = item.id;
     if (categories().every(function (c) { return !hasFreePick(c); })) player.scholarship = false;
-  } else if (player.crystals >= item.price) {
-    player.crystals -= item.price;
+  } else if (canAfford(item)) {
+    player[priceOf(item).money] -= priceOf(item).amount;
   } else {
     return;
   }

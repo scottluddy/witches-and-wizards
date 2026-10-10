@@ -6,7 +6,11 @@ const SAVE_VERSION = 2; // bump when the save's shape changes, so old saves are 
 function loadSave() {
   try {
     const save = JSON.parse(localStorage.getItem(SAVE_KEY));
-    return save && save.version === SAVE_VERSION ? save : null;
+    if (!save || save.version !== SAVE_VERSION) return null;
+    // Saves made before Gems and fishing existed get them added.
+    if (save.gems === undefined) save.gems = 0;
+    if (!save.cooler) save.cooler = [];
+    return save;
   } catch (err) {
     return null; // no save yet, or the browser blocks storage
   }
@@ -39,6 +43,8 @@ function newPlayer(playerName, characterId) {
     grade: 1,
     adventurePoints: 0,
     crystals: 0,
+    gems: 0,                  // rarer money, earned by fishing
+    cooler: [],               // fish ids the character has caught (one entry per fish)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)

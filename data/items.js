@@ -4,6 +4,7 @@
 //               draw one and save it as art/raw/<id>.jpg, then run the art script.
 //   category    Broomstick, Pet, Potion, Hat, Wand or Special Item
 //   price       cost in Crystals (after the Scholarship is used up)
+//   gems        cost in Gems instead of Crystals (Gems are earned by fishing)
 //   emoji       shown until there's a drawing
 GAME_DATA.items = [
   { "id": "broom_snowball", "name": "Snowball",   "category": "Broomstick", "price": 30, "emoji": "🧹",
@@ -17,10 +18,11 @@ GAME_DATA.items = [
   { "id": "pet_owl",    "name": "Snowy Owl",     "category": "Pet", "price": 25, "emoji": "🦉", "description": "Delivers letters and hoots hello." },
   { "id": "pet_cat",    "name": "Midnight Cat",  "category": "Pet", "price": 20, "emoji": "🐈‍⬛", "description": "Purrs when magic is near." },
   { "id": "pet_toad",   "name": "Bubble Toad",   "category": "Pet", "price": 10, "emoji": "🐸", "description": "Blows shiny bubbles." },
+  { "id": "pet_turtle", "name": "Healing Turtle", "category": "Pet", "gems": 3, "emoji": "🐢", "description": "A gentle turtle whose shell glows when someone needs healing." },
 
   { "id": "potion_giggle", "name": "Giggle Potion",    "category": "Potion", "price": 8,  "emoji": "🧪", "description": "One sip and you can't stop laughing." },
   { "id": "potion_glow",   "name": "Glow Potion",      "category": "Potion", "price": 12, "emoji": "✨", "description": "Makes you glow like a firefly." },
-  { "id": "potion_float",  "name": "Floating Potion",  "category": "Potion", "price": 15, "emoji": "🫧", "description": "Float a little off the ground." },
+  { "id": "potion_float",  "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground." },
 
   { "id": "hat_pointy", "name": "Pointy Purple Hat", "category": "Hat", "price": 12, "emoji": "🎩", "description": "A classic wizard hat with stars." },
   { "id": "hat_flower", "name": "Flower Crown",      "category": "Hat", "price": 10, "emoji": "🌸", "description": "Never wilts." },
@@ -32,5 +34,5 @@ GAME_DATA.items = [
 
   { "id": "special_map",    "name": "Treasure Map",   "category": "Special Item", "price": 25, "emoji": "🗺️", "description": "Shows a secret spot... somewhere." },
   { "id": "special_lantern","name": "Fairy Lantern",  "category": "Special Item", "price": 18, "emoji": "🏮", "description": "A fairy lives inside and lights the way." },
-  { "id": "special_book",   "name": "Spell Book",     "category": "Special Item", "price": 22, "emoji": "📖", "description": "Full of beginner spells." }
+  { "id": "special_book",   "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know." }
 ];

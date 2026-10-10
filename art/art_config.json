@@ -1,5 +1,5 @@
 {
-  "_help": "Optional settings per drawing in art/raw (use the file name without its extension). crop = [left, top, right, bottom] as percentages of the photo, to cut away names, numbers and box lines. gap = how big a break in the pencil outline still gets filled in (default 6; raise it if parts of the inside turn see-through, lower it if nearby writing gets glued on). min_part = how big a separate piece must be (compared to the biggest piece) to be kept; raise it if stray scribbles sneak in. Drawings not listed here use the defaults.",
+  "_help": "Optional settings per drawing in art/raw (use the file name without its extension). crop = [left, top, right, bottom] as percentages of the photo, to cut away names, numbers and box lines. gap = how big a break in the pencil outline still gets filled in (default 6; raise it if parts of the inside turn see-through, lower it if nearby writing gets glued on). min_part = how big a separate piece must be (compared to the biggest piece) to be kept; raise it if stray scribbles sneak in. Drawings not listed here use the defaults. Sheets with several drawings on one photo are kept whole in art/raw/sheets (not processed); each drawing is cut out of the sheet and saved in art/raw under its own name.",
   "charmy": {
     "crop": [
       22,
@@ -8,14 +8,6 @@
       93
     ],
     "gap": 10
-  },
-  "winky": {
-    "crop": [
-      10,
-      42,
-      80,
-      91
-    ]
   },
   "broom_snowball": {
     "crop": [
@@ -119,5 +111,83 @@
       "place_shelf_wands",
       "place_shelf_special"
     ]
+  },
+  "extra_winky_first": {
+    "crop": [
+      10,
+      42,
+      80,
+      91
+    ]
+  },
+  "potion_float": {
+    "crop": [
+      26,
+      25,
+      66,
+      59
+    ]
+  },
+  "special_book": {
+    "crop": [
+      25,
+      20,
+      61,
+      52
+    ]
+  },
+  "pet_turtle": {
+    "crop": [
+      16,
+      33,
+      83,
+      56
+    ]
+  },
+  "place_cabin": {
+    "crop": [
+      13,
+      3,
+      87,
+      97
+    ]
+  },
+  "place_rec_room": {
+    "crop": [
+      1,
+      5,
+      99,
+      91
+    ]
+  },
+  "place_dock": {
+    "rotate": 180,
+    "crop": [
+      14,
+      5,
+      93,
+      97
+    ]
+  },
+  "place_shelves_alt": {
+    "rotate": 270,
+    "crop": [
+      2,
+      9,
+      98,
+      92
+    ]
+  },
+  "place_island": {
+    "rotate": 90,
+    "crop": [
+      1,
+      1,
+      94,
+      88
+    ]
+  },
+  "fish_bubble": {
+    "gap": 12
   }
 }

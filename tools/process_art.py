@@ -13,6 +13,8 @@ How to name drawings in art/raw (photos or scans, .jpg or .png):
   - Items:        broom_snowball.jpg         (the id from data/items.js)
   - Maps:         map_world.jpg, map_forest.jpg     ("map_" + id from data/places.js)
   - Places:       place_store.jpg, place_shelf_brooms.jpg   ("place_" + id)
+  - Fish:         fish_bubble.jpg            (the id from data/fish.js)
+  - Saved for later: extra_gem.jpg           (listed in data/extras.js)
 
 Characters and items are cut out as stickers. Maps and places keep the whole
 page, laid onto parchment. Optional per-drawing settings (crop, rotate, ...)
@@ -38,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 
@@ -236,7 +238,10 @@ def process_page(path, settings):
         add_wash(paper, x, y, size, colour)
     page = Image.fromarray((np.asarray(paper, dtype=np.float32) *
                             np.asarray(drawing, dtype=np.float32) / 255).astype(np.uint8))
-    storybook_edge(page).save(OUT_DIR / f"{path.stem}.png")
+    # 256 colours keeps the file small (crayon pictures are huge otherwise),
+    # so the whole game stays quick to load and fits in one published page.
+    page = storybook_edge(page).quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
+    page.save(OUT_DIR / f"{path.stem}.png", optimize=True)
 
 
 # ---------------------------------------------------------------- placeholder pictures
@@ -400,12 +405,12 @@ def main():
     # 2. Placeholders for every map and place nobody has drawn yet.
     places = read_data("places.js")
     for place in places:
-        if place["type"] == "person":
-            continue  # people are part of the picture they're in
+        if place["type"] not in ("map", "place"):
+            continue  # people and fishing spots are part of the picture they're in
         kind = "map" if place["type"] == "map" else "place"
         if f"{kind}_{place['id']}" in drawn:
             continue
-        children = [p for p in places if p.get("in") == place["id"] and p["type"] != "person"]
+        children = [p for p in places if p.get("in") == place["id"] and p["type"] in ("map", "place")]
         if kind == "map":
             placeholder_map(place, children)
         else:
