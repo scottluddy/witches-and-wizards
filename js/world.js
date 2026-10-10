@@ -266,7 +266,7 @@ function showPlace(id) {
   writeSave(player);
 
   document.getElementById("place-title").textContent = place.name;
-  document.getElementById("place-image").src = picture("place_" + id);
+  document.getElementById("place-image").src = picture(roomPicture(id)); // js/furniture.js
   document.getElementById("place-image").alt = place.name;
   document.getElementById("place-description").textContent = place.description || "";
   setBackButton(document.getElementById("btn-place-back"), place);
@@ -283,6 +283,7 @@ function showPlace(id) {
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
+  showFurniture(place);  // movable furniture (js/furniture.js)
   showScreen("screen-place");
 }
 

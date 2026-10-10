@@ -10,6 +10,7 @@ function loadSave() {
     // Saves made before Gems and fishing existed get them added.
     if (save.gems === undefined) save.gems = 0;
     if (!save.cooler) save.cooler = [];
+    if (!save.furniture) save.furniture = {};
     return save;
   } catch (err) {
     return null; // no save yet, or the browser blocks storage
@@ -45,6 +46,7 @@ function newPlayer(playerName, characterId) {
     crystals: 0,
     gems: 0,                  // rarer money, earned by fishing
     cooler: [],               // fish ids the character has caught (one entry per fish)
+    furniture: {},            // where furniture was moved: { "rec_room": { "armchair": [x, y] } }
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)

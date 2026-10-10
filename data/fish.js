@@ -8,11 +8,13 @@
 GAME_DATA.fish = [
   { "id": "fish_bubble",  "name": "Bubble Fish",  "gems": 3, "chance": 6, "emoji": "🐟",
     "description": "A round orange fish with a yellow crown." },
-  { "id": "fish_dream",   "name": "Dream Fish",   "gems": 5, "chance": 3, "emoji": "🐠",
+  { "id": "fish_dream",   "name": "Dream Fish",   "gems": 6, "chance": 3, "emoji": "🐠",
     "description": "A sleepy pink fish in a nightcap." },
-  { "id": "fish_crystal", "name": "Crystal Fish", "gems": 7, "chance": 1, "emoji": "🐡",
+  { "id": "fish_crystal", "name": "Crystal Fish", "gems": 10, "chance": 1, "emoji": "🐡",
     "description": "A rare spiky blue fish." }
 ];
 
 // How long you wait for a bite, in seconds (a random time in between).
-GAME_DATA.fishing = { "minSeconds": 5, "maxSeconds": 20 };
+// If the wait would be longer than giveUpSeconds, nothing bites: after
+// giveUpSeconds you're told "Sorry, nothing caught, please try again."
+GAME_DATA.fishing = { "minSeconds": 5, "maxSeconds": 25, "giveUpSeconds": 20 };

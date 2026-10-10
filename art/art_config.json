@@ -145,6 +145,7 @@
     ]
   },
   "place_cabin": {
+    "rotate": 180,
     "crop": [
       13,
       3,

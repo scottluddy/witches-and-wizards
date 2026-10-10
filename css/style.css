@@ -498,3 +498,45 @@ h2 {
 .shelf-item.in-picture .shelf-art { visibility: hidden; }
 
 .refresh-button { margin-top: 36px; font-size: 1rem; padding: 6px 14px; }
+
+/* ---- movable furniture ---- */
+
+.furniture {
+  position: absolute;
+  object-fit: fill;
+  pointer-events: none;     /* only grabbable while rearranging */
+  user-select: none;
+  touch-action: none;       /* so dragging on a tablet doesn't scroll the page */
+}
+
+.rearranging .furniture {
+  pointer-events: auto;
+  cursor: grab;
+  filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 10px var(--gold));
+  animation: glow 1.2s ease-in-out infinite alternate;
+}
+
+.rearranging .furniture.dragging { cursor: grabbing; z-index: 2; animation: none; }
+.rearranging #place-spots, .rearranging #place-items { pointer-events: none; opacity: 0.4; }
+
+@keyframes glow {
+  from { filter: drop-shadow(0 0 3px var(--gold)); }
+  to   { filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 12px var(--gold)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rearranging .furniture { animation: none; }
+}
+
+.picture-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  min-height: 2rem;
+}
+
+.tiny-button { font-size: 0.9rem; padding: 4px 12px; box-shadow: 0 3px 0 var(--magic-dark); }
+.rearrange-note { font-size: 1rem; font-weight: 700; color: var(--magic-dark); }
+.rearrange-note[hidden] { display: none; }

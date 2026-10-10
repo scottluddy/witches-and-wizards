@@ -1,5 +1,5 @@
 // Fishing: click a fishing spot (like a Lucky Rod at the Dock), wait a random
-// time for a bite, then reel it in. The fish goes in the cooler and you earn
+// time for a bite (sometimes nothing bites), then reel it in. The fish goes in the cooler and you earn
 // its gems. Fish and the waiting time are in data/fish.js.
 
 let biteTimer = null;   // the countdown to the next bite
@@ -62,10 +62,19 @@ function castLine() {
   clearTimeout(biteTimer);
   showFishing("🎣", "Fishing with " + fishingSpot.name, ["Waiting for a bite..."], []);
   document.getElementById("fishing-art").classList.add("waiting");
+  const wait = waitSeconds();
+  const giveUp = GAME_DATA.fishing.giveUpSeconds;
+  if (giveUp && wait > giveUp) {
+    // Too slow: nothing bites this time.
+    biteTimer = setTimeout(function () {
+      showFishing("🎣", "No luck this time", ["Sorry, nothing caught, please try again."], ["again"]);
+    }, giveUp * 1000);
+    return;
+  }
   biteTimer = setTimeout(function () {
     showFishing("🎣", "Something's tugging the line!", ["Quick, reel it in!"], ["reel"]);
     document.getElementById("fishing-art").classList.add("biting");
-  }, waitSeconds() * 1000);
+  }, wait * 1000);
 }
 
 function reelIn() {

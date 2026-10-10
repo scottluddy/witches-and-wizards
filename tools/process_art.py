@@ -201,7 +201,7 @@ def storybook_edge(img):
     return Image.composite(img, Image.new("RGB", img.size, (150, 110, 70)), fade)
 
 
-def process_page(path, settings):
+def process_page(path, settings, furniture=None):
     """A drawn map or place: straighten, crop, clean the paper, lay it on parchment.
 
     Settings (art_config.json, under the file name):
@@ -236,12 +236,52 @@ def process_page(path, settings):
     paper = parchment(drawing.size)
     for x, y, size, colour in settings.get("washes", []):
         add_wash(paper, x, y, size, colour)
-    page = Image.fromarray((np.asarray(paper, dtype=np.float32) *
+    save_page(on_paper(drawing, paper), OUT_DIR / f"{path.stem}.png")
+
+    # Rooms with movable furniture: cut each piece out, and make an empty room.
+    if furniture:
+        empty = cut_out_furniture(path.stem[len("place_"):], drawing, paper, furniture)
+        save_page(on_paper(empty, paper), OUT_DIR / f"{path.stem}_room.png")
+
+
+def on_paper(drawing, paper):
+    """The drawing laid on parchment: white paper vanishes, lines and colours stay."""
+    return Image.fromarray((np.asarray(paper, dtype=np.float32) *
                             np.asarray(drawing, dtype=np.float32) / 255).astype(np.uint8))
+
+
+def save_page(page, out):
     # 256 colours keeps the file small (crayon pictures are huge otherwise),
     # so the whole game stays quick to load and fits in one published page.
     page = storybook_edge(page).quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG)
-    page.save(OUT_DIR / f"{path.stem}.png", optimize=True)
+    page.save(out, optimize=True)
+
+
+FURNITURE_BOXES = {}  # "place/piece": the exact [left, top, right, bottom] of each cut-out piece
+
+
+def cut_out_furniture(place_id, drawing, paper, pieces):
+    """Save each piece of furniture as its own picture, and return the drawing
+    with the pieces rubbed out (the empty room they stand in)."""
+    w, h = drawing.size
+    empty = drawing.copy()
+    for piece in pieces:
+        l, t, r, b = piece["box"]
+        box = (round(w * l / 100), round(h * t / 100), round(w * r / 100), round(h * b / 100))
+        part = drawing.crop(box)
+        mask = find_drawing(part, piece.get("min_part", 0.05), piece.get("gap", GAP_CLOSE))
+        sticker = on_paper(part, paper.crop(box)).convert("RGBA")
+        sticker.putalpha(mask)
+        inside = mask.getbbox()
+        sticker.crop(inside).save(OUT_DIR / f"furniture_{place_id}_{piece['id']}.png")
+        # Rub the piece out of the room (a little extra all round, for stray edges).
+        rub = mask.filter(ImageFilter.MaxFilter(9))
+        empty.paste((255, 255, 255), box, rub)
+        FURNITURE_BOXES[f"{place_id}/{piece['id']}"] = [
+            round((box[0] + inside[0]) / w * 100, 1), round((box[1] + inside[1]) / h * 100, 1),
+            round((box[0] + inside[2]) / w * 100, 1), round((box[1] + inside[3]) / h * 100, 1)]
+        print(f"    cut out the {piece['name']}")
+    return empty
 
 
 # ---------------------------------------------------------------- placeholder pictures
@@ -383,6 +423,7 @@ def main():
     config = json.loads(CONFIG_FILE.read_text()) if CONFIG_FILE.exists() else {}
 
     # 1. The kids' drawings.
+    furniture = read_data("furniture.js")
     drawn = []
     for path in sorted(RAW_DIR.iterdir()):
         if path.suffix.lower() not in PICTURE_TYPES:
@@ -390,7 +431,8 @@ def main():
         try:
             settings = config.get(path.stem, {})
             if path.stem.startswith(("map_", "place_")):
-                process_page(path, settings)
+                pieces = [f for f in furniture if "place_" + f["place"] == path.stem]
+                process_page(path, settings, pieces)
             else:
                 process_drawing(path, settings)
             drawn.append(path.stem)
@@ -422,6 +464,10 @@ def main():
     (DATA_DIR / "drawn.js").write_text(
         "// Made by tools/process_art.py: the pictures that are real drawings, not placeholders.\n"
         "GAME_DATA.drawn = " + json.dumps(sorted(drawn)) + ";\n", encoding="utf-8")
+    (DATA_DIR / "furniture_art.js").write_text(
+        "// Made by tools/process_art.py: where each cut-out piece of furniture sits\n"
+        "// in its room's drawing, as [left, top, right, bottom] percentages.\n"
+        "GAME_DATA.furnitureBoxes = " + json.dumps(FURNITURE_BOXES) + ";\n", encoding="utf-8")
     print(f"Done! Pictures are in {OUT_DIR}")
 
 
