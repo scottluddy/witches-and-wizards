@@ -16,8 +16,13 @@ GAME_DATA.paths = [
   { "from": "store", "to": "dress_shop", "via": [[36, 36]] },
 
   // Forest
-  { "from": "cabin",   "to": "old_oak",   "via": [[45, 52]] },
-  { "from": "old_oak", "to": "mushrooms", "via": [] },
+  { "from": "crafting_cabin", "to": "old_oak",   "via": [[38, 22], [45, 17]] },
+  { "from": "crafting_cabin", "to": "cabin",     "via": [] },
+  { "from": "cabin",          "to": "old_oak",   "via": [[42, 29]] },
+  { "from": "old_oak",        "to": "mushrooms", "via": [[64, 23], [71, 36]] },
+  { "from": "cabin",          "to": "treehouse", "via": [[19, 58]] },
+  { "from": "treehouse",      "to": "orchard",   "via": [[21, 70], [31, 75], [46, 75]] },
+  { "from": "mushrooms",      "to": "orchard",   "via": [[67, 63]] },
 
   // Mountain
   { "from": "cave",        "to": "hut",        "via": [] },
@@ -27,6 +32,7 @@ GAME_DATA.paths = [
   { "from": "hut",         "to": "mountain_house", "via": [] },
 
   // Lake
-  { "from": "dock",   "to": "island", "via": [[40, 60]] },
-  { "from": "island", "to": "beach",  "via": [] }
+  { "from": "dock",   "to": "island", "via": [] },
+  { "from": "island", "to": "beach",  "via": [] },
+  { "from": "island", "to": "waterfall", "via": [] }
 ];

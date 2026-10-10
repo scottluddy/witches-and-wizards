@@ -427,5 +427,32 @@
       94,
       98
     ]
+  },
+  "map_forest": {
+    "rotate": 180,
+    "crop": [
+      0,
+      6,
+      93,
+      95
+    ]
+  },
+  "map_lake": {
+    "rotate": 180,
+    "crop": [
+      0,
+      6,
+      100,
+      100
+    ]
+  },
+  "place_mushrooms": {
+    "rotate": 90,
+    "crop": [
+      3,
+      26,
+      99,
+      82
+    ]
   }
 }
