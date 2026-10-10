@@ -285,6 +285,7 @@ function showPlace(id) {
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
   showFurniture(place);  // movable furniture (js/furniture.js)
+  showChore(place);      // dust and the Clean Room button (js/chores.js)
   showScreen("screen-place");
 }
 

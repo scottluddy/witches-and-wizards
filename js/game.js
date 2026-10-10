@@ -14,7 +14,7 @@ function showScreen(id) {
   updateStatus();
 }
 
-// Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals and Gems.
+// Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals, Gems and Chore Points.
 function updateStatus() {
   if (!player) return;
   const character = findCharacter(player.characterId);
@@ -25,6 +25,7 @@ function updateStatus() {
     "★".repeat(player.adventurePoints) + "☆".repeat(3 - player.adventurePoints);
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
+  document.getElementById("status-chores").textContent = player.chorePoints;
 }
 
 function findCharacter(id) {
@@ -178,6 +179,7 @@ document.getElementById("btn-switch-game").addEventListener("click", function ()
   if (walking) return;
   stopFishing();   // js/fishing.js
   stopDigging();   // js/digging.js
+  stopSweeping();  // js/chores.js
   document.querySelectorAll(".overlay").forEach(function (panel) { panel.hidden = true; });
   writeSave(player);
   showTitle();

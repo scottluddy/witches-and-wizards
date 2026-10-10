@@ -11,8 +11,8 @@
 GAME_DATA.activities = [
   { "name": "Take care of your pet", "kind": "Bonding", "where": "Home", "inGame": false,
     "note": "" },
-  { "name": "Clean your room", "kind": "Chores", "where": "Home", "inGame": false,
-    "note": "" },
+  { "name": "Clean Room", "kind": "Chores", "where": "Home", "inGame": true,
+    "note": "The room gets dustier the longer you stay. Sweep it with a broomstick from your backpack for Chore Points (data/chores.js)." },
   { "name": "Pick up trash on the beach", "kind": "Chores", "where": "Pebble Beach", "inGame": false,
     "note": "" },
   { "name": "Dig at the Dig Spot", "kind": "Mining", "where": "Pebble Beach", "inGame": true,
@@ -37,9 +37,11 @@ GAME_DATA.metrics = [
   { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": false,
     "earn": "Not yet.", "use": "3 of them raise your Level." },
   { "name": "Crystals", "shows": "💎", "inGame": true,
-    "earn": "Digging at the Crystal Dig Spot.", "use": "Buying things priced in Crystals, like broomsticks." },
+    "earn": "Digging at the Crystal Dig Spot.", "use": "Buying things priced in Crystals, like dresses." },
   { "name": "Gems", "shows": "the girls' gem drawing", "inGame": true,
     "earn": "Fishing and digging.", "use": "Buying things priced in gems, like pets." },
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,
-    "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." }
+    "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." },
+  { "name": "Chore Points", "shows": "🧹", "inGame": true,
+    "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "Not decided yet." }
 ];

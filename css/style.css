@@ -602,3 +602,25 @@ h2 {
 .tiny-button { font-size: 0.9rem; padding: 4px 12px; box-shadow: 0 3px 0 var(--magic-dark); }
 .rearrange-note { font-size: 1rem; font-weight: 700; color: var(--magic-dark); }
 .rearrange-note[hidden] { display: none; }
+
+/* ---- chores ---- */
+
+/* A dust bunny: a fuzzy grey blob on the floor of a dirty room. */
+#place-dust { position: absolute; inset: 0; pointer-events: none; }
+.dust {
+  position: absolute;
+  width: 6%;
+  aspect-ratio: 1.6;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(110, 100, 90, 0.75), rgba(110, 100, 90, 0.35) 55%, transparent 72%);
+  filter: blur(1px);
+}
+
+/* The broom wiggles back and forth while sweeping. */
+#chore-art { font-size: 6rem; }
+#chore-art.sweeping { animation: sweep 0.5s ease-in-out infinite alternate; }
+@keyframes sweep {
+  from { transform: rotate(-25deg) translateX(-20px); }
+  to   { transform: rotate(25deg) translateX(20px); }
+}

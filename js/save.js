@@ -56,6 +56,9 @@ function fillIn(save) {
     delete save.treasures;
   }
   if (!save.furniture) save.furniture = {};
+  if (save.chorePoints === undefined) save.chorePoints = 0;
+  if (!save.dirt) save.dirt = {};
+  if (!save.dirtSeconds) save.dirtSeconds = {};
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   return save;
 }
@@ -107,6 +110,9 @@ function newPlayer(playerName, characterId, kind) {
     homeCooler: [],           // catches put away in the cooler at Home
     homeChest: [],            // finds put away in the treasure chest at Home
     furniture: {},            // where furniture was moved: { "rec_room": { "armchair": [x, y] } }
+    chorePoints: 0,           // earned by doing chores, like cleaning your room (js/chores.js)
+    dirt: {},                 // how dirty each room is: { "home": 2 } (0 is clean)
+    dirtSeconds: {},          // seconds spent in each room since it last got dirtier
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)
