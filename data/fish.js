@@ -14,6 +14,17 @@ GAME_DATA.fish = [
     "description": "A rare spiky blue fish." }
 ];
 
+// Treasures: other things a Lucky Rod can pull up. They earn gems like fish,
+// but they are NOT fish: they don't count toward the fish count and they're
+// kept in their own list (player.treasures). "chance" works the same as for
+// fish, compared with every fish and treasure together.
+GAME_DATA.treasures = [
+  { "id": "treasure_shell",      "name": "Shell",      "gems": 2, "chance": 4, "emoji": "🐚",
+    "description": "A pink sea shell." },
+  { "id": "treasure_sanddollar", "name": "Sand Dollar", "gems": 5, "chance": 2, "emoji": "🪙",
+    "description": "A yellow sand dollar with a star on it." }
+];
+
 // How long you wait for a bite, in seconds (a random time in between).
 // If the wait would be longer than giveUpSeconds, nothing bites: after
 // giveUpSeconds you're told "Sorry, nothing caught, please try again."

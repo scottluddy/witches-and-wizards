@@ -14,15 +14,25 @@ function fishArt(fish) {
   return itemArt(fish); // fish look just like items (js/items.js)
 }
 
-// Pick a fish at random. Fish with a bigger "chance" bite more often.
-function randomFish() {
-  const total = GAME_DATA.fish.reduce(function (sum, fish) { return sum + fish.chance; }, 0);
+// Everything a rod can pull up: the fish, then the treasures (shells and such).
+function allCatches() {
+  return GAME_DATA.fish.concat(GAME_DATA.treasures || []);
+}
+
+function isFish(thing) {
+  return GAME_DATA.fish.indexOf(thing) !== -1;
+}
+
+// Pick a catch at random. Things with a bigger "chance" bite more often.
+function randomCatch() {
+  const catches = allCatches();
+  const total = catches.reduce(function (sum, thing) { return sum + thing.chance; }, 0);
   let roll = Math.random() * total;
-  for (const fish of GAME_DATA.fish) {
-    roll -= fish.chance;
-    if (roll < 0) return fish;
+  for (const thing of catches) {
+    roll -= thing.chance;
+    if (roll < 0) return thing;
   }
-  return GAME_DATA.fish[0];
+  return catches[0];
 }
 
 // A whole number of seconds between minSeconds and maxSeconds.
@@ -78,13 +88,19 @@ function castLine() {
 }
 
 function reelIn() {
-  const fish = randomFish();
-  player.cooler.push(fish.id);
-  player.gems += fish.gems;
+  const thing = randomCatch();
+  player.gems += thing.gems;
+  if (isFish(thing)) {
+    player.cooler.push(thing.id);
+    player.fishCount += 1; // only real fish count
+  } else {
+    player.treasures.push(thing.id); // a treasure, not a fish
+  }
   writeSave(player);
   updateStatus();
-  showFishing(fishArt(fish), "You caught a " + fish.name + "!",
-    ["+", moneyLabel("gems", fish.gems), " gems! It went into your cooler."], ["again"]);
+  const title = isFish(thing) ? "You caught a " + thing.name + "!" : "You found a " + thing.name + "!";
+  showFishing(fishArt(thing), title,
+    ["+", moneyLabel("gems", thing.gems), " gems! It went into your cooler."], ["again"]);
 }
 
 function stopFishing() {
@@ -100,21 +116,27 @@ document.getElementById("btn-fishing-stop").addEventListener("click", stopFishin
 
 // ---------------------------------------------------------------- the cooler
 
-// Every kind of fish caught so far, with how many.
+// Every kind of fish and treasure caught so far, with how many of each.
 function openCooler() {
   const list = document.getElementById("cooler-fish");
   list.innerHTML = "";
-  if (player.cooler.length === 0) {
+  if (player.cooler.length === 0 && player.treasures.length === 0) {
     list.textContent = "Your cooler is empty. Go fishing at the Dock!";
   }
-  GAME_DATA.fish.forEach(function (fish) {
-    const count = player.cooler.filter(function (id) { return id === fish.id; }).length;
+  addCoolerCards(list, GAME_DATA.fish, player.cooler);
+  addCoolerCards(list, GAME_DATA.treasures || [], player.treasures);
+  document.getElementById("cooler-panel").hidden = false;
+}
+
+// One card per kind that was caught, like "Bubble Fish × 3".
+function addCoolerCards(list, kinds, caught) {
+  kinds.forEach(function (thing) {
+    const count = caught.filter(function (id) { return id === thing.id; }).length;
     if (count === 0) return;
-    const card = itemCard(fish, null);
-    card.querySelector(".item-name").textContent = fish.name + (count > 1 ? " × " + count : "");
+    const card = itemCard(thing, null);
+    card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
     list.appendChild(card);
   });
-  document.getElementById("cooler-panel").hidden = false;
 }
 
 document.getElementById("btn-cooler").addEventListener("click", function () {

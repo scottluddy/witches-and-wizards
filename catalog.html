@@ -139,8 +139,12 @@
     <div id="ideas"></div>
 
     <h2>Fish</h2>
-    <p class="lede">Caught with the Lucky Rods at the Dock after a wait of 5 to 20 seconds (about 1 try in 4 catches nothing). Each one goes in the cooler and earns gems.</p>
+    <p class="lede">Caught with the Lucky Rods at the Dock after a wait of 5 to 25 seconds (a wait past 20 seconds catches nothing). Each one goes in the cooler and earns gems.</p>
     <div id="fish" class="grid"></div>
+
+    <h3>Treasures</h3>
+    <p class="lede">Other things the Lucky Rods pull up. They earn gems too, but they don't count as fish (listed in <code>data/fish.js</code> under treasures).</p>
+    <div id="treasures" class="grid"></div>
 
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
@@ -156,14 +160,14 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "3"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=3"></script>
-  <script src="data/places.js?v=3"></script>
-  <script src="data/items.js?v=3"></script>
-  <script src="data/ideas.js?v=3"></script>
-  <script src="data/fish.js?v=3"></script>
-  <script src="data/extras.js?v=3"></script>
-  <script src="data/drawn.js?v=3"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "4"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=4"></script>
+  <script src="data/places.js?v=4"></script>
+  <script src="data/items.js?v=4"></script>
+  <script src="data/ideas.js?v=4"></script>
+  <script src="data/fish.js?v=4"></script>
+  <script src="data/extras.js?v=4"></script>
+  <script src="data/drawn.js?v=4"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -287,13 +291,17 @@
     itemGroups(GAME_DATA.items || [], "items", false);
     itemGroups(GAME_DATA.ideas || [], "ideas", true);
 
-    (GAME_DATA.fish || []).forEach(function (fish) {
-      document.getElementById("fish").appendChild(card(fish.name, fish.id, fish.emoji || "🐟", [
-        el("span", "price", "+" + fish.gems + " Gems"),
-        el("span", "kind", fish.description + " (bites " + fish.chance + " out of " +
-          GAME_DATA.fish.reduce(function (n, f) { return n + f.chance; }, 0) + " times)")
+    // Fish and treasures share one bag of chances, so "out of" counts both.
+    const catches = (GAME_DATA.fish || []).concat(GAME_DATA.treasures || []);
+    const totalChance = catches.reduce(function (n, f) { return n + f.chance; }, 0);
+    function catchCard(thing, boxId) {
+      document.getElementById(boxId).appendChild(card(thing.name, thing.id, thing.emoji || "🐟", [
+        el("span", "price", "+" + thing.gems + " Gems"),
+        el("span", "kind", thing.description + " (bites " + thing.chance + " out of " + totalChance + " times)")
       ]));
-    });
+    }
+    (GAME_DATA.fish || []).forEach(function (fish) { catchCard(fish, "fish"); });
+    (GAME_DATA.treasures || []).forEach(function (t) { catchCard(t, "treasures"); });
 
     (GAME_DATA.extras || []).forEach(function (extra) {
       const c = card(extra.name, extra.id, "✨", [el("span", "kind", extra.note)]);
@@ -308,7 +316,7 @@
     const tally = [
       [territories, "territories"], [locations, "locations"], [shelves, "store shelves"],
       [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "store items"],
-      [(GAME_DATA.fish || []).length, "fish"],
+      [(GAME_DATA.fish || []).length, "fish"], [(GAME_DATA.treasures || []).length, "treasures"],
       [needed, "drawings to make"]
     ];
     tally.forEach(function (t) {
