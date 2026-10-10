@@ -64,8 +64,10 @@ GAME_DATA.places = [
     "description": "Warm cocoa and a crackling fire. The Rec Room is through the door." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59,
     "description": "Hot snacks for cold skiers." },
-  { "id": "ski_resort",  "name": "Ski Resort",   "type": "place", "in": "mountain", "x": 82, "y": 16,
-    "description": "Way up the mountain, where the skiing starts." },
+  { "id": "ski_reserve", "name": "Ski Reserve",  "type": "place", "in": "mountain", "x": 82, "y": 16,
+    "description": "Skis in size 1 and size 2, and the fox at the check-out counter." },
+  { "id": "mountain_house", "name": "Mountain House", "type": "place", "in": "mountain", "x": 80, "y": 62,
+    "description": "A cosy green house on the mountainside." },
   { "id": "rec_room",  "name": "Rec Room",       "type": "place", "in": "hut", "x": 50, "y": 55,
     "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
 
