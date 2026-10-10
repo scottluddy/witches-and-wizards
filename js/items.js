@@ -218,7 +218,8 @@ function openItemPanel(itemId) {
     message.append("It costs ", moneyLabel(cost.money, cost.amount), ". You have ",
       moneyLabel(cost.money, have), ".");
     if (canAfford(item)) {
-      getButton.textContent = "Buy for " + cost.amount + " " + cost.name;
+      // "1 Gem", but "2 Gems"
+      getButton.textContent = "Buy for " + cost.amount + " " + (cost.amount === 1 ? cost.name.replace(/s$/, "") : cost.name);
     } else {
       message.append(cost.money === "gems"
         ? " Go fishing at the Dock to earn Gems!"
