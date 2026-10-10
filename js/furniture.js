@@ -46,6 +46,11 @@ function showFurniture(place) {
     img.dataset.id = piece.id;
     placePiece(img, pieceRect(piece));
     img.addEventListener("pointerdown", function (event) { startDrag(event, piece, img); });
+    if (piece.holds) {
+      // The cooler and chest at Home open when clicked (js/storage.js).
+      img.classList.add("holds");
+      img.addEventListener("click", function () { if (!rearranging) openStorage(piece.holds); });
+    }
     box.appendChild(img);
   });
 }

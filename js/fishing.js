@@ -1,6 +1,6 @@
 // Fishing: click a fishing spot (like a Lucky Rod at the Dock), wait a random
-// time for a bite (sometimes nothing bites), then reel it in. The fish goes in the cooler and you earn
-// its gems. Fish and the waiting time are in data/fish.js.
+// time for a bite (sometimes nothing bites), then reel it in. The fish goes in
+// the cooler you carry (js/storage.js) and you earn its gems. Fish and the waiting time are in data/fish.js.
 
 let biteTimer = null;   // the countdown to the next bite
 let fishingSpot = null; // the fishing spot in use
@@ -92,9 +92,9 @@ function reelIn() {
   player.gems += thing.gems;
   if (isFish(thing)) {
     player.cooler.push(thing.id);
-    player.fishCount += 1; // only real fish count
+    player.fishCount += 1; // only real fish count, treasures don't
   } else {
-    player.treasures.push(thing.id); // a treasure, not a fish
+    player.cooler.push(thing.id); // a treasure, not a fish (so not counted)
   }
   writeSave(player);
   updateStatus();
@@ -113,37 +113,3 @@ function stopFishing() {
 document.getElementById("btn-fishing-reel").addEventListener("click", reelIn);
 document.getElementById("btn-fishing-again").addEventListener("click", castLine);
 document.getElementById("btn-fishing-stop").addEventListener("click", stopFishing);
-
-// ---------------------------------------------------------------- the cooler
-
-// Every kind of fish and treasure caught so far, with how many of each.
-function openCooler() {
-  const list = document.getElementById("cooler-fish");
-  list.innerHTML = "";
-  if (player.cooler.length === 0 && player.treasures.length === 0) {
-    list.textContent = "Your cooler is empty. Go fishing at the Dock, or dig at Pebble Beach!";
-  }
-  addCoolerCards(list, GAME_DATA.fish, player.cooler);
-  addCoolerCards(list, GAME_DATA.treasures || [], player.treasures);
-  addCoolerCards(list, GAME_DATA.beachFinds || [], player.treasures); // dug up at Pebble Beach
-  document.getElementById("cooler-panel").hidden = false;
-}
-
-// One card per kind that was caught, like "Bubble Fish × 3".
-function addCoolerCards(list, kinds, caught) {
-  kinds.forEach(function (thing) {
-    const count = caught.filter(function (id) { return id === thing.id; }).length;
-    if (count === 0) return;
-    const card = itemCard(thing, null);
-    card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
-    list.appendChild(card);
-  });
-}
-
-document.getElementById("btn-cooler").addEventListener("click", function () {
-  if (!walking) openCooler();
-});
-
-document.getElementById("btn-cooler-close").addEventListener("click", function () {
-  document.getElementById("cooler-panel").hidden = true;
-});

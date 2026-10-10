@@ -355,9 +355,6 @@
   "pet_cat": {
     "min_part": 0.05
   },
-  "extra_cat_small": {
-    "min_part": 0.05
-  },
   "beach_bottlecap": {
     "min_part": 0.05
   },

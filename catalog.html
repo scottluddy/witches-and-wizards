@@ -139,7 +139,7 @@
     <div id="ideas"></div>
 
     <h2>Fish</h2>
-    <p class="lede">Caught with the Lucky Rods at the Dock after a wait of 5 to 25 seconds (a wait past 20 seconds catches nothing). Each one goes in the cooler and earns gems.</p>
+    <p class="lede">Caught with the Lucky Rods at the Dock after a wait of 5 to 25 seconds (a wait past 20 seconds catches nothing). Each one goes in the cooler you carry (empty it into the cooler at Home) and earns gems.</p>
     <div id="fish" class="grid"></div>
 
     <h3>Treasures</h3>
@@ -147,7 +147,7 @@
     <div id="treasures" class="grid"></div>
 
     <h3>Beach finds</h3>
-    <p class="lede">Dug up at the Dig Spot on Pebble Beach (listed in <code>data/digging.js</code>). The Crystal Dig Spot finds Crystals instead.</p>
+    <p class="lede">Dug up at the Dig Spot on Pebble Beach (listed in <code>data/digging.js</code>). They go in your bucket, which you can empty into the treasure chest at Home. The Crystal Dig Spot finds Crystals instead.</p>
     <div id="beach-finds" class="grid"></div>
 
     <h2>Saved for later</h2>
@@ -164,15 +164,15 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "9"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=9"></script>
-  <script src="data/places.js?v=9"></script>
-  <script src="data/items.js?v=9"></script>
-  <script src="data/ideas.js?v=9"></script>
-  <script src="data/fish.js?v=9"></script>
-  <script src="data/digging.js?v=9"></script>
-  <script src="data/extras.js?v=9"></script>
-  <script src="data/drawn.js?v=9"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "10"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=10"></script>
+  <script src="data/places.js?v=10"></script>
+  <script src="data/items.js?v=10"></script>
+  <script src="data/ideas.js?v=10"></script>
+  <script src="data/fish.js?v=10"></script>
+  <script src="data/digging.js?v=10"></script>
+  <script src="data/extras.js?v=10"></script>
+  <script src="data/drawn.js?v=10"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];

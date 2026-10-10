@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=9">
+  <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
 
@@ -72,9 +72,10 @@
     <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=9" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=10" alt="Gems"> <b id="status-gems"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack</button>
     <button id="btn-cooler" class="small-button">🧊 Cooler</button>
+    <button id="btn-bucket" class="small-button">🪣 Bucket</button>
   </header>
 
   <!-- Pop-up: one item from a shelf (take it free, or buy it) -->
@@ -129,12 +130,15 @@
     </div>
   </div>
 
-  <!-- Pop-up: the cooler, where caught fish go -->
-  <div id="cooler-panel" class="overlay" hidden>
+  <!-- Pop-up: the cooler or bucket you carry, or the cooler and chest at Home (js/storage.js) -->
+  <div id="storage-panel" class="overlay" hidden>
     <div class="panel panel-wide">
-      <h2>🧊 Cooler</h2>
-      <div id="cooler-fish" class="item-row"></div>
-      <button id="btn-cooler-close" class="big-button secondary">Close</button>
+      <h2 id="storage-title"></h2>
+      <div id="storage-items" class="item-row"></div>
+      <div class="button-row">
+        <button id="btn-storage-close" class="big-button secondary">Close</button>
+        <button id="btn-storage-move" class="big-button" hidden></button>
+      </div>
     </div>
   </div>
 
@@ -184,24 +188,25 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "9"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=9"></script>
-  <script src="data/places.js?v=9"></script>
-  <script src="data/paths.js?v=9"></script>
-  <script src="data/items.js?v=9"></script>
-  <script src="data/fish.js?v=9"></script>
-  <script src="data/digging.js?v=9"></script>
-  <script src="data/furniture.js?v=9"></script>
-  <script src="data/furniture_art.js?v=9"></script>
-  <script src="data/drawn.js?v=9"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "10"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=10"></script>
+  <script src="data/places.js?v=10"></script>
+  <script src="data/paths.js?v=10"></script>
+  <script src="data/items.js?v=10"></script>
+  <script src="data/fish.js?v=10"></script>
+  <script src="data/digging.js?v=10"></script>
+  <script src="data/furniture.js?v=10"></script>
+  <script src="data/furniture_art.js?v=10"></script>
+  <script src="data/drawn.js?v=10"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=9"></script>
-  <script src="js/world.js?v=9"></script>
-  <script src="js/items.js?v=9"></script>
-  <script src="js/fishing.js?v=9"></script>
-  <script src="js/digging.js?v=9"></script>
-  <script src="js/furniture.js?v=9"></script>
-  <script src="js/game.js?v=9"></script>
+  <script src="js/save.js?v=10"></script>
+  <script src="js/world.js?v=10"></script>
+  <script src="js/items.js?v=10"></script>
+  <script src="js/fishing.js?v=10"></script>
+  <script src="js/digging.js?v=10"></script>
+  <script src="js/storage.js?v=10"></script>
+  <script src="js/furniture.js?v=10"></script>
+  <script src="js/game.js?v=10"></script>
 </body>
 </html>

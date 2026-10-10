@@ -34,7 +34,7 @@ GAME_DATA.places = [
   { "id": "lake",     "name": "Lake",     "type": "map", "in": "world", "x": 91, "y": 66 },
 
   { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 22, "y": 72, "start": true,
-    "description": "Your cosy dorm room. You can leave things here for safe keeping." },
+    "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up." },
   { "id": "store",  "name": "Campus Store",  "type": "place", "in": "village", "x": 50, "y": 42,
     "description": "The clerk waves hello. Click a shelf to see what's for sale." },
   { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 79, "y": 62,

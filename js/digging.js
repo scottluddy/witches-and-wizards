@@ -1,5 +1,5 @@
 // Digging at Pebble Beach: click a dig spot, wait while the shovel digs, then
-// see what you found. A Dig Spot ("finds": "beach") turns up beach finds that
+// see what you found. Finds go in your bucket (js/storage.js). A Dig Spot ("finds": "beach") turns up beach finds that
 // earn gems; the Crystal Dig Spot ("finds": "crystals") turns up Crystals.
 // What can be found, and how long it takes, is in data/digging.js.
 
@@ -55,13 +55,13 @@ function dig() {
 
 function foundBeachFind() {
   const find = randomFind();
-  player.treasures.push(find.id); // kept with the other treasures, not counted as fish
+  player.bucket.push(find.id); // into the bucket you carry (js/storage.js)
   player.gems += find.gems;
   writeSave(player);
   updateStatus();
   const message = find.gems > 0
-    ? ["+", moneyLabel("gems", find.gems), " gems! It went into your cooler."]
-    : ["No gems for this one, but it went into your cooler."];
+    ? ["+", moneyLabel("gems", find.gems), " gems! It went into your bucket."]
+    : ["No gems for this one, but it went into your bucket."];
   showDigging(itemArt(find), "You found a " + find.name + "!", message, true);
 }
 

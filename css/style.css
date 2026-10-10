@@ -556,6 +556,10 @@ h2 {
   touch-action: none;       /* so dragging on a tablet doesn't scroll the page */
 }
 
+/* The cooler and chest at Home can be clicked to open them. */
+.furniture.holds { pointer-events: auto; cursor: pointer; }
+.furniture.holds:hover { filter: drop-shadow(0 0 6px var(--gold)); }
+
 .rearranging .furniture {
   pointer-events: auto;
   cursor: grab;

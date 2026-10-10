@@ -42,9 +42,19 @@ function fillIn(save) {
   if (!save.savedAt) save.savedAt = Date.now();
   if (save.gems === undefined) save.gems = 0;
   if (!save.cooler) save.cooler = [];
-  if (!save.treasures) save.treasures = [];
   // Older saves only had the cooler, which held nothing but fish.
   if (save.fishCount === undefined) save.fishCount = save.cooler.length;
+  if (!save.bucket) save.bucket = [];
+  if (!save.homeCooler) save.homeCooler = [];
+  if (!save.homeChest) save.homeChest = [];
+  if (save.treasures) {
+    // Treasures used to have their own list: fishing ones go in the cooler,
+    // dug-up ones in the bucket.
+    save.treasures.forEach(function (id) {
+      (id.indexOf("beach_") === 0 ? save.bucket : save.cooler).push(id);
+    });
+    delete save.treasures;
+  }
   if (!save.furniture) save.furniture = {};
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   return save;
@@ -91,9 +101,11 @@ function newPlayer(playerName, characterId, kind) {
     adventurePoints: 0,
     crystals: 0,
     gems: 0,                  // rarer money, earned by fishing
-    cooler: [],               // fish ids the character has caught (one entry per fish)
+    cooler: [],               // what the character caught fishing and carries (one id per catch)
     fishCount: 0,             // how many fish caught in all (treasures don't count), for later
-    treasures: [],            // treasure ids pulled up while fishing (shells, sand dollars)
+    bucket: [],               // what the character dug up at Pebble Beach and carries
+    homeCooler: [],           // catches put away in the cooler at Home
+    homeChest: [],            // finds put away in the treasure chest at Home
     furniture: {},            // where furniture was moved: { "rec_room": { "armchair": [x, y] } }
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
