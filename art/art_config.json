@@ -153,11 +153,12 @@
     ]
   },
   "place_rec_room": {
+    "rotate": 180,
     "crop": [
       1,
-      5,
+      9,
       99,
-      91
+      95
     ]
   },
   "place_dock": {

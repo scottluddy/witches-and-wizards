@@ -34,13 +34,16 @@ function characterPicture(character) {
 function goTo(id) {
   const place = findPlace(id);
   if (!place) return showMap("world");
+  if (place.opens) return goTo(place.opens); // e.g. the Snowy Hut opens straight into the Rec Room
   if (place.type === "map") showMap(id);
   else showPlace(id);
 }
 
 // The "Back to ..." button: go up to the map or place this one sits inside.
+// A place that just "opens" another is skipped, or Back would bounce straight back in.
 function setBackButton(button, place) {
-  const parent = place.in ? findPlace(place.in) : null;
+  let parent = place.in ? findPlace(place.in) : null;
+  while (parent && parent.opens && parent.in) parent = findPlace(parent.in);
   button.hidden = !parent;
   if (parent) {
     button.textContent = "⬅ Back to " + parent.name;

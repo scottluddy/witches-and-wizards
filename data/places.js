@@ -16,6 +16,7 @@
 //               stand, as [top, bottom] percentages down the picture, filled
 //               three items to a gap (press P to find the numbers)
 //   says        people only: what they say when you click them
+//   opens       go straight into this place instead (the Snowy Hut opens the Rec Room)
 //
 // Pictures: maps use art/processed/map_<id>.png and places use
 // art/processed/place_<id>.png. Draw one and save it in art/raw with that
@@ -60,7 +61,7 @@ GAME_DATA.places = [
     "description": "The walls sparkle with crystals." },
   { "id": "peak",      "name": "Windy Peak",     "type": "place", "in": "mountain", "x": 49, "y": 10,
     "description": "You can see the whole world from up here!" },
-  { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40,
+  { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40, "opens": "rec_room",
     "description": "Warm cocoa and a crackling fire. The Rec Room is through the door." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59,
     "description": "Hot snacks for cold skiers." },
