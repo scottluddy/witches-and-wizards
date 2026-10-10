@@ -693,3 +693,17 @@ h2 {
   animation: pop-out 1.6s ease-out forwards;
 }
 .mine-label.rock { color: #6b5a48; font-weight: 400; }
+
+/* The small number on a bag's button: how many things are in it. */
+.count {
+  display: inline-block;
+  min-width: 1.5em;
+  padding: 0 5px;
+  margin-left: 2px;
+  border-radius: 999px;
+  background: var(--magic-dark);
+  color: #fffaf0;
+  font-size: 0.75em;
+  line-height: 1.5em;
+  text-align: center;
+}

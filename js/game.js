@@ -26,6 +26,10 @@ function updateStatus() {
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;
+  // How many things each carried bag holds, as a small number on its button.
+  ["backpack", "cooler", "bucket", "satchel"].forEach(function (bag) {
+    document.getElementById("count-" + bag).textContent = player[bag].length;
+  });
 }
 
 function findCharacter(id) {

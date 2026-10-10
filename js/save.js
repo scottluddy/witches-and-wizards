@@ -83,6 +83,7 @@ function writeSave(player) {
   } catch (err) {
     console.warn("Could not save progress:", err);
   }
+  updateStatus(); // the game saves after every change, so the top bar stays up to date (js/game.js)
 }
 
 // "Witch Level 1". Games saved before the choice existed just say "Level 1".
