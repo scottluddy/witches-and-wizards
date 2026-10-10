@@ -19,6 +19,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 ## World structure
 
 - `data/places.js` is one list of every place, nested with `in`: World map → territory maps → locations → spots inside (store shelves). `type: "map"` = walkable with roads from `data/paths.js`; `type: "place"` = picture with clickable spots; `type: "person"` = someone in a picture who talks (`says`) when clicked; `type: "fishing"` = a fishing spot (the Lucky Rods at the Dock); `type: "digging"` = a dig spot (Pebble Beach).
+- Territories on the World map: Village, Forest, Mountain, Lake, Meadows (Scott, 2026-10-10: the flowers at the bottom right; placeholder flower map until the girls draw `map_meadows`, nothing inside yet).
 - The player types their own name (`playerName`); character names are fixed in `data/characters.js`.
 - Items: `data/items.js`. The character's backpack is unseen (`player.backpack`); items can be put down at places (`player.stored[placeId]`).
 - Shops outside the Campus Store (the Ski Reserve; Fine Dressmaking in the Village, dresses priced in Crystals from the girls' drawing, Scott 2026-10-10) are places with `shelf` set; their items use `inPicture` so only the price tag shows over the drawn item. The Scholarship covers only the Campus Store's shelves.

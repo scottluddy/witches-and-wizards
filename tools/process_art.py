@@ -302,7 +302,17 @@ THEMES = {
     "forest":   ("#7fb069", "trees"),
     "mountain": ("#b9c3d6", "mountains"),
     "lake":     ("#9ccbe8", "lake"),
+    "meadows":  ("#cde8a0", "flowers"),
 }
+
+
+def draw_flower(d, x, y, s, rng):
+    d.line((x, y, x, y + s), fill=(70, 130, 60), width=4)
+    petal = rng.choice([(240, 120, 160), (250, 210, 80), (190, 140, 230), (255, 255, 255)])
+    for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+        px, py = x + dx * s * 0.3, y + dy * s * 0.3
+        d.ellipse((px - s * 0.22, py - s * 0.22, px + s * 0.22, py + s * 0.22), fill=petal, outline=INK, width=2)
+    d.ellipse((x - s * 0.15, y - s * 0.15, x + s * 0.15, y + s * 0.15), fill=(250, 190, 60), outline=INK, width=2)
 
 
 def draw_tree(d, x, y, s, rng):
@@ -355,6 +365,8 @@ def placeholder_map(place, children):
             draw_tree(d, x, y, rng.randint(45, 75), rng)
         elif scatter == "mountains":
             draw_mountain(d, x, y, rng.randint(60, 110))
+        elif scatter == "flowers":
+            draw_flower(d, x, y, rng.randint(30, 50), rng)
         elif scatter == "houses" and rng.random() < 0.4:
             draw_house(d, x, y, rng.randint(40, 60), roof=(170, 150, 190))
         elif scatter == "houses":

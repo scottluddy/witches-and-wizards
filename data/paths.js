@@ -7,7 +7,8 @@ GAME_DATA.paths = [
   { "from": "village", "to": "forest",   "via": [[30, 50], [27, 64]] },
   { "from": "village", "to": "mountain", "via": [[48, 30], [64, 30]] },
   { "from": "mountain", "to": "lake",    "via": [[86, 42]] },
-  { "from": "forest",   "to": "lake",    "via": [[55, 82], [78, 76]] },
+  { "from": "forest",   "to": "meadows", "via": [[55, 82]] },
+  { "from": "meadows",  "to": "lake",    "via": [[78, 76]] },
 
   // Village
   { "from": "home",  "to": "store",  "via": [[34, 58]] },

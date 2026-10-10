@@ -32,6 +32,7 @@ GAME_DATA.places = [
   { "id": "forest",   "name": "Forest",   "type": "map", "in": "world", "x": 32, "y": 80 },
   { "id": "mountain", "name": "Mountain", "type": "map", "in": "world", "x": 77, "y": 27 },
   { "id": "lake",     "name": "Lake",     "type": "map", "in": "world", "x": 91, "y": 66 },
+  { "id": "meadows",  "name": "Meadows",  "type": "map", "in": "world", "x": 66, "y": 80 },
 
   { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 22, "y": 72, "start": true,
     "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up." },
