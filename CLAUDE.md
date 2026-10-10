@@ -19,6 +19,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - `data/places.js` is one list of every place, nested with `in`: World map → territory maps → locations → spots inside (store shelves). `type: "map"` = walkable with roads from `data/paths.js`; `type: "place"` = picture with clickable spots; `type: "person"` = someone in a picture who talks (`says`) when clicked; `type: "fishing"` = a fishing spot (the Lucky Rods at the Dock).
 - The player types their own name (`playerName`); character names are fixed in `data/characters.js`.
 - Items: `data/items.js`. The character's backpack is unseen (`player.backpack`); items can be put down at places (`player.stored[placeId]`).
+- Shops outside the Campus Store (the Ski Reserve) are places with `shelf` set; their items use `inPicture` so only the price tag shows over the drawn item. The Scholarship covers only the Campus Store's shelves.
 - Two kinds of money (Scott, 2026-10-10): Crystals (`price`, 💎) and Gems (`gems`, shown with the girls' gem drawing). Gems are rarer and earned by fishing. The girls write prices in gems on their drawings.
 - Fishing: `data/fish.js` (fish, their gems and `chance`, and the 5 to 20 second wait). Caught fish go in `player.cooler` and earn their gems. Code in `js/fishing.js`.
 - The store holds only the girls' own items (Scott, 2026-10-10). Claude's suggestions go in `data/ideas.js`, which only the catalog loads ("Ideas" section); never add made-up items to `data/items.js`.

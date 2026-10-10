@@ -40,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 

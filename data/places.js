@@ -11,7 +11,7 @@
 //               (press P in the game and click to find numbers)
 //   start       true for the spot the character arrives at on a map
 //   description shown under the picture
-//   shelf       store shelves only: which item category it holds
+//   shelf       shops and store shelves: which item category it sells
 //   rows        store shelves only: the gaps on the shelf drawing where items
 //               stand, as [top, bottom] percentages down the picture, filled
 //               three items to a gap (press P to find the numbers)
@@ -64,8 +64,9 @@ GAME_DATA.places = [
     "description": "Warm cocoa and a crackling fire. The Rec Room is through the door." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59,
     "description": "Hot snacks for cold skiers." },
-  { "id": "ski_reserve", "name": "Ski Reserve",  "type": "place", "in": "mountain", "x": 82, "y": 16,
-    "description": "Skis in size 1 and size 2, and the fox at the check-out counter." },
+  { "id": "ski_reserve", "name": "Ski Reserve",  "type": "place", "in": "mountain", "x": 82, "y": 16, "shelf": "Ski Gear",
+    "rows": [[34, 76]],
+    "description": "Ski outfits in size 1 and size 2. Pay the fox at the check-out counter." },
   { "id": "mountain_house", "name": "Mountain House", "type": "place", "in": "mountain", "x": 80, "y": 62,
     "description": "A cosy green house on the mountainside." },
   { "id": "rec_room",  "name": "Rec Room",       "type": "place", "in": "hut", "x": 50, "y": 55,

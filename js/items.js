@@ -68,6 +68,7 @@ function freePicks() {
 
 // A free pick of an item that's no longer in the store doesn't count.
 function hasFreePick(category) {
+  if (categories().indexOf(category) === -1) return false; // not a Scholarship category
   const picked = freePicks()[category];
   return !picked || !findItem(picked);
 }
@@ -80,10 +81,14 @@ function owns(itemId) {
   });
 }
 
+// The Scholarship covers the Campus Store's shelves (not other shops, like
+// the Ski Reserve), and only shelves that have something on them.
 function categories() {
   const list = [];
-  GAME_DATA.items.forEach(function (item) {
-    if (list.indexOf(item.category) === -1) list.push(item.category);
+  GAME_DATA.places.forEach(function (place) {
+    if (!place.shelf || place.in !== "store" || list.indexOf(place.shelf) !== -1) return;
+    const stocked = GAME_DATA.items.some(function (item) { return item.category === place.shelf; });
+    if (stocked) list.push(place.shelf);
   });
   return list;
 }
@@ -115,7 +120,7 @@ function showShelfItems(place) {
     const y = item.shelfY !== undefined ? item.shelfY : gap[1];
 
     const button = document.createElement("button");
-    button.className = "shelf-item" + (owns(item.id) ? " owned" : "");
+    button.className = "shelf-item" + (owns(item.id) ? " owned" : "") + (item.inPicture ? " in-picture" : "");
     button.style.left = x + "%";
     button.style.top = y + "%";
     button.style.height = (gap[1] - gap[0]) + "%"; // fits inside the gap

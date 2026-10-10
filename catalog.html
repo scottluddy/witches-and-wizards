@@ -196,7 +196,7 @@
       if (place.type === "fishing") return "fishing spot";
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
-      if (place.shelf) return "store shelf: " + place.shelf;
+      if (place.shelf) return (place.in === "store" ? "store shelf: " : "shop: ") + place.shelf;
       return "location";
     }
 
@@ -302,9 +302,9 @@
     });
 
     const territories = places.filter(function (p) { return p.type === "map" && p.in; }).length;
-    const locations = places.filter(function (p) { return p.type === "place" && !p.shelf; }).length;
+    const locations = places.filter(function (p) { return p.type === "place" && !(p.shelf && p.in === "store"); }).length;
     // (people, like the clerk, are part of their place's picture)
-    const shelves = places.filter(function (p) { return p.shelf; }).length;
+    const shelves = places.filter(function (p) { return p.shelf && p.in === "store"; }).length;
     const tally = [
       [territories, "territories"], [locations, "locations"], [shelves, "store shelves"],
       [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "store items"],
