@@ -12,3 +12,7 @@ desktop.ini
 
 # Packaged downloads (built from this folder)
 *.zip
+
+# The troll photo is a real photo of one of the girls, so it stays out of the
+# public GitHub repo (Scott can decide otherwise). The game falls back to 👹.
+art/troll/

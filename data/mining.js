@@ -3,25 +3,28 @@
 // Take a pickaxe from the rack, then click anywhere on the cave wall to pick
 // at it. The wall has an invisible grid: some squares hide crystals (they add
 // to your Crystals) and some hide bones (they go in your satchel, to take
-// home and keep as spell materials). Every visit hides them in new places.
+// home and keep as spell materials). One hides a sleeping troll, who steals
+// Crystals (data/troll.js). Every visit hides them in new places.
 //
 //   place          the place where you mine
 //   area           where the grid covers the cave picture: [left, top, right, bottom] percent
 //   columns, rows  how many squares across and down
 //   crystalSquares how many squares hide crystals
 //   boneSquares    how many squares hide bones
-//   crystals       Crystals found in one crystal square: [fewest, most]
+//   trollSquares   how many squares hide a sleeping troll
+//   crystals       Crystals found in one crystal square (Scott: just 1, crystals are rare)
 //   rack           where the pickaxe rack hangs: [left, top, width] percent
 //   pickSeconds    how long one swing of the pickaxe takes
-// The numbers are Claude's first guesses; change them to whatever feels right.
+// Squares, crystals and troll are Scott's numbers (2026-10-10); the grid size is Claude's guess.
 GAME_DATA.mining = {
   "place": "cave",
   "area": [4, 6, 94, 92],
   "columns": 8,
   "rows": 7,
-  "crystalSquares": 8,
-  "boneSquares": 5,
-  "crystals": [1, 3],
+  "crystalSquares": 5,
+  "boneSquares": 9,
+  "trollSquares": 1,
+  "crystals": 1,
   "rack": [67.5, 51.5, 18],
   "pickSeconds": 0.6
 };

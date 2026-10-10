@@ -4,7 +4,7 @@
 // or a bone hidden in them. With a pickaxe in your backpack, click the wall
 // to pick at the square you clicked.
 
-let mineSquares = [];   // what each square hides this visit: "crystal", "bone" or "rock"
+let mineSquares = [];   // what each square hides this visit: "crystal", "bone", "troll" or "rock"
 let picking = false;    // true while the pickaxe is swinging
 
 function isMine(place) {
@@ -49,7 +49,10 @@ function hideTreasure() {
   const m = GAME_DATA.mining;
   mineSquares = [];
   for (let i = 0; i < m.columns * m.rows; i++) {
-    mineSquares.push(i < m.crystalSquares ? "crystal" : i < m.crystalSquares + m.boneSquares ? "bone" : "rock");
+    if (i < m.crystalSquares) mineSquares.push("crystal");
+    else if (i < m.crystalSquares + m.boneSquares) mineSquares.push("bone");
+    else if (i < m.crystalSquares + m.boneSquares + m.trollSquares) mineSquares.push("troll");
+    else mineSquares.push("rock");
   }
   for (let i = mineSquares.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -127,39 +130,70 @@ function findIn(i) {
   mineSquares[i] = "mined";
   addToCave("span", "mine-hole", middle[0], middle[1]);
   if (what === "crystal") {
-    const range = GAME_DATA.mining.crystals;
-    const count = randomBetween(range[0], range[1]); // js/digging.js
-    player.crystals += count;
     const art = GAME_DATA.mineCrystals[Math.floor(Math.random() * GAME_DATA.mineCrystals.length)];
-    showFound(art, middle, "+" + count + " 💎");
-    mineSay("💎 You found " + count + (count === 1 ? " Crystal!" : " Crystals!"));
+    mineSay("💎 You found a Crystal!");
+    // The crystal flies up to the Crystals counter, and counts when it lands.
+    flyFromCave(art, middle, "status-crystals", function () {
+      player.crystals += GAME_DATA.mining.crystals;
+      writeSave(player);
+    });
   } else if (what === "bone") {
-    player.satchel.push("mine_bone");
-    showFound("mine_bone", middle, "Bone!");
-    mineSay("🦴 You found a bone! It's in your satchel.");
+    mineSay("🦴 You found a bone! It's going in your satchel.");
+    flyFromCave("mine_bone", middle, "btn-satchel", function () {
+      player.satchel.push("mine_bone");
+      writeSave(player);
+    });
+  } else if (what === "troll") {
+    mineSay("Oh no, a troll!");
+    wakeTroll("deep in the Crystal Cave"); // js/troll.js
   } else {
-    showFound(null, middle, "Rock");
+    showFound(middle, "Rock");
     mineSay("Just rock. Keep picking!");
   }
-  writeSave(player);
-  updateStatus();
   if (mineSquares.indexOf("crystal") === -1 && mineSquares.indexOf("bone") === -1) {
     mineSay(document.getElementById("place-description").textContent + " That's everything in this cave for now. Come back later for more!");
   }
 }
 
-// The find pops out of the wall for a moment, with a word saying what it is
-// (right on the picture, so you don't have to look down for the message).
-function showFound(art, middle, words) {
-  if (art) {
-    const img = addToCave("img", "mine-found", middle[0], middle[1]);
-    img.src = picture(art);
-    img.alt = "";
-    setTimeout(function () { img.remove(); }, 1600);
-  }
-  const label = addToCave("span", "mine-label" + (art ? "" : " rock"), middle[0], middle[1] + 6);
+// A word pops out of the wall for a moment, saying what was there.
+function showFound(middle, words) {
+  const label = addToCave("span", "mine-label rock", middle[0], middle[1]);
   label.textContent = words;
   setTimeout(function () { label.remove(); }, 1600);
+}
+
+// The find pops out of the wall, then flies up to its place in the top bar
+// (the Crystals counter or the Satchel button). When it lands, landed() runs
+// and the button gives a little bounce.
+function flyFromCave(art, middle, targetId, landed) {
+  const pic = document.getElementById("place-picture");
+  const box = pic.getBoundingClientRect();
+  const startX = box.left + pic.clientLeft + middle[0] / 100 * pic.clientWidth;
+  const startY = box.top + pic.clientTop + middle[1] / 100 * pic.clientHeight;
+  const target = document.getElementById(targetId).getBoundingClientRect();
+
+  const img = document.createElement("img");
+  img.className = "flying-find";
+  img.src = picture(art);
+  img.alt = "";
+  img.style.left = startX + "px";
+  img.style.top = startY + "px";
+  document.body.appendChild(img);
+
+  // First it pops out (0.5 s), then it flies (0.9 s).
+  setTimeout(function () {
+    img.classList.add("flying");
+    img.style.left = (target.left + target.width / 2) + "px";
+    img.style.top = (target.top + target.height / 2) + "px";
+  }, 500);
+  setTimeout(function () {
+    img.remove();
+    landed();
+    const bump = document.getElementById(targetId).closest(".status-item, button");
+    bump.classList.remove("bump");
+    void bump.offsetWidth; // restart the bounce
+    bump.classList.add("bump");
+  }, 1400);
 }
 
 document.getElementById("place-picture").addEventListener("click", pickAt);

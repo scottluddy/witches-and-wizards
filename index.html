@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=22">
+  <link rel="stylesheet" href="css/style.css?v=23">
 </head>
 <body>
 
@@ -72,7 +72,7 @@
     <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=22" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=23" alt="Gems"> <b id="status-gems"></b></span>
     <span class="status-item" title="Chore Points">🧹 <b id="status-chores"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack <span id="count-backpack" class="count"></span></button>
     <button id="btn-cooler" class="small-button">🧊 Cooler <span id="count-cooler" class="count"></span></button>
@@ -129,6 +129,18 @@
       <div class="button-row">
         <button id="btn-digging-stop" class="big-button secondary">Stop digging</button>
         <button id="btn-digging-again" class="big-button">Dig again</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up: a troll woke up and stole Crystals (js/troll.js) -->
+  <div id="troll-panel" class="overlay" hidden>
+    <div class="panel panel-wide troll-panel">
+      <div id="troll-art" class="troll-art"></div>
+      <h2 id="troll-title"></h2>
+      <p id="troll-message" class="panel-message"></p>
+      <div class="button-row">
+        <button id="btn-troll-close" class="big-button">Run away!</button>
       </div>
     </div>
   </div>
@@ -207,29 +219,31 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "22"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=22"></script>
-  <script src="data/places.js?v=22"></script>
-  <script src="data/paths.js?v=22"></script>
-  <script src="data/items.js?v=22"></script>
-  <script src="data/fish.js?v=22"></script>
-  <script src="data/digging.js?v=22"></script>
-  <script src="data/chores.js?v=22"></script>
-  <script src="data/mining.js?v=22"></script>
-  <script src="data/furniture.js?v=22"></script>
-  <script src="data/furniture_art.js?v=22"></script>
-  <script src="data/drawn.js?v=22"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "23"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=23"></script>
+  <script src="data/places.js?v=23"></script>
+  <script src="data/paths.js?v=23"></script>
+  <script src="data/items.js?v=23"></script>
+  <script src="data/fish.js?v=23"></script>
+  <script src="data/digging.js?v=23"></script>
+  <script src="data/chores.js?v=23"></script>
+  <script src="data/mining.js?v=23"></script>
+  <script src="data/troll.js?v=23"></script>
+  <script src="data/furniture.js?v=23"></script>
+  <script src="data/furniture_art.js?v=23"></script>
+  <script src="data/drawn.js?v=23"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=22"></script>
-  <script src="js/world.js?v=22"></script>
-  <script src="js/items.js?v=22"></script>
-  <script src="js/fishing.js?v=22"></script>
-  <script src="js/digging.js?v=22"></script>
-  <script src="js/chores.js?v=22"></script>
-  <script src="js/mining.js?v=22"></script>
-  <script src="js/storage.js?v=22"></script>
-  <script src="js/furniture.js?v=22"></script>
-  <script src="js/game.js?v=22"></script>
+  <script src="js/save.js?v=23"></script>
+  <script src="js/world.js?v=23"></script>
+  <script src="js/items.js?v=23"></script>
+  <script src="js/fishing.js?v=23"></script>
+  <script src="js/digging.js?v=23"></script>
+  <script src="js/chores.js?v=23"></script>
+  <script src="js/mining.js?v=23"></script>
+  <script src="js/troll.js?v=23"></script>
+  <script src="js/storage.js?v=23"></script>
+  <script src="js/furniture.js?v=23"></script>
+  <script src="js/game.js?v=23"></script>
 </body>
 </html>

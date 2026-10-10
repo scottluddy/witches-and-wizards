@@ -65,13 +65,19 @@ function foundBeachFind() {
   showDigging(itemArt(find), "You found a " + find.name + "!", message, true);
 }
 
+// The Crystal Dig Spot: 1 Crystal, a troll, or too tired to keep digging.
 function foundCrystals() {
-  const crystals = randomBetween(GAME_DATA.digging.crystalsMin, GAME_DATA.digging.crystalsMax);
-  player.crystals += crystals;
-  writeSave(player);
-  updateStatus();
-  showDigging("💎", "You dug up " + crystals + (crystals === 1 ? " Crystal!" : " Crystals!"),
-    ["+", moneyLabel("crystals", crystals), " Crystals!"], true);
+  const roll = Math.random() * 100;
+  if (roll < GAME_DATA.digging.crystalChance) {
+    player.crystals += 1;
+    writeSave(player);
+    showDigging("💎", "You dug up a Crystal!", ["+", moneyLabel("crystals", 1), " Crystal!"], true);
+  } else if (roll < GAME_DATA.digging.crystalChance + GAME_DATA.digging.trollChance) {
+    document.getElementById("digging-panel").hidden = true;
+    wakeTroll("under the Crystal Dig Spot"); // js/troll.js
+  } else {
+    showDigging("😴", "You got tired of digging", ["Phew! Rest a moment, then try again."], true);
+  }
 }
 
 function stopDigging() {

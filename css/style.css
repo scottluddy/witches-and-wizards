@@ -707,3 +707,45 @@ h2 {
   line-height: 1.5em;
   text-align: center;
 }
+
+/* ---- the troll ---- */
+
+.troll-panel { text-align: center; }
+.troll-art { display: flex; justify-content: center; }
+.troll-art img {
+  max-width: 100%;
+  max-height: 50vh;
+  border-radius: 16px;
+  border: 6px solid #6b4a2b;
+  animation: troll-jump 0.5s ease-out;
+}
+.troll-art .emoji { font-size: 10rem; line-height: 1; }
+@keyframes troll-jump {
+  from { scale: 0.4; rotate: -8deg; }
+  to   { scale: 1; rotate: 0deg; }
+}
+
+/* A crystal or bone flying from the cave wall up to the top bar. */
+.flying-find {
+  position: fixed;
+  z-index: 50;
+  width: 90px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: pop-in 0.5s ease-out;
+  transition: left 0.9s ease-in, top 0.9s ease-in, width 0.9s ease-in;
+}
+.flying-find.flying { width: 34px; }
+@keyframes pop-in {
+  from { scale: 0.2; }
+  60%  { scale: 1.4; }
+  to   { scale: 1; }
+}
+
+/* The counter or button gives a little bounce when something lands in it. */
+.bump { animation: bump 0.4s ease-out; }
+@keyframes bump {
+  0%   { scale: 1; }
+  40%  { scale: 1.3; }
+  100% { scale: 1; }
+}

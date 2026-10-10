@@ -16,6 +16,8 @@ GAME_DATA.beachFinds = [
 ];
 
 // How long digging takes, in seconds (a random time in between).
-// The Crystal Dig Spot (with the crystal mining shovel) finds Crystals
-// instead: a random number from crystalsMin to crystalsMax.
-GAME_DATA.digging = { "minSeconds": 3, "maxSeconds": 6, "crystalsMin": 1, "crystalsMax": 5 };
+// The Crystal Dig Spot finds Crystals instead. Each dig (Scott, 2026-10-10):
+//   crystalChance  percent chance of finding 1 Crystal
+//   trollChance    percent chance of waking the troll (data/troll.js)
+//   the rest       you get tired of digging and find nothing
+GAME_DATA.digging = { "minSeconds": 3, "maxSeconds": 6, "crystalChance": 60, "trollChance": 20 };
