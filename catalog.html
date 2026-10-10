@@ -92,6 +92,10 @@
     .row p { margin: 2px 0 0; }
 
     /* Characters and items: cards. */
+    .plan-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+    .plan-row { padding: 10px 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--card, #fffaf0); }
+    .plan-row .name { font-weight: 700; margin-right: 8px; }
+    .plan-row .kind { display: block; color: var(--muted); margin-top: 2px; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
     .card {
       background: var(--panel);
@@ -150,6 +154,14 @@
     <p class="lede">Dug up at the Dig Spot on Pebble Beach (listed in <code>data/digging.js</code>). They go in your bucket, which you can empty into the treasure chest at Home. The Crystal Dig Spot finds Crystals instead.</p>
     <div id="beach-finds" class="grid"></div>
 
+    <h2>Good things to do</h2>
+    <p class="lede">Activities that reward you for good things: Bonding (caring for your pet), Chores (tidying up) and Mining (gathering things). Ideas go in <code>data/gameplay.js</code> first, then get built into the right places in the game.</p>
+    <div id="activities"></div>
+
+    <h2>Metrics</h2>
+    <p class="lede">The counters in the bar at the top of the game: how you earn each one and what it's for (also in <code>data/gameplay.js</code>).</p>
+    <div id="metrics" class="plan-list"></div>
+
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
     <div id="extras" class="grid"></div>
@@ -164,15 +176,16 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "11"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=11"></script>
-  <script src="data/places.js?v=11"></script>
-  <script src="data/items.js?v=11"></script>
-  <script src="data/ideas.js?v=11"></script>
-  <script src="data/fish.js?v=11"></script>
-  <script src="data/digging.js?v=11"></script>
-  <script src="data/extras.js?v=11"></script>
-  <script src="data/drawn.js?v=11"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "12"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=12"></script>
+  <script src="data/places.js?v=12"></script>
+  <script src="data/items.js?v=12"></script>
+  <script src="data/ideas.js?v=12"></script>
+  <script src="data/fish.js?v=12"></script>
+  <script src="data/digging.js?v=12"></script>
+  <script src="data/gameplay.js?v=12"></script>
+  <script src="data/extras.js?v=12"></script>
+  <script src="data/drawn.js?v=12"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -315,6 +328,29 @@
         el("span", "price", "+" + find.gems + " Gems"),
         el("span", "kind", find.description + " (turns up " + find.chance + " out of " + findChance + " times)")
       ]));
+    });
+
+    // Good things to do, grouped by kind, and the metrics (data/gameplay.js).
+    function planRow(name, inGame, lines) {
+      const row = el("div", "plan-row");
+      row.append(el("span", "name", name), el("span", inGame ? "chip drawn" : "chip idea", inGame ? "In the game" : "Idea"));
+      lines.forEach(function (line) { if (line) row.appendChild(el("span", "kind", line)); });
+      return row;
+    }
+    const activities = GAME_DATA.activities || [];
+    const kinds = [];
+    activities.forEach(function (a) { if (kinds.indexOf(a.kind) === -1) kinds.push(a.kind); });
+    kinds.forEach(function (kind) {
+      document.getElementById("activities").appendChild(el("h3", null, kind));
+      const list = el("div", "plan-list");
+      activities.filter(function (a) { return a.kind === kind; }).forEach(function (a) {
+        list.appendChild(planRow(a.name, a.inGame, [a.where ? "Where: " + a.where : "", a.note]));
+      });
+      document.getElementById("activities").appendChild(list);
+    });
+    (GAME_DATA.metrics || []).forEach(function (m) {
+      document.getElementById("metrics").appendChild(planRow(m.name, m.inGame,
+        ["Shows as: " + m.shows, "Earn it: " + m.earn, m.use ? "Use it for: " + m.use : ""]));
     });
 
     (GAME_DATA.extras || []).forEach(function (extra) {
