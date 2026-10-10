@@ -18,8 +18,10 @@ GAME_DATA.paths = [
   { "from": "old_oak", "to": "mushrooms", "via": [] },
 
   // Mountain
-  { "from": "cave", "to": "peak", "via": [[40, 50]] },
-  { "from": "peak", "to": "hut",  "via": [] },
+  { "from": "cave",        "to": "hut",        "via": [] },
+  { "from": "hut",         "to": "peak",       "via": [] },
+  { "from": "snack_shack", "to": "hut",        "via": [] },
+  { "from": "hut",         "to": "ski_resort", "via": [[66, 30]] },
 
   // Lake
   { "from": "dock",   "to": "island", "via": [[40, 60]] },

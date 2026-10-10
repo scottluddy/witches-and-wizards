@@ -189,5 +189,14 @@
   },
   "fish_bubble": {
     "gap": 12
+  },
+  "map_mountain": {
+    "rotate": 180,
+    "crop": [
+      2,
+      0,
+      93,
+      85
+    ]
   }
 }

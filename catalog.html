@@ -65,6 +65,7 @@
     }
     .chip.drawn { color: var(--drawn); background: var(--drawn-bg); }
     .chip.todo { color: var(--todo); background: var(--todo-bg); }
+    .chip.idea { color: var(--accent); background: var(--line); align-self: flex-start; }
     .kind { color: var(--muted); font-size: 0.85rem; }
     code { font-family: var(--mono); font-size: 0.85em; overflow-wrap: anywhere; }
     .file { color: var(--muted); font-size: 0.85rem; }
@@ -120,7 +121,7 @@
 <body>
   <main class="page">
     <h1>Witches &amp; Wizards Catalog</h1>
-    <p class="lede">Everything in the game: the world and its places, the characters and the store's items.
+    <p class="lede">Everything in the game: the world and its places, the characters and the store's items, plus ideas for later.
       Orange tags show pictures still waiting for a drawing, with the file name to save it as.</p>
     <div id="tally" class="tally"></div>
 
@@ -132,6 +133,10 @@
 
     <h2>Store Items</h2>
     <div id="items"></div>
+
+    <h2>Ideas</h2>
+    <p class="lede">Suggestions only. None of these are in the game. Draw one, give it a price and move it from <code>data/ideas.js</code> to <code>data/items.js</code> to put it in the store.</p>
+    <div id="ideas"></div>
 
     <h2>Fish</h2>
     <p class="lede">Caught with the Lucky Rods at the Dock after a wait of a few seconds. Each one goes in the cooler and earns gems.</p>
@@ -155,6 +160,7 @@
   <script src="data/characters.js"></script>
   <script src="data/places.js"></script>
   <script src="data/items.js"></script>
+  <script src="data/ideas.js"></script>
   <script src="data/fish.js"></script>
   <script src="data/extras.js"></script>
   <script src="data/drawn.js"></script>
@@ -252,22 +258,34 @@
         card(ch.name, ch.id, "🧙", [el("span", "kind", ch.description)]));
     });
 
-    const itemsBox = document.getElementById("items");
-    const categories = [];
-    (GAME_DATA.items || []).forEach(function (item) {
-      if (categories.indexOf(item.category) === -1) categories.push(item.category);
-    });
-    categories.forEach(function (category) {
-      itemsBox.appendChild(el("h3", "", category));
-      const grid = el("div", "grid");
-      GAME_DATA.items.filter(function (i) { return i.category === category; }).forEach(function (item) {
-        grid.appendChild(card(item.name, item.id, item.emoji || "✨", [
-          el("span", "price", item.gems !== undefined ? "🔷 " + item.gems + " Gems" : "💎 " + item.price + " Crystals"),
-          item.description ? el("span", "kind", item.description) : null
-        ]));
+    // Items grouped by category. Ideas have no price and aren't counted as drawings to make.
+    function itemGroups(list, boxId, isIdea) {
+      const box = document.getElementById(boxId);
+      const categories = [];
+      list.forEach(function (item) {
+        if (categories.indexOf(item.category) === -1) categories.push(item.category);
       });
-      itemsBox.appendChild(grid);
-    });
+      categories.forEach(function (category) {
+        box.appendChild(el("h3", "", category));
+        const grid = el("div", "grid");
+        list.filter(function (i) { return i.category === category; }).forEach(function (item) {
+          const counted = needed;
+          const c = card(item.name, item.id, item.emoji || "✨", [
+            isIdea ? null : el("span", "price", item.gems !== undefined ? "🔷 " + item.gems + " Gems" : "💎 " + item.price + " Crystals"),
+            item.description ? el("span", "kind", item.description) : null
+          ]);
+          if (isIdea) {
+            needed = counted;
+            c.lastChild.remove(); // ideas aren't waiting for a drawing
+            c.appendChild(el("span", "chip idea", "Idea"));
+          }
+          grid.appendChild(c);
+        });
+        box.appendChild(grid);
+      });
+    }
+    itemGroups(GAME_DATA.items || [], "items", false);
+    itemGroups(GAME_DATA.ideas || [], "ideas", true);
 
     (GAME_DATA.fish || []).forEach(function (fish) {
       document.getElementById("fish").appendChild(card(fish.name, fish.id, fish.emoji || "🐟", [
@@ -289,7 +307,7 @@
     const shelves = places.filter(function (p) { return p.shelf; }).length;
     const tally = [
       [territories, "territories"], [locations, "locations"], [shelves, "store shelves"],
-      [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "items"],
+      [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "store items"],
       [(GAME_DATA.fish || []).length, "fish"],
       [needed, "drawings to make"]
     ];

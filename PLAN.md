@@ -21,6 +21,8 @@ We build in stages and stop after each one to play-test.
 
 Drawings batch (2026-10-10): Levitating Potion, Wizard Essentials Spellbook and Healing Turtle (priced in Gems), new Winky, Rosy and Lisley, Rec Room in the Snowy Hut, inside of Toadstool Cottage (was Little Cabin), the Dock with fishing at two Lucky Rods (Bubble, Dream and Crystal Fish into the cooler), Tiny Island, and a "Saved for later" catalog section (gem, second shelf drawing, first Winky).
 
+Mountain map drawn (2026-10-10): Crystal Cave, Windy Peak, Snowy Hut, plus new Snack Shack and Ski Resort. The made-up store items moved to data/ideas.js (catalog only).
+
 ## Next
 5. Progress: 3 Adventure Points raise the Grade with a celebration; earning Crystals; hidden debug key (D) for +1 Adventure Point and +10 Crystals.
 

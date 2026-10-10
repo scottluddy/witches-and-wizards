@@ -21,6 +21,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - Items: `data/items.js`. The character's backpack is unseen (`player.backpack`); items can be put down at places (`player.stored[placeId]`).
 - Two kinds of money (Scott, 2026-10-10): Crystals (`price`, 💎) and Gems (`gems`, shown with the girls' gem drawing). Gems are rarer and earned by fishing. The girls write prices in gems on their drawings.
 - Fishing: `data/fish.js` (fish, their gems and `chance`, and the 5 to 20 second wait). Caught fish go in `player.cooler` and earn their gems. Code in `js/fishing.js`.
+- The store holds only the girls' own items (Scott, 2026-10-10). Claude's suggestions go in `data/ideas.js`, which only the catalog loads ("Ideas" section); never add made-up items to `data/items.js`.
 - Drawings not used yet are listed in `data/extras.js` and shown in the catalog's "Saved for later" section.
 - `js/save.js` has `SAVE_VERSION`; bump it when the save's shape changes (old saves are then ignored).
 

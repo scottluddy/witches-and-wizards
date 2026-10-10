@@ -66,8 +66,10 @@ function freePicks() {
   return player.freePicks;
 }
 
+// A free pick of an item that's no longer in the store doesn't count.
 function hasFreePick(category) {
-  return !freePicks()[category];
+  const picked = freePicks()[category];
+  return !picked || !findItem(picked);
 }
 
 // Owned means carried in the backpack or left somewhere.
@@ -133,7 +135,9 @@ function showShelfItems(place) {
     box.appendChild(button);
   });
 
-  note.textContent = hasFreePick(place.shelf)
+  note.textContent = items.length === 0
+    ? "Nothing on this shelf yet. Draw something for it!"
+    : hasFreePick(place.shelf)
     ? "Your Scholarship gives you one " + place.shelf + " for FREE! Click one to choose it."
     : "Click an item to see it. Items cost Crystals or Gems.";
 }
