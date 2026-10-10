@@ -11,6 +11,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - Progress is saved in `localStorage` as a list of up to 10 saved games (newest first, `js/save.js`); the title screen has a dropdown to continue one, and the 💾 Switch Game button in the top bar saves and goes back to the title screen. "New Game" adds a new game and, when the list is full, removes the oldest after asking (Scott, 2026-10-10). Saves belong to one browser and one web address.
 - The player chooses Witch or Wizard (`player.kind`) at the start; progress is Levels starting at 1, shown as "Witch Level 1" (Scott, 2026-10-10; was Grades).
 - Map positions are percentages (x, y) of the map image, so they survive resizing.
+- Desktop game for now (Scott, 2026-10-10: no need to design for phones). Map and place pictures grow to fill the window's width or height, whichever runs out first (`.picture` in css/style.css, `--shape` set in js/world.js).
 - Style: whimsical and magical, parchment backgrounds, friendly storybook font, big kid-friendly buttons.
 - Short functions, plain names, a comment wherever a 9-year-old's parent might wonder "why".
 - Build in stages and stop after each one so the family can test. See `PLAN.md`.

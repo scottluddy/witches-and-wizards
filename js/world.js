@@ -328,3 +328,12 @@ document.querySelectorAll(".picture").forEach(function (pic) {
       '"x": ' + x + ', "y": ' + y + "   (press P to stop)";
   });
 });
+
+// Make each map or place picture as big as the window allows. The picture's
+// shape (width / height) is passed to the CSS, which picks the largest size
+// that still fits both the window's width and its height (see .picture).
+document.querySelectorAll(".picture-image").forEach(function (img) {
+  img.addEventListener("load", function () {
+    img.parentElement.style.setProperty("--shape", img.naturalWidth / img.naturalHeight);
+  });
+});
