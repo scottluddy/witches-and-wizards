@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=26">
+  <link rel="stylesheet" href="css/style.css?v=27">
 </head>
 <body>
 
@@ -72,8 +72,9 @@
     <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=26" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=27" alt="Gems"> <b id="status-gems"></b></span>
     <span class="status-item" title="Chore Points">🧹 <b id="status-chores"></b></span>
+    <span class="status-item" title="Hunger: walking makes you hungry and slow. Eat snacks!">🍽️ <b id="status-hunger"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack <span id="count-backpack" class="count"></span></button>
     <button id="btn-cooler" class="small-button">🧊 Cooler <span id="count-cooler" class="count"></span></button>
     <button id="btn-bucket" class="small-button">🪣 Bucket <span id="count-bucket" class="count"></span></button>
@@ -141,6 +142,22 @@
       <p id="troll-message" class="panel-message"></p>
       <div class="button-row">
         <button id="btn-troll-close" class="big-button">Run away!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up: the "Solve to Dance" maths puzzle in the Mushroom Ring (js/dance.js) -->
+  <div id="dance-panel" class="overlay" hidden>
+    <div class="panel">
+      <h2 id="dance-title"></h2>
+      <p id="dance-progress" class="note"></p>
+      <p id="dance-question" class="dance-question"></p>
+      <input id="dance-answer" class="dance-answer" type="number" inputmode="numeric" autocomplete="off" aria-label="Your answer">
+      <p id="dance-message" class="panel-message"></p>
+      <div class="button-row">
+        <button id="btn-dance-close" class="big-button secondary">Close</button>
+        <button id="btn-dance-check" class="big-button">Check</button>
+        <button id="btn-dance-again" class="big-button" hidden>Dance again</button>
       </div>
     </div>
   </div>
@@ -219,31 +236,35 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "26"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=26"></script>
-  <script src="data/places.js?v=26"></script>
-  <script src="data/paths.js?v=26"></script>
-  <script src="data/items.js?v=26"></script>
-  <script src="data/fish.js?v=26"></script>
-  <script src="data/digging.js?v=26"></script>
-  <script src="data/chores.js?v=26"></script>
-  <script src="data/mining.js?v=26"></script>
-  <script src="data/troll.js?v=26"></script>
-  <script src="data/furniture.js?v=26"></script>
-  <script src="data/furniture_art.js?v=26"></script>
-  <script src="data/drawn.js?v=26"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "27"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=27"></script>
+  <script src="data/places.js?v=27"></script>
+  <script src="data/paths.js?v=27"></script>
+  <script src="data/items.js?v=27"></script>
+  <script src="data/fish.js?v=27"></script>
+  <script src="data/digging.js?v=27"></script>
+  <script src="data/chores.js?v=27"></script>
+  <script src="data/mining.js?v=27"></script>
+<script src="data/hunger.js?v=27"></script>
+  <script src="data/dance.js?v=27"></script>
+    <script src="data/troll.js?v=27"></script>
+  <script src="data/furniture.js?v=27"></script>
+  <script src="data/furniture_art.js?v=27"></script>
+  <script src="data/drawn.js?v=27"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=26"></script>
-  <script src="js/world.js?v=26"></script>
-  <script src="js/items.js?v=26"></script>
-  <script src="js/fishing.js?v=26"></script>
-  <script src="js/digging.js?v=26"></script>
-  <script src="js/chores.js?v=26"></script>
-  <script src="js/mining.js?v=26"></script>
-  <script src="js/troll.js?v=26"></script>
-  <script src="js/storage.js?v=26"></script>
-  <script src="js/furniture.js?v=26"></script>
-  <script src="js/game.js?v=26"></script>
+  <script src="js/save.js?v=27"></script>
+  <script src="js/world.js?v=27"></script>
+  <script src="js/items.js?v=27"></script>
+  <script src="js/fishing.js?v=27"></script>
+  <script src="js/digging.js?v=27"></script>
+  <script src="js/chores.js?v=27"></script>
+  <script src="js/mining.js?v=27"></script>
+  <script src="js/troll.js?v=27"></script>
+<script src="js/hunger.js?v=27"></script>
+  <script src="js/dance.js?v=27"></script>
+    <script src="js/storage.js?v=27"></script>
+  <script src="js/furniture.js?v=27"></script>
+  <script src="js/game.js?v=27"></script>
 </body>
 </html>

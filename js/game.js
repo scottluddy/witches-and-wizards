@@ -14,7 +14,7 @@ function showScreen(id) {
   updateStatus();
 }
 
-// Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals, Gems and Chore Points.
+// Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals, Gems, Chore Points and Hunger.
 function updateStatus() {
   if (!player) return;
   const character = findCharacter(player.characterId);
@@ -26,6 +26,7 @@ function updateStatus() {
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;
+  document.getElementById("status-hunger").textContent = player.hunger + "/" + GAME_DATA.hunger.max;
   // How many things each carried bag holds, as a small number on its button.
   ["backpack", "cooler", "bucket", "satchel"].forEach(function (bag) {
     document.getElementById("count-" + bag).textContent = player[bag].length;

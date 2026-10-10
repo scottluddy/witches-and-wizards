@@ -34,5 +34,6 @@ GAME_DATA.paths = [
   // Lake
   { "from": "dock",   "to": "island", "via": [] },
   { "from": "island", "to": "beach",  "via": [] },
-  { "from": "island", "to": "waterfall", "via": [] }
+  { "from": "island", "to": "waterfall", "via": [] },
+  { "from": "dock",   "to": "fish_hut",  "via": [[46, 74]] }
 ];

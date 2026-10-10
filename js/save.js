@@ -61,7 +61,15 @@ function fillIn(save) {
   if (save.chorePoints === undefined) save.chorePoints = 0;
   if (!save.dirt) save.dirt = {};
   if (!save.dirtSeconds) save.dirtSeconds = {};
+  if (save.hunger === undefined) save.hunger = 0;
+  if (save.walked === undefined) save.walked = 0;
+  if (!save.marshmallows) save.marshmallows = [];
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
+  // Scott named the Floor 1 Snack Shack shelves.
+  renameItem(save, "snack_jars", "snack_water");
+  renameItem(save, "snack_bottles", "snack_icees");
+  renameItem(save, "snack_shelf_mugs", "snack_tea");
+  renameItem(save, "snack_straw_cup", "snack_straws");
   renamePlace(save, "rec_room", "hut"); // the Rec Room drawing became the Snowy Hut itself
   return save;
 }
@@ -131,6 +139,9 @@ function newPlayer(playerName, characterId, kind) {
     chorePoints: 0,           // earned by doing chores, like cleaning your room (js/chores.js)
     dirt: {},                 // how dirty each room is: { "home": 2 } (0 is clean)
     dirtSeconds: {},          // seconds spent in each room since it last got dirtier
+    hunger: 0,                // 0 to 10: walking adds hunger, snacks take it away (js/hunger.js)
+    walked: 0,                // map-widths walked toward the next hunger point
+    marshmallows: [],         // hot chocolates in the backpack that have marshmallows
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)

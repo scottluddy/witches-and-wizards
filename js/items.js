@@ -285,13 +285,15 @@ function openBackpack() {
     const item = findItem(itemId);
     if (!item) return;
     const putDown = canPutDownHere() ? "Put down here" : null;
-    list.appendChild(itemCard(item, putDown, function () {
+    const card = itemCard(item, putDown, function () {
       player.backpack = player.backpack.filter(function (id) { return id !== itemId; });
       player.stored[place.id] = (player.stored[place.id] || []).concat([itemId]);
       writeSave(player);
       openBackpack();
       showLeftHere(place);
-    }));
+    });
+    if (item.food) card.appendChild(eatButton(item)); // snacks (js/hunger.js)
+    list.appendChild(card);
   });
 
   // A reminder of things left around the world.
@@ -315,6 +317,21 @@ function openBackpack() {
     elsewhere.appendChild(tip);
   }
   document.getElementById("backpack-panel").hidden = false;
+}
+
+// A button to eat a snack, then a note saying how much less hungry you are.
+function eatButton(item) {
+  const button = document.createElement("button");
+  button.className = "small-button";
+  button.textContent = "😋 Eat";
+  button.addEventListener("click", function () {
+    const less = eat(item);
+    openBackpack();
+    document.getElementById("backpack-free").textContent = less > 0
+      ? "Yum! " + item.name + " took away " + less + " hunger point" + (less === 1 ? "" : "s") + "."
+      : "Yum! " + item.name + ". You weren't hungry anyway.";
+  });
+  return button;
 }
 
 document.getElementById("btn-backpack").addEventListener("click", function () {

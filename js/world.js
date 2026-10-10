@@ -227,7 +227,7 @@ function walkAlong(points, done) {
 
   walking = true;
   sprite.classList.add("walking");
-  const speed = WALK_SPEED * width; // pixels per second
+  const speed = WALK_SPEED * width * walkSpeedFactor(); // pixels per second; hungry means slower (js/hunger.js)
   const startTime = performance.now();
 
   function step(now) {
@@ -238,6 +238,7 @@ function walkAlong(points, done) {
       sprite.classList.remove("walking");
       spriteImg.style.scale = "1 1";
       walking = false;
+      walkedSoFar(total / width); // walking makes you hungry (js/hunger.js)
       done();
       return;
     }
@@ -281,6 +282,8 @@ function showPlace(id) {
     }
     if (child.type === "fishing") return startFishing(child); // js/fishing.js
     if (child.type === "digging") return startDigging(child); // js/digging.js
+    if (child.type === "marshmallows") return useMarshmallows(); // js/hunger.js
+    if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)

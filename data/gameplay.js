@@ -23,6 +23,8 @@ GAME_DATA.activities = [
     "note": "Fish and treasures for the cooler. (Put under Mining for now.)" },
   { "name": "Mine in the Crystal Cave", "kind": "Mining", "where": "Crystal Cave", "inGame": true,
     "note": "Take a pickaxe from the rack, then click the wall. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
+  { "name": "Solve to Dance", "kind": "Learning", "where": "Mushroom Ring", "inGame": true,
+    "note": "Maths problems (3rd grade). + and - earn 1 gem, × and ÷ earn 2. Solve 2 to dance (data/dance.js)." },
   { "name": "Chop wood", "kind": "Mining", "where": "", "inGame": false,
     "note": "" }
 ];
@@ -45,5 +47,7 @@ GAME_DATA.metrics = [
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,
     "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." },
   { "name": "Chore Points", "shows": "🧹", "inGame": true,
-    "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "Not decided yet." }
+    "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "Not decided yet." },
+  { "name": "Hunger", "shows": "🍽️ 0/10", "inGame": true,
+    "earn": "Walking around (1 point per map-width walked, up to 10). The hungrier you are, the slower you walk.", "use": "Eat snacks from the Snack Shack to take hunger away (data/hunger.js)." }
 ];
