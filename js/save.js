@@ -46,7 +46,16 @@ function fillIn(save) {
   // Older saves only had the cooler, which held nothing but fish.
   if (save.fishCount === undefined) save.fishCount = save.cooler.length;
   if (!save.furniture) save.furniture = {};
+  renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   return save;
+}
+
+// When an item is replaced by a new drawing, games that owned it get the new one.
+function renameItem(save, oldId, newId) {
+  const swap = function (id) { return id === oldId ? newId : id; };
+  save.backpack = save.backpack.map(swap);
+  Object.keys(save.stored).forEach(function (place) { save.stored[place] = save.stored[place].map(swap); });
+  Object.keys(save.freePicks).forEach(function (kind) { save.freePicks[kind] = swap(save.freePicks[kind]); });
 }
 
 // Save this game: it moves to the top of the list.

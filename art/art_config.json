@@ -9,16 +9,6 @@
     ],
     "gap": 10
   },
-  "broom_snowball": {
-    "crop": [
-      18,
-      26,
-      72,
-      82
-    ],
-    "gap": 3,
-    "min_part": 0.3
-  },
   "map_world": {
     "rotate": 90,
     "crop": [
@@ -274,5 +264,71 @@
         67.5
       ]
     ]
+  },
+  "extra_snowball_first": {
+    "crop": [
+      18,
+      26,
+      72,
+      82
+    ],
+    "gap": 3,
+    "min_part": 0.3
+  },
+  "broom_wave": {
+    "min_part": 0.05,
+    "gap": 12
+  },
+  "broom_stinger": {
+    "min_part": 0.05,
+    "gap": 8,
+    "ink_level": 215
+  },
+  "broom_firefly": {
+    "min_part": 0.05
+  },
+  "broom_bolt": {
+    "min_part": 0.05,
+    "gap": 12
+  },
+  "broom_rocketer": {
+    "min_part": 0.05
+  },
+  "broom_snowflake": {
+    "min_part": 0.05
+  },
+  "broom_no1": {
+    "min_part": 0.05
+  },
+  "broom_no2": {
+    "min_part": 0.05
+  },
+  "broom_no3": {
+    "min_part": 0.05
+  },
+  "broom_no4": {
+    "min_part": 0.05
+  },
+  "broom_no5": {
+    "min_part": 0.05
+  },
+  "broom_no6": {
+    "min_part": 0.05
+  },
+  "broom_no7": {
+    "min_part": 0.05
+  },
+  "broom_no8": {
+    "min_part": 0.05
+  },
+  "broom_no9": {
+    "min_part": 0.05
+  },
+  "broom_no10": {
+    "min_part": 0.05,
+    "gap": 12
+  },
+  "broom_no11": {
+    "min_part": 0.05
   }
 }

@@ -15,6 +15,7 @@
 //   rows        store shelves only: the gaps on the shelf drawing where items
 //               stand, as [top, bottom] percentages down the picture, filled
 //               three items to a gap (press P to find the numbers)
+//   perRow      store shelves only: how many items stand in each gap (3 if not set)
 //   says        people only: what they say when you click them
 //   opens       go straight into this place instead (the Snowy Hut opens the Rec Room)
 //
@@ -38,7 +39,7 @@ GAME_DATA.places = [
     "description": "Behind the round wall, young witches and wizards learn magic." },
 
   { "id": "shelf_brooms",  "name": "Broomsticks",   "type": "place", "in": "store", "x": 13, "y": 35, "shelf": "Broomstick",
-    "rows": [[49, 60], [64, 78]] },
+    "rows": [[17, 31], [33, 45], [47, 60], [63, 78]], "perRow": 5 },
   { "id": "shelf_pets",    "name": "Pets",          "type": "place", "in": "store", "x": 40, "y": 51, "shelf": "Pet",
     "rows": [[49, 60], [64, 78]] },
   { "id": "shelf_potions", "name": "Potions",       "type": "place", "in": "store", "x": 44, "y": 22, "shelf": "Potion",

@@ -76,12 +76,14 @@ def flatten_paper(img):
     return Image.fromarray((flat * 255).astype(np.uint8))
 
 
-def find_drawing(flat, min_part, gap):
-    """Return a mask (L image) covering the drawing, with its insides filled in."""
+def find_drawing(flat, min_part, gap, ink_level=190):
+    """Return a mask (L image) covering the drawing, with its insides filled in.
+    ink_level: how pale a mark can be and still count as drawing (0-255; raise
+    it for drawings in very light colours, like pale yellow)."""
     gray = flat.convert("L")
     scale = 500 / max(gray.size)
     small = gray.resize((round(gray.width * scale), round(gray.height * scale)))
-    ink = small.point(lambda v: 255 if v < 190 else 0)
+    ink = small.point(lambda v: 255 if v < ink_level else 0)
     # Fatten the lines so small gaps in them close up (shrunk back below).
     for _ in range(gap):
         ink = ink.filter(ImageFilter.MaxFilter(3))
@@ -137,7 +139,8 @@ def process_drawing(path, settings):
     is_item = path.stem.startswith(ITEM_PREFIXES)
     img = load_photo(path, settings.get("crop"))
     flat = flatten_paper(img)
-    mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE))
+    mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE),
+                        settings.get("ink_level", 190))
 
     # Brighter colours and darker pencil lines.
     pretty = ImageEnhance.Color(flat).enhance(1.4)

@@ -25,6 +25,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - Fishing: `data/fish.js` (fish, their gems and `chance`, and the 5 to 25 second wait; past 20 seconds nothing is caught). Caught fish go in `player.cooler`, add to `player.fishCount` and earn their gems. Treasures (`GAME_DATA.treasures`, also in fish.js: shell, sand dollar) are caught the same way and earn gems but are not fish: they go in `player.treasures` and never add to `fishCount` (Scott, 2026-10-10; the count is for something later). Code in `js/fishing.js`.
 - The store holds only the girls' own items (Scott, 2026-10-10). Claude's suggestions go in `data/ideas.js`, which only the catalog loads ("Ideas" section); never add made-up items to `data/items.js`.
 - Movable furniture: `data/furniture.js` lists pieces per room with a rough box; the art script cuts each out (`furniture_<place>_<id>.png`), makes the empty room (`place_<id>_room.png`) and writes the exact boxes to `data/furniture_art.js` (generated). `js/furniture.js` does the 🪑 Rearrange button, dragging and no-overlap; positions save in `player.furniture`. Pieces are cut in list order and a piece never takes bits of one listed before it; `min_part` on a piece keeps small loose bits like shadows. Rooms with furniture: Rec Room, Toadstool Cottage, Home (dorm room; the girls' labels are erased, Scott 2026-10-10).
+- Broomsticks: 17 from the girls' sheet (art/raw/sheets/broomsticks.jpeg), five to a gap on the broom shelf (`perRow`). Unnamed ones are "Broom No. N" until the girls name them; all cost 30 Crystals for now (no prices on the sheet). Snowflake replaced Snowball; old saves are moved over in js/save.js `renameItem`.
 - Drawings not used yet are listed in `data/extras.js` and shown in the catalog's "Saved for later" section.
 - `js/save.js` has `SAVE_VERSION`; bump it when the save's shape changes (old saves are then ignored).
 
@@ -35,7 +36,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - Run `python3 tools/process_art.py` (needs `pip install pillow numpy`) to make `art/processed` and `data/drawn.js`.
 - Names: `<character id>.jpg` and `<item id>.jpg` become stickers; `map_<place id>.jpg` and `place_<place id>.jpg` become whole pictures on parchment (colour kept).
 - Anything not drawn gets a placeholder picture (items show their emoji instead). The game and catalog use `data/drawn.js` to tell drawings from placeholders.
-- Per-drawing settings (crop, rotate, erase, washes, gap, min_part, also_as) live in `art/art_config.json`. `also_as` reuses one drawing under other names (the one shelf drawing serves all six store shelves).
+- Per-drawing settings (crop, rotate, erase, washes, gap, min_part, ink_level, also_as) live in `art/art_config.json`. `also_as` reuses one drawing under other names (the one shelf drawing serves all six store shelves).
 - On shelf pictures, items stand in the gaps listed by each shelf's `rows` in `data/places.js` ([top, bottom] percent, three items per gap).
 - Never edit `art/processed` or `data/drawn.js` by hand; they are regenerated.
 - If a map is redrawn, recheck the x/y numbers in `data/places.js` and `data/paths.js` with placement mode (P).

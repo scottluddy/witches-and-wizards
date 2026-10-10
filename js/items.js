@@ -110,12 +110,14 @@ function showShelfItems(place) {
 
   const items = GAME_DATA.items.filter(function (item) { return item.category === place.shelf; });
   const rows = place.rows || SHELF_ROWS;
+  const perRow = place.perRow || ITEMS_PER_ROW; // a shelf can fit more, like the brooms
+  const spacing = 81 / perRow;                  // percent between items in a row
   items.forEach(function (item, i) {
-    const row = Math.floor(i / ITEMS_PER_ROW);
-    const inRow = Math.min(ITEMS_PER_ROW, items.length - row * ITEMS_PER_ROW);
-    const col = i % ITEMS_PER_ROW;
+    const row = Math.floor(i / perRow);
+    const inRow = Math.min(perRow, items.length - row * perRow);
+    const col = i % perRow;
     // An item can choose its own spot with "shelfX"/"shelfY" in items.js.
-    const x = item.shelfX !== undefined ? item.shelfX : 50 + (col - (inRow - 1) / 2) * 27;
+    const x = item.shelfX !== undefined ? item.shelfX : 50 + (col - (inRow - 1) / 2) * spacing;
     const gap = rows[Math.min(row, rows.length - 1)];
     const y = item.shelfY !== undefined ? item.shelfY : gap[1];
 
