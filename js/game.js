@@ -173,6 +173,16 @@ document.getElementById("btn-start").addEventListener("click", function () {
 
 document.getElementById("btn-select-back").addEventListener("click", showTitle);
 
+// Save this game and go back to the title screen, to pick another one.
+document.getElementById("btn-switch-game").addEventListener("click", function () {
+  if (walking) return;
+  stopFishing();   // js/fishing.js
+  stopDigging();   // js/digging.js
+  document.querySelectorAll(".overlay").forEach(function (panel) { panel.hidden = true; });
+  writeSave(player);
+  showTitle();
+});
+
 // Reload the page, so a game that was just updated shows its newest version.
 document.getElementById("btn-refresh").addEventListener("click", function () {
   location.reload();

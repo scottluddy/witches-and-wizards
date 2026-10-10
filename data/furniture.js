@@ -22,6 +22,7 @@ GAME_DATA.furniture = [
   { "place": "cabin", "id": "sofa",     "name": "Blue Sofa",   "box": [37, 55, 66, 75] },
   { "place": "cabin", "id": "bookshelf", "name": "Bookshelf",   "box": [84, 57, 100, 76] },
 
+  { "place": "home", "id": "bird_cage", "name": "Bird Cage", "box": [36.5, 23.6, 56.5, 65.0], "min_part": 0.002 },
   { "place": "home", "id": "pet_cage", "name": "Pet Cage", "box": [1.0, 37.1, 35.0, 70.0], "min_part": 0.002 },
   { "place": "home", "id": "chest", "name": "Treasure Chest", "holds": "homeChest", "box": [78.0, 43.8, 100.0, 64.6], "min_part": 0.002 },
   { "place": "home", "id": "armchair", "name": "Pink Armchair", "box": [64.0, 60.5, 84.5, 95.0], "min_part": 0.002 },
