@@ -156,14 +156,14 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {};</script>
-  <script src="data/characters.js"></script>
-  <script src="data/places.js"></script>
-  <script src="data/items.js"></script>
-  <script src="data/ideas.js"></script>
-  <script src="data/fish.js"></script>
-  <script src="data/extras.js"></script>
-  <script src="data/drawn.js"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "2"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=2"></script>
+  <script src="data/places.js?v=2"></script>
+  <script src="data/items.js?v=2"></script>
+  <script src="data/ideas.js?v=2"></script>
+  <script src="data/fish.js?v=2"></script>
+  <script src="data/extras.js?v=2"></script>
+  <script src="data/drawn.js?v=2"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -207,7 +207,7 @@
       const picName = (place.type === "map" ? "map_" : "place_") + place.id;
       const img = el(isPerson ? "span" : "img");
       if (!isPerson) {
-        img.src = "art/processed/" + picName + ".png";
+        img.src = "art/processed/" + picName + ".png?v=" + GAME_VERSION;
         img.alt = "";
         img.loading = "lazy";
       }
@@ -237,7 +237,7 @@
       const art = el("div", "art");
       if (drawn.indexOf(artName) !== -1) {
         const img = el("img");
-        img.src = "art/processed/" + artName + ".png";
+        img.src = "art/processed/" + artName + ".png?v=" + GAME_VERSION;
         img.alt = "";
         art.appendChild(img);
       } else {

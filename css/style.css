@@ -496,3 +496,5 @@ h2 {
 
 /* Items already drawn in the shop picture: just the price tag shows. */
 .shelf-item.in-picture .shelf-art { visibility: hidden; }
+
+.refresh-button { margin-top: 36px; font-size: 1rem; padding: 6px 14px; }

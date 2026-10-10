@@ -55,6 +55,8 @@ tools/            the art script
 - Game: https://claude.ai/artifact/LCVemmM75u1EtJmvXHjcVw
 - Catalog: https://claude.ai/artifact/R2GqZzVSULbfTcxAjHstNN
 
+After every change run `python3 tools/bump_version.py` (new `?v=` numbers, so browsers fetch fresh files instead of GitHub Pages' cached copies), then push to GitHub (the public site https://scottluddy.github.io/witches-and-wizards/ redeploys from main). The title screen has a "Check for updates" button that reloads the page.
+
 Republish both after each change, to the same links. Each is published from a scratch copy: the page file is index.html's (or catalog.html's) `<title>`, head links and body content, plus `data/`, `art/processed/` (and for the game `css/`, `js/`) as files. When a file is removed or renamed, pass it as `null` so the old copy is deleted from the artifact.
 The Artifact viewer blocks `alert()`, `confirm()` and `prompt()`, so the game never uses them; build questions into the page.
 The app's file preview pane can't run the game. Play via the link or the unzipped folder.

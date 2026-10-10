@@ -22,8 +22,9 @@ function isDrawn(name) {
   return (GAME_DATA.drawn || []).indexOf(name) !== -1;
 }
 
+// "?v=" makes the browser fetch a fresh copy after each update (see tools/bump_version.py).
 function picture(name) {
-  return "art/processed/" + name + ".png";
+  return "art/processed/" + name + ".png?v=" + GAME_VERSION;
 }
 
 function characterPicture(character) {

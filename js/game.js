@@ -137,6 +137,11 @@ document.getElementById("btn-start").addEventListener("click", function () {
 
 document.getElementById("btn-select-back").addEventListener("click", showTitle);
 
+// Reload the page, so a game that was just updated shows its newest version.
+document.getElementById("btn-refresh").addEventListener("click", function () {
+  location.reload();
+});
+
 // ---------------------------------------------------------------- start
 
 document.getElementById("load-error").hidden = true; // the code loaded fine
