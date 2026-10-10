@@ -180,18 +180,18 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "24"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=24"></script>
-  <script src="data/places.js?v=24"></script>
-  <script src="data/items.js?v=24"></script>
-  <script src="data/ideas.js?v=24"></script>
-  <script src="data/fish.js?v=24"></script>
-  <script src="data/digging.js?v=24"></script>
-  <script src="data/mining.js?v=24"></script>
-  <script src="data/troll.js?v=24"></script>
-  <script src="data/gameplay.js?v=24"></script>
-  <script src="data/extras.js?v=24"></script>
-  <script src="data/drawn.js?v=24"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "25"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=25"></script>
+  <script src="data/places.js?v=25"></script>
+  <script src="data/items.js?v=25"></script>
+  <script src="data/ideas.js?v=25"></script>
+  <script src="data/fish.js?v=25"></script>
+  <script src="data/digging.js?v=25"></script>
+  <script src="data/mining.js?v=25"></script>
+  <script src="data/troll.js?v=25"></script>
+  <script src="data/gameplay.js?v=25"></script>
+  <script src="data/extras.js?v=25"></script>
+  <script src="data/drawn.js?v=25"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -353,7 +353,7 @@
       });
       document.getElementById("cave-finds").appendChild(card("Troll", "troll", "👹", [
         el("span", "price", "Steals 1 to 5 Crystals"),
-        el("span", "kind", "Sleeps in " + mining.trollSquares + " cave square, and wakes on 20% of digs at the Crystal Dig Spot. Uses a photo for now; draw it as art/raw/troll.jpg.")
+        el("span", "kind", "Sleeps in " + mining.trollSquares + " cave square, and wakes on 20% of digs at the Crystal Dig Spot. Drawn by the girls.")
       ]));
       document.getElementById("cave-finds").appendChild(card("Pickaxe rack", "mine_pickaxes", "⛏️", [
         el("span", "kind", "Hangs in the Crystal Cave. Click it to take a pickaxe.")
