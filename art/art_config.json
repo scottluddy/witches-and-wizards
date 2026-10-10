@@ -330,5 +330,42 @@
   },
   "broom_no11": {
     "min_part": 0.05
+  },
+  "place_beach": {
+    "rotate": 90,
+    "crop": [
+      0,
+      10.5,
+      99,
+      88
+    ],
+    "erase": [
+      [
+        40,
+        0,
+        52,
+        3
+      ]
+    ]
+  },
+  "pet_owl": {
+    "min_part": 0.05,
+    "gap": 12
+  },
+  "pet_cat": {
+    "min_part": 0.05
+  },
+  "extra_cat_small": {
+    "min_part": 0.05
+  },
+  "beach_bottlecap": {
+    "min_part": 0.05
+  },
+  "beach_redshell": {
+    "min_part": 0.05
+  },
+  "beach_sanddollar": {
+    "min_part": 0.05,
+    "gap": 18
   }
 }

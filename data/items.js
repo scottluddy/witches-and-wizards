@@ -28,6 +28,8 @@ GAME_DATA.items = [
   {"id": "broom_no10", "name": "Broom No. 10", "category": "Broomstick", "price": 30, "emoji": "🧹", "description": "A broomstick drawn by the girls."},
   {"id": "broom_no11", "name": "Broom No. 11", "category": "Broomstick", "price": 30, "emoji": "🧹", "description": "A broomstick drawn by the girls."},
   {"id": "pet_turtle", "name": "Healing Turtle", "category": "Pet", "gems": 3, "emoji": "🐢", "description": "A gentle turtle whose shell glows when someone needs healing."},
+  {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
+  {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},
   {"id": "special_book", "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know."}
 ,

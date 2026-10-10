@@ -6,6 +6,8 @@
 //               "place"  = a picture with spots you can click
 //               "person" = someone in a picture who talks when clicked ("says")
 //               "fishing" = a fishing spot: click it to go fishing (fish are in data/fish.js)
+//               "digging" = a dig spot: click it to dig ("finds": "beach" or "crystals";
+//                           what turns up is in data/digging.js)
 //   in          the place it sits inside (left out for the world)
 //   x, y        where it sits on that picture, as percentages across and down
 //               (press P in the game and click to find numbers)
@@ -41,7 +43,7 @@ GAME_DATA.places = [
   { "id": "shelf_brooms",  "name": "Broomsticks",   "type": "place", "in": "store", "x": 13, "y": 35, "shelf": "Broomstick",
     "rows": [[17, 31], [33, 45], [47, 60], [63, 78]], "perRow": 5 },
   { "id": "shelf_pets",    "name": "Pets",          "type": "place", "in": "store", "x": 40, "y": 51, "shelf": "Pet",
-    "rows": [[49, 60], [64, 78]] },
+    "rows": [[63, 78], [47, 60]] },
   { "id": "shelf_potions", "name": "Potions",       "type": "place", "in": "store", "x": 44, "y": 22, "shelf": "Potion",
     "rows": [[64, 78]] },
   { "id": "shelf_hats",    "name": "Hats",          "type": "place", "in": "store", "x": 78, "y": 33, "shelf": "Hat",
@@ -81,5 +83,7 @@ GAME_DATA.places = [
   { "id": "island",    "name": "Tiny Island",    "type": "place", "in": "lake", "x": 58, "y": 42,
     "description": "Just big enough for one tree, a picnic and a fishing rod." },
   { "id": "beach",     "name": "Pebble Beach",   "type": "place", "in": "lake", "x": 80, "y": 78,
-    "description": "Smooth pebbles, perfect for skipping." }
+    "description": "Pebbles, sand dollars and the Turtle Cove. Grab a shovel and dig!" },
+  { "id": "dig_spot",    "name": "Dig Spot",         "type": "digging", "in": "beach", "x": 86, "y": 57, "finds": "beach" },
+  { "id": "crystal_dig", "name": "Crystal Dig Spot", "type": "digging", "in": "beach", "x": 19, "y": 82, "finds": "crystals" }
 ];

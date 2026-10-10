@@ -8,5 +8,6 @@ GAME_DATA.extras = [
   { "id": "extra_gem", "name": "Gem", "note": "\"+1 gem\". Used as the little Gems icon in the game." },
   { "id": "place_shelves_alt", "name": "Shelves (another try)", "note": "A second shelf drawing to compare with the one the store uses now." },
   { "id": "extra_snowball_first", "name": "Snowball (first broom)", "note": "The first broomstick. The coloured Snowflake broom replaced it in the store." },
+  { "id": "extra_cat_small", "name": "Little cat (light sketch)", "note": "A small, faint cat drawn next to the Midnight Cat." },
   { "id": "extra_winky_first", "name": "Winky (first drawing)", "note": "The first Winky. The game now uses the newer drawing." }
 ];

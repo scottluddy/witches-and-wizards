@@ -525,8 +525,8 @@ h2 {
 .gem-icon { height: 1.1em; vertical-align: -0.2em; }
 
 /* The fishing rod: bobs gently while waiting, shakes when a fish bites. */
-#fishing-art { font-size: 6rem; }
-#fishing-art.waiting { animation: bob 1.2s ease-in-out infinite alternate; }
+#fishing-art, #digging-art { font-size: 6rem; }
+#fishing-art.waiting, #digging-art.waiting { animation: bob 1.2s ease-in-out infinite alternate; }
 #fishing-art.biting { animation: tug 0.15s linear infinite alternate; }
 
 @keyframes tug {
@@ -535,7 +535,7 @@ h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #fishing-art.waiting, #fishing-art.biting { animation: none; }
+  #fishing-art.waiting, #fishing-art.biting, #digging-art.waiting { animation: none; }
 }
 
 .big-button[hidden] { display: none; }

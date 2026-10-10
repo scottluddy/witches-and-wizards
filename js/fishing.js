@@ -121,10 +121,11 @@ function openCooler() {
   const list = document.getElementById("cooler-fish");
   list.innerHTML = "";
   if (player.cooler.length === 0 && player.treasures.length === 0) {
-    list.textContent = "Your cooler is empty. Go fishing at the Dock!";
+    list.textContent = "Your cooler is empty. Go fishing at the Dock, or dig at Pebble Beach!";
   }
   addCoolerCards(list, GAME_DATA.fish, player.cooler);
   addCoolerCards(list, GAME_DATA.treasures || [], player.treasures);
+  addCoolerCards(list, GAME_DATA.beachFinds || [], player.treasures); // dug up at Pebble Beach
   document.getElementById("cooler-panel").hidden = false;
 }
 

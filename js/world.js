@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : "") + place.name;
     button.addEventListener("click", function () { onClick(place.id); });
     box.appendChild(button);
   });
@@ -280,6 +280,7 @@ function showPlace(id) {
       return;
     }
     if (child.type === "fishing") return startFishing(child); // js/fishing.js
+    if (child.type === "digging") return startDigging(child); // js/digging.js
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)

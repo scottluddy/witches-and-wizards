@@ -146,6 +146,10 @@
     <p class="lede">Other things the Lucky Rods pull up. They earn gems too, but they don't count as fish (listed in <code>data/fish.js</code> under treasures).</p>
     <div id="treasures" class="grid"></div>
 
+    <h3>Beach finds</h3>
+    <p class="lede">Dug up at the Dig Spot on Pebble Beach (listed in <code>data/digging.js</code>). The Crystal Dig Spot finds Crystals instead.</p>
+    <div id="beach-finds" class="grid"></div>
+
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
     <div id="extras" class="grid"></div>
@@ -160,14 +164,15 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "7"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=7"></script>
-  <script src="data/places.js?v=7"></script>
-  <script src="data/items.js?v=7"></script>
-  <script src="data/ideas.js?v=7"></script>
-  <script src="data/fish.js?v=7"></script>
-  <script src="data/extras.js?v=7"></script>
-  <script src="data/drawn.js?v=7"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "9"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=9"></script>
+  <script src="data/places.js?v=9"></script>
+  <script src="data/items.js?v=9"></script>
+  <script src="data/ideas.js?v=9"></script>
+  <script src="data/fish.js?v=9"></script>
+  <script src="data/digging.js?v=9"></script>
+  <script src="data/extras.js?v=9"></script>
+  <script src="data/drawn.js?v=9"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -198,6 +203,7 @@
     function kindOf(place) {
       if (place.type === "person") return "person: says \u201c" + (place.says || "") + "\u201d";
       if (place.type === "fishing") return "fishing spot";
+      if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
       if (place.shelf) return (place.in === "store" ? "store shelf: " : "shop: ") + place.shelf;
@@ -207,7 +213,7 @@
     function placeRow(place) {
       const li = el("li");
       const row = el("div", "row");
-      const isPerson = place.type === "person" || place.type === "fishing"; // part of the picture
+      const isPerson = place.type === "person" || place.type === "fishing" || place.type === "digging"; // part of the picture
       const picName = (place.type === "map" ? "map_" : "place_") + place.id;
       const img = el(isPerson ? "span" : "img");
       if (!isPerson) {
@@ -302,6 +308,14 @@
     }
     (GAME_DATA.fish || []).forEach(function (fish) { catchCard(fish, "fish"); });
     (GAME_DATA.treasures || []).forEach(function (t) { catchCard(t, "treasures"); });
+    const finds = GAME_DATA.beachFinds || [];
+    const findChance = finds.reduce(function (n, f) { return n + f.chance; }, 0);
+    finds.forEach(function (find) {
+      document.getElementById("beach-finds").appendChild(card(find.name, find.id, find.emoji, [
+        el("span", "price", "+" + find.gems + " Gems"),
+        el("span", "kind", find.description + " (turns up " + find.chance + " out of " + findChance + " times)")
+      ]));
+    });
 
     (GAME_DATA.extras || []).forEach(function (extra) {
       const c = card(extra.name, extra.id, "✨", [el("span", "kind", extra.note)]);
