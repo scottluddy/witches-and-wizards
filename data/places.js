@@ -37,8 +37,9 @@ GAME_DATA.places = [
     "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up." },
   { "id": "store",  "name": "Campus Store",  "type": "place", "in": "village", "x": 50, "y": 42,
     "description": "The clerk waves hello. Click a shelf to see what's for sale." },
-  { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 24, "y": 34,
-    "description": "Dresses of every colour hang on the walls. The dressmaker waves from the counter." },
+  { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 24, "y": 34, "shelf": "Dresses",
+    "rows": [[6, 28], [58, 76]],
+    "description": "Dresses for every season hang on the walls, priced in Crystals. The dressmaker waves from the counter." },
   { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 79, "y": 62,
     "description": "Behind the round wall, young witches and wizards learn magic." },
 

@@ -34,5 +34,11 @@ GAME_DATA.items = [
   {"id": "special_book", "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know."}
 ,
   {"id": "ski_size1", "name": "Ski Outfit (Size 1)", "category": "Ski Gear", "gems": 3, "emoji": "⛷️", "inPicture": true, "shelfX": 21, "shelfY": 76, "description": "A green ski outfit from the Ski Reserve."},
-  {"id": "ski_size2", "name": "Ski Outfit (Size 2)", "category": "Ski Gear", "gems": 5, "emoji": "⛷️", "inPicture": true, "shelfX": 40, "shelfY": 74, "description": "A purple ski outfit from the Ski Reserve, one size bigger."}
+  {"id": "ski_size2", "name": "Ski Outfit (Size 2)", "category": "Ski Gear", "gems": 5, "emoji": "⛷️", "inPicture": true, "shelfX": 40, "shelfY": 74, "description": "A purple ski outfit from the Ski Reserve, one size bigger."},
+  {"id": "dress_winter", "name": "Winter Dress", "category": "Dresses", "price": 1, "emoji": "👗", "inPicture": true, "shelfX": 15, "shelfY": 26, "description": "A soft pink winter dress with a frilly hem."},
+  {"id": "dress_multi", "name": "Multi Dress", "category": "Dresses", "price": 2, "emoji": "👗", "inPicture": true, "shelfX": 40, "shelfY": 27, "description": "A dress that fades from blue to pink."},
+  {"id": "dress_magenta_winter", "name": "Magenta Winter Dress", "category": "Dresses", "price": 4, "emoji": "👗", "inPicture": true, "shelfX": 58, "shelfY": 29, "description": "A bright magenta winter dress with frills."},
+  {"id": "dress_summer_ballgown", "name": "Summer Ballgown", "category": "Dresses", "price": 1, "emoji": "👗", "inPicture": true, "shelfX": 79, "shelfY": 30, "description": "A sunny yellow and orange ballgown with a bow."},
+  {"id": "dress_golden_rose", "name": "Golden Rose Fall Dress", "category": "Dresses", "price": 3, "emoji": "👗", "inPicture": true, "shelfX": 14, "shelfY": 75, "description": "A red fall dress with a golden rose."},
+  {"id": "dress_iridescent_spring", "name": "Iridescent Spring Gown", "category": "Dresses", "price": 2, "emoji": "👗", "inPicture": true, "shelfX": 81, "shelfY": 75, "description": "A shimmering blue spring gown."}
 ];
