@@ -8,7 +8,8 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 - Must run by double-clicking `index.html` (file://) and deploy to Netlify as static files.
 - All game content (characters, locations, paths, items, levels) lives in `/data`. Never hard-code content in JS.
 - Data files are `.js` files holding JSON-style content with one wrapper line, e.g. `GAME_DATA.characters = [ ... ];`, loaded by `<script>` tags. This is so double-clicking index.html works (browsers block reading `.json` from file://). Scott chose this on 2026-10-07.
-- Progress is saved in `localStorage`. "New Game" clears it.
+- Progress is saved in `localStorage` as a list of up to 10 saved games (newest first, `js/save.js`); the title screen has a dropdown to continue one. "New Game" adds a new game and, when the list is full, removes the oldest after asking (Scott, 2026-10-10). Saves belong to one browser and one web address.
+- The player chooses Witch or Wizard (`player.kind`) at the start; progress is Levels starting at 1, shown as "Witch Level 1" (Scott, 2026-10-10; was Grades).
 - Map positions are percentages (x, y) of the map image, so they survive resizing.
 - Style: whimsical and magical, parchment backgrounds, friendly storybook font, big kid-friendly buttons.
 - Short functions, plain names, a comment wherever a 9-year-old's parent might wonder "why".

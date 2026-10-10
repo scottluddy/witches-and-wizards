@@ -24,7 +24,7 @@ Drawings batch (2026-10-10): Levitating Potion, Wizard Essentials Spellbook and 
 Mountain map drawn (2026-10-10): Crystal Cave, Windy Peak, Snowy Hut, plus new Snack Shack and Ski Resort. The made-up store items moved to data/ideas.js (catalog only).
 
 ## Next
-5. Progress: 3 Adventure Points raise the Grade with a celebration; earning Crystals; hidden debug key (D) for +1 Adventure Point and +10 Crystals.
+5. Progress: 3 Adventure Points raise the Level with a celebration; earning Crystals; hidden debug key (D) for +1 Adventure Point and +10 Crystals.
 
 ## Data format (decided)
 Content files are `data/*.js` holding JSON-style data with one wrapper line (`GAME_DATA.items = [...];`), so double-clicking index.html works.

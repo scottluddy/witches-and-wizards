@@ -128,6 +128,53 @@ h2 {
 .character-name { font-size: 1.6rem; font-weight: 700; }
 .character-about { font-size: 1.05rem; }
 
+/* Witch or Wizard: two big buttons; the chosen one glows gold. */
+.kind-row { margin-top: 28px; font-size: 1.4rem; }
+.kind-row p { margin: 0; }
+.kind-row .button-row { margin-top: 12px; }
+
+.kind-button {
+  font-family: inherit;
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 200px;
+  padding: 14px 28px;
+  color: var(--magic-dark);
+  background: rgba(255, 250, 235, 0.8);
+  border: 4px dashed var(--parchment-dark);
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.kind-button:hover { border-color: var(--magic); }
+
+.kind-button.chosen {
+  border: 4px solid var(--gold);
+  background: #fffaf0;
+  box-shadow: 0 0 0 6px rgba(242, 193, 78, 0.4), 0 0 24px var(--gold);
+}
+
+/* The list of saved games on the title screen. */
+.continue-box {
+  margin: 32px auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  font-size: 1.3rem;
+}
+
+.continue-box select {
+  font-family: inherit;
+  font-size: 1.2rem;
+  width: min(480px, 100%);
+  padding: 10px 14px;
+  border: 4px solid var(--parchment-dark);
+  border-radius: 16px;
+  background: #fffaf0;
+  color: var(--ink);
+}
+
 .name-row {
   margin-top: 28px;
   display: flex;

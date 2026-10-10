@@ -1,7 +1,8 @@
 // The game's screens and what the buttons do.
 
-let player = loadSave();       // the saved game, or null
+let player = null;             // the game being played
 let chosenCharacterId = null;  // picked on the character select screen
+let chosenKind = null;         // "witch" or "wizard", picked on the same screen
 
 // Show one screen and hide all the others.
 function showScreen(id) {
@@ -13,13 +14,13 @@ function showScreen(id) {
   updateStatus();
 }
 
-// Fill in the status bar: character, player's name, Grade, Adventure Points (3 stars), Crystals and Gems.
+// Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals and Gems.
 function updateStatus() {
   if (!player) return;
   const character = findCharacter(player.characterId);
   document.getElementById("status-character").textContent = character ? character.name : "?";
   document.getElementById("status-player").textContent = "(" + player.playerName + ")";
-  document.getElementById("status-grade").textContent = player.grade;
+  document.getElementById("status-level").textContent = levelLabel(player);
   document.getElementById("status-points").textContent =
     "★".repeat(player.adventurePoints) + "☆".repeat(3 - player.adventurePoints);
   document.getElementById("status-crystals").textContent = player.crystals;
@@ -33,41 +34,62 @@ function findCharacter(id) {
 // ---------------------------------------------------------------- title
 
 function showTitle() {
+  player = null;
   document.getElementById("confirm-new").hidden = true;
-  const continueButton = document.getElementById("btn-continue");
-  const note = document.getElementById("continue-note");
-  continueButton.hidden = !player;
-  note.hidden = !player;
-  if (player) {
-    const character = findCharacter(player.characterId);
-    note.textContent = "Continue: " + player.playerName + " as " +
-      (character ? character.name : "?") + " (Grade " + player.grade + ")";
-  }
+  fillSavedGames();
   showScreen("screen-title");
 }
 
+// The dropdown of saved games, newest first, like
+// "Scott as Rosy, Witch Level 1 (Oct 10, 3:40 PM)".
+function fillSavedGames() {
+  const saves = loadSaves();
+  const list = document.getElementById("saved-games");
+  list.innerHTML = "";
+  saves.forEach(function (save) {
+    const option = document.createElement("option");
+    option.value = save.id;
+    option.textContent = saveName(save) + " (" + whenSaved(save) + ")";
+    list.appendChild(option);
+  });
+  document.getElementById("continue-box").hidden = saves.length === 0;
+}
+
+function saveName(save) {
+  const character = findCharacter(save.characterId);
+  return save.playerName + " as " + (character ? character.name : "?") + ", " + levelLabel(save);
+}
+
+function whenSaved(save) {
+  return new Date(save.savedAt).toLocaleString([], {
+    month: "short", day: "numeric", hour: "numeric", minute: "2-digit"
+  });
+}
+
 document.getElementById("btn-new-game").addEventListener("click", function () {
-  if (player) {
-    // Ask first, so a saved adventure isn't erased by accident.
-    document.getElementById("confirm-new-text").textContent =
-      "Start over? " + player.playerName + "'s adventure will be erased.";
+  const saves = loadSaves();
+  if (saves.length >= MAX_SAVES) {
+    // Ask first: the list is full, so the oldest game will be removed.
+    const oldest = saves[saves.length - 1];
+    document.getElementById("confirm-new-text").textContent = "Only " + MAX_SAVES +
+      " games can be saved. Starting a new one removes the oldest: " + saveName(oldest) + ".";
     document.getElementById("confirm-new").hidden = false;
     return;
   }
   showSelect();
 });
 
-document.getElementById("btn-confirm-yes").addEventListener("click", function () {
-  clearSave();
-  player = null;
-  showSelect();
-});
+document.getElementById("btn-confirm-yes").addEventListener("click", showSelect);
 
 document.getElementById("btn-confirm-no").addEventListener("click", function () {
   document.getElementById("confirm-new").hidden = true;
 });
 
 document.getElementById("btn-continue").addEventListener("click", function () {
+  const id = document.getElementById("saved-games").value;
+  player = loadSaves().find(function (save) { return save.id === id; });
+  if (!player) return;
+  writeSave(player); // moves it to the top of the list
   goTo(player.at);
 });
 
@@ -75,6 +97,7 @@ document.getElementById("btn-continue").addEventListener("click", function () {
 
 function showSelect() {
   chosenCharacterId = null;
+  chooseKind(null);
   document.getElementById("player-name").value = "";
   buildCharacterCards();
   updateStartButton();
@@ -116,9 +139,22 @@ function chooseCharacter(id) {
   document.getElementById("player-name").focus();
 }
 
+// Witch or Wizard.
+function chooseKind(kind) {
+  chosenKind = kind;
+  document.querySelectorAll(".kind-button").forEach(function (button) {
+    button.classList.toggle("chosen", button.dataset.kind === kind);
+  });
+  updateStartButton();
+}
+
+document.querySelectorAll(".kind-button").forEach(function (button) {
+  button.addEventListener("click", function () { chooseKind(button.dataset.kind); });
+});
+
 function updateStartButton() {
   const name = document.getElementById("player-name").value.trim();
-  document.getElementById("btn-start").disabled = !(chosenCharacterId && name);
+  document.getElementById("btn-start").disabled = !(chosenCharacterId && chosenKind && name);
 }
 
 document.getElementById("player-name").addEventListener("input", updateStartButton);
@@ -129,8 +165,8 @@ document.getElementById("player-name").addEventListener("keydown", function (eve
 
 document.getElementById("btn-start").addEventListener("click", function () {
   const name = document.getElementById("player-name").value.trim();
-  if (!chosenCharacterId || !name) return;
-  player = newPlayer(name, chosenCharacterId);
+  if (!chosenCharacterId || !chosenKind || !name) return;
+  player = newPlayer(name, chosenCharacterId, chosenKind);
   writeSave(player);
   goTo(player.at);
 });

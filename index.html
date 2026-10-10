@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=5">
+  <link rel="stylesheet" href="css/style.css?v=6">
 </head>
 <body>
 
@@ -17,16 +17,21 @@
     <p class="subtitle">A School of Magic Adventure</p>
     <div class="button-column">
       <button id="btn-new-game" class="big-button">New Game</button>
-      <button id="btn-continue" class="big-button" hidden>Continue</button>
     </div>
-    <p id="continue-note" class="note" hidden></p>
 
-    <!-- Asked before erasing a saved game -->
+    <!-- Saved games in this browser (newest first) -->
+    <div id="continue-box" class="continue-box" hidden>
+      <label for="saved-games">Continue a saved game:</label>
+      <select id="saved-games"></select>
+      <button id="btn-continue" class="big-button">Continue</button>
+    </div>
+
+    <!-- Asked before a new game pushes the oldest saved game off the list -->
     <div id="confirm-new" class="confirm-box" hidden>
       <p id="confirm-new-text"></p>
       <div class="button-row">
-        <button id="btn-confirm-no" class="big-button secondary">Keep Playing</button>
-        <button id="btn-confirm-yes" class="big-button">Start Over</button>
+        <button id="btn-confirm-no" class="big-button secondary">Go Back</button>
+        <button id="btn-confirm-yes" class="big-button">New Game</button>
       </div>
     </div>
 
@@ -44,6 +49,13 @@
   <section id="screen-select" class="screen" hidden>
     <h2>Choose Your Character</h2>
     <div id="character-list" class="character-list"></div>
+    <div class="kind-row">
+      <p>Are you a Witch or a Wizard?</p>
+      <div class="button-row">
+        <button class="kind-button" data-kind="witch">🧙‍♀️ Witch</button>
+        <button class="kind-button" data-kind="wizard">🧙‍♂️ Wizard</button>
+      </div>
+    </div>
     <div class="name-row">
       <label for="player-name">And what's <em>your</em> name?</label>
       <input id="player-name" type="text" maxlength="16" placeholder="Type a name" autocomplete="off">
@@ -57,10 +69,10 @@
   <!-- Status bar: shown while playing -->
   <header id="status-bar" class="status-bar" hidden>
     <span class="status-name"><b id="status-character"></b> <small id="status-player"></small></span>
-    <span class="status-item">Grade <b id="status-grade"></b></span>
+    <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=5" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=6" alt="Gems"> <b id="status-gems"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack</button>
     <button id="btn-cooler" class="small-button">🧊 Cooler</button>
   </header>
@@ -159,22 +171,22 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "5"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=5"></script>
-  <script src="data/places.js?v=5"></script>
-  <script src="data/paths.js?v=5"></script>
-  <script src="data/items.js?v=5"></script>
-  <script src="data/fish.js?v=5"></script>
-  <script src="data/furniture.js?v=5"></script>
-  <script src="data/furniture_art.js?v=5"></script>
-  <script src="data/drawn.js?v=5"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "6"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=6"></script>
+  <script src="data/places.js?v=6"></script>
+  <script src="data/paths.js?v=6"></script>
+  <script src="data/items.js?v=6"></script>
+  <script src="data/fish.js?v=6"></script>
+  <script src="data/furniture.js?v=6"></script>
+  <script src="data/furniture_art.js?v=6"></script>
+  <script src="data/drawn.js?v=6"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=5"></script>
-  <script src="js/world.js?v=5"></script>
-  <script src="js/items.js?v=5"></script>
-  <script src="js/fishing.js?v=5"></script>
-  <script src="js/furniture.js?v=5"></script>
-  <script src="js/game.js?v=5"></script>
+  <script src="js/save.js?v=6"></script>
+  <script src="js/world.js?v=6"></script>
+  <script src="js/items.js?v=6"></script>
+  <script src="js/fishing.js?v=6"></script>
+  <script src="js/furniture.js?v=6"></script>
+  <script src="js/game.js?v=6"></script>
 </body>
 </html>
