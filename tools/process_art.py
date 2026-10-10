@@ -268,7 +268,9 @@ def cut_out_furniture(place_id, drawing, paper, pieces):
     for piece in pieces:
         l, t, r, b = piece["box"]
         box = (round(w * l / 100), round(h * t / 100), round(w * r / 100), round(h * b / 100))
-        part = drawing.crop(box)
+        # Cut from the room as it is so far, so a piece never takes bits of a
+        # piece listed before it (like a chest's shadow next to a chair).
+        part = empty.crop(box)
         mask = find_drawing(part, piece.get("min_part", 0.05), piece.get("gap", GAP_CLOSE))
         sticker = on_paper(part, paper.crop(box)).convert("RGBA")
         sticker.putalpha(mask)
