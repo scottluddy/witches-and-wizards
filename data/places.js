@@ -59,7 +59,7 @@ GAME_DATA.places = [
   { "id": "cabin",     "name": "Toadstool Cottage", "type": "place", "in": "forest", "x": 28, "y": 68, "start": true,
     "description": "Inside the toadstool cottage: books, a comfy blue sofa and a little table. You can leave things here." },
   { "id": "old_oak",   "name": "Old Oak",        "type": "place", "in": "forest", "x": 62, "y": 34,
-    "description": "The oldest tree in the forest. Some say it whispers." },
+    "description": "Inside the oldest tree in the forest: a cozy teal sofa, a crackling fireplace and a pile of cushions. Some say it whispers." },
   { "id": "mushrooms", "name": "Mushroom Ring",  "type": "place", "in": "forest", "x": 76, "y": 74,
     "description": "A circle of glowing mushrooms. Fairies dance here at night." },
 

@@ -400,5 +400,14 @@
   "tool_pickaxe": {
     "see_through": true,
     "gap": 1
+  },
+  "place_old_oak": {
+    "rotate": 90,
+    "crop": [
+      4,
+      6,
+      99,
+      99.6
+    ]
   }
 }
