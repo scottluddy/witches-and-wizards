@@ -1,20 +1,23 @@
 // Where catches and finds are kept.
 //
 // While you're out, fish (and anything else a Lucky Rod pulls up) go in your
-// cooler, and things dug up at Pebble Beach go in your bucket. At Home, click
-// the cooler or the treasure chest (pieces of furniture with "holds" in
+// cooler, things dug up at Pebble Beach go in your bucket, and bones from the
+// Crystal Cave go in your satchel. At Home, click the cooler, the treasure
+// chest or the Spell Book Table (pieces of furniture with "holds" in
 // data/furniture.js) to empty your cooler or bucket into them for keeping.
 
 const STORAGE = {
   cooler:     { title: "🧊 Cooler",         empty: "Your cooler is empty. Go fishing at the Dock!" },
   bucket:     { title: "🪣 Bucket",         empty: "Your bucket is empty. Dig at Pebble Beach!" },
   homeCooler: { title: "🧊 Home Cooler",    empty: "Nothing in here yet.", from: "cooler" },
-  homeChest:  { title: "🧰 Treasure Chest", empty: "Nothing in here yet.", from: "bucket" }
+  homeChest:  { title: "🧰 Treasure Chest", empty: "Nothing in here yet.", from: "bucket" },
+  satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave!" },
+  homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave.", from: "satchel" }
 };
 
 // Every kind of thing that can be kept, so each one shows with its picture.
 function keepableThings() {
-  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || []);
+  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || []);
 }
 
 let openStorageName = null; // which store the pop-up is showing
@@ -69,4 +72,8 @@ document.getElementById("btn-cooler").addEventListener("click", function () {
 
 document.getElementById("btn-bucket").addEventListener("click", function () {
   if (!walking) openStorage("bucket");
+});
+
+document.getElementById("btn-satchel").addEventListener("click", function () {
+  if (!walking) openStorage("satchel");
 });

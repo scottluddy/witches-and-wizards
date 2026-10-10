@@ -154,6 +154,10 @@
     <p class="lede">Dug up at the Dig Spot on Pebble Beach (listed in <code>data/digging.js</code>). They go in your bucket, which you can empty into the treasure chest at Home. The Crystal Dig Spot finds Crystals instead.</p>
     <div id="beach-finds" class="grid"></div>
 
+    <h3>Crystal Cave finds</h3>
+    <p class="lede">Mined in the Crystal Cave with a pickaxe from the rack (listed in <code>data/mining.js</code>). Crystals add to your Crystals; bones go in your satchel, which you can empty at the Spell Book Table at Home.</p>
+    <div id="cave-finds" class="grid"></div>
+
     <h2>Good things to do</h2>
     <p class="lede">Activities that reward you for good things: Bonding (caring for your pet), Chores (tidying up) and Mining (gathering things). Ideas go in <code>data/gameplay.js</code> first, then get built into the right places in the game.</p>
     <div id="activities"></div>
@@ -176,16 +180,17 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "17"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=17"></script>
-  <script src="data/places.js?v=17"></script>
-  <script src="data/items.js?v=17"></script>
-  <script src="data/ideas.js?v=17"></script>
-  <script src="data/fish.js?v=17"></script>
-  <script src="data/digging.js?v=17"></script>
-  <script src="data/gameplay.js?v=17"></script>
-  <script src="data/extras.js?v=17"></script>
-  <script src="data/drawn.js?v=17"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "18"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=18"></script>
+  <script src="data/places.js?v=18"></script>
+  <script src="data/items.js?v=18"></script>
+  <script src="data/ideas.js?v=18"></script>
+  <script src="data/fish.js?v=18"></script>
+  <script src="data/digging.js?v=18"></script>
+  <script src="data/mining.js?v=18"></script>
+  <script src="data/gameplay.js?v=18"></script>
+  <script src="data/extras.js?v=18"></script>
+  <script src="data/drawn.js?v=18"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -329,6 +334,26 @@
         el("span", "kind", find.description + " (turns up " + find.chance + " out of " + findChance + " times)")
       ]));
     });
+
+    // Crystal Cave: the crystal drawings and the bone (data/mining.js).
+    const mining = GAME_DATA.mining;
+    if (mining) {
+      (GAME_DATA.mineCrystals || []).forEach(function (id, n) {
+        document.getElementById("cave-finds").appendChild(card("Crystal " + (n + 1), id, "💎", [
+          el("span", "price", "+" + mining.crystals[0] + " to " + mining.crystals[1] + " Crystals"),
+          el("span", "kind", mining.crystalSquares + " of the cave's " + mining.columns * mining.rows + " squares hide a crystal")
+        ]));
+      });
+      (GAME_DATA.mineFinds || []).forEach(function (find) {
+        document.getElementById("cave-finds").appendChild(card(find.name, find.id, find.emoji, [
+          el("span", "price", "For the satchel"),
+          el("span", "kind", find.description + " (" + mining.boneSquares + " squares hide one)")
+        ]));
+      });
+      document.getElementById("cave-finds").appendChild(card("Pickaxe rack", "mine_pickaxes", "⛏️", [
+        el("span", "kind", "Hangs in the Crystal Cave. Click it to take a pickaxe.")
+      ]));
+    }
 
     // Good things to do, grouped by kind, and the metrics (data/gameplay.js).
     function planRow(name, inGame, lines) {

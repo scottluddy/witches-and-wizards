@@ -40,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 
@@ -76,10 +76,12 @@ def flatten_paper(img):
     return Image.fromarray((flat * 255).astype(np.uint8))
 
 
-def find_drawing(flat, min_part, gap, ink_level=190):
+def find_drawing(flat, min_part, gap, ink_level=190, see_through=False):
     """Return a mask (L image) covering the drawing, with its insides filled in.
     ink_level: how pale a mark can be and still count as drawing (0-255; raise
-    it for drawings in very light colours, like pale yellow)."""
+    it for drawings in very light colours, like pale yellow).
+    see_through: leave the spaces inside the drawing see-through instead of
+    filling them in (for open shapes like the pickaxe rack)."""
     gray = flat.convert("L")
     scale = 500 / max(gray.size)
     small = gray.resize((round(gray.width * scale), round(gray.height * scale)))
@@ -93,6 +95,8 @@ def find_drawing(flat, min_part, gap, ink_level=190):
     padded.paste(ink, (1, 1))
     ImageDraw.floodfill(padded, (0, 0), 128)
     shape = padded.point(lambda v: 0 if v == 128 else 255).crop((1, 1, ink.width + 1, ink.height + 1))
+    if see_through:
+        shape = ink
     for _ in range(gap - 1):
         shape = shape.filter(ImageFilter.MinFilter(3))
 
@@ -140,7 +144,7 @@ def process_drawing(path, settings):
     img = load_photo(path, settings.get("crop"))
     flat = flatten_paper(img)
     mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE),
-                        settings.get("ink_level", 190))
+                        settings.get("ink_level", 190), settings.get("see_through", False))
 
     # Brighter colours and darker pencil lines.
     pretty = ImageEnhance.Color(flat).enhance(1.4)

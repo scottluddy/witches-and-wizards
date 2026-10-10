@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=17">
+  <link rel="stylesheet" href="css/style.css?v=18">
 </head>
 <body>
 
@@ -72,11 +72,12 @@
     <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=17" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=18" alt="Gems"> <b id="status-gems"></b></span>
     <span class="status-item" title="Chore Points">🧹 <b id="status-chores"></b></span>
     <button id="btn-backpack" class="small-button">🎒 Backpack</button>
     <button id="btn-cooler" class="small-button">🧊 Cooler</button>
     <button id="btn-bucket" class="small-button">🪣 Bucket</button>
+    <button id="btn-satchel" class="small-button">👜 Satchel</button>
     <button id="btn-switch-game" class="small-button" title="Save this game and go back to the title screen">💾 Switch Game</button>
   </header>
 
@@ -184,6 +185,7 @@
       <div id="place-furniture"></div>
       <div id="place-spots"></div>
       <div id="place-items"></div>
+      <div id="place-mine" hidden></div> <!-- the pickaxe rack and what you dig up in the Crystal Cave (js/mining.js) -->
     </div>
     <!-- Small and out of the way: only shown in rooms with movable furniture -->
     <div class="picture-tools">
@@ -205,27 +207,29 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "17"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=17"></script>
-  <script src="data/places.js?v=17"></script>
-  <script src="data/paths.js?v=17"></script>
-  <script src="data/items.js?v=17"></script>
-  <script src="data/fish.js?v=17"></script>
-  <script src="data/digging.js?v=17"></script>
-  <script src="data/chores.js?v=17"></script>
-  <script src="data/furniture.js?v=17"></script>
-  <script src="data/furniture_art.js?v=17"></script>
-  <script src="data/drawn.js?v=17"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "18"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=18"></script>
+  <script src="data/places.js?v=18"></script>
+  <script src="data/paths.js?v=18"></script>
+  <script src="data/items.js?v=18"></script>
+  <script src="data/fish.js?v=18"></script>
+  <script src="data/digging.js?v=18"></script>
+  <script src="data/chores.js?v=18"></script>
+  <script src="data/mining.js?v=18"></script>
+  <script src="data/furniture.js?v=18"></script>
+  <script src="data/furniture_art.js?v=18"></script>
+  <script src="data/drawn.js?v=18"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=17"></script>
-  <script src="js/world.js?v=17"></script>
-  <script src="js/items.js?v=17"></script>
-  <script src="js/fishing.js?v=17"></script>
-  <script src="js/digging.js?v=17"></script>
-  <script src="js/chores.js?v=17"></script>
-  <script src="js/storage.js?v=17"></script>
-  <script src="js/furniture.js?v=17"></script>
-  <script src="js/game.js?v=17"></script>
+  <script src="js/save.js?v=18"></script>
+  <script src="js/world.js?v=18"></script>
+  <script src="js/items.js?v=18"></script>
+  <script src="js/fishing.js?v=18"></script>
+  <script src="js/digging.js?v=18"></script>
+  <script src="js/chores.js?v=18"></script>
+  <script src="js/mining.js?v=18"></script>
+  <script src="js/storage.js?v=18"></script>
+  <script src="js/furniture.js?v=18"></script>
+  <script src="js/game.js?v=18"></script>
 </body>
 </html>

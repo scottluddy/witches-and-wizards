@@ -21,6 +21,8 @@ GAME_DATA.activities = [
     "note": "Finds Crystals." },
   { "name": "Fishing", "kind": "Mining", "where": "the Dock", "inGame": true,
     "note": "Fish and treasures for the cooler. (Put under Mining for now.)" },
+  { "name": "Mine in the Crystal Cave", "kind": "Mining", "where": "Crystal Cave", "inGame": true,
+    "note": "Take a pickaxe from the rack, then click the wall. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
   { "name": "Chop wood", "kind": "Mining", "where": "", "inGame": false,
     "note": "" }
 ];

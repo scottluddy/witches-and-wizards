@@ -64,7 +64,7 @@ GAME_DATA.places = [
     "description": "A circle of glowing mushrooms. Fairies dance here at night." },
 
   { "id": "cave",      "name": "Crystal Cave",   "type": "place", "in": "mountain", "x": 23, "y": 19, "start": true,
-    "description": "The walls sparkle with crystals." },
+    "description": "The walls sparkle with crystals. Take a pickaxe and mine for crystals and bones." },
   { "id": "peak",      "name": "Windy Peak",     "type": "place", "in": "mountain", "x": 49, "y": 10,
     "description": "You can see the whole world from up here!" },
   { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40, "opens": "rec_room",

@@ -47,6 +47,8 @@ function fillIn(save) {
   if (!save.bucket) save.bucket = [];
   if (!save.homeCooler) save.homeCooler = [];
   if (!save.homeChest) save.homeChest = [];
+  if (!save.satchel) save.satchel = [];
+  if (!save.homeMaterials) save.homeMaterials = [];
   if (save.treasures) {
     // Treasures used to have their own list: fishing ones go in the cooler,
     // dug-up ones in the bucket.
@@ -109,6 +111,8 @@ function newPlayer(playerName, characterId, kind) {
     bucket: [],               // what the character dug up at Pebble Beach and carries
     homeCooler: [],           // catches put away in the cooler at Home
     homeChest: [],            // finds put away in the treasure chest at Home
+    satchel: [],              // bones (and later other materials) from the Crystal Cave, carried
+    homeMaterials: [],        // materials put away at the Spell Book Table at Home, for spells
     furniture: {},            // where furniture was moved: { "rec_room": { "armchair": [x, y] } }
     chorePoints: 0,           // earned by doing chores, like cleaning your room (js/chores.js)
     dirt: {},                 // how dirty each room is: { "home": 2 } (0 is clean)

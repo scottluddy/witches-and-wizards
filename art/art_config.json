@@ -384,5 +384,21 @@
   "dress_winter": {
     "ink_level": 225,
     "gap": 12
+  },
+  "place_cave": {
+    "crop": [
+      4,
+      8,
+      90,
+      84
+    ]
+  },
+  "mine_pickaxes": {
+    "see_through": true,
+    "gap": 1
+  },
+  "tool_pickaxe": {
+    "see_through": true,
+    "gap": 1
   }
 }
