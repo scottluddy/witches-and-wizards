@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Witches and Wizards Catalog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* Layout: one reading column; the world is an indented tree, items a card grid. */
+    :root {
+      --bg: #f7ecd2;
+      --panel: #fffaf0;
+      --ink: #3b2a4d;
+      --muted: #7a6a5a;
+      --line: #e2c98e;
+      --accent: #6b3fa8;
+      --drawn: #2f7d4f;
+      --drawn-bg: #dcefdf;
+      --todo: #a15c12;
+      --todo-bg: #fbe6c8;
+      --display: "Grandstander", "Comic Sans MS", cursive;
+      --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+      --mono: ui-monospace, "SF Mono", Menlo, monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #221a2b; --panel: #2e2438; --ink: #f1e6d4; --muted: #b9a993; --line: #4a3d55;
+        --accent: #c9a6ff; --drawn: #8fd6a6; --drawn-bg: #1f3a2a; --todo: #f2b866; --todo-bg: #3e2c17;
+        color-scheme: dark;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #221a2b; --panel: #2e2438; --ink: #f1e6d4; --muted: #b9a993; --line: #4a3d55;
+      --accent: #c9a6ff; --drawn: #8fd6a6; --drawn-bg: #1f3a2a; --todo: #f2b866; --todo-bg: #3e2c17;
+      color-scheme: dark;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .page { max-width: 920px; margin: 0 auto; padding-inline: 16px; padding-block: 32px 64px; }
+
+    h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; }
+    h1 { font-size: clamp(2rem, 6vw, 3rem); color: var(--accent); }
+    h2 { font-size: 1.6rem; margin-block: 40px 12px; }
+    .lede { max-width: 62ch; color: var(--muted); margin-block: 8px 0; }
+
+    .tally { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; font-variant-numeric: tabular-nums; }
+    .tally b { font-family: var(--display); font-size: 1.4rem; color: var(--accent); }
+
+    .chip {
+      display: inline-block;
+      padding: 1px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .chip.drawn { color: var(--drawn); background: var(--drawn-bg); }
+    .chip.todo { color: var(--todo); background: var(--todo-bg); }
+    .kind { color: var(--muted); font-size: 0.85rem; }
+    code { font-family: var(--mono); font-size: 0.85em; overflow-wrap: anywhere; }
+    .file { color: var(--muted); font-size: 0.85rem; }
+
+    /* The world: nested list, each level indented with a rule. */
+    .tree, .tree ul { list-style: none; margin: 0; padding: 0; }
+    .tree ul { margin-left: 18px; padding-left: 16px; border-left: 2px dashed var(--line); }
+    .row {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 10px 0;
+    }
+    .row img {
+      width: 96px;
+      aspect-ratio: 16 / 10;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid var(--line);
+      background: var(--panel);
+    }
+    .row .name { font-family: var(--display); font-size: 1.15rem; margin-right: 8px; }
+    .row p { margin: 2px 0 0; }
+
+    /* Characters and items: cards. */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px; }
+    .card {
+      background: var(--panel);
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+    }
+    .card .art { height: 96px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+    .card .art img { max-height: 96px; max-width: 100%; }
+    .card .name { font-family: var(--display); font-size: 1.15rem; }
+    .card .price { font-variant-numeric: tabular-nums; }
+    h3 { font-size: 1.2rem; margin-block: 24px 10px; color: var(--accent); }
+
+    .howto { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 4px 20px 12px; }
+    .howto li { margin-block: 6px; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>Witches &amp; Wizards Catalog</h1>
+    <p class="lede">Everything in the game: the world and its places, the characters and the store's items.
+      Orange tags show pictures still waiting for a drawing, with the file name to save it as.</p>
+    <div id="tally" class="tally"></div>
+
+    <h2>The World</h2>
+    <ul id="world" class="tree"></ul>
+
+    <h2>Characters</h2>
+    <div id="characters" class="grid"></div>
+
+    <h2>Store Items</h2>
+    <div id="items"></div>
+
+    <h2>Adding something new</h2>
+    <div class="howto">
+      <ol>
+        <li>Places live in <code>data/places.js</code>, characters in <code>data/characters.js</code>, items in <code>data/items.js</code>.</li>
+        <li>Photograph a drawing and save it in <code>art/raw</code> with the file name shown here.</li>
+        <li>Run <code>python3 tools/process_art.py</code>. The drawing replaces the placeholder and its tag turns green.</li>
+      </ol>
+    </div>
+  </main>
+
+  <script>var GAME_DATA = {};</script>
+  <script src="data/characters.js"></script>
+  <script src="data/places.js"></script>
+  <script src="data/items.js"></script>
+  <script src="data/drawn.js"></script>
+  <script>
+    // Builds the catalog straight from the game's data files, so it never goes out of date.
+    const drawn = GAME_DATA.drawn || [];
+    const places = GAME_DATA.places || [];
+    let needed = 0;
+
+    function el(tag, className, text) {
+      const e = document.createElement(tag);
+      if (className) e.className = className;
+      if (text !== undefined) e.textContent = text;
+      return e;
+    }
+
+    // Green "Drawn" tag, or orange "Needs drawing" plus the file name to use.
+    function artTag(name) {
+      const box = el("span");
+      if (drawn.indexOf(name) !== -1) {
+        box.appendChild(el("span", "chip drawn", "Drawn"));
+      } else {
+        needed++;
+        box.appendChild(el("span", "chip todo", "Needs drawing"));
+        box.appendChild(document.createTextNode(" "));
+        box.appendChild(el("code", "file", "art/raw/" + name + ".jpg"));
+      }
+      return box;
+    }
+
+    function kindOf(place) {
+      if (place.type === "person") return "person: says \u201c" + (place.says || "") + "\u201d";
+      if (!place.in) return "whole world map";
+      if (place.type === "map") return "territory map";
+      if (place.shelf) return "store shelf: " + place.shelf;
+      return "location";
+    }
+
+    function placeRow(place) {
+      const li = el("li");
+      const row = el("div", "row");
+      const isPerson = place.type === "person";
+      const picName = (place.type === "map" ? "map_" : "place_") + place.id;
+      const img = el(isPerson ? "span" : "img");
+      if (!isPerson) {
+        img.src = "art/processed/" + picName + ".png";
+        img.alt = "";
+        img.loading = "lazy";
+      }
+      const text = el("div");
+      text.appendChild(el("span", "name", place.name));
+      text.appendChild(el("span", "kind", kindOf(place)));
+      if (place.description) text.appendChild(el("p", "", place.description));
+      if (!isPerson) {
+        const tag = el("p");
+        tag.appendChild(artTag(picName));
+        text.appendChild(tag);
+      }
+      row.append(img, text);
+      li.appendChild(row);
+
+      const children = places.filter(function (p) { return p.in === place.id; });
+      if (children.length) {
+        const ul = el("ul");
+        children.forEach(function (c) { ul.appendChild(placeRow(c)); });
+        li.appendChild(ul);
+      }
+      return li;
+    }
+
+    function card(name, artName, emoji, lines) {
+      const c = el("div", "card");
+      const art = el("div", "art");
+      if (drawn.indexOf(artName) !== -1) {
+        const img = el("img");
+        img.src = "art/processed/" + artName + ".png";
+        img.alt = "";
+        art.appendChild(img);
+      } else {
+        art.textContent = emoji;
+      }
+      c.append(art, el("span", "name", name));
+      lines.forEach(function (line) { if (line) c.appendChild(line); });
+      c.appendChild(artTag(artName));
+      return c;
+    }
+
+    places.filter(function (p) { return !p.in; }).forEach(function (root) {
+      document.getElementById("world").appendChild(placeRow(root));
+    });
+
+    (GAME_DATA.characters || []).forEach(function (ch) {
+      document.getElementById("characters").appendChild(
+        card(ch.name, ch.id, "🧙", [el("span", "kind", ch.description)]));
+    });
+
+    const itemsBox = document.getElementById("items");
+    const categories = [];
+    (GAME_DATA.items || []).forEach(function (item) {
+      if (categories.indexOf(item.category) === -1) categories.push(item.category);
+    });
+    categories.forEach(function (category) {
+      itemsBox.appendChild(el("h3", "", category));
+      const grid = el("div", "grid");
+      GAME_DATA.items.filter(function (i) { return i.category === category; }).forEach(function (item) {
+        grid.appendChild(card(item.name, item.id, item.emoji || "✨", [
+          el("span", "price", "💎 " + item.price + " Crystals"),
+          item.description ? el("span", "kind", item.description) : null
+        ]));
+      });
+      itemsBox.appendChild(grid);
+    });
+
+    const territories = places.filter(function (p) { return p.type === "map" && p.in; }).length;
+    const locations = places.filter(function (p) { return p.type === "place" && !p.shelf; }).length;
+    // (people, like the clerk, are part of their place's picture)
+    const shelves = places.filter(function (p) { return p.shelf; }).length;
+    const tally = [
+      [territories, "territories"], [locations, "locations"], [shelves, "store shelves"],
+      [(GAME_DATA.characters || []).length, "characters"], [(GAME_DATA.items || []).length, "items"],
+      [needed, "drawings to make"]
+    ];
+    tally.forEach(function (t) {
+      const span = el("span");
+      span.appendChild(el("b", "", String(t[0])));
+      span.appendChild(document.createTextNode(" " + t[1]));
+      document.getElementById("tally").appendChild(span);
+    });
+  </script>
+</body>
+</html>

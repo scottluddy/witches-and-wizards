@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Witches and Wizards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Title screen -->
+  <section id="screen-title" class="screen">
+    <div class="sparkles">✨ 🌙 ✨</div>
+    <h1>Witches &amp; Wizards</h1>
+    <p class="subtitle">A School of Magic Adventure</p>
+    <div class="button-column">
+      <button id="btn-new-game" class="big-button">New Game</button>
+      <button id="btn-continue" class="big-button" hidden>Continue</button>
+    </div>
+    <p id="continue-note" class="note" hidden></p>
+
+    <!-- Asked before erasing a saved game -->
+    <div id="confirm-new" class="confirm-box" hidden>
+      <p id="confirm-new-text"></p>
+      <div class="button-row">
+        <button id="btn-confirm-no" class="big-button secondary">Keep Playing</button>
+        <button id="btn-confirm-yes" class="big-button">Start Over</button>
+      </div>
+    </div>
+
+    <!-- Shown only if the game's code couldn't load; game.js hides it -->
+    <p id="load-error" class="load-error">
+      Oops, the game couldn't start. Open <b>index.html</b> from the unzipped game folder
+      (keep the css, js, data and art folders next to it).
+    </p>
+  </section>
+
+  <!-- Character select screen -->
+  <section id="screen-select" class="screen" hidden>
+    <h2>Choose Your Character</h2>
+    <div id="character-list" class="character-list"></div>
+    <div class="name-row">
+      <label for="player-name">And what's <em>your</em> name?</label>
+      <input id="player-name" type="text" maxlength="16" placeholder="Type a name" autocomplete="off">
+    </div>
+    <div class="button-row">
+      <button id="btn-select-back" class="big-button secondary">Back</button>
+      <button id="btn-start" class="big-button" disabled>Start Adventure!</button>
+    </div>
+  </section>
+
+  <!-- Status bar: shown while playing -->
+  <header id="status-bar" class="status-bar" hidden>
+    <span class="status-name"><b id="status-character"></b> <small id="status-player"></small></span>
+    <span class="status-item">Grade <b id="status-grade"></b></span>
+    <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
+    <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
+    <button id="btn-backpack" class="small-button">🎒 Backpack</button>
+  </header>
+
+  <!-- Pop-up: one item from a shelf (take it free, or buy it) -->
+  <div id="item-panel" class="overlay" hidden>
+    <div class="panel">
+      <div id="item-panel-art" class="panel-art"></div>
+      <h2 id="item-panel-name"></h2>
+      <p id="item-panel-description" class="note"></p>
+      <p id="item-panel-message" class="panel-message"></p>
+      <div class="button-row">
+        <button id="btn-item-close" class="big-button secondary">Not now</button>
+        <button id="btn-item-get" class="big-button"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-up: the backpack -->
+  <div id="backpack-panel" class="overlay" hidden>
+    <div class="panel panel-wide">
+      <h2 id="backpack-title"></h2>
+      <p id="backpack-free" class="note"></p>
+      <div id="backpack-items" class="item-row"></div>
+      <div id="backpack-elsewhere" class="elsewhere"></div>
+      <button id="btn-backpack-close" class="big-button secondary">Close</button>
+    </div>
+  </div>
+
+  <!-- A map: the world, or a territory. The character walks around on it. -->
+  <section id="screen-map" class="screen screen-wide" hidden>
+    <div class="screen-top">
+      <button id="btn-map-back" class="small-button" hidden></button>
+      <h2 id="map-title" class="screen-title"></h2>
+    </div>
+    <div id="map" class="picture">
+      <img id="map-image" class="picture-image" alt="">
+      <svg id="map-paths" class="map-paths" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+      <div id="map-spots"></div>
+      <div id="map-sprite" class="map-sprite"><img id="map-sprite-img" alt=""></div>
+    </div>
+    <p id="map-hint" class="note">Click a place to walk there.</p>
+  </section>
+
+  <!-- A place: a picture with spots to click (the store, a shelf, home...) -->
+  <section id="screen-place" class="screen screen-wide" hidden>
+    <div class="screen-top">
+      <button id="btn-place-back" class="small-button"></button>
+      <h2 id="place-title" class="screen-title"></h2>
+    </div>
+    <div id="place-picture" class="picture">
+      <img id="place-image" class="picture-image" alt="">
+      <div id="place-spots"></div>
+      <div id="place-items"></div>
+    </div>
+    <p id="place-description" class="note"></p>
+    <p id="shelf-note" class="shelf-note" hidden></p>
+
+    <!-- Things the player has put down here -->
+    <div id="left-here" class="left-here" hidden>
+      <h3>Left here</h3>
+      <div id="left-here-items" class="item-row"></div>
+    </div>
+  </section>
+
+  <!-- Placement mode (press P): shows where you clicked -->
+  <p id="placement-info" class="placement-info" hidden></p>
+
+  <!-- Game content. Every data file adds to GAME_DATA. -->
+  <script>var GAME_DATA = {};</script>
+  <script src="data/characters.js"></script>
+  <script src="data/places.js"></script>
+  <script src="data/paths.js"></script>
+  <script src="data/items.js"></script>
+  <script src="data/drawn.js"></script>
+
+  <!-- Game code -->
+  <script src="js/save.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/items.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

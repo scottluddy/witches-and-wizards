@@ -1,0 +1,274 @@
+// Items: store shelves, the free Scholarship picks, buying, the backpack,
+// and putting things down at places.
+
+// Gaps on a shelf picture where items stand, as [top, bottom] percent down
+// from the top. A shelf can set its own with "rows" in places.js; this default
+// matches the placeholder shelf in tools/process_art.py.
+const SHELF_ROWS = [[21, 42], [45, 66], [69, 90]];
+const ITEMS_PER_ROW = 3;
+
+let shownItem = null; // the item open in the pop-up
+
+function findItem(id) {
+  return GAME_DATA.items.find(function (item) { return item.id === id; });
+}
+
+// A picture of the item: its drawing, or its emoji until it's drawn.
+function itemArt(item) {
+  if (isDrawn(item.id)) {
+    const img = document.createElement("img");
+    img.src = picture(item.id);
+    img.alt = item.name;
+    return img;
+  }
+  const span = document.createElement("span");
+  span.className = "emoji";
+  span.textContent = item.emoji || "✨";
+  return span;
+}
+
+// ---------------------------------------------------------------- owning things
+
+function freePicks() {
+  if (!player.freePicks) player.freePicks = {}; // category -> the item chosen free
+  return player.freePicks;
+}
+
+function hasFreePick(category) {
+  return !freePicks()[category];
+}
+
+// Owned means carried in the backpack or left somewhere.
+function owns(itemId) {
+  if (player.backpack.indexOf(itemId) !== -1) return true;
+  return Object.keys(player.stored).some(function (placeId) {
+    return player.stored[placeId].indexOf(itemId) !== -1;
+  });
+}
+
+function categories() {
+  const list = [];
+  GAME_DATA.items.forEach(function (item) {
+    if (list.indexOf(item.category) === -1) list.push(item.category);
+  });
+  return list;
+}
+
+// ---------------------------------------------------------------- what a place shows
+
+function showPlaceItems(place) {
+  showShelfItems(place);
+  showLeftHere(place);
+}
+
+// Items standing in the gaps of the shelf picture, three to a gap.
+function showShelfItems(place) {
+  const box = document.getElementById("place-items");
+  const note = document.getElementById("shelf-note");
+  box.innerHTML = "";
+  note.hidden = !place.shelf;
+  if (!place.shelf) return;
+
+  const items = GAME_DATA.items.filter(function (item) { return item.category === place.shelf; });
+  const rows = place.rows || SHELF_ROWS;
+  items.forEach(function (item, i) {
+    const row = Math.floor(i / ITEMS_PER_ROW);
+    const inRow = Math.min(ITEMS_PER_ROW, items.length - row * ITEMS_PER_ROW);
+    const col = i % ITEMS_PER_ROW;
+    // An item can choose its own spot with "shelfX"/"shelfY" in items.js.
+    const x = item.shelfX !== undefined ? item.shelfX : 50 + (col - (inRow - 1) / 2) * 27;
+    const gap = rows[Math.min(row, rows.length - 1)];
+    const y = item.shelfY !== undefined ? item.shelfY : gap[1];
+
+    const button = document.createElement("button");
+    button.className = "shelf-item" + (owns(item.id) ? " owned" : "");
+    button.style.left = x + "%";
+    button.style.top = y + "%";
+    button.style.height = (gap[1] - gap[0]) + "%"; // fits inside the gap
+    const art = document.createElement("span");
+    art.className = "shelf-art";
+    art.appendChild(itemArt(item));
+    const tag = document.createElement("span");
+    tag.className = "price-tag";
+    tag.textContent = owns(item.id) ? "Yours ✓"
+      : hasFreePick(item.category) ? "FREE" : "💎 " + item.price;
+    button.append(art, tag);
+    button.title = item.name;
+    button.addEventListener("click", function () {
+      if (!placementMode) openItemPanel(item.id);
+    });
+    box.appendChild(button);
+  });
+
+  note.textContent = hasFreePick(place.shelf)
+    ? "Your Scholarship gives you one " + place.shelf + " for FREE! Click one to choose it."
+    : "Click an item to see it. Items cost Crystals.";
+}
+
+// Things the player put down here, with a way to pick them back up.
+function showLeftHere(place) {
+  const box = document.getElementById("left-here");
+  const list = document.getElementById("left-here-items");
+  const here = player.stored[place.id] || [];
+  box.hidden = here.length === 0;
+  list.innerHTML = "";
+  here.forEach(function (itemId) {
+    const item = findItem(itemId);
+    if (!item) return;
+    list.appendChild(itemCard(item, "Pick up", function () {
+      player.stored[place.id] = here.filter(function (id) { return id !== itemId; });
+      if (player.stored[place.id].length === 0) delete player.stored[place.id];
+      player.backpack.push(itemId);
+      writeSave(player);
+      showLeftHere(place);
+    }));
+  });
+}
+
+// A small card: picture, name, and an optional button.
+function itemCard(item, buttonText, onClick) {
+  const card = document.createElement("div");
+  card.className = "item-card";
+  const art = document.createElement("span");
+  art.className = "item-art";
+  art.appendChild(itemArt(item));
+  const name = document.createElement("span");
+  name.className = "item-name";
+  name.textContent = item.name;
+  card.append(art, name);
+  if (buttonText) {
+    const button = document.createElement("button");
+    button.className = "small-button";
+    button.textContent = buttonText;
+    button.addEventListener("click", onClick);
+    card.appendChild(button);
+  }
+  return card;
+}
+
+// ---------------------------------------------------------------- the item pop-up
+
+function openItemPanel(itemId) {
+  const item = findItem(itemId);
+  shownItem = item;
+  const art = document.getElementById("item-panel-art");
+  art.innerHTML = "";
+  art.appendChild(itemArt(item));
+  document.getElementById("item-panel-name").textContent = item.name;
+  document.getElementById("item-panel-description").textContent = item.description || "";
+
+  const message = document.getElementById("item-panel-message");
+  const getButton = document.getElementById("btn-item-get");
+  getButton.hidden = false;
+  getButton.disabled = false;
+  if (owns(item.id)) {
+    message.textContent = "You already have this one!";
+    getButton.hidden = true;
+  } else if (hasFreePick(item.category)) {
+    message.textContent = "This can be your free " + item.category + ". You only get one, so choose carefully!";
+    getButton.textContent = "Take it for FREE";
+  } else if (player.crystals >= item.price) {
+    message.textContent = "It costs 💎 " + item.price + ". You have 💎 " + player.crystals + ".";
+    getButton.textContent = "Buy for 💎 " + item.price;
+  } else {
+    message.textContent = "It costs 💎 " + item.price + ", but you have 💎 " + player.crystals +
+      ". Go on adventures to earn more Crystals!";
+    getButton.textContent = "Not enough Crystals";
+    getButton.disabled = true;
+  }
+  document.getElementById("item-panel").hidden = false;
+}
+
+function closeItemPanel() {
+  document.getElementById("item-panel").hidden = true;
+  shownItem = null;
+}
+
+document.getElementById("btn-item-close").addEventListener("click", closeItemPanel);
+
+document.getElementById("btn-item-get").addEventListener("click", function () {
+  const item = shownItem;
+  if (!item || owns(item.id)) return;
+  if (hasFreePick(item.category)) {
+    freePicks()[item.category] = item.id;
+    if (categories().every(function (c) { return !hasFreePick(c); })) player.scholarship = false;
+  } else if (player.crystals >= item.price) {
+    player.crystals -= item.price;
+  } else {
+    return;
+  }
+  player.backpack.push(item.id);
+  writeSave(player);
+  closeItemPanel();
+  showPlace(player.at); // redraw the shelf so it shows "Yours ✓"
+  document.getElementById("shelf-note").textContent =
+    "🎒 " + item.name + " went into your backpack!";
+});
+
+// ---------------------------------------------------------------- the backpack
+
+// Things can be put down inside places, but not on maps or store shelves.
+function canPutDownHere() {
+  const place = findPlace(player.at);
+  return place && place.type === "place" && !place.shelf;
+}
+
+function openBackpack() {
+  const character = findCharacter(player.characterId);
+  document.getElementById("backpack-title").textContent =
+    "🎒 " + (character ? character.name : "Your") + "'s Backpack";
+
+  const left = categories().filter(hasFreePick);
+  document.getElementById("backpack-free").textContent = left.length
+    ? "Free Scholarship items still to choose at the Campus Store: " + left.join(", ") + "."
+    : "";
+
+  const list = document.getElementById("backpack-items");
+  list.innerHTML = "";
+  if (player.backpack.length === 0) {
+    list.textContent = "Your backpack is empty.";
+  }
+  const place = findPlace(player.at);
+  player.backpack.forEach(function (itemId) {
+    const item = findItem(itemId);
+    if (!item) return;
+    const putDown = canPutDownHere() ? "Put down here" : null;
+    list.appendChild(itemCard(item, putDown, function () {
+      player.backpack = player.backpack.filter(function (id) { return id !== itemId; });
+      player.stored[place.id] = (player.stored[place.id] || []).concat([itemId]);
+      writeSave(player);
+      openBackpack();
+      showLeftHere(place);
+    }));
+  });
+
+  // A reminder of things left around the world.
+  const elsewhere = document.getElementById("backpack-elsewhere");
+  elsewhere.innerHTML = "";
+  Object.keys(player.stored).forEach(function (placeId) {
+    const spot = findPlace(placeId);
+    const names = player.stored[placeId].map(function (id) {
+      const item = findItem(id);
+      return item ? item.name : id;
+    });
+    if (!spot || names.length === 0) return;
+    const line = document.createElement("p");
+    line.textContent = "Left at " + spot.name + ": " + names.join(", ");
+    elsewhere.appendChild(line);
+  });
+  if (!canPutDownHere() && player.backpack.length) {
+    const tip = document.createElement("p");
+    tip.className = "note";
+    tip.textContent = "Tip: go inside a place, like Home, to put things down.";
+    elsewhere.appendChild(tip);
+  }
+  document.getElementById("backpack-panel").hidden = false;
+}
+
+document.getElementById("btn-backpack").addEventListener("click", function () {
+  if (!walking) openBackpack();
+});
+
+document.getElementById("btn-backpack-close").addEventListener("click", function () {
+  document.getElementById("backpack-panel").hidden = true;
+});

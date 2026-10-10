@@ -1,0 +1,123 @@
+{
+  "_help": "Optional settings per drawing in art/raw (use the file name without its extension). crop = [left, top, right, bottom] as percentages of the photo, to cut away names, numbers and box lines. gap = how big a break in the pencil outline still gets filled in (default 6; raise it if parts of the inside turn see-through, lower it if nearby writing gets glued on). min_part = how big a separate piece must be (compared to the biggest piece) to be kept; raise it if stray scribbles sneak in. Drawings not listed here use the defaults.",
+  "charmy": {
+    "crop": [
+      22,
+      37,
+      84,
+      93
+    ],
+    "gap": 10
+  },
+  "winky": {
+    "crop": [
+      10,
+      42,
+      80,
+      91
+    ]
+  },
+  "broom_snowball": {
+    "crop": [
+      18,
+      26,
+      72,
+      82
+    ],
+    "gap": 3,
+    "min_part": 0.3
+  },
+  "map_world": {
+    "rotate": 90,
+    "crop": [
+      2,
+      4,
+      92,
+      96
+    ],
+    "erase": [
+      [
+        0,
+        70,
+        14,
+        100
+      ],
+      [
+        0,
+        43,
+        2,
+        49
+      ]
+    ],
+    "washes": [
+      [
+        35,
+        78,
+        20,
+        "#9cc47a"
+      ],
+      [
+        70,
+        89,
+        14,
+        "#cfe39b"
+      ],
+      [
+        77,
+        19,
+        13,
+        "#bcc6da"
+      ],
+      [
+        93,
+        15,
+        5,
+        "#f7d96a"
+      ],
+      [
+        73,
+        59,
+        7,
+        "#cdb8ea"
+      ],
+      [
+        93,
+        66,
+        7,
+        "#8fc3ea"
+      ],
+      [
+        31,
+        30,
+        14,
+        "#ecd0a6"
+      ]
+    ]
+  },
+  "place_store": {
+    "rotate": 180,
+    "crop": [
+      5,
+      2,
+      97,
+      94
+    ]
+  },
+  "place_shelves": {
+    "rotate": 270,
+    "crop": [
+      6,
+      7,
+      100,
+      94
+    ],
+    "also_as": [
+      "place_shelf_brooms",
+      "place_shelf_pets",
+      "place_shelf_potions",
+      "place_shelf_hats",
+      "place_shelf_wands",
+      "place_shelf_special"
+    ]
+  }
+}
