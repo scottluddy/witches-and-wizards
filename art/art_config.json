@@ -463,5 +463,119 @@
       85,
       100
     ]
+  },
+  "pet_cat_orange": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "pet_owl_little": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "pet_owl_orange": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "pet_turtle_egg": {
+    "ink_level": 238,
+    "min_part": 0.02,
+    "gap": 14
+  },
+  "potion_invisibility": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_levitating_star": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_night_vision": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_power_up": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_sense_trade": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_healing": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_cozy": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "pet_owl_gray": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "pet_cat_black": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_underwater": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_shrinking": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_speed": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_animal_talk": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "potion_growing": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "broom_cabin_1": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "broom_cabin_2": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_1": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_2": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_3": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_4": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_5": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "wand_set_6": {
+    "ink_level": 205,
+    "min_part": 0.2
+  },
+  "pet_turtle_little": {
+    "ink_level": 225,
+    "min_part": 0.02
+  },
+  "extra_unicorn": {
+    "ink_level": 215,
+    "gap": 16,
+    "min_part": 0.05
   }
 }

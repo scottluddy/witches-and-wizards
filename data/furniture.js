@@ -30,5 +30,9 @@ GAME_DATA.furniture = [
   { "place": "home", "id": "spellbook_table", "name": "Spell Book Table", "holds": "homeMaterials", "box": [19.6, 73.6, 42.0, 96.0], "min_part": 0.002 },
   { "place": "old_oak", "id": "sofa",     "name": "Teal Sofa",  "box": [4, 54, 48, 84.5] },
   { "place": "old_oak", "id": "pouf",     "name": "Round Stool", "box": [52, 67, 61, 78.5] },
+  { "place": "mountain_house", "id": "table",  "name": "Table and Mug", "box": [7, 66, 29, 83], "min_part": 0.01 },
+  { "place": "mountain_house", "id": "pink_chair",  "name": "Pink Armchair",  "box": [36, 68, 64, 85] },
+  { "place": "mountain_house", "id": "green_chair", "name": "Green Armchair", "box": [63, 68, 90, 82] },
+  { "place": "mountain_house", "id": "pencil", "name": "Pencil", "box": [11, 84.5, 25, 93], "min_part": 0.01 },
   { "place": "old_oak", "id": "cushions", "name": "Cushions",   "box": [20, 82, 72, 97.2], "ink_level": 235, "min_part": 0.01 }
 ];

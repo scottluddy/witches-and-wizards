@@ -6,6 +6,8 @@
 //   category    Broomstick, Pet, Potion, Hat, Wand or Special Item
 //   price       cost in Crystals (after the Scholarship is used up)
 //   gems        cost in Gems instead of Crystals (Gems are earned by fishing)
+//   trade       true for Trading Post items: they can't be bought, only traded
+//               for something from your backpack (see data/trading.js)
 //   emoji       shown until there's a drawing
 //   inPicture   true when the item is already drawn in its shop's picture: only
 //               its price tag shows there, at shelfX/shelfY (percent)
@@ -60,5 +62,48 @@ GAME_DATA.items = [
   {"id": "dress_magenta_winter", "name": "Magenta Winter Dress", "category": "Dresses", "price": 4, "emoji": "👗", "inPicture": true, "shelfX": 58, "shelfY": 29, "description": "A bright magenta winter dress with frills."},
   {"id": "dress_summer_ballgown", "name": "Summer Ballgown", "category": "Dresses", "price": 1, "emoji": "👗", "inPicture": true, "shelfX": 79, "shelfY": 30, "description": "A sunny yellow and orange ballgown with a bow."},
   {"id": "dress_golden_rose", "name": "Golden Rose Fall Dress", "category": "Dresses", "price": 3, "emoji": "👗", "inPicture": true, "shelfX": 14, "shelfY": 75, "description": "A red fall dress with a golden rose."},
-  {"id": "dress_iridescent_spring", "name": "Iridescent Spring Gown", "category": "Dresses", "price": 2, "emoji": "👗", "inPicture": true, "shelfX": 81, "shelfY": 75, "description": "A shimmering blue spring gown."}
+  {"id": "dress_iridescent_spring", "name": "Iridescent Spring Gown", "category": "Dresses", "price": 2, "emoji": "👗", "inPicture": true, "shelfX": 81, "shelfY": 75, "description": "A shimmering blue spring gown."},
+  {"id": "wand_trade_star", "name": "Star Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 11.2, "shelfY": 47.9, "description": "A wand with a yellow star on top."},
+  {"id": "wand_trade_pink", "name": "Pink Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 31.9, "shelfY": 47.9, "description": "A wand with a pink gem on top."},
+  {"id": "wand_trade_orange", "name": "Orange Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 49.1, "shelfY": 47.9, "description": "A wand with an orange gem on top."},
+  {"id": "wand_trade_blue", "name": "Blue Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 69.7, "shelfY": 47.9, "description": "A wand with a blue gem on top."},
+  {"id": "wand_trade_green", "name": "Green Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 15.6, "shelfY": 88.5, "description": "A wand with a green gem on top."},
+  {"id": "wand_trade_red", "name": "Red Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 38.1, "shelfY": 88.5, "description": "A wand with a red gem on top."},
+  {"id": "wand_trade_silver", "name": "Silver Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 59.1, "shelfY": 85.4, "description": "A wand with a silver gem on top."},
+  {"id": "wand_trade_purple", "name": "Purple Gem Wand", "category": "Trading Wands", "trade": true, "emoji": "🪄", "inPicture": true, "shelfX": 79.1, "shelfY": 85.4, "description": "A wand with a purple gem on top."},
+  {"id": "potion_luck", "name": "Luck Potion", "category": "Trading Potions", "trade": true, "emoji": "❤️", "inPicture": true, "shelfX": 20.4, "shelfY": 30.0, "description": "A heart-shaped bottle full of good luck."},
+  {"id": "potion_levitating_star", "name": "Levitating Potion (Star)", "category": "Trading Potions", "trade": true, "emoji": "⭐", "inPicture": true, "shelfX": 82.2, "shelfY": 49.3, "description": "A star-shaped bottle. One sip and you float."},
+  {"id": "potion_sense_trade", "name": "Sense Potion (Tall)", "category": "Trading Potions", "trade": true, "emoji": "🧪", "inPicture": true, "shelfX": 28.3, "shelfY": 60.3, "description": "A tall green Sense Potion. It works for the Seeing Spell."},
+  {"id": "potion_invisibility", "name": "Invisibility Potion", "category": "Trading Potions", "trade": true, "emoji": "🫥", "inPicture": true, "shelfX": 42.4, "shelfY": 60.7, "description": "A round blue bottle. Drink it and nobody can see you."},
+  {"id": "potion_night_vision", "name": "Night Vision Potion", "category": "Trading Potions", "trade": true, "emoji": "🌙", "inPicture": true, "shelfX": 82.2, "shelfY": 68.2, "description": "A little purple bottle for seeing in the dark."},
+  {"id": "potion_underwater", "name": "Underwater Breathing Potion", "category": "Trading Potions", "trade": true, "emoji": "🫧", "inPicture": true, "shelfX": 19.3, "shelfY": 82.0, "description": "A purple bottle for breathing under water."},
+  {"id": "potion_power_up", "name": "Power Up Potion", "category": "Trading Potions", "trade": true, "emoji": "⚡", "inPicture": true, "shelfX": 52.0, "shelfY": 92.0, "description": "A big red bottle full of power."},
+  {"id": "potion_healing", "name": "Healing Potion", "category": "Trading Potions", "trade": true, "emoji": "❤️‍🩹", "inPicture": true, "shelfX": 83.2, "shelfY": 94.1, "description": "A red bottle that makes you feel better."},
+  {"id": "pet_turtle_trade", "name": "Green Turtle", "category": "Trading Pets", "trade": true, "emoji": "🐢", "inPicture": true, "shelfX": 29.2, "shelfY": 30.1, "description": "A turtle with a speckled orange shell."},
+  {"id": "pet_turtle_egg", "name": "Turtle Egg", "category": "Trading Pets", "trade": true, "emoji": "🥚", "inPicture": true, "shelfX": 54.2, "shelfY": 31.9, "description": "A turtle egg. What will hatch?"},
+  {"id": "pet_turtle_little", "name": "Little Turtle", "category": "Trading Pets", "trade": true, "emoji": "🐢", "inPicture": true, "shelfX": 66.3, "shelfY": 33.7, "description": "A small turtle with a yellow head."},
+  {"id": "pet_owl_gray", "name": "Gray Owl", "category": "Trading Pets", "trade": true, "emoji": "🦉", "inPicture": true, "shelfX": 19.2, "shelfY": 61.0, "description": "A gray owl with pointy ear tufts."},
+  {"id": "pet_owl_little", "name": "Little Owl", "category": "Trading Pets", "trade": true, "emoji": "🦉", "inPicture": true, "shelfX": 36.9, "shelfY": 61.0, "description": "A tiny gray owl."},
+  {"id": "pet_owl_orange", "name": "Orange Owl", "category": "Trading Pets", "trade": true, "emoji": "🦉", "inPicture": true, "shelfX": 64.7, "shelfY": 64.0, "description": "A tall owl with an orange tummy."},
+  {"id": "pet_cat_orange", "name": "Orange Cat", "category": "Trading Pets", "trade": true, "emoji": "🐈", "inPicture": true, "shelfX": 23.4, "shelfY": 85.8, "description": "A fluffy orange cat."},
+  {"id": "pet_cat_black", "name": "Black Cat", "category": "Trading Pets", "trade": true, "emoji": "🐈‍⬛", "inPicture": true, "shelfX": 43.6, "shelfY": 91.9, "description": "A black and gray cat with a long tail."},
+  {"id": "broom_fan_shooting_star", "name": "Shooting Star Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 26.9, "shelfY": 34.3, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "broom_fan_iridescent", "name": "Iridescent Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 60.4, "shelfY": 34.9, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "broom_fan_firefly", "name": "Firefly Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 20.3, "shelfY": 67.7, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "broom_fan_sunset", "name": "Sunset Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 67.0, "shelfY": 65.5, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "broom_fan_wave", "name": "Wave Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 15.1, "shelfY": 96.7, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "broom_fan_silver_glider", "name": "Silver Glider Fan Broom", "category": "Trading Brooms", "trade": true, "emoji": "🧹", "inPicture": true, "shelfX": 64.2, "shelfY": 97.8, "description": "A broomstick with a fan of orange bristles, from the Trading Post."},
+  {"id": "potion_shrinking", "name": "Shrinking Potion", "category": "Mini Potion Shack", "gems": 1, "emoji": "🤏", "inPicture": true, "shelfX": 10.3, "shelfY": 78.1, "description": "A green bottle. One sip and you shrink!"},
+  {"id": "potion_speed", "name": "Speed Potion", "category": "Mini Potion Shack", "gems": 1, "emoji": "💨", "inPicture": true, "shelfX": 29.2, "shelfY": 79.1, "description": "A round purple bottle for running super fast."},
+  {"id": "potion_animal_talk", "name": "Animal Talk Potion", "category": "Mini Potion Shack", "gems": 2, "emoji": "🐾", "inPicture": true, "shelfX": 45.5, "shelfY": 79.1, "description": "Drink it and you can talk with animals."},
+  {"id": "potion_growing", "name": "Growing Potion", "category": "Mini Potion Shack", "gems": 2, "emoji": "🌱", "inPicture": true, "shelfX": 65.1, "shelfY": 73.9, "description": "A bottle with a heart on top. One sip and you grow!"},
+  {"id": "potion_cozy", "name": "Cozy Potion", "category": "Mini Potion Shack", "gems": 2, "emoji": "🧣", "inPicture": true, "shelfX": 86.9, "shelfY": 79.1, "description": "A heart-shaped bottle that makes you warm and cozy."},
+  {"id": "broom_cabin_1", "name": "Purple Broom", "category": "Broom Cabin", "gems": 3, "emoji": "🧹", "inPicture": true, "shelfX": 58.9, "shelfY": 60.1, "description": "A stripy broomstick from the Broom Cabin."},
+  {"id": "broom_cabin_2", "name": "Orange Broom", "category": "Broom Cabin", "gems": 3, "emoji": "🧹", "inPicture": true, "shelfX": 55.2, "shelfY": 87.4, "description": "A stripy broomstick from the Broom Cabin."},
+  {"id": "wand_set_1", "name": "Sunset Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 80.8, "shelfY": 43.0, "description": "A stripy wand from the Wand Set."},
+  {"id": "wand_set_2", "name": "Teal Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 73.1, "shelfY": 56.4, "description": "A stripy wand from the Wand Set."},
+  {"id": "wand_set_3", "name": "Purple Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 73.1, "shelfY": 69.8, "description": "A stripy wand from the Wand Set."},
+  {"id": "wand_set_4", "name": "Pink Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 34.6, "shelfY": 33.1, "description": "A stripy wand from the Wand Set."},
+  {"id": "wand_set_5", "name": "Orange Wand", "category": "Wand Set", "gems": 2, "emoji": "🪄", "inPicture": true, "shelfX": 31.7, "shelfY": 51.0, "description": "A stripy wand from the Wand Set."},
+  {"id": "wand_set_6", "name": "Rainbow Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 28.8, "shelfY": 74.2, "description": "A stripy wand from the Wand Set."}
 ];

@@ -16,6 +16,7 @@ function showScreen(id) {
 
 // Fill in the status bar: character, player's name, Level, Adventure Points (3 stars), Crystals, Gems, Chore Points and Hunger.
 function updateStatus() {
+  showHolding(); // the apple in your hand, if any (js/unicorns.js)
   if (!player) return;
   const character = findCharacter(player.characterId);
   document.getElementById("status-character").textContent = character ? character.name : "?";
@@ -37,8 +38,11 @@ function updateStatus() {
 // The shared pop-up (marshmallow machine, crafting table, unicorn): a big
 // picture or emoji, a title and a message. Returns the empty area below the
 // message, for buttons and lists.
+// "art" is an emoji, or a picture (an <img>) like the girls' unicorn drawing.
 function openInfoPanel(art, title, message) {
-  document.getElementById("info-art").textContent = art;
+  const artBox = document.getElementById("info-art");
+  if (typeof art === "string") artBox.textContent = art;
+  else artBox.replaceChildren(art);
   document.getElementById("info-title").textContent = title;
   document.getElementById("info-message").textContent = message || "";
   const body = document.getElementById("info-body");

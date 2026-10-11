@@ -9,7 +9,7 @@ GAME_DATA.spells = [
     "use": "Cast it on a blind unicorn in the Meadows so it can see.",
     "needs": [
       { "money": "crystals", "count": 10 },
-      { "name": "Sense Potion", "things": ["potion_sense"], "count": 1 },
+      { "name": "Sense Potion", "things": ["potion_sense", "potion_sense_trade"], "count": 1 },
       { "name": "Bones", "things": ["mine_bone"], "count": 6 },
       { "name": "Shells (any kind)", "things": ["treasure_shell", "beach_redshell"], "count": 2 },
       { "name": "Bottle Cap", "things": ["beach_bottlecap"], "count": 1 },

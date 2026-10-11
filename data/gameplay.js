@@ -28,7 +28,9 @@ GAME_DATA.activities = [
   { "name": "Pick apples", "kind": "Mining", "where": "Fruit Orchard", "inGame": true,
     "note": "Click the Apple Tree; apples go in your fruit basket. Eat them or feed them to unicorns." },
   { "name": "Help a blind unicorn", "kind": "Bonding", "where": "Unicorn Meadow", "inGame": true,
-    "note": "Make the Seeing Spell at the Crafting Cabin, cast it on the unicorn, feed it 3 to 5 apples: it finds its family. +1 Adventure Point." },
+    "note": "Spot the shy unicorn when it comes out from behind the trees, hold an apple and feed it so it trusts you, cast the Seeing Spell, then feed it 2 to 4 more apples: it finds its family. +1 Adventure Point. Each new unicorn comes out less often." },
+  { "name": "Trade at the Trading Post", "kind": "Trading", "where": "Trading Post (Forest)", "inGame": true,
+    "note": "Swap anything in your backpack for anything on a Trading Post shelf, or sell things on the Gems shelf for Gems." },
   { "name": "Chop wood", "kind": "Mining", "where": "", "inGame": false,
     "note": "" }
 ];

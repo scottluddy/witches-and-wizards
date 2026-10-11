@@ -38,6 +38,7 @@ function openStorage(name) {
     const card = itemCard(thing, null);
     card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
     if (name === "basket" && thing.food) card.appendChild(eatFromBasket(thing)); // fruit can be eaten
+    if (name === "basket") card.appendChild(holdButton(thing));                 // ...or held, for the unicorn
     list.appendChild(card);
   });
 
@@ -63,6 +64,18 @@ function eatFromBasket(fruit) {
     const less = eat(fruit, "basket");
     openStorage("basket");
     document.getElementById("storage-title").textContent = "🧺 " + yumText(fruit, less);
+  });
+  return button;
+}
+
+// A button to take one fruit out and hold it in your hand (js/unicorns.js).
+function holdButton(fruit) {
+  const button = document.createElement("button");
+  button.className = "small-button";
+  button.textContent = "✋ Hold one";
+  button.addEventListener("click", function () {
+    holdFruit(fruit);
+    document.getElementById("storage-panel").hidden = true;
   });
   return button;
 }

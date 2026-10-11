@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=28">
+  <link rel="stylesheet" href="css/style.css?v=29">
 </head>
 <body>
 
@@ -72,7 +72,7 @@
     <span class="status-item"><b id="status-level"></b></span>
     <span class="status-item" title="Adventure Points">Adventure <span id="status-points" class="stars"></span></span>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=28" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=29" alt="Gems"> <b id="status-gems"></b></span>
     <span class="status-item" title="Chore Points">🧹 <b id="status-chores"></b></span>
     <span class="status-item" title="Hunger: walking makes you hungry and slow. Eat snacks!">🍽️ <b id="status-hunger"></b></span>
     <button id="btn-backpack" class="small-button" title="Backpack">🎒 <span class="bag-word">Backpack</span> <span id="count-backpack" class="count"></span></button>
@@ -80,6 +80,7 @@
     <button id="btn-bucket" class="small-button" title="Bucket">🪣 <span class="bag-word">Bucket</span> <span id="count-bucket" class="count"></span></button>
     <button id="btn-satchel" class="small-button" title="Satchel">👜 <span class="bag-word">Satchel</span> <span id="count-satchel" class="count"></span></button>
     <button id="btn-basket" class="small-button" title="Basket">🧺 <span class="bag-word">Basket</span> <span id="count-basket" class="count"></span></button>
+    <button id="btn-holding" class="small-button" hidden></button> <!-- the fruit in your hand (js/unicorns.js) -->
     <button id="btn-switch-game" class="small-button" title="Save this game and go back to the title screen">💾 <span class="bag-word">Switch Game</span></button>
   </header>
 
@@ -226,6 +227,7 @@
       <img id="place-image" class="picture-image" alt="">
       <div id="place-dust"></div> <!-- dust bunnies when the room is dirty (js/chores.js) -->
       <div id="place-furniture"></div>
+      <div id="place-woods" hidden></div> <!-- the meadow's trees and the shy unicorn (js/unicorns.js) -->
       <div id="place-spots"></div>
       <div id="place-items"></div>
       <div id="place-mine" hidden></div> <!-- the pickaxe rack and what you dig up in the Crystal Cave (js/mining.js) -->
@@ -250,41 +252,43 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "28"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=28"></script>
-  <script src="data/places.js?v=28"></script>
-  <script src="data/paths.js?v=28"></script>
-  <script src="data/items.js?v=28"></script>
-  <script src="data/fish.js?v=28"></script>
-  <script src="data/digging.js?v=28"></script>
-  <script src="data/chores.js?v=28"></script>
-  <script src="data/mining.js?v=28"></script>
-<script src="data/hunger.js?v=28"></script>
-  <script src="data/dance.js?v=28"></script>
-  <script src="data/orchard.js?v=28"></script>
-  <script src="data/spells.js?v=28"></script>
-  <script src="data/unicorns.js?v=28"></script>
-    <script src="data/troll.js?v=28"></script>
-  <script src="data/furniture.js?v=28"></script>
-  <script src="data/furniture_art.js?v=28"></script>
-  <script src="data/drawn.js?v=28"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "29"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=29"></script>
+  <script src="data/places.js?v=29"></script>
+  <script src="data/paths.js?v=29"></script>
+  <script src="data/items.js?v=29"></script>
+  <script src="data/fish.js?v=29"></script>
+  <script src="data/digging.js?v=29"></script>
+  <script src="data/chores.js?v=29"></script>
+  <script src="data/mining.js?v=29"></script>
+<script src="data/hunger.js?v=29"></script>
+  <script src="data/dance.js?v=29"></script>
+  <script src="data/orchard.js?v=29"></script>
+  <script src="data/spells.js?v=29"></script>
+  <script src="data/unicorns.js?v=29"></script>
+  <script src="data/trading.js?v=29"></script>
+    <script src="data/troll.js?v=29"></script>
+  <script src="data/furniture.js?v=29"></script>
+  <script src="data/furniture_art.js?v=29"></script>
+  <script src="data/drawn.js?v=29"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=28"></script>
-  <script src="js/world.js?v=28"></script>
-  <script src="js/items.js?v=28"></script>
-  <script src="js/fishing.js?v=28"></script>
-  <script src="js/digging.js?v=28"></script>
-  <script src="js/chores.js?v=28"></script>
-  <script src="js/mining.js?v=28"></script>
-  <script src="js/troll.js?v=28"></script>
-<script src="js/hunger.js?v=28"></script>
-  <script src="js/dance.js?v=28"></script>
-  <script src="js/orchard.js?v=28"></script>
-  <script src="js/spells.js?v=28"></script>
-  <script src="js/unicorns.js?v=28"></script>
-    <script src="js/storage.js?v=28"></script>
-  <script src="js/furniture.js?v=28"></script>
-  <script src="js/game.js?v=28"></script>
+  <script src="js/save.js?v=29"></script>
+  <script src="js/world.js?v=29"></script>
+  <script src="js/items.js?v=29"></script>
+  <script src="js/fishing.js?v=29"></script>
+  <script src="js/digging.js?v=29"></script>
+  <script src="js/chores.js?v=29"></script>
+  <script src="js/mining.js?v=29"></script>
+  <script src="js/troll.js?v=29"></script>
+<script src="js/hunger.js?v=29"></script>
+  <script src="js/dance.js?v=29"></script>
+  <script src="js/orchard.js?v=29"></script>
+  <script src="js/spells.js?v=29"></script>
+  <script src="js/unicorns.js?v=29"></script>
+  <script src="js/trading.js?v=29"></script>
+    <script src="js/storage.js?v=29"></script>
+  <script src="js/furniture.js?v=29"></script>
+  <script src="js/game.js?v=29"></script>
 </body>
 </html>

@@ -66,7 +66,10 @@ function fillIn(save) {
   if (!save.marshmallows) save.marshmallows = [];
   if (!save.basket) save.basket = [];
   if (!save.spells) save.spells = [];
-  if (!save.unicorn) save.unicorn = { canSee: false, applesNeeded: 0, applesFed: 0 };
+  if (!save.unicorn) save.unicorn = { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 };
+  // Unicorns now need to trust you first; one that can already see trusts you.
+  if (save.unicorn.trusted === undefined) save.unicorn.trusted = save.unicorn.canSee;
+  if (save.holding === undefined) save.holding = null;
   if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   // Scott named the Floor 1 Snack Shack shelves.
@@ -148,7 +151,8 @@ function newPlayer(playerName, characterId, kind) {
     marshmallows: [],         // hot chocolates in the backpack that have marshmallows
     basket: [],               // fruit picked in the Fruit Orchard, carried (js/orchard.js)
     spells: [],               // spells in your spell book, like "seeing" (js/spells.js)
-    unicorn: { canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
+    unicorn: { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
+    holding: null,            // a fruit taken out of the basket and held in your hand (js/unicorns.js)
     unicornsHelped: 0,        // unicorns that found their families (js/unicorns.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }

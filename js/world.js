@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "unicorn" ? "🦄 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : "") + place.name;
     button.addEventListener("click", function () { onClick(place.id); });
     box.appendChild(button);
   });
@@ -285,7 +285,7 @@ function showPlace(id) {
     if (child.type === "marshmallows") return openMarshmallows(); // js/hunger.js
     if (child.type === "picking") return pickFruit(child);        // js/orchard.js
     if (child.type === "crafting") return openCrafting();         // js/spells.js
-    if (child.type === "unicorn") return openUnicorn();           // js/unicorns.js
+    if (child.type === "selling") return openGemsShelf();          // js/trading.js
     if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     goTo(childId);
   });
@@ -293,6 +293,7 @@ function showPlace(id) {
   showFurniture(place);  // movable furniture (js/furniture.js)
   showChore(place);      // dust and the Clean Room button (js/chores.js)
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
+  showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showScreen("screen-place");
 }
 

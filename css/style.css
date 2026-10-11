@@ -809,3 +809,57 @@ h2 {
 .spell-needs { list-style: none; padding: 0; margin: 8px 0 14px; text-align: left; font-size: 1.1rem; }
 .spell-needs .enough { color: #2c6b40; }
 .spell-needs .missing { color: #9b3a3a; }
+
+/* ---- the shy unicorn in the Unicorn Meadow (js/unicorns.js) ---- */
+
+#place-woods { position: absolute; inset: 0; pointer-events: none; }
+#place-woods[hidden] { display: none; }
+.meadow-tree {
+  position: absolute;
+  z-index: 2;                       /* in front of the unicorn, so it can hide */
+  transform: translate(-50%, -85%);
+  font-size: clamp(4rem, 13vw, 11rem);
+  line-height: 1;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  filter: drop-shadow(0 6px 4px rgba(60, 40, 10, 0.35));
+}
+.meadow-tree.rustle { animation: rustle 0.8s ease-in-out; }
+@keyframes rustle {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -4deg; } 40% { rotate: 4deg; } 60% { rotate: -3deg; } 80% { rotate: 2deg; }
+}
+.meadow-unicorn {
+  position: absolute;
+  z-index: 1;                       /* behind the trees */
+  width: 21%;
+  transform: translate(-50%, -70%) scale(0.6);
+  opacity: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  pointer-events: none;
+  transition: transform 1.2s ease-out, opacity 1.2s ease-out;
+}
+.meadow-unicorn img { width: 100%; display: block; }
+/* Out from behind the tree: it steps to the side, big and clickable. */
+.meadow-unicorn.out {
+  transform: translate(15%, -75%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.9));
+}
+.meadow-unicorn.gallop { transform: translate(400%, -90%) scale(1); opacity: 0; transition-duration: 1.5s; }
+.info-picture { max-height: 180px; max-width: 80%; }
+.unicorn-steps { text-align: left; font-size: 1.15rem; margin: 6px auto; max-width: 560px; }
+.unicorn-steps li { margin: 4px 0; }
+.unicorn-steps li.done { color: #2c6b40; }
+
+/* Holding an apple: the mouse pointer is the apple. */
+body.holding-apple, body.holding-apple * {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><text y='32' font-size='32'>🍎</text></svg>") 20 20, auto !important;
+}

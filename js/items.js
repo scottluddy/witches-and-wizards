@@ -132,6 +132,7 @@ function showShelfItems(place) {
     const tag = document.createElement("span");
     tag.className = "price-tag";
     if (owns(item.id)) tag.textContent = "Yours ✓";
+    else if (item.trade) tag.textContent = "🔄 Trade";
     else if (hasFreePick(item.category)) tag.textContent = "FREE";
     else tag.appendChild(moneyLabel(priceOf(item).money, priceOf(item).amount));
     button.append(art, tag);
@@ -144,6 +145,8 @@ function showShelfItems(place) {
 
   note.textContent = items.length === 0
     ? "Nothing on this shelf yet. Draw something for it!"
+    : place.trade
+    ? "Click something to trade for it. No Crystals or Gems here, only trades!"
     : hasFreePick(place.shelf)
     ? "Your Scholarship gives you one " + place.shelf + " for FREE! Click one to choose it."
     : "Click an item to see it. Items cost Crystals or Gems.";
@@ -208,6 +211,9 @@ function openItemPanel(itemId) {
   if (owns(item.id)) {
     message.textContent = "You already have this one!";
     getButton.hidden = true;
+  } else if (item.trade) {
+    message.textContent = "This can't be bought, only traded. Give the trader something from your backpack for it.";
+    getButton.textContent = "🔄 Trade for it";
   } else if (hasFreePick(item.category)) {
     message.textContent = "This can be your free " + item.category + ". You only get one, so choose carefully!";
     getButton.textContent = "Take it for FREE";
@@ -241,6 +247,10 @@ document.getElementById("btn-item-close").addEventListener("click", closeItemPan
 document.getElementById("btn-item-get").addEventListener("click", function () {
   const item = shownItem;
   if (!item || owns(item.id)) return;
+  if (item.trade) {
+    closeItemPanel();
+    return openTradePicker(item); // js/trading.js
+  }
   if (hasFreePick(item.category)) {
     freePicks()[item.category] = item.id;
     if (categories().every(function (c) { return !hasFreePick(c); })) player.scholarship = false;

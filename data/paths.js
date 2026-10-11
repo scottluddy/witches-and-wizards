@@ -18,6 +18,7 @@ GAME_DATA.paths = [
   // Forest
   { "from": "crafting_cabin", "to": "old_oak",   "via": [[38, 22], [45, 17]] },
   { "from": "crafting_cabin", "to": "cabin",     "via": [] },
+  { "from": "cabin",          "to": "trading_post", "via": [] },
   { "from": "cabin",          "to": "old_oak",   "via": [[42, 29]] },
   { "from": "old_oak",        "to": "mushrooms", "via": [[64, 23], [71, 36]] },
   { "from": "cabin",          "to": "treehouse", "via": [[19, 58]] },
