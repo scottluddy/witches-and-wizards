@@ -59,7 +59,7 @@ function openStorage(name) {
 function eatFromBasket(fruit) {
   const button = document.createElement("button");
   button.className = "small-button";
-  button.textContent = "😋 Eat one";
+  button.textContent = "😋 Eat one " + foodLabel(fruit);
   button.addEventListener("click", function () {
     const less = eat(fruit, "basket");
     openStorage("basket");

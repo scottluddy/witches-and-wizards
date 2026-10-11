@@ -12,15 +12,25 @@ function walkedSoFar(mapWidths) {
   }
 }
 
-// 1 when not hungry at all, down to "slowest" when as hungry as can be.
+// Full speed (1) when not very hungry, slower in steps (data/hunger.js "speeds").
 function walkSpeedFactor() {
-  const hunger = GAME_DATA.hunger;
-  return 1 - (player.hunger / hunger.max) * (1 - hunger.slowest);
+  const step = GAME_DATA.hunger.speeds.find(function (s) { return player.hunger <= s[0]; });
+  return step ? step[1] : GAME_DATA.hunger.speeds[GAME_DATA.hunger.speeds.length - 1][1];
 }
 
-// How many hunger points eating this takes away.
+// What food is worth: its price (gems or crystals), or "worth" for picked fruit.
+function foodPrice(item) {
+  if (item.worth !== undefined) return item.worth;
+  return item.gems !== undefined ? item.gems : item.price || 0;
+}
+
+// How many hunger points eating this takes away: healthy food its full
+// price, snacks half (rounded up, so at least 1).
 function foodIn(item) {
-  let food = item.food || 0;
+  if (!item.food) return 0;
+  const hunger = GAME_DATA.hunger;
+  const share = item.food === "healthy" ? hunger.healthyShare : hunger.snackShare;
+  let food = Math.max(1, Math.ceil(foodPrice(item) * share));
   if (player.marshmallows.indexOf(item.id) !== -1) food += GAME_DATA.hunger.marshmallowFood;
   return food;
 }
@@ -35,6 +45,11 @@ function eat(item, from) {
   player.marshmallows = player.marshmallows.filter(function (id) { return id !== item.id; });
   writeSave(player);
   return before - player.hunger; // how much less hungry you are
+}
+
+// "(healthy, -3 🍽️)": what kind of food it is and how much hunger it takes away.
+function foodLabel(item) {
+  return "(" + (item.food === "healthy" ? "🥦 healthy" : "🍬 snack") + ", -" + foodIn(item) + " 🍽️)";
 }
 
 // "Yum! Apple took away 1 hunger point."

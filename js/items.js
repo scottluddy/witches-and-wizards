@@ -334,7 +334,7 @@ function openBackpack() {
 function eatButton(item) {
   const button = document.createElement("button");
   button.className = "small-button";
-  button.textContent = "😋 Eat";
+  button.textContent = "😋 Eat " + foodLabel(item);
   button.addEventListener("click", function () {
     const less = eat(item);
     openBackpack();

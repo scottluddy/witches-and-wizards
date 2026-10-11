@@ -17,32 +17,52 @@ function hasPickaxe() {
 
 // ---------------------------------------------------------------- setting up the cave
 
-// Called by showPlace: draw the rack and hide new crystals and bones.
+// Called by showPlace: set up the rack and hide new crystals and bones.
+// Leaving the cave puts the pickaxe back on the rack.
 function showMine(place) {
   const box = document.getElementById("place-mine");
+  const rack = document.getElementById("mine-rack");
   box.innerHTML = "";
   box.hidden = !isMine(place);
-  if (!isMine(place)) return;
+  rack.hidden = !isMine(place);
+  if (!isMine(place)) return returnPickaxe();
   hideTreasure();
-
-  // The pickaxe rack, where you take a pickaxe.
-  const m = GAME_DATA.mining;
-  const rack = document.createElement("img");
-  rack.className = "pickaxe-rack";
-  rack.src = picture("mine_pickaxes");
-  rack.alt = rack.title = "Pickaxes";
-  rack.style.left = m.rack[0] + "%";
-  rack.style.top = m.rack[1] + "%";
-  rack.style.width = m.rack[2] + "%";
-  rack.addEventListener("click", function (event) {
-    event.stopPropagation(); // taking a pickaxe isn't picking at the wall
-    takePickaxe();
-  });
-  box.appendChild(rack);
+  showRack();
+  placeRack();
   mineSay(hasPickaxe()
     ? "Click the cave wall to pick at it with your pickaxe."
-    : "Take a pickaxe from the rack, then click the cave wall to mine.");
+    : "Use a pickaxe from the rack (" + gemsText(GAME_DATA.mining.pickaxeGems) + "), then click the cave wall to mine.");
 }
+
+// "1 gem", "3 gems"
+function gemsText(n) {
+  return n + (n === 1 ? " gem" : " gems");
+}
+
+// The rack button: its picture and what it says.
+function showRack() {
+  const cost = GAME_DATA.mining.pickaxeGems;
+  document.getElementById("mine-rack-img").src = picture("mine_pickaxes");
+  document.getElementById("mine-rack-label").textContent = hasPickaxe()
+    ? "⛏️ You have a pickaxe ✓"
+    : "⛏️ Use a pickaxe: " + gemsText(cost);
+  document.getElementById("mine-rack").classList.toggle("taken", hasPickaxe());
+}
+
+// The rack stands just to the right of the cave picture (over its edge if
+// the window is too narrow).
+function placeRack() {
+  const rack = document.getElementById("mine-rack");
+  if (rack.hidden) return;
+  const pic = document.getElementById("place-picture");
+  const screen = document.getElementById("screen-place");
+  const left = Math.min(pic.offsetLeft + pic.offsetWidth + 16, screen.clientWidth - rack.offsetWidth - 8);
+  rack.style.left = left + "px";
+  rack.style.top = (pic.offsetTop + pic.offsetHeight * 0.3) + "px";
+}
+
+window.addEventListener("resize", placeRack);
+document.getElementById("place-image").addEventListener("load", placeRack);
 
 // Shuffle crystals and bones into random squares; the rest is plain rock.
 function hideTreasure() {
@@ -60,12 +80,29 @@ function hideTreasure() {
   }
 }
 
+// Pay the gems and take a pickaxe off the rack (into your backpack).
 function takePickaxe() {
+  const cost = GAME_DATA.mining.pickaxeGems;
   if (hasPickaxe()) return mineSay("You already have a pickaxe. Click the cave wall to mine!");
+  if (player.gems < cost) {
+    return mineSay("Using a pickaxe costs " + gemsText(cost) + ", and you have " + gemsText(player.gems) +
+      ". Go fishing at the Dock to earn gems!");
+  }
+  player.gems -= cost;
   player.backpack.push("tool_pickaxe");
   writeSave(player);
-  mineSay("You took a pickaxe! It's in your backpack. Now click the cave wall to mine.");
+  showRack();
+  mineSay("You paid " + gemsText(cost) + " and took a pickaxe! Now click the cave wall to mine. It goes back on the rack when you leave.");
 }
+
+// Out of the cave, the pickaxe goes back on the rack.
+function returnPickaxe() {
+  if (!hasPickaxe()) return;
+  player.backpack = player.backpack.filter(function (id) { return id !== "tool_pickaxe"; });
+  writeSave(player);
+}
+
+document.getElementById("mine-rack").addEventListener("click", takePickaxe);
 
 // The message under the cave picture.
 function mineSay(message) {
@@ -94,7 +131,7 @@ function squareMiddle(i) {
 
 function pickAt(event) {
   if (placementMode || picking || !isMine(findPlace(player.at))) return;
-  if (!hasPickaxe()) return mineSay("You need a pickaxe to mine. Take one from the rack!");
+  if (!hasPickaxe()) return mineSay("You need a pickaxe to mine. Use one from the rack to the right of the cave!");
   const pic = document.getElementById("place-picture");
   const x = (event.clientX - pic.getBoundingClientRect().left - pic.clientLeft) / pic.clientWidth * 100;
   const y = (event.clientY - pic.getBoundingClientRect().top - pic.clientTop) / pic.clientHeight * 100;
@@ -129,6 +166,7 @@ function findIn(i) {
   if (what === "mined") return mineSay("You already dug that spot. Try somewhere else!");
   mineSquares[i] = "mined";
   addToCave("span", "mine-hole", middle[0], middle[1]);
+  forgetOldHoles();
   if (what === "crystal") {
     const art = GAME_DATA.mineCrystals[Math.floor(Math.random() * GAME_DATA.mineCrystals.length)];
     mineSay("💎 You found a Crystal!");
@@ -153,6 +191,12 @@ function findIn(i) {
   if (mineSquares.indexOf("crystal") === -1 && mineSquares.indexOf("bone") === -1) {
     mineSay(document.getElementById("place-description").textContent + " That's everything in this cave for now. Come back later for more!");
   }
+}
+
+// Only the last few dug spots stay marked (data/mining.js "marksShown").
+function forgetOldHoles() {
+  const holes = document.querySelectorAll("#place-mine .mine-hole");
+  for (let i = 0; i < holes.length - GAME_DATA.mining.marksShown; i++) holes[i].remove();
 }
 
 // A word pops out of the wall for a moment, saying what was there.

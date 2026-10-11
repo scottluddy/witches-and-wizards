@@ -118,6 +118,43 @@
     .card.wide .art img { max-height: 240px; border-radius: 8px; }
     @media (max-width: 440px) { .card.wide { grid-column: auto; } }
 
+    /* The two big boxes near the top, and the sections they open. */
+    .jump-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin-top: 24px; }
+    .big-box {
+      display: block;
+      text-align: left;
+      font: inherit;
+      color: var(--ink);
+      text-decoration: none;
+      background: var(--panel);
+      border: 3px solid var(--accent);
+      border-radius: 16px;
+      padding: 14px 18px;
+      cursor: pointer;
+      box-shadow: 0 4px 0 var(--line);
+    }
+    .big-box:hover { transform: translateY(-2px); }
+    .big-box b { display: block; font-family: var(--display); font-size: 1.4rem; color: var(--accent); }
+    .big-box span { color: var(--muted); }
+    .big-box[aria-expanded="true"] { background: var(--line); }
+    .steps { background: var(--panel); border: 3px solid var(--accent); border-radius: 16px; padding: 4px 20px 16px; margin-top: 14px; }
+    .steps[hidden] { display: none; }
+    .steps h2 { margin-top: 16px; }
+    .who { margin-left: 6px; }
+    .who.girls { color: #a13c78; background: #f8dcea; }
+    .who.scott { color: #2c5c9a; background: #dae6f6; }
+    .todo-list { margin: 6px 0 0; padding-left: 22px; }
+    .todo-list li { margin-block: 8px; }
+    .todo-list .kind { display: block; }
+    .table-wrap { overflow-x: auto; }
+    table.logic { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 0.95rem; }
+    table.logic th, table.logic td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.logic th { font-family: var(--display); color: var(--accent); font-weight: 700; }
+    table.logic td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .territory { margin-block: 10px; }
+    .territory b { font-family: var(--display); font-size: 1.1rem; }
+    .tag { display: inline-block; margin: 3px 4px 0 0; padding: 1px 8px; border-radius: 999px; background: var(--line); font-size: 0.85rem; }
+
     .howto { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 4px 20px 12px; }
     .howto li { margin-block: 6px; }
   </style>
@@ -128,6 +165,27 @@
     <p class="lede">Everything in the game: the world and its places, the characters and the store's items, plus ideas for later.
       Orange tags show pictures still waiting for a drawing, with the file name to save it as.</p>
     <div id="tally" class="tally"></div>
+
+    <!-- The two big boxes: Next Steps opens right here; Game Play Logic jumps down the page. -->
+    <div class="jump-row">
+      <button id="btn-next-steps" class="big-box" aria-expanded="false" aria-controls="next-steps">
+        <b>🧭 Next Steps</b><span>What to draw, answer and think about next. Open this to decide what to do next.</span>
+      </button>
+      <a class="big-box" href="#logic">
+        <b>⚙️ Game Play Logic</b><span>How the game works: rules, money, bags, and where you earn and spend.</span>
+      </a>
+    </div>
+    <section id="next-steps" class="steps" hidden>
+      <h2>🖍️ Draw next</h2>
+      <p class="lede">Pictures that are still placeholders, places first. Save each drawing with the file name shown.</p>
+      <div id="steps-draw"></div>
+      <h2>❓ Questions to answer</h2>
+      <p class="lede">Decisions the game is waiting on (from <code>data/next_steps.js</code>).</p>
+      <ol id="steps-answer" class="todo-list"></ol>
+      <h2>🤔 Things to think about</h2>
+      <p class="lede">Places where the game might be too easy, too hard or a bit unfair.</p>
+      <ol id="steps-consider" class="todo-list"></ol>
+    </section>
 
     <h2>The World</h2>
     <ul id="world" class="tree"></ul>
@@ -166,6 +224,39 @@
     <p class="lede">The counters in the bar at the top of the game: how you earn each one and what it's for (also in <code>data/gameplay.js</code>).</p>
     <div id="metrics" class="plan-list"></div>
 
+    <h2 id="logic">⚙️ Game Play Logic</h2>
+    <p class="lede">How the game fits together, to help spot things that don't make sense, like one place earning gems much faster than another. Most of this is worked out from the game's own data, so it stays up to date; the rules and bags are in <code>data/logic.js</code>.</p>
+
+    <h3>The basic rules</h3>
+    <ol id="logic-rules" class="todo-list"></ol>
+
+    <h3>Where everything is</h3>
+    <p class="lede">Each territory, its places, and what you can do there.</p>
+    <div id="logic-world"></div>
+
+    <h3>Earning money</h3>
+    <p class="lede">Every way to earn Crystals and Gems, with Claude's rough guess of how much a quick player earns in a minute. Big differences here are worth a look.</p>
+    <div class="table-wrap"><table id="logic-earn" class="logic">
+      <thead><tr><th>Where</th><th>How</th><th>Earns</th><th>About per minute</th></tr></thead><tbody></tbody>
+    </table></div>
+
+    <h3>Spending money</h3>
+    <p class="lede">Every shop, what money it takes, and its prices.</p>
+    <div class="table-wrap"><table id="logic-spend" class="logic">
+      <thead><tr><th>Shop</th><th>Money</th><th>Things</th><th>Prices</th></tr></thead><tbody></tbody>
+    </table></div>
+
+    <h3>Bags and keeping</h3>
+    <div class="table-wrap"><table id="logic-bags" class="logic">
+      <thead><tr><th>Bag</th><th>Holds</th><th>Emptied</th></tr></thead><tbody></tbody>
+    </table></div>
+
+    <h3>Food</h3>
+    <p class="lede">Healthy food takes away hunger points equal to its price; snacks take away half (data/hunger.js).</p>
+    <div class="table-wrap"><table id="logic-food" class="logic">
+      <thead><tr><th>Food</th><th>Kind</th><th>Price</th><th>Hunger taken away</th></tr></thead><tbody></tbody>
+    </table></div>
+
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
     <div id="extras" class="grid"></div>
@@ -180,18 +271,27 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "29"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=29"></script>
-  <script src="data/places.js?v=29"></script>
-  <script src="data/items.js?v=29"></script>
-  <script src="data/ideas.js?v=29"></script>
-  <script src="data/fish.js?v=29"></script>
-  <script src="data/digging.js?v=29"></script>
-  <script src="data/mining.js?v=29"></script>
-  <script src="data/troll.js?v=29"></script>
-  <script src="data/gameplay.js?v=29"></script>
-  <script src="data/extras.js?v=29"></script>
-  <script src="data/drawn.js?v=29"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "30"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=30"></script>
+  <script src="data/places.js?v=30"></script>
+  <script src="data/items.js?v=30"></script>
+  <script src="data/ideas.js?v=30"></script>
+  <script src="data/fish.js?v=30"></script>
+  <script src="data/digging.js?v=30"></script>
+  <script src="data/mining.js?v=30"></script>
+  <script src="data/troll.js?v=30"></script>
+  <script src="data/gameplay.js?v=30"></script>
+  <script src="data/extras.js?v=30"></script>
+  <script src="data/hunger.js?v=30"></script>
+  <script src="data/orchard.js?v=30"></script>
+  <script src="data/dance.js?v=30"></script>
+  <script src="data/trading.js?v=30"></script>
+  <script src="data/unicorns.js?v=30"></script>
+  <script src="data/spells.js?v=30"></script>
+  <script src="data/furniture.js?v=30"></script>
+  <script src="data/next_steps.js?v=30"></script>
+  <script src="data/logic.js?v=30"></script>
+  <script src="data/drawn.js?v=30"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -223,6 +323,9 @@
       if (place.type === "person") return "person: says \u201c" + (place.says || "") + "\u201d";
       if (place.type === "fishing") return "fishing spot";
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
+      const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
+        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems" };
+      if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
       if (place.shelf) return (place.in === "store" ? "store shelf: " : "shop: ") + place.shelf;
@@ -232,7 +335,7 @@
     function placeRow(place) {
       const li = el("li");
       const row = el("div", "row");
-      const isPerson = place.type === "person" || place.type === "fishing" || place.type === "digging"; // part of the picture
+      const isPerson = place.type !== "map" && place.type !== "place"; // people and spots are part of the picture
       const picName = (place.type === "map" ? "map_" : "place_") + place.id;
       const img = el(isPerson ? "span" : "img");
       if (!isPerson) {
@@ -356,7 +459,8 @@
         el("span", "kind", "Sleeps in " + mining.trollSquares + " cave square, and wakes on 20% of digs at the Crystal Dig Spot. Drawn by the girls.")
       ]));
       document.getElementById("cave-finds").appendChild(card("Pickaxe rack", "mine_pickaxes", "⛏️", [
-        el("span", "kind", "Hangs in the Crystal Cave. Click it to take a pickaxe.")
+        el("span", "kind", "Stands to the right of the Crystal Cave. Using a pickaxe costs " + mining.pickaxeGems +
+          " gems; it goes back on the rack when you leave.")
       ]));
     }
 
@@ -388,6 +492,222 @@
       if (extra.id.indexOf("place_") === 0) c.classList.add("wide");
       document.getElementById("extras").appendChild(c);
     });
+
+    // ---------------------------------------------------------------- Next Steps
+
+    // The big box opens (and closes) the Next Steps section.
+    document.getElementById("btn-next-steps").addEventListener("click", function () {
+      const section = document.getElementById("next-steps");
+      section.hidden = !section.hidden;
+      this.setAttribute("aria-expanded", String(!section.hidden));
+      if (!section.hidden) section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
+    function isDrawn(name) { return drawn.indexOf(name) !== -1; }
+
+    // "Girls" or "Scott" as a little coloured tag.
+    function whoChip(who) {
+      return who ? el("span", "chip who " + who.toLowerCase(), who) : null;
+    }
+
+    function todoItem(entry) {
+      const li = el("li");
+      li.appendChild(el("span", "", entry.text));
+      const chip = whoChip(entry.who);
+      if (chip) li.appendChild(chip);
+      if (entry.note) li.appendChild(el("span", "kind", entry.note));
+      return li;
+    }
+
+    // Draw next: places still on a placeholder first (they're the biggest
+    // pictures), then characters and items still shown as an emoji.
+    (function () {
+      const box = document.getElementById("steps-draw");
+      const groups = [];
+      const placesToDraw = places.filter(function (p) {
+        if (p.type !== "map" && p.type !== "place") return false;
+        if (p.opens) return false;                       // just a second door into another place
+        return !isDrawn((p.type === "map" ? "map_" : "place_") + p.id);
+      });
+      groups.push(["Places and maps", placesToDraw.map(function (p) {
+        const where = findPlace(p.in);
+        return [p.name + (where ? " (in " + where.name + ")" : ""), (p.type === "map" ? "map_" : "place_") + p.id];
+      })]);
+      groups.push(["Characters", (GAME_DATA.characters || []).filter(function (c) { return !isDrawn(c.id); })
+        .map(function (c) { return [c.name, c.id]; })]);
+      groups.push(["Items", (GAME_DATA.items || []).filter(function (i) { return !isDrawn(i.id); })
+        .map(function (i) { return [i.name + " (" + i.category + ")", i.id]; })]);
+      groups.forEach(function (group) {
+        if (group[1].length === 0) return;
+        box.appendChild(el("h3", "", group[0] + " (" + group[1].length + ")"));
+        const list = el("ul", "todo-list");
+        group[1].forEach(function (thing) {
+          const li = el("li");
+          li.append(el("span", "", thing[0] + " "), el("code", "file", "art/raw/" + thing[1] + ".jpg"));
+          list.appendChild(li);
+        });
+        box.appendChild(list);
+      });
+    })();
+
+    const steps = GAME_DATA.nextSteps || { answer: [], consider: [] };
+    steps.answer.forEach(function (s) { document.getElementById("steps-answer").appendChild(todoItem(s)); });
+    steps.consider.forEach(function (s) { document.getElementById("steps-consider").appendChild(todoItem(s)); });
+
+    // ---------------------------------------------------------------- Game Play Logic
+
+    function findPlace(id) { return places.find(function (p) { return p.id === id; }); }
+
+    function addRow(tableId, cells, numberColumns) {
+      const tr = el("tr");
+      cells.forEach(function (text, i) {
+        tr.appendChild(el("td", (numberColumns || []).indexOf(i) !== -1 ? "num" : "", text));
+      });
+      document.querySelector("#" + tableId + " tbody").appendChild(tr);
+    }
+
+    const logic = GAME_DATA.logic || { rules: [], containers: [], estimates: {} };
+    logic.rules.forEach(function (rule) { document.getElementById("logic-rules").appendChild(el("li", "", rule)); });
+
+    // What you can do somewhere, as short tags (worked out from places.js).
+    function whatToDo(place) {
+      const tags = [];
+      if (place.shelf) {
+        const items = (GAME_DATA.items || []).filter(function (i) { return i.category === place.shelf; });
+        const money = items.some(function (i) { return i.trade; }) ? "trade"
+          : items.some(function (i) { return i.gems !== undefined; }) ? "gems" : "crystals";
+        tags.push(money === "trade" ? "🔄 trading" : "🛍️ shop (" + money + ")");
+      }
+      places.filter(function (c) { return c.in === place.id; }).forEach(function (c) {
+        const label = {
+          fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
+          person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
+          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems"
+        }[c.type];
+        if (label && tags.indexOf(label) === -1) tags.push(label);
+        if (c.shelf && c.in !== "store") {
+          const sub = whatToDo(c);
+          sub.forEach(function (t) { if (tags.indexOf(t) === -1) tags.push(t); });
+        }
+      });
+      if (GAME_DATA.mining && place.id === GAME_DATA.mining.place) tags.push("⛏️ mine crystals and bones", "👹 troll");
+      if (place.id === "unicorn_meadow") tags.push("🦄 unicorn adventure");
+      if ((GAME_DATA.furniture || []).some(function (f) { return f.place === place.id; })) tags.push("🪑 movable furniture");
+      if (place.id === "home") tags.push("🧰 keep your catches", "🧹 chores");
+      if (place.id === "store") tags.push("🎓 Scholarship freebies");
+      return tags;
+    }
+
+    places.filter(function (p) { return p.type === "map" && p.in === "world"; }).forEach(function (territory) {
+      const box = el("div", "territory");
+      box.appendChild(el("b", "", territory.name));
+      const list = el("ul", "todo-list");
+      places.filter(function (p) { return p.in === territory.id && p.type === "place"; }).forEach(function (place) {
+        const li = el("li");
+        li.appendChild(el("span", "", place.name + " "));
+        const tags = whatToDo(place);
+        if (tags.length === 0) tags.push("just to look at (for now)");
+        tags.forEach(function (t) { li.appendChild(el("span", "tag", t)); });
+        list.appendChild(li);
+      });
+      box.appendChild(list);
+      document.getElementById("logic-world").appendChild(box);
+    });
+
+    // Earning: Claude's rough sums of what a quick player earns in a minute.
+    (function () {
+      const est = logic.estimates || {};
+      const extra = est.extraSecondsPerTry || 2;     // clicking and closing the pop-up
+      const perMinute = function (amount, seconds) { return Math.round(amount * 60 / seconds * 10) / 10; };
+      const average = function (list) {
+        const total = list.reduce(function (n, f) { return n + f.chance; }, 0);
+        return list.reduce(function (n, f) { return n + f.gems * f.chance; }, 0) / total;
+      };
+      // Fishing: a wait past "giveUpSeconds" catches nothing.
+      const f = GAME_DATA.fishing;
+      if (f) {
+        const caught = (f.giveUpSeconds - f.minSeconds) / (f.maxSeconds - f.minSeconds);
+        const wait = caught * (f.minSeconds + f.giveUpSeconds) / 2 + (1 - caught) * f.giveUpSeconds;
+        const gems = caught * average(catches);
+        addRow("logic-earn", ["Dock (Lake)", "Fishing with a Lucky Rod", "Gems (" + Math.round(gems * 10) / 10 + " a cast)",
+          "about " + perMinute(gems, wait + extra) + " gems, and the same again if you sell the catch"], [3]);
+      }
+      const d = GAME_DATA.digging;
+      if (d) {
+        const dig = (d.minSeconds + d.maxSeconds) / 2 + extra;
+        const gems = average(finds);
+        addRow("logic-earn", ["Pebble Beach (Lake)", "Digging at the Dig Spot", "Gems (" + Math.round(gems * 10) / 10 + " a dig)",
+          "about " + perMinute(gems, dig) + " gems, and the same again if you sell the finds"], [3]);
+        const stolen = (GAME_DATA.troll.steals[0] + GAME_DATA.troll.steals[1]) / 2;
+        const crystals = d.crystalChance / 100 - d.trollChance / 100 * stolen;
+        addRow("logic-earn", ["Pebble Beach (Lake)", "Digging at the Crystal Dig Spot", "Crystals (" + d.crystalChance + "% a dig); the troll wakes " + d.trollChance + "% of the time",
+          "about " + perMinute(d.crystalChance / 100, dig) + " crystals found, but about " + perMinute(Math.max(0, crystals), dig) + " kept after the troll steals some"], [3]);
+      }
+      if (mining) {
+        const squares = mining.columns * mining.rows;
+        const seconds = squares * (est.secondsPerMineClick || 1.5);
+        addRow("logic-earn", ["Crystal Cave (Mountain)", "Mining with a pickaxe (" + mining.pickaxeGems + " gems a visit)",
+          mining.crystalSquares + " Crystals and " + mining.boneSquares + " bones a visit, and a troll",
+          "about " + perMinute(mining.crystalSquares, seconds) + " crystals if you dig every square"], [3]);
+      }
+      const dance = GAME_DATA.dance;
+      if (dance) {
+        const gems = (dance.addSubtract + dance.multiplyDivide) / 2;
+        addRow("logic-earn", ["Mushroom Ring (Forest)", "Solve to Dance maths problems", dance.addSubtract + " gem for + and -, " + dance.multiplyDivide + " for × and ÷, no limit",
+          "about " + perMinute(gems, est.secondsPerDanceProblem || 15) + " gems"], [3]);
+      }
+      if (GAME_DATA.trading) {
+        addRow("logic-earn", ["Trading Post (Forest)", "Selling on the Gems shelf",
+          "Shop items about " + Math.round(GAME_DATA.trading.sellShare * 100) + "% of their price; catches and finds their gems; bones and apples 1",
+          "depends on what you bring"], []);
+      }
+      if (GAME_DATA.unicorns) {
+        addRow("logic-earn", ["Unicorn Meadow (Meadows)", "Reuniting a blind unicorn", GAME_DATA.unicorns.adventurePoints + " Adventure Point",
+          "a few minutes each, and slower for each new unicorn"], []);
+      }
+    })();
+
+    // Spending: every shop with its money and price range.
+    (function () {
+      const shops = places.filter(function (p) { return p.shelf; });
+      const seen = [];
+      shops.forEach(function (shop) {
+        if (seen.indexOf(shop.shelf) !== -1) return;
+        seen.push(shop.shelf);
+        const items = (GAME_DATA.items || []).filter(function (i) { return i.category === shop.shelf; });
+        if (items.length === 0) return;
+        const where = shop.in === "store" ? "Campus Store: " + shop.name : shop.name;
+        if (items[0].trade) return addRow("logic-spend", [where, "none (trade only)", String(items.length), "one of your things each"], [2]);
+        const gems = items.filter(function (i) { return i.gems !== undefined; });
+        const money = gems.length ? "Gems" : "Crystals";
+        const prices = items.map(function (i) { return i.gems !== undefined ? i.gems : i.price; });
+        const low = Math.min.apply(null, prices), high = Math.max.apply(null, prices);
+        addRow("logic-spend", [where, money, String(items.length), low === high ? String(low) : low + " to " + high], [2, 3]);
+      });
+      if (mining) addRow("logic-spend", ["Crystal Cave: pickaxe rack", "Gems", "1 pickaxe for one visit", String(mining.pickaxeGems)], [3]);
+      (GAME_DATA.spells || []).forEach(function (spell) {
+        const money = spell.needs.filter(function (n) { return n.money; }).map(function (n) { return n.count + " " + n.money; }).join(" and ");
+        addRow("logic-spend", ["Crafting Table: " + spell.name, "Crystals and Gems", "plus materials", money], []);
+      });
+    })();
+
+    logic.containers.forEach(function (bag) {
+      addRow("logic-bags", [bag.emoji + " " + bag.name, bag.holds, bag.empty]);
+    });
+
+    // Food, worked out the same way the game does (js/hunger.js).
+    (function () {
+      const hunger = GAME_DATA.hunger;
+      if (!hunger) return;
+      const food = (GAME_DATA.items || []).filter(function (i) { return i.food; }).concat(GAME_DATA.fruits || []);
+      food.forEach(function (item) {
+        const price = item.worth !== undefined ? item.worth : item.gems !== undefined ? item.gems : item.price || 0;
+        const share = item.food === "healthy" ? hunger.healthyShare : hunger.snackShare;
+        const points = Math.max(1, Math.ceil(price * share));
+        addRow("logic-food", [item.name, item.food === "healthy" ? "🥦 healthy" : "🍬 snack",
+          item.worth !== undefined ? "free (picked)" : price + " gems", String(points)], [2, 3]);
+      });
+    })();
 
     const territories = places.filter(function (p) { return p.type === "map" && p.in; }).length;
     const locations = places.filter(function (p) { return p.type === "place" && !(p.shelf && p.in === "store"); }).length;

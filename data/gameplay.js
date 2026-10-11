@@ -22,7 +22,7 @@ GAME_DATA.activities = [
   { "name": "Fishing", "kind": "Mining", "where": "the Dock", "inGame": true,
     "note": "Fish and treasures for the cooler. (Put under Mining for now.)" },
   { "name": "Mine in the Crystal Cave", "kind": "Mining", "where": "Crystal Cave", "inGame": true,
-    "note": "Take a pickaxe from the rack, then click the wall. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
+    "note": "Pay 3 gems at the pickaxe rack beside the cave for a pickaxe (it goes back when you leave), then click the wall. Only the last 3 dug spots stay marked. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
   { "name": "Solve to Dance", "kind": "Learning", "where": "Mushroom Ring", "inGame": true,
     "note": "Maths problems (3rd grade). + and - earn 1 gem, × and ÷ earn 2. Solve 2 to dance (data/dance.js)." },
   { "name": "Pick apples", "kind": "Mining", "where": "Fruit Orchard", "inGame": true,
@@ -44,16 +44,16 @@ GAME_DATA.activities = [
 GAME_DATA.metrics = [
   { "name": "Level", "shows": "Witch Level 1 / Wizard Level 1", "inGame": true,
     "earn": "Not yet. Plan: 3 Adventure Points raise your Level.", "use": "" },
-  { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": false,
-    "earn": "Not yet.", "use": "3 of them raise your Level." },
+  { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": true,
+    "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "Plan: 3 of them raise your Level (not built yet)." },
   { "name": "Crystals", "shows": "💎", "inGame": true,
-    "earn": "Digging at the Crystal Dig Spot.", "use": "Buying things priced in Crystals, like dresses." },
+    "earn": "Digging at the Crystal Dig Spot and mining in the Crystal Cave.", "use": "Buying things priced in Crystals, like dresses, and making spells." },
   { "name": "Gems", "shows": "the girls' gem drawing", "inGame": true,
-    "earn": "Fishing and digging.", "use": "Buying things priced in gems, like pets." },
+    "earn": "Fishing, digging at Pebble Beach, the Solve to Dance puzzle, and selling on the Trading Post's Gems shelf.", "use": "Buying things priced in gems (pets, potions, brooms, snacks), using a pickaxe, and making spells." },
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,
     "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." },
   { "name": "Chore Points", "shows": "🧹", "inGame": true,
     "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "Not decided yet." },
   { "name": "Hunger", "shows": "🍽️ 0/10", "inGame": true,
-    "earn": "Walking around (1 point per map-width walked, up to 10). The hungrier you are, the slower you walk.", "use": "Eat snacks from the Snack Shack to take hunger away (data/hunger.js)." }
+    "earn": "Walking around (1 point per map-width walked, up to 10). Full speed at 0 to 3, three quarter speed at 4 to 6, two thirds at 7 to 9, half speed at 10.", "use": "Eat to take hunger away: healthy food by its full price, snacks by half (data/hunger.js)." }
 ];

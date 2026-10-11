@@ -13,7 +13,11 @@
 //   boneSquares    how many squares hide bones
 //   trollSquares   how many squares hide a sleeping troll
 //   crystals       Crystals found in one crystal square (Scott: just 1, crystals are rare)
-//   rack           where the pickaxe rack hangs: [left, top, width] percent
+//   pickaxeGems    what it costs to use a pickaxe from the rack (Scott, 2026-10-11:
+//                  3 gems). The rack stands to the right of the cave picture; the
+//                  pickaxe goes back on the rack when you leave the cave.
+//   marksShown     how many dug spots stay marked on the wall (Scott: the last 3,
+//                  so you can't just work through every square in order)
 //   pickSeconds    how long one swing of the pickaxe takes
 // Squares, crystals and troll are Scott's numbers (2026-10-10); the grid size is Claude's guess.
 GAME_DATA.mining = {
@@ -25,7 +29,8 @@ GAME_DATA.mining = {
   "boneSquares": 9,
   "trollSquares": 1,
   "crystals": 1,
-  "rack": [67.5, 51.5, 18],
+  "pickaxeGems": 3,
+  "marksShown": 3,
   "pickSeconds": 0.6
 };
 

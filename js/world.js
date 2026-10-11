@@ -72,6 +72,7 @@ function drawSpots(box, places, onClick) {
 
 function showMap(mapId) {
   const map = findPlace(mapId);
+  returnPickaxe(); // out of the Crystal Cave, the pickaxe goes back on its rack (js/mining.js)
   const spots = placesIn(mapId);
   player.at = mapId;
 
