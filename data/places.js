@@ -64,6 +64,8 @@ GAME_DATA.places = [
   { "id": "mushrooms", "name": "Mushroom Ring",  "type": "place", "in": "forest", "x": 75, "y": 49,
     "description": "A dance floor under a sparkly disco ball. Dance!" },
   { "id": "solve_to_dance", "name": "Solve to Dance", "type": "dance_puzzle", "in": "mushrooms", "x": 18, "y": 62 },
+  { "id": "apple_tree", "name": "Apple Tree", "type": "picking", "in": "orchard", "x": 51, "y": 30, "fruit": "fruit_apple" },
+  { "id": "crafting_table", "name": "Crafting Table", "type": "crafting", "in": "crafting_cabin", "x": 44, "y": 50 },
   { "id": "crafting_cabin", "name": "Crafting Cabin", "type": "place", "in": "forest", "x": 30, "y": 17,
     "description": "A crafting table, a row of colourful supplies and round windows." },
   { "id": "treehouse", "name": "Treehouse",    "type": "place", "in": "forest", "x": 11, "y": 63,
@@ -91,6 +93,10 @@ GAME_DATA.places = [
   { "id": "marshmallows", "name": "Marshmallows", "type": "marshmallows", "in": "snack_shack", "x": 92, "y": 64 },
   { "id": "snack_keeper", "name": "Shopkeeper", "type": "person", "in": "snack_shack", "x": 45, "y": 52,
     "says": "Have a nice day! Crystals here, please." },
+
+  { "id": "unicorn_meadow", "name": "Unicorn Meadow", "type": "place", "in": "meadows", "x": 50, "y": 50, "start": true,
+    "description": "Unicorns graze here. They are all born blind." },
+  { "id": "unicorn", "name": "Blind Unicorn", "type": "unicorn", "in": "unicorn_meadow", "x": 50, "y": 55 },
 
   { "id": "dock",      "name": "Dock",           "type": "place", "in": "lake", "x": 35, "y": 61, "start": true,
     "description": "Click a Lucky Rod to go fishing. Fish go in your cooler." },

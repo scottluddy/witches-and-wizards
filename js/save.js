@@ -64,6 +64,10 @@ function fillIn(save) {
   if (save.hunger === undefined) save.hunger = 0;
   if (save.walked === undefined) save.walked = 0;
   if (!save.marshmallows) save.marshmallows = [];
+  if (!save.basket) save.basket = [];
+  if (!save.spells) save.spells = [];
+  if (!save.unicorn) save.unicorn = { canSee: false, applesNeeded: 0, applesFed: 0 };
+  if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   // Scott named the Floor 1 Snack Shack shelves.
   renameItem(save, "snack_jars", "snack_water");
@@ -142,6 +146,10 @@ function newPlayer(playerName, characterId, kind) {
     hunger: 0,                // 0 to 10: walking adds hunger, snacks take it away (js/hunger.js)
     walked: 0,                // map-widths walked toward the next hunger point
     marshmallows: [],         // hot chocolates in the backpack that have marshmallows
+    basket: [],               // fruit picked in the Fruit Orchard, carried (js/orchard.js)
+    spells: [],               // spells in your spell book, like "seeing" (js/spells.js)
+    unicorn: { canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
+    unicornsHelped: 0,        // unicorns that found their families (js/unicorns.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)

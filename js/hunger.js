@@ -25,28 +25,72 @@ function foodIn(item) {
   return food;
 }
 
-// Eat (or drink) something from the backpack. Once eaten it's gone, so it
-// can be bought again at the Snack Shack.
-function eat(item) {
+// Eat (or drink) something. It comes out of the backpack (or the fruit
+// basket), so a snack can be bought again at the Snack Shack.
+function eat(item, from) {
+  const list = player[from || "backpack"];
   const before = player.hunger;
   player.hunger = Math.max(0, player.hunger - foodIn(item));
-  player.backpack.splice(player.backpack.indexOf(item.id), 1);
+  list.splice(list.indexOf(item.id), 1);
   player.marshmallows = player.marshmallows.filter(function (id) { return id !== item.id; });
   writeSave(player);
   return before - player.hunger; // how much less hungry you are
 }
 
-// The marshmallow machine: hold up your hot chocolate and marshmallows drop in.
-function useMarshmallows() {
-  const mug = player.backpack.map(findItem).find(function (item) {
-    return item && item.hotChocolate && player.marshmallows.indexOf(item.id) === -1;
+// "Yum! Apple took away 1 hunger point."
+function yumText(item, less) {
+  return less > 0
+    ? "Yum! " + item.name + " took away " + less + " hunger point" + (less === 1 ? "" : "s") + "."
+    : "Yum! " + item.name + ". You weren't hungry anyway.";
+}
+
+// ---------------------------------------------------------------- the marshmallow machine
+
+// The self-serve marshmallow machine at the Snack Shack: it shows your hot
+// chocolates, and you choose which ones to hold up for marshmallows.
+function openMarshmallows(message) {
+  const mugs = player.backpack.map(findItem).filter(function (item) { return item && item.hotChocolate; });
+  const body = openInfoPanel("🍡", "Marshmallow Machine", message ||
+    (mugs.length ? "Choose a hot chocolate to hold up to the machine."
+                 : "You need a hot chocolate first. Buy one at the hot chocolate station!"));
+  const row = document.createElement("div");
+  row.className = "item-row";
+  mugs.forEach(function (mug) {
+    const has = hasMarshmallows(mug.id);
+    const card = itemCard(mug, has ? "Has marshmallows ✓" : "🍡 Add marshmallows", function () {
+      addMarshmallows(mug, card);
+    });
+    card.querySelector("button").disabled = has;
+    if (has) showMarshmallowsOn(card, false);
+    row.appendChild(card);
   });
-  const note = document.getElementById("place-description");
-  if (!mug) {
-    note.textContent = "🍡 Hold a mug of hot chocolate up to the machine for marshmallows. Get one at the hot chocolate station!";
-    return;
+  body.appendChild(row);
+}
+
+function hasMarshmallows(itemId) {
+  return player.marshmallows.indexOf(itemId) !== -1;
+}
+
+// Little white marshmallows on top of a mug's picture. "falling" makes them
+// drop in from above, one after another.
+function showMarshmallowsOn(card, falling) {
+  const art = card.querySelector(".item-art");
+  art.classList.add("with-marshmallows");
+  for (let i = 0; i < 6; i++) {
+    const m = document.createElement("span");
+    m.className = "marshmallow" + (falling ? " falling" : "");
+    m.style.left = (25 + i * 10) + "%";
+    m.style.animationDelay = (i * 0.15) + "s";
+    art.appendChild(m);
   }
-  player.marshmallows.push(mug.id);
-  writeSave(player);
-  note.textContent = "🍡 Plop, plop! Marshmallows drop into your " + mug.name + ".";
+}
+
+function addMarshmallows(mug, card) {
+  card.querySelector("button").disabled = true;
+  showMarshmallowsOn(card, true);
+  setTimeout(function () {
+    player.marshmallows.push(mug.id);
+    writeSave(player);
+    openMarshmallows("🍡 Plop, plop! Marshmallows dropped into your " + mug.name + ". Now it fills you up even more.");
+  }, 1500);
 }

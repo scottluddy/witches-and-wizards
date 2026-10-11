@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "unicorn" ? "🦄 " : "") + place.name;
     button.addEventListener("click", function () { onClick(place.id); });
     box.appendChild(button);
   });
@@ -282,7 +282,10 @@ function showPlace(id) {
     }
     if (child.type === "fishing") return startFishing(child); // js/fishing.js
     if (child.type === "digging") return startDigging(child); // js/digging.js
-    if (child.type === "marshmallows") return useMarshmallows(); // js/hunger.js
+    if (child.type === "marshmallows") return openMarshmallows(); // js/hunger.js
+    if (child.type === "picking") return pickFruit(child);        // js/orchard.js
+    if (child.type === "crafting") return openCrafting();         // js/spells.js
+    if (child.type === "unicorn") return openUnicorn();           // js/unicorns.js
     if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     goTo(childId);
   });

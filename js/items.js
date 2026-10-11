@@ -292,6 +292,7 @@ function openBackpack() {
       openBackpack();
       showLeftHere(place);
     });
+    if (hasMarshmallows(item.id)) card.querySelector(".item-name").textContent += " with marshmallows";
     if (item.food) card.appendChild(eatButton(item)); // snacks (js/hunger.js)
     list.appendChild(card);
   });
@@ -327,9 +328,7 @@ function eatButton(item) {
   button.addEventListener("click", function () {
     const less = eat(item);
     openBackpack();
-    document.getElementById("backpack-free").textContent = less > 0
-      ? "Yum! " + item.name + " took away " + less + " hunger point" + (less === 1 ? "" : "s") + "."
-      : "Yum! " + item.name + ". You weren't hungry anyway.";
+    document.getElementById("backpack-free").textContent = yumText(item, less);
   });
   return button;
 }

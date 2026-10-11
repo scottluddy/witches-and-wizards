@@ -31,6 +31,7 @@ GAME_DATA.items = [
   {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
   {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},
+  {"id": "potion_sense", "name": "Sense Potion", "category": "Potion", "gems": 3, "emoji": "🧪", "description": "A potion for the senses. Needed for the Seeing Spell."},
   {"id": "special_book", "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know."}
 ,
   {"id": "ski_size1", "name": "Ski Outfit (Size 1)", "category": "Ski Gear", "gems": 3, "emoji": "⛷️", "inPicture": true, "shelfX": 21, "shelfY": 76, "description": "A green ski outfit from the Ski Reserve."},

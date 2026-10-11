@@ -21,17 +21,35 @@ function updateStatus() {
   document.getElementById("status-character").textContent = character ? character.name : "?";
   document.getElementById("status-player").textContent = "(" + player.playerName + ")";
   document.getElementById("status-level").textContent = levelLabel(player);
+  // Three stars to fill; past three, more stars are added.
   document.getElementById("status-points").textContent =
-    "★".repeat(player.adventurePoints) + "☆".repeat(3 - player.adventurePoints);
+    "★".repeat(player.adventurePoints) + "☆".repeat(Math.max(0, 3 - player.adventurePoints));
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;
   document.getElementById("status-hunger").textContent = player.hunger + "/" + GAME_DATA.hunger.max;
   // How many things each carried bag holds, as a small number on its button.
-  ["backpack", "cooler", "bucket", "satchel"].forEach(function (bag) {
+  ["backpack", "cooler", "bucket", "satchel", "basket"].forEach(function (bag) {
     document.getElementById("count-" + bag).textContent = player[bag].length;
   });
 }
+
+// The shared pop-up (marshmallow machine, crafting table, unicorn): a big
+// picture or emoji, a title and a message. Returns the empty area below the
+// message, for buttons and lists.
+function openInfoPanel(art, title, message) {
+  document.getElementById("info-art").textContent = art;
+  document.getElementById("info-title").textContent = title;
+  document.getElementById("info-message").textContent = message || "";
+  const body = document.getElementById("info-body");
+  body.innerHTML = "";
+  document.getElementById("info-panel").hidden = false;
+  return body;
+}
+
+document.getElementById("btn-info-close").addEventListener("click", function () {
+  document.getElementById("info-panel").hidden = true;
+});
 
 function findCharacter(id) {
   return GAME_DATA.characters.find(function (c) { return c.id === id; });

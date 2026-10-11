@@ -25,6 +25,10 @@ GAME_DATA.activities = [
     "note": "Take a pickaxe from the rack, then click the wall. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
   { "name": "Solve to Dance", "kind": "Learning", "where": "Mushroom Ring", "inGame": true,
     "note": "Maths problems (3rd grade). + and - earn 1 gem, × and ÷ earn 2. Solve 2 to dance (data/dance.js)." },
+  { "name": "Pick apples", "kind": "Mining", "where": "Fruit Orchard", "inGame": true,
+    "note": "Click the Apple Tree; apples go in your fruit basket. Eat them or feed them to unicorns." },
+  { "name": "Help a blind unicorn", "kind": "Bonding", "where": "Unicorn Meadow", "inGame": true,
+    "note": "Make the Seeing Spell at the Crafting Cabin, cast it on the unicorn, feed it 3 to 5 apples: it finds its family. +1 Adventure Point." },
   { "name": "Chop wood", "kind": "Mining", "where": "", "inGame": false,
     "note": "" }
 ];

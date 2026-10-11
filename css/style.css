@@ -224,9 +224,14 @@ h2 {
 .status-name small { font-size: 0.8em; }
 
 /* Smaller laptop screens: a smaller top bar so it stays on one line. */
-@media (max-width: 1800px) {
+@media (max-width: 2200px) {
   .status-bar { font-size: 1.05rem; gap: 8px; }
   .status-bar > span { padding: 4px 12px; }
+}
+/* Narrower windows: the bag buttons show just their picture and count
+   (hover for the name), so the top bar stays on one line. */
+@media (max-width: 1700px) {
+  .bag-word { display: none; }
 }
 @media (max-width: 1450px) {
   .status-bar { font-size: 0.9rem; gap: 6px; padding-left: 12px; padding-right: 12px; }
@@ -763,3 +768,44 @@ h2 {
   border-radius: 14px;
 }
 .dance-answer[hidden] { display: none; }
+
+/* ---- the shared pop-up: marshmallows, crafting table, unicorn ---- */
+
+.info-art { font-size: 5rem; line-height: 1.1; }
+.info-art.sparkle { animation: sparkle 1.2s ease-out; }
+@keyframes sparkle {
+  0%   { filter: drop-shadow(0 0 0 gold); scale: 1; }
+  50%  { filter: drop-shadow(0 0 24px gold); scale: 1.25; }
+  100% { filter: drop-shadow(0 0 0 gold); scale: 1; }
+}
+#info-body { margin: 10px 0; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+
+/* Marshmallows on a hot chocolate's picture */
+.item-art.with-marshmallows { position: relative; }
+.marshmallow {
+  position: absolute;
+  top: 8%;
+  width: 14px;
+  height: 11px;
+  background: #fffdf7;
+  border: 2px solid #e8d9c5;
+  border-radius: 5px;
+}
+.marshmallow.falling { animation: marshmallow-drop 0.6s ease-in both; }
+@keyframes marshmallow-drop {
+  from { top: -60%; opacity: 0; }
+  to   { top: 8%; opacity: 1; }
+}
+
+/* A spell at the crafting table: what it needs */
+.spell-card {
+  background: #fffaf0;
+  border: 2px solid var(--magic);
+  border-radius: 16px;
+  padding: 10px 18px 16px;
+  min-width: 320px;
+}
+.spell-card h3 { margin: 4px 0; }
+.spell-needs { list-style: none; padding: 0; margin: 8px 0 14px; text-align: left; font-size: 1.1rem; }
+.spell-needs .enough { color: #2c6b40; }
+.spell-needs .missing { color: #9b3a3a; }

@@ -2,7 +2,8 @@
 //
 // While you're out, fish (and anything else a Lucky Rod pulls up) go in your
 // cooler, things dug up at Pebble Beach go in your bucket, and bones from the
-// Crystal Cave go in your satchel. At Home, click the cooler, the treasure
+// Crystal Cave go in your satchel, and fruit from the Fruit Orchard goes in
+// your fruit basket. At Home, click the cooler, the treasure
 // chest or the Spell Book Table (pieces of furniture with "holds" in
 // data/furniture.js) to empty your cooler or bucket into them for keeping.
 
@@ -12,12 +13,13 @@ const STORAGE = {
   homeCooler: { title: "🧊 Home Cooler",    empty: "Nothing in here yet.", from: "cooler" },
   homeChest:  { title: "🧰 Treasure Chest", empty: "Nothing in here yet.", from: "bucket" },
   satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave!" },
+  basket:     { title: "🧺 Fruit Basket",   empty: "Your fruit basket is empty. Pick fruit in the Fruit Orchard!" },
   homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave.", from: "satchel" }
 };
 
 // Every kind of thing that can be kept, so each one shows with its picture.
 function keepableThings() {
-  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || []);
+  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || [], GAME_DATA.fruits || []);
 }
 
 let openStorageName = null; // which store the pop-up is showing
@@ -35,6 +37,7 @@ function openStorage(name) {
     if (count === 0) return;
     const card = itemCard(thing, null);
     card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
+    if (name === "basket" && thing.food) card.appendChild(eatFromBasket(thing)); // fruit can be eaten
     list.appendChild(card);
   });
 
@@ -49,6 +52,19 @@ function openStorage(name) {
       : "Put in everything from your " + store.from + " (" + carried + ")";
   }
   document.getElementById("storage-panel").hidden = false;
+}
+
+// A button to eat one fruit from the basket.
+function eatFromBasket(fruit) {
+  const button = document.createElement("button");
+  button.className = "small-button";
+  button.textContent = "😋 Eat one";
+  button.addEventListener("click", function () {
+    const less = eat(fruit, "basket");
+    openStorage("basket");
+    document.getElementById("storage-title").textContent = "🧺 " + yumText(fruit, less);
+  });
+  return button;
 }
 
 // Empty the cooler (or bucket) you carry into the one at Home.
@@ -76,4 +92,8 @@ document.getElementById("btn-bucket").addEventListener("click", function () {
 
 document.getElementById("btn-satchel").addEventListener("click", function () {
   if (!walking) openStorage("satchel");
+});
+
+document.getElementById("btn-basket").addEventListener("click", function () {
+  if (!walking) openStorage("basket");
 });
