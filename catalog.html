@@ -257,6 +257,13 @@
       <thead><tr><th>Food</th><th>Kind</th><th>Price</th><th>Hunger taken away</th></tr></thead><tbody></tbody>
     </table></div>
 
+    <h3>Going up a Level</h3>
+    <p class="lede">A sample plan (data/levels.js and data/luck.js). In the game, click the Level in the top bar to see how close you are.</p>
+    <div class="table-wrap"><table id="logic-levels" class="logic">
+      <thead><tr><th>Needed for each new Level</th><th>How many more</th><th>Where to earn it</th></tr></thead><tbody></tbody>
+    </table></div>
+    <p id="logic-luck" class="lede"></p>
+
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
     <div id="extras" class="grid"></div>
@@ -271,27 +278,29 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "31"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=31"></script>
-  <script src="data/places.js?v=31"></script>
-  <script src="data/items.js?v=31"></script>
-  <script src="data/ideas.js?v=31"></script>
-  <script src="data/fish.js?v=31"></script>
-  <script src="data/digging.js?v=31"></script>
-  <script src="data/mining.js?v=31"></script>
-  <script src="data/troll.js?v=31"></script>
-  <script src="data/gameplay.js?v=31"></script>
-  <script src="data/extras.js?v=31"></script>
-  <script src="data/hunger.js?v=31"></script>
-  <script src="data/orchard.js?v=31"></script>
-  <script src="data/dance.js?v=31"></script>
-  <script src="data/trading.js?v=31"></script>
-  <script src="data/unicorns.js?v=31"></script>
-  <script src="data/spells.js?v=31"></script>
-  <script src="data/furniture.js?v=31"></script>
-  <script src="data/next_steps.js?v=31"></script>
-  <script src="data/logic.js?v=31"></script>
-  <script src="data/drawn.js?v=31"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "32"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=32"></script>
+  <script src="data/places.js?v=32"></script>
+  <script src="data/items.js?v=32"></script>
+  <script src="data/ideas.js?v=32"></script>
+  <script src="data/fish.js?v=32"></script>
+  <script src="data/digging.js?v=32"></script>
+  <script src="data/mining.js?v=32"></script>
+  <script src="data/troll.js?v=32"></script>
+  <script src="data/levels.js?v=32"></script>
+  <script src="data/luck.js?v=32"></script>
+  <script src="data/gameplay.js?v=32"></script>
+  <script src="data/extras.js?v=32"></script>
+  <script src="data/hunger.js?v=32"></script>
+  <script src="data/orchard.js?v=32"></script>
+  <script src="data/dance.js?v=32"></script>
+  <script src="data/trading.js?v=32"></script>
+  <script src="data/unicorns.js?v=32"></script>
+  <script src="data/spells.js?v=32"></script>
+  <script src="data/furniture.js?v=32"></script>
+  <script src="data/next_steps.js?v=32"></script>
+  <script src="data/logic.js?v=32"></script>
+  <script src="data/drawn.js?v=32"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -697,6 +706,16 @@
     logic.containers.forEach(function (bag) {
       addRow("logic-bags", [bag.emoji + " " + bag.name, bag.holds, bag.empty]);
     });
+
+    // Levels: what each new Level needs, and luck (data/levels.js, data/luck.js).
+    const levels = GAME_DATA.levels;
+    levels.needs.forEach(function (need) {
+      addRow("logic-levels", [need.emoji + " " + need.name, String(need.count), need.how], [1]);
+    });
+    addRow("logic-levels", ["Gems (paid)", levels.gemsPerLevel + " × your Level", levels.gemsPerLevel + " gems to reach Level 2, " + levels.gemsPerLevel * 2 + " for Level 3, and so on"], []);
+    document.getElementById("logic-luck").textContent = "Powers: each Level above 1 makes you " + levels.luckPerLevel +
+      "% luckier. The Luck Potion adds " + GAME_DATA.luck.boost + "% for " + GAME_DATA.luck.minutes +
+      " minutes. Luck makes fish bite more, Crystals turn up more at the Crystal Dig Spot, and a woken troll sometimes stays asleep.";
 
     // Food, worked out the same way the game does (js/hunger.js).
     (function () {

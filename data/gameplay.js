@@ -43,9 +43,9 @@ GAME_DATA.activities = [
 //   inGame    true once it works in the game
 GAME_DATA.metrics = [
   { "name": "Level", "shows": "Witch Level 1 / Wizard Level 1", "inGame": true,
-    "earn": "Not yet. Plan: 3 Adventure Points raise your Level.", "use": "" },
+    "earn": "3 each of Adventure Points, Chore Points, fish and dances since your last Level, plus gems (data/levels.js). Click the Level in the top bar.", "use": "Each Level above 1 makes you 5% luckier." },
   { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": true,
-    "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "Plan: 3 of them raise your Level (not built yet)." },
+    "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "3 of them (with other things) raise your Level." },
   { "name": "Crystals", "shows": "💎", "inGame": true,
     "earn": "Digging at the Crystal Dig Spot and mining in the Crystal Cave.", "use": "Buying things priced in Crystals, like dresses, and making spells." },
   { "name": "Gems", "shows": "the girls' gem drawing", "inGame": true,
@@ -53,7 +53,7 @@ GAME_DATA.metrics = [
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,
     "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." },
   { "name": "Chore Points", "shows": "🧹", "inGame": true,
-    "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "Not decided yet." },
+    "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "3 of them (with other things) raise your Level." },
   { "name": "Hunger", "shows": "🍽️ 0/10", "inGame": true,
     "earn": "Walking around (1 point per map-width walked, up to 10). Full speed at 0 to 3, three quarter speed at 4 to 6, two thirds at 7 to 9, half speed at 10.", "use": "Eat to take hunger away: healthy food by its full price, snacks by half (data/hunger.js)." }
 ];

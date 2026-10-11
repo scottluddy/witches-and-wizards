@@ -22,9 +22,13 @@ function updateStatus() {
   document.getElementById("status-character").textContent = character ? character.name : "?";
   document.getElementById("status-player").textContent = "(" + player.playerName + ")";
   document.getElementById("status-level").textContent = levelLabel(player);
-  // Three stars to fill; past three, more stars are added.
+  // Stars for the Adventure Points earned toward the next Level (js/levels.js).
+  const adventure = GAME_DATA.levels.needs.find(function (need) { return need.id === "adventurePoints"; });
+  const earned = adventure ? sinceLastLevel(adventure) : player.adventurePoints;
+  const needed = adventure ? adventure.count : 3;
   document.getElementById("status-points").textContent =
-    "★".repeat(player.adventurePoints) + "☆".repeat(Math.max(0, 3 - player.adventurePoints));
+    "★".repeat(earned) + "☆".repeat(Math.max(0, needed - earned));
+  showLuck(); // the Luck Potion's time left (js/luck.js)
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;

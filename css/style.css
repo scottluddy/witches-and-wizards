@@ -212,7 +212,7 @@ h2 {
 
 .status-bar[hidden] { display: none; }
 
-.status-bar > span {
+.status-bar > span, .status-bar > .level-button {
   padding: 6px 14px;
   background: #fffaf0;
   border: 3px solid var(--parchment-dark);
@@ -226,7 +226,7 @@ h2 {
 /* Smaller laptop screens: a smaller top bar so it stays on one line. */
 @media (max-width: 2200px) {
   .status-bar { font-size: 1.05rem; gap: 8px; }
-  .status-bar > span { padding: 4px 12px; }
+  .status-bar > span, .status-bar > .level-button { padding: 4px 12px; }
 }
 /* Narrower windows: the bag buttons show just their picture and count
    (hover for the name), so the top bar stays on one line. */
@@ -235,12 +235,12 @@ h2 {
 }
 @media (max-width: 1450px) {
   .status-bar { font-size: 0.9rem; gap: 6px; padding-left: 12px; padding-right: 12px; }
-  .status-bar > span { padding: 3px 9px; }
+  .status-bar > span, .status-bar > .level-button { padding: 3px 9px; }
 }
 
 @media (max-width: 600px) {
   .status-bar { font-size: 1rem; gap: 6px; }
-  .status-bar > span { padding: 4px 10px; }
+  .status-bar > span, .status-bar > .level-button { padding: 4px 10px; }
   .spot .dot { width: 14px; height: 14px; }
   .spot .label { padding: 2px 8px; border-width: 2px; }
 }
@@ -880,3 +880,30 @@ h2 {
 body.holding-apple, body.holding-apple * {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><text y='32' font-size='32'>🍎</text></svg>") 20 20, auto !important;
 }
+
+/* ---- Levels (js/levels.js) ---- */
+
+/* The Level in the top bar is a button that opens the progress pop-up. */
+.status-bar > .level-button { font: inherit; color: var(--magic-dark); cursor: pointer; border-color: var(--magic-dark); }
+.level-button:hover { filter: brightness(1.08); }
+
+.level-row {
+  display: grid;
+  grid-template-columns: 13em 1fr 5em;
+  width: 100%;
+  max-width: 620px;
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  align-items: center;
+  gap: 4px 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.level-name { font-weight: bold; display: flex; align-items: center; gap: 4px; }
+.level-bar { height: 18px; border-radius: 9px; background: #e8dcc0; border: 2px solid #b89a6a; overflow: hidden; }
+.level-bar span { display: block; height: 100%; background: linear-gradient(90deg, #f3c94b, #d99a00); }
+.level-row.done .level-bar span { background: linear-gradient(90deg, #8fd16a, #4e9d36); }
+.level-count { text-align: right; }
+.level-how { grid-column: 1 / -1; opacity: 0.75; margin-top: -4px; }

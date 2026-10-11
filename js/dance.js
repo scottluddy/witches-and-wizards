@@ -70,7 +70,9 @@ function checkAnswer() {
     setTimeout(nextProblem, 1200);
     return;
   }
-  // Solved them all: time to dance!
+  // Solved them all: time to dance! (Dances count toward the next Level.)
+  player.dances += 1;
+  writeSave(player);
   document.getElementById("dance-title").textContent = "💃 You dance under the disco ball! 🕺";
   document.getElementById("dance-progress").textContent = "";
   document.getElementById("dance-answer").hidden = true;

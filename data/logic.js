@@ -12,6 +12,8 @@ GAME_DATA.logic = {
     "The Scholarship gives one free item from each Campus Store shelf.",
     "Each item can only be owned once. Eating a snack, selling it or trading it lets you get it again.",
     "Adventures earn Adventure Points. So far the only adventure is reuniting a blind unicorn with its family.",
+    "Going up a Level needs 3 more Adventure Points, Chore Points, fish and dances since your last Level, and costs 10 gems × your Level. Click the Level in the top bar to see your progress.",
+    "Luck makes good things happen more often. Each Level above 1 makes you 5% luckier, and the Luck Potion adds 25% for 5 minutes.",
     "The troll lives in the Crystal Cave and under the Crystal Dig Spot. When it wakes, it steals 1 to 3 Crystals.",
     "Crystals are rare: an easy way to get them should only just pay off on average (more found than the troll steals, but not by much).",
     "Fishing is the main way to earn Gems. Dancing earns dance points, and every 9 points makes 1 Gem.",

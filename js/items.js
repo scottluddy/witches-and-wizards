@@ -304,6 +304,7 @@ function openBackpack() {
     });
     if (hasMarshmallows(item.id)) card.querySelector(".item-name").textContent += " with marshmallows";
     if (item.food) card.appendChild(eatButton(item)); // snacks (js/hunger.js)
+    if (isLuckPotion(item)) card.appendChild(drinkButton(item)); // js/luck.js
     list.appendChild(card);
   });
 

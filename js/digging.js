@@ -68,11 +68,12 @@ function foundBeachFind() {
 // The Crystal Dig Spot: 1 Crystal, a troll, or too tired to keep digging.
 function foundCrystals() {
   const roll = Math.random() * 100;
-  if (roll < GAME_DATA.digging.crystalChance) {
+  const crystalChance = luckyChance(GAME_DATA.digging.crystalChance / 100) * 100; // luck helps (js/luck.js)
+  if (roll < crystalChance) {
     player.crystals += 1;
     writeSave(player);
     showDigging("💎", "You dug up a Crystal!", ["+", moneyLabel("crystals", 1), " Crystal!"], true);
-  } else if (roll < GAME_DATA.digging.crystalChance + GAME_DATA.digging.trollChance) {
+  } else if (roll < crystalChance + GAME_DATA.digging.trollChance) {
     document.getElementById("digging-panel").hidden = true;
     wakeTroll("under the Crystal Dig Spot"); // js/troll.js
   } else {

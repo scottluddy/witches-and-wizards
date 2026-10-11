@@ -72,8 +72,13 @@ function castLine() {
   clearTimeout(biteTimer);
   showFishing("🎣", "Fishing with " + fishingSpot.name, ["Waiting for a bite..."], []);
   document.getElementById("fishing-art").classList.add("waiting");
-  const wait = waitSeconds();
+  let wait = waitSeconds();
   const giveUp = GAME_DATA.fishing.giveUpSeconds;
+  if (giveUp && wait > giveUp) {
+    // Luck (js/luck.js) can turn a miss into a bite after all.
+    const catchChance = (giveUp - GAME_DATA.fishing.minSeconds) / (GAME_DATA.fishing.maxSeconds - GAME_DATA.fishing.minSeconds);
+    if (Math.random() < secondChance(catchChance)) wait = randomBetween(GAME_DATA.fishing.minSeconds, giveUp);
+  }
   if (giveUp && wait > giveUp) {
     // Too slow: nothing bites this time.
     biteTimer = setTimeout(function () {
