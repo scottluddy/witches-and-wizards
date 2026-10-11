@@ -32,6 +32,7 @@ function updateStatus() {
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;
+  document.getElementById("status-bonding").textContent = player.bondingPoints;
   document.getElementById("status-hunger").textContent = player.hunger + "/" + GAME_DATA.hunger.max;
   // How many things each carried bag holds, as a small number on its button.
   ["backpack", "cooler", "bucket", "satchel", "basket"].forEach(function (bag) {

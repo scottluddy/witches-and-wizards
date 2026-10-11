@@ -438,6 +438,49 @@ def placeholder_character():
     add_outline(img).save(OUT_DIR / "placeholder_character.png")
 
 
+# ---------------------------------------------------------------- computer drawings
+# A few things are drawn by the computer until the girls draw their own (when
+# art/raw has a drawing with the same name, that is used instead).
+
+def draw_bath_tub():
+    """A clawfoot bath tub full of bubbles (Scott asked for one, 2026-10-11)."""
+    k = 4                                  # draw big, then shrink, for smooth edges
+    w, h = 600 * k, 440 * k
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    ink, line = INK + (255,), 7 * k
+    gold = (222, 170, 60, 255)
+    # Clawfeet.
+    for x in (130, 430):
+        d.ellipse((x * k, 340 * k, (x + 50) * k, 400 * k), fill=gold, outline=ink, width=line)
+    # Tap and pipe on the left.
+    d.rectangle((40 * k, 60 * k, 64 * k, 190 * k), fill=(175, 180, 190, 255), outline=ink, width=line)
+    d.rectangle((40 * k, 60 * k, 130 * k, 84 * k), fill=(175, 180, 190, 255), outline=ink, width=line)
+    d.ellipse((24 * k, 40 * k, 80 * k, 70 * k), fill=(200, 205, 215, 255), outline=ink, width=line)
+    # The tub: straight top, round bottom.
+    d.rounded_rectangle((60 * k, 150 * k, 560 * k, 370 * k), radius=110 * k,
+                        fill=(250, 250, 255, 255), outline=ink, width=line)
+    d.rectangle((60 * k + line // 2, 150 * k, 560 * k - line // 2, 255 * k), fill=(250, 250, 255, 255))
+    d.line((60 * k, 150 * k, 60 * k, 262 * k), fill=ink, width=line)
+    d.line((560 * k, 150 * k, 560 * k, 262 * k), fill=ink, width=line)
+    # A pink stripe round the tub.
+    d.line((70 * k, 250 * k, 550 * k, 250 * k), fill=(240, 150, 190, 255), width=14 * k)
+    # Water and a heap of bubbles on top.
+    d.rectangle((48 * k, 138 * k, 572 * k, 162 * k), fill=(140, 200, 240, 255), outline=ink, width=line)
+    rng = random.Random(7)
+    for _ in range(26):
+        x, y, r = rng.randint(90, 530), rng.randint(95, 145), rng.randint(18, 38)
+        d.ellipse(((x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k),
+                  fill=(255, 255, 255, 255), outline=(150, 190, 225, 255), width=4 * k)
+    for x, y, r in ((200, 40, 14), (330, 22, 10), (460, 45, 12)):   # floating bubbles
+        d.ellipse(((x - r) * k, (y - r) * k, (x + r) * k, (y + r) * k), outline=(120, 180, 225, 255), width=4 * k)
+    img = img.resize((w // k, h // k), Image.LANCZOS)
+    return add_outline(img)
+
+
+COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub}
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -481,6 +524,10 @@ def main():
             placeholder_place(place, children)
         print(f"  made a placeholder for {kind}_{place['id']}")
     placeholder_character()
+    for name, draw in COMPUTER_DRAWINGS.items():
+        if name not in drawn:
+            draw().save(OUT_DIR / f"{name}.png")
+            print(f"  made a computer drawing for {name}")
 
     # 3. Tell the game which pictures are real drawings.
     (DATA_DIR / "drawn.js").write_text(

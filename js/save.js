@@ -71,7 +71,10 @@ function fillIn(save) {
   if (save.unicorn.trusted === undefined) save.unicorn.trusted = save.unicorn.canSee;
   if (save.holding === undefined) save.holding = null;
   if (save.dancePoints === undefined) save.dancePoints = 0;
-  if (save.dances === undefined) save.dances = 0;
+  if (save.bondingPoints === undefined) save.bondingPoints = 0;
+  if (save.lastBath === undefined) save.lastBath = {};
+  if (save.sashimi === undefined) save.sashimi = [];
+  if (save.caughtAt === undefined) save.caughtAt = [];
   if (save.luckSeconds === undefined) save.luckSeconds = 0;
   if (save.levelStart === undefined) save.levelStart = {};
   if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
@@ -157,7 +160,10 @@ function newPlayer(playerName, characterId, kind) {
     spells: [],               // spells in your spell book, like "seeing" (js/spells.js)
     unicorn: { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
     dancePoints: 0,           // Solve to Dance points; every few earn a gem (js/dance.js)
-    dances: 0,                // how many times you danced (counts toward the next Level)
+    bondingPoints: 0,         // earned by taking care of your pet (js/bonding.js)
+    lastBath: {},             // when each pet last had a bath: { "pet_owl": time }
+    caughtAt: [],             // when each fish in the cooler you carry was caught: [{ id, at }]
+    sashimi: [],              // fish in the cooler at Home that are Sashimi Grade (one id each)
     luckSeconds: 0,           // seconds of Luck Potion left (js/luck.js)
     levelStart: {},           // the counters when you last went up a Level (js/levels.js)
     holding: null,            // a fruit taken out of the basket and held in your hand (js/unicorns.js)

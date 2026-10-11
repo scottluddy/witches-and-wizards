@@ -907,3 +907,9 @@ body.holding-apple, body.holding-apple * {
 .level-row.done .level-bar span { background: linear-gradient(90deg, #8fd16a, #4e9d36); }
 .level-count { text-align: right; }
 .level-how { grid-column: 1 / -1; opacity: 0.75; margin-top: -4px; }
+
+/* A spot with its own picture, like the bath tub at Home (js/world.js). */
+.spot.with-picture { gap: 0; }
+.spot-picture { width: 100%; height: auto; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25)); transition: transform 0.15s; }
+.spot.with-picture:hover .spot-picture { transform: scale(1.06); }
+.spot.with-picture .dot { display: none; }

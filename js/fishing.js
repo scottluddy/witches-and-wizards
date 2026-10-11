@@ -98,6 +98,7 @@ function reelIn() {
   if (isFish(thing)) {
     player.cooler.push(thing.id);
     player.fishCount += 1; // only real fish count, treasures don't
+    player.caughtAt.push({ id: thing.id, at: Date.now() }); // for Sashimi Grade (js/storage.js)
   } else {
     player.cooler.push(thing.id); // a treasure, not a fish (so not counted)
   }

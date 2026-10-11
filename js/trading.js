@@ -106,6 +106,7 @@ function moneyName(value) {
 function sell(thing, from, value) {
   const list = player[from];
   list.splice(list.indexOf(thing.id), 1);
+  if (from === "cooler") forgetCatch(thing.id); // js/storage.js
   player.marshmallows = player.marshmallows.filter(function (id) { return id !== thing.id; });
   player[value.money] += value.amount;
   writeSave(player);

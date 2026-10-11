@@ -1,10 +1,17 @@
 // Going up a Level: click the Level in the top bar to see what you need.
 // The plan (what counts, how many, the gems it costs) is in data/levels.js.
 
+// How many of one thing you have: a number, or how many are in a list
+// (like the spells in your spell book).
+function counterOf(id) {
+  const value = player[id];
+  return Array.isArray(value) ? value.length : value || 0;
+}
+
 // How many of one thing you've earned since your last Level.
 function sinceLastLevel(need) {
   const start = (player.levelStart || {})[need.id] || 0;
-  return Math.max(0, (player[need.id] || 0) - start);
+  return Math.max(0, counterOf(need.id) - start);
 }
 
 // Gems it costs to go from your Level to the next one.
@@ -73,7 +80,7 @@ function levelUp() {
   player.level += 1;
   // Start counting again from here for the next Level.
   player.levelStart = {};
-  GAME_DATA.levels.needs.forEach(function (need) { player.levelStart[need.id] = player[need.id] || 0; });
+  GAME_DATA.levels.needs.forEach(function (need) { player.levelStart[need.id] = counterOf(need.id); });
   writeSave(player);
   openLevelPanel("🎉 Hooray! You are now " + levelLabel(player) + "! You feel a little luckier. For the next Level you need:");
 }

@@ -5,12 +5,14 @@
 //   id       short name (no spaces). The picture is art/processed/<id>.png
 //   gems     gems you earn for catching it
 //   chance   how often it bites compared to the others (bigger = more often)
+//   food     fish are healthy food (Scott, 2026-10-11): eating one takes away
+//            as many hunger points as its gems (js/hunger.js)
 GAME_DATA.fish = [
-  { "id": "fish_bubble",  "name": "Bubble Fish",  "gems": 3, "chance": 6, "emoji": "🐟",
+  { "id": "fish_bubble",  "name": "Bubble Fish",  "gems": 3, "chance": 6, "emoji": "🐟", "food": "healthy",
     "description": "A round orange fish with a yellow crown." },
-  { "id": "fish_dream",   "name": "Dream Fish",   "gems": 6, "chance": 3, "emoji": "🐠",
+  { "id": "fish_dream",   "name": "Dream Fish",   "gems": 6, "chance": 3, "emoji": "🐠", "food": "healthy",
     "description": "A sleepy pink fish in a nightcap." },
-  { "id": "fish_crystal", "name": "Crystal Fish", "gems": 10, "chance": 1, "emoji": "🐡",
+  { "id": "fish_crystal", "name": "Crystal Fish", "gems": 10, "chance": 1, "emoji": "🐡", "food": "healthy",
     "description": "A rare spiky blue fish." }
 ];
 
@@ -29,3 +31,9 @@ GAME_DATA.treasures = [
 // If the wait would be longer than giveUpSeconds, nothing bites: after
 // giveUpSeconds you're told "Sorry, nothing caught, please try again."
 GAME_DATA.fishing = { "minSeconds": 5, "maxSeconds": 25, "giveUpSeconds": 20 };
+
+// Sashimi Grade (Scott, 2026-10-11): a fish put in the cooler at Home within
+// "minutes" of being caught is still super fresh. It's Sashimi Grade: eating
+// it takes away "extraFood" more hunger points (and it may be useful for
+// other things later).
+GAME_DATA.sashimi = { "minutes": 5, "extraFood": 2 };

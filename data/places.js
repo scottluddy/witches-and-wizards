@@ -37,7 +37,10 @@ GAME_DATA.places = [
   { "id": "meadows",  "name": "Meadows",  "type": "map", "in": "world", "x": 66, "y": 80 },
 
   { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 22, "y": 72, "start": true,
-    "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up." },
+    "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up, or the bath tub to wash your pet." },
+  // The bath tub is computer-drawn for now ("picture", made by tools/process_art.py)
+  // until the girls draw one. "size" is its width, in percent of the room picture.
+  { "id": "bath_tub", "name": "Bath Tub", "type": "bath", "in": "home", "x": 53, "y": 84, "picture": "bath_tub", "size": 15 },
   { "id": "store",  "name": "Campus Store",  "type": "place", "in": "village", "x": 50, "y": 42,
     "description": "The clerk waves hello. Click a shelf to see what's for sale." },
   { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 24, "y": 34, "shelf": "Dresses",

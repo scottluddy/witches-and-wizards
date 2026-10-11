@@ -43,7 +43,7 @@ GAME_DATA.activities = [
 //   inGame    true once it works in the game
 GAME_DATA.metrics = [
   { "name": "Level", "shows": "Witch Level 1 / Wizard Level 1", "inGame": true,
-    "earn": "3 each of Adventure Points, Chore Points, fish and dances since your last Level, plus gems (data/levels.js). Click the Level in the top bar.", "use": "Each Level above 1 makes you 5% luckier." },
+    "earn": "3 each of Adventure Points, Chore Points and Bonding Points and 1 Skill since your last Level, plus gems (data/levels.js). Click the Level in the top bar.", "use": "Each Level above 1 makes you 5% luckier." },
   { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": true,
     "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "3 of them (with other things) raise your Level." },
   { "name": "Crystals", "shows": "💎", "inGame": true,

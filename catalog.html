@@ -278,29 +278,30 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "32"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=32"></script>
-  <script src="data/places.js?v=32"></script>
-  <script src="data/items.js?v=32"></script>
-  <script src="data/ideas.js?v=32"></script>
-  <script src="data/fish.js?v=32"></script>
-  <script src="data/digging.js?v=32"></script>
-  <script src="data/mining.js?v=32"></script>
-  <script src="data/troll.js?v=32"></script>
-  <script src="data/levels.js?v=32"></script>
-  <script src="data/luck.js?v=32"></script>
-  <script src="data/gameplay.js?v=32"></script>
-  <script src="data/extras.js?v=32"></script>
-  <script src="data/hunger.js?v=32"></script>
-  <script src="data/orchard.js?v=32"></script>
-  <script src="data/dance.js?v=32"></script>
-  <script src="data/trading.js?v=32"></script>
-  <script src="data/unicorns.js?v=32"></script>
-  <script src="data/spells.js?v=32"></script>
-  <script src="data/furniture.js?v=32"></script>
-  <script src="data/next_steps.js?v=32"></script>
-  <script src="data/logic.js?v=32"></script>
-  <script src="data/drawn.js?v=32"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "33"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=33"></script>
+  <script src="data/places.js?v=33"></script>
+  <script src="data/items.js?v=33"></script>
+  <script src="data/ideas.js?v=33"></script>
+  <script src="data/fish.js?v=33"></script>
+  <script src="data/digging.js?v=33"></script>
+  <script src="data/mining.js?v=33"></script>
+  <script src="data/troll.js?v=33"></script>
+  <script src="data/levels.js?v=33"></script>
+  <script src="data/luck.js?v=33"></script>
+  <script src="data/bonding.js?v=33"></script>
+  <script src="data/gameplay.js?v=33"></script>
+  <script src="data/extras.js?v=33"></script>
+  <script src="data/hunger.js?v=33"></script>
+  <script src="data/orchard.js?v=33"></script>
+  <script src="data/dance.js?v=33"></script>
+  <script src="data/trading.js?v=33"></script>
+  <script src="data/unicorns.js?v=33"></script>
+  <script src="data/spells.js?v=33"></script>
+  <script src="data/furniture.js?v=33"></script>
+  <script src="data/next_steps.js?v=33"></script>
+  <script src="data/logic.js?v=33"></script>
+  <script src="data/drawn.js?v=33"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -333,7 +334,7 @@
       if (place.type === "fishing") return "fishing spot";
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
       const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
-        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems" };
+        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet" };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
@@ -591,7 +592,7 @@
         const label = {
           fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
           person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
-          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems"
+          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet"
         }[c.type];
         if (label && tags.indexOf(label) === -1) tags.push(label);
         if (c.shelf && c.in !== "store") {

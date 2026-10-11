@@ -35,6 +35,11 @@ function openStorage(name) {
   keepableThings().forEach(function (thing) {
     const count = kept.filter(function (id) { return id === thing.id; }).length;
     if (count === 0) return;
+    // Sashimi Grade fish in the cooler at Home get their own card.
+    const sashimi = name === "homeCooler" ? Math.min(count, countOf(player.sashimi, thing.id)) : 0;
+    if (sashimi) list.appendChild(fishCard(thing, name, sashimi, true));
+    if (count === sashimi) return;
+    if (isFish(thing)) return list.appendChild(fishCard(thing, name, count - sashimi, false));
     const card = itemCard(thing, null);
     card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
     if (name === "basket" && thing.food) card.appendChild(eatFromBasket(thing)); // fruit can be eaten
@@ -83,10 +88,80 @@ function holdButton(fruit) {
 // Empty the cooler (or bucket) you carry into the one at Home.
 function moveIntoStorage() {
   const from = STORAGE[openStorageName].from;
+  const fresh = from === "cooler" ? keepFreshFish() : 0;
   player[openStorageName] = player[openStorageName].concat(player[from]);
   player[from] = [];
   writeSave(player);
   openStorage(openStorageName);
+  if (fresh) {
+    document.getElementById("storage-title").textContent = "🍣 " + fresh +
+      (fresh === 1 ? " fish was" : " fish were") + " fresh enough to be Sashimi Grade!";
+  }
+}
+
+// ---------------------------------------------------------------- fish and Sashimi Grade
+
+// How many times "id" is in a list.
+function countOf(list, id) {
+  return list.filter(function (other) { return other === id; }).length;
+}
+
+// Fish in the cooler you carry that were caught in the last few minutes
+// (data/fish.js "sashimi"), by name.
+function freshCount(id) {
+  const freshFor = GAME_DATA.sashimi.minutes * 60000;
+  return player.caughtAt.filter(function (c) { return c.id === id && Date.now() - c.at <= freshFor; }).length;
+}
+
+// Putting fish away at Home: the fresh ones become Sashimi Grade. Returns how many.
+function keepFreshFish() {
+  let made = 0;
+  GAME_DATA.fish.forEach(function (fish) {
+    const fresh = Math.min(freshCount(fish.id), countOf(player.cooler, fish.id));
+    for (let i = 0; i < fresh; i++) player.sashimi.push(fish.id);
+    made += fresh;
+  });
+  player.caughtAt = []; // the cooler you carry is empty now
+  return made;
+}
+
+// A fish left the cooler you carry (eaten or sold): forget its oldest catch time.
+function forgetCatch(id) {
+  const i = player.caughtAt.findIndex(function (c) { return c.id === id; });
+  if (i !== -1) player.caughtAt.splice(i, 1);
+}
+
+// Hunger points eating a fish takes away; Sashimi Grade takes away more.
+function fishFood(fish, sashimi) {
+  return foodIn(fish) + (sashimi ? GAME_DATA.sashimi.extraFood : 0);
+}
+
+// A card for some fish: its name, how many, Sashimi Grade or still fresh, and an Eat button.
+function fishCard(fish, storeName, count, sashimi) {
+  const card = itemCard(fish, null);
+  let name = fish.name + (sashimi ? " (🍣 Sashimi Grade)" : "") + (count > 1 ? " × " + count : "");
+  const fresh = storeName === "cooler" ? freshCount(fish.id) : 0;
+  if (fresh) name += " (🍣 " + fresh + " still fresh)";
+  card.querySelector(".item-name").textContent = name;
+  const button = document.createElement("button");
+  button.className = "small-button";
+  button.textContent = "😋 Eat one (🥦 healthy, -" + fishFood(fish, sashimi) + " 🍽️)";
+  button.addEventListener("click", function () { eatFish(fish, storeName, sashimi); });
+  card.appendChild(button);
+  return card;
+}
+
+function eatFish(fish, storeName, sashimi) {
+  const before = player.hunger;
+  player.hunger = Math.max(0, player.hunger - fishFood(fish, sashimi));
+  const list = player[storeName];
+  list.splice(list.indexOf(fish.id), 1);
+  if (sashimi) player.sashimi.splice(player.sashimi.indexOf(fish.id), 1);
+  if (storeName === "cooler") forgetCatch(fish.id);
+  writeSave(player);
+  openStorage(storeName);
+  document.getElementById("storage-title").textContent = "😋 Yum! The " + fish.name +
+    " took away " + (before - player.hunger) + " hunger point" + (before - player.hunger === 1 ? "" : "s") + ".";
 }
 
 document.getElementById("btn-storage-move").addEventListener("click", moveIntoStorage);

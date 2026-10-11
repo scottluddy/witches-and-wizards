@@ -3,22 +3,26 @@
 // To go up one Level you need "count" more of each thing below since your
 // last Level, and you pay some gems. Click the Level in the top bar to see
 // how close you are.
-//   id     the counter in the saved game it counts (js/save.js)
+//   id     the counter in the saved game it counts (js/save.js); for a
+//          list, like "spells", it counts how many are in it
 //   name   what it's called on screen
 //   emoji  its little picture
 //   count  how many more you need for each new Level
 //   how    where to earn it
-// Bonding Points aren't counted yet; add them here once they exist.
+// Fish and dances don't count (Scott, 2026-10-11): fish are for food and
+// spells, and dancing is just for fun.
 GAME_DATA.levels = {
   "needs": [
     { "id": "adventurePoints", "name": "Adventure Points", "emoji": "⭐", "count": 3,
-      "how": "Help a blind unicorn find its family in the Unicorn Meadow." },
+      "how": "Go on adventures, like helping a blind unicorn find its family in the Unicorn Meadow." },
     { "id": "chorePoints",     "name": "Chore Points",     "emoji": "🧹", "count": 3,
       "how": "Sweep your room at Home with a broomstick." },
-    { "id": "fishCount",       "name": "Fish caught",      "emoji": "🐟", "count": 3,
-      "how": "Fish with a Lucky Rod at the Dock." },
-    { "id": "dances",          "name": "Dances",           "emoji": "💃", "count": 3,
-      "how": "Solve to Dance in the Mushroom Ring." }
+    { "id": "bondingPoints",   "name": "Bonding Points",   "emoji": "🐾", "count": 3,
+      "how": "Take care of your pet, like giving it a bath in the tub at Home." },
+    // Skills: spells in your spell book (and later other skills). Only 1 for
+    // now, because the Seeing Spell is the only spell so far.
+    { "id": "spells",          "name": "Skills (spells learned)", "emoji": "📖", "count": 1,
+      "how": "Make a spell at the Crafting Table in the Crafting Cabin." }
   ],
   // Going up costs gems too: 10 to reach Level 2, 20 to reach Level 3, and so on.
   "gemsPerLevel": 10,
