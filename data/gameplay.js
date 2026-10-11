@@ -24,7 +24,7 @@ GAME_DATA.activities = [
   { "name": "Mine in the Crystal Cave", "kind": "Mining", "where": "Crystal Cave", "inGame": true,
     "note": "Pay 3 gems at the pickaxe rack beside the cave for a pickaxe (it goes back when you leave), then click the wall. Only the last 3 dug spots stay marked. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
   { "name": "Solve to Dance", "kind": "Learning", "where": "Mushroom Ring", "inGame": true,
-    "note": "Maths problems (3rd grade). + and - earn 1 gem, × and ÷ earn 2. Solve 2 to dance (data/dance.js)." },
+    "note": "Maths problems (3rd grade). + and - earn 1 dance point, × and ÷ earn 2; every 9 points is 1 gem. Solve 2 to dance (data/dance.js)." },
   { "name": "Pick apples", "kind": "Mining", "where": "Fruit Orchard", "inGame": true,
     "note": "Click the Apple Tree; apples go in your fruit basket. Eat them or feed them to unicorns." },
   { "name": "Help a blind unicorn", "kind": "Bonding", "where": "Unicorn Meadow", "inGame": true,

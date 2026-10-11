@@ -21,22 +21,13 @@ GAME_DATA.nextSteps = {
     { "text": "What happens with the Turtle Egg? Does it hatch?", "who": "Girls" },
     { "text": "What other fruit grows in the Fruit Orchard, and what does the Treehouse's fruit cooler do?", "who": "Girls" },
     { "text": "What can you do at the Fish Hut, the Crafting Cabin's supplies and Pearl Waterfall?", "who": "Girls",
-      "note": "They have pictures but nothing to click yet." },
-    { "text": "Should the Solve to Dance puzzle keep paying Gems with no limit?", "who": "Scott",
-      "note": "A fast reader can earn a lot of gems there. A daily limit, or paying in Chore Points or Adventure Points, would keep it fair." },
-    { "text": "Should caught fish earn Gems twice?", "who": "Scott",
-      "note": "Catching a fish pays its gems, and then the Gems shelf at the Trading Post buys it for the same gems again. The same goes for beach finds." },
-    { "text": "Should free Scholarship items sell for Gems or Crystals?", "who": "Scott",
-      "note": "Right now you can take a free item and sell it on the Gems shelf for 90% of its price." }
+      "note": "They have pictures but nothing to click yet." }
   ],
   "consider": [
-    { "text": "Digging at Pebble Beach earns gems as fast as fishing, with less waiting.", "who": "Scott",
-      "note": "See the earning table in Game Play Logic. If fishing should be the best way to get gems, slow the dig spot down or lower its finds." },
-    { "text": "The Crystal Dig Spot earns about zero Crystals on average once you have a few, because the troll steals almost as much as you find.", "who": "Scott" },
     { "text": "Hunger slows you down, but being very hungry doesn't stop anything.", "who": "Girls",
       "note": "Maybe at 10 you can't mine or fish until you eat something." },
     { "text": "Saved games live in one browser only.", "who": "Scott",
-      "note": "Playing on another computer, or clearing the browser, starts over. An \"export my save\" button could fix that later." },
+      "note": "Playing on another computer, or clearing the browser, starts over. Claude suggested a \"save code\" you can copy and paste into another computer (no server needed). Playing together in one world from different computers would need a small server; ideas for that are in the thread." },
     { "text": "The Meadows map and the Unicorn Meadow still need drawings.", "who": "Girls" }
   ]
 };

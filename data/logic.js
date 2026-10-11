@@ -12,7 +12,10 @@ GAME_DATA.logic = {
     "The Scholarship gives one free item from each Campus Store shelf.",
     "Each item can only be owned once. Eating a snack, selling it or trading it lets you get it again.",
     "Adventures earn Adventure Points. So far the only adventure is reuniting a blind unicorn with its family.",
-    "The troll lives in the Crystal Cave and under the Crystal Dig Spot. When it wakes, it steals 1 to 5 Crystals.",
+    "The troll lives in the Crystal Cave and under the Crystal Dig Spot. When it wakes, it steals 1 to 3 Crystals.",
+    "Crystals are rare: an easy way to get them should only just pay off on average (more found than the troll steals, but not by much).",
+    "Fishing is the main way to earn Gems. Dancing earns dance points, and every 9 points makes 1 Gem.",
+    "The Gems shelf at the Trading Post pays about 90% back for shop things and half the gems for things you caught or found. Scholarship gifts can't be sold.",
     "Things you catch, dig, mine and pick go in a bag you carry. At Home you can empty the bags for keeping.",
     "Nothing is ever lost when you leave a place, except the pickaxe, which goes back on its rack."
   ],

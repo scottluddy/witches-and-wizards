@@ -54,11 +54,18 @@ function checkAnswer() {
     return;
   }
   const dance = GAME_DATA.dance;
-  player[dance.money] += danceProblem.reward;
-  writeSave(player);
   danceSolved++;
-  message.textContent = "";
-  message.append("✨ Right! You earned ", moneyLabel(dance.money, danceProblem.reward), ".");
+  message.textContent = "✨ Right! +" + danceProblem.reward + " dance point" + (danceProblem.reward === 1 ? "" : "s") + ". ";
+  // Every "pointsPerGem" dance points earn 1 gem (data/dance.js).
+  player.dancePoints += danceProblem.reward;
+  if (player.dancePoints >= dance.pointsPerGem) {
+    player.dancePoints -= dance.pointsPerGem;
+    player.gems += 1;
+    message.append("That's enough for ", moneyLabel("gems", 1), " gem!");
+  } else {
+    message.append(player.dancePoints + " of " + dance.pointsPerGem + " toward a gem.");
+  }
+  writeSave(player);
   if (danceSolved < dance.toDance) {
     setTimeout(nextProblem, 1200);
     return;

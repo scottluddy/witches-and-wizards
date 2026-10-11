@@ -271,27 +271,27 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "30"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=30"></script>
-  <script src="data/places.js?v=30"></script>
-  <script src="data/items.js?v=30"></script>
-  <script src="data/ideas.js?v=30"></script>
-  <script src="data/fish.js?v=30"></script>
-  <script src="data/digging.js?v=30"></script>
-  <script src="data/mining.js?v=30"></script>
-  <script src="data/troll.js?v=30"></script>
-  <script src="data/gameplay.js?v=30"></script>
-  <script src="data/extras.js?v=30"></script>
-  <script src="data/hunger.js?v=30"></script>
-  <script src="data/orchard.js?v=30"></script>
-  <script src="data/dance.js?v=30"></script>
-  <script src="data/trading.js?v=30"></script>
-  <script src="data/unicorns.js?v=30"></script>
-  <script src="data/spells.js?v=30"></script>
-  <script src="data/furniture.js?v=30"></script>
-  <script src="data/next_steps.js?v=30"></script>
-  <script src="data/logic.js?v=30"></script>
-  <script src="data/drawn.js?v=30"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "31"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=31"></script>
+  <script src="data/places.js?v=31"></script>
+  <script src="data/items.js?v=31"></script>
+  <script src="data/ideas.js?v=31"></script>
+  <script src="data/fish.js?v=31"></script>
+  <script src="data/digging.js?v=31"></script>
+  <script src="data/mining.js?v=31"></script>
+  <script src="data/troll.js?v=31"></script>
+  <script src="data/gameplay.js?v=31"></script>
+  <script src="data/extras.js?v=31"></script>
+  <script src="data/hunger.js?v=31"></script>
+  <script src="data/orchard.js?v=31"></script>
+  <script src="data/dance.js?v=31"></script>
+  <script src="data/trading.js?v=31"></script>
+  <script src="data/unicorns.js?v=31"></script>
+  <script src="data/spells.js?v=31"></script>
+  <script src="data/furniture.js?v=31"></script>
+  <script src="data/next_steps.js?v=31"></script>
+  <script src="data/logic.js?v=31"></script>
+  <script src="data/drawn.js?v=31"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -630,14 +630,14 @@
         const wait = caught * (f.minSeconds + f.giveUpSeconds) / 2 + (1 - caught) * f.giveUpSeconds;
         const gems = caught * average(catches);
         addRow("logic-earn", ["Dock (Lake)", "Fishing with a Lucky Rod", "Gems (" + Math.round(gems * 10) / 10 + " a cast)",
-          "about " + perMinute(gems, wait + extra) + " gems, and the same again if you sell the catch"], [3]);
+          "about " + perMinute(gems, wait + extra) + " gems, and half again if you sell the catch"], [3]);
       }
       const d = GAME_DATA.digging;
       if (d) {
         const dig = (d.minSeconds + d.maxSeconds) / 2 + extra;
         const gems = average(finds);
         addRow("logic-earn", ["Pebble Beach (Lake)", "Digging at the Dig Spot", "Gems (" + Math.round(gems * 10) / 10 + " a dig)",
-          "about " + perMinute(gems, dig) + " gems, and the same again if you sell the finds"], [3]);
+          "about " + perMinute(gems, dig) + " gems, and half again if you sell the finds"], [3]);
         const stolen = (GAME_DATA.troll.steals[0] + GAME_DATA.troll.steals[1]) / 2;
         const crystals = d.crystalChance / 100 - d.trollChance / 100 * stolen;
         addRow("logic-earn", ["Pebble Beach (Lake)", "Digging at the Crystal Dig Spot", "Crystals (" + d.crystalChance + "% a dig); the troll wakes " + d.trollChance + "% of the time",
@@ -652,13 +652,16 @@
       }
       const dance = GAME_DATA.dance;
       if (dance) {
-        const gems = (dance.addSubtract + dance.multiplyDivide) / 2;
-        addRow("logic-earn", ["Mushroom Ring (Forest)", "Solve to Dance maths problems", dance.addSubtract + " gem for + and -, " + dance.multiplyDivide + " for × and ÷, no limit",
+        // dance points: 1 for + and -, 2 for × and ÷; every "pointsPerGem" points is 1 gem
+        const gems = (dance.addSubtract + dance.multiplyDivide) / 2 / dance.pointsPerGem;
+        const dances = Math.round(dance.pointsPerGem / ((dance.addSubtract + dance.multiplyDivide) / 2) / dance.toDance);
+        addRow("logic-earn", ["Mushroom Ring (Forest)", "Solve to Dance maths problems",
+          dance.addSubtract + " dance point for + and -, " + dance.multiplyDivide + " for × and ÷; every " + dance.pointsPerGem + " points is 1 gem (about 1 gem every " + dances + " dances)",
           "about " + perMinute(gems, est.secondsPerDanceProblem || 15) + " gems"], [3]);
       }
       if (GAME_DATA.trading) {
         addRow("logic-earn", ["Trading Post (Forest)", "Selling on the Gems shelf",
-          "Shop items about " + Math.round(GAME_DATA.trading.sellShare * 100) + "% of their price; catches and finds their gems; bones and apples 1",
+          "Shop items about " + Math.round(GAME_DATA.trading.sellShare * 100) + "% of their price; catches and finds " + Math.round(GAME_DATA.trading.catchShare * 100) + "% of their gems; bones and apples 1; Scholarship gifts can't be sold",
           "depends on what you bring"], []);
       }
       if (GAME_DATA.unicorns) {

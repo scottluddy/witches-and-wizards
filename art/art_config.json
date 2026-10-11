@@ -499,7 +499,10 @@
   },
   "potion_sense_trade": {
     "ink_level": 225,
-    "min_part": 0.02
+    "min_part": 0.02,
+    "also_as": [
+      "potion_sense"
+    ]
   },
   "potion_healing": {
     "ink_level": 225,

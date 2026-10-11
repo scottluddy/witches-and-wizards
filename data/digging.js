@@ -15,9 +15,14 @@ GAME_DATA.beachFinds = [
     "description": "A sand dollar with a star on it, dug out of the sand." }
 ];
 
-// How long digging takes, in seconds (a random time in between).
-// The Crystal Dig Spot finds Crystals instead. Each dig (Scott, 2026-10-10):
+// How long digging takes, in seconds (a random time in between). Digging is
+// slower than it was (8 to 14 seconds, Claude's choice, 2026-10-11) so it
+// doesn't earn gems faster than fishing, the main way to get gems.
+// The Crystal Dig Spot finds Crystals instead. Each dig:
 //   crystalChance  percent chance of finding 1 Crystal
 //   trollChance    percent chance of waking the troll (data/troll.js)
 //   the rest       you get tired of digging and find nothing
-GAME_DATA.digging = { "minSeconds": 3, "maxSeconds": 6, "crystalChance": 60, "trollChance": 20 };
+// Crystals are rare (Scott, 2026-10-11): an easy way to get them should
+// pay a little, but not much, on average. 30% and 10% (Claude's numbers)
+// with the troll stealing 1 to 3 works out at about 1 Crystal every 10 digs.
+GAME_DATA.digging = { "minSeconds": 8, "maxSeconds": 14, "crystalChance": 30, "trollChance": 10 };

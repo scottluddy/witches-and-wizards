@@ -7,7 +7,7 @@
 //   emoji     shown if neither picture is there
 GAME_DATA.troll = {
   "name": "Troll",
-  "steals": [1, 5],
+  "steals": [1, 3],
   "photo": "art/troll/troll_photo.jpg",
   "emoji": "👹"
 };

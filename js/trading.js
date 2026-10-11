@@ -47,7 +47,10 @@ function sellValue(thing) {
     amount = Math.round(cost.amount * rules.sellShare);
     money = cost.money;
   } else {
-    amount = thing.gems || 0;                      // fish, treasures, beach finds
+    // fish, treasures, beach finds already paid gems when you caught them,
+    // so the trader pays only part of that again ("catchShare")
+    const gems = thing.gems || 0;
+    amount = gems > 0 ? Math.max(1, Math.floor(gems * rules.catchShare)) : 0;
   }
   return amount > 0 ? { amount: amount, money: money } : null;
 }
@@ -57,7 +60,7 @@ function sellableThings() {
   const list = [];
   player.backpack.forEach(function (id) {
     const item = findItem(id);
-    if (item) list.push({ thing: item, from: "backpack" });
+    if (item && !isScholarshipItem(id)) list.push({ thing: item, from: "backpack" });
   });
   ["cooler", "bucket", "satchel", "basket"].forEach(function (bag) {
     keepableThings().forEach(function (thing) {        // js/storage.js
@@ -67,13 +70,18 @@ function sellableThings() {
   return list.filter(function (entry) { return sellValue(entry.thing); });
 }
 
+// Scholarship items were free, so they can't be sold (Scott, 2026-10-11).
+function isScholarshipItem(id) {
+  return Object.values(player.freePicks || {}).indexOf(id) !== -1;
+}
+
 function openGemsShelf(message) {
   const art = document.createElement("img");
   art.src = picture("extra_gem_strings");
   art.alt = "Gems";
   const things = sellableThings();
   const body = openInfoPanel(art, "The Gems Shelf", message ||
-    (things.length ? "The trader will buy these from you. Things from shops get about 90% of what they cost."
+    (things.length ? "The trader will buy these from you. Things from shops get about 90% of what they cost; things you caught or found get half their gems. Scholarship gifts can't be sold."
                    : "You have nothing the trader wants to buy yet. Go fishing, digging or mining!"));
   const row = document.createElement("div");
   row.className = "item-row";
