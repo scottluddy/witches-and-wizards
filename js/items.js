@@ -125,7 +125,8 @@ function showShelfItems(place) {
     button.className = "shelf-item" + (owns(item.id) ? " owned" : "") + (item.inPicture ? " in-picture" : "");
     button.style.left = x + "%";
     button.style.top = y + "%";
-    button.style.height = (gap[1] - gap[0]) + "%"; // fits inside the gap
+    // fits inside the gap, unless the item says how tall it is (like the Lakeside Store's pets)
+    button.style.height = (item.shelfHeight || gap[1] - gap[0]) + "%";
     const art = document.createElement("span");
     art.className = "shelf-art";
     art.appendChild(itemArt(item));

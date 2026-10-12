@@ -73,7 +73,12 @@ function fillIn(save) {
   if (save.dancePoints === undefined) save.dancePoints = 0;
   if (save.bondingPoints === undefined) save.bondingPoints = 0;
   if (save.skills === undefined) save.skills = [];
-  if (save.lastBath === undefined) save.lastBath = {};
+  // When each pet was last cared for, by kind (was "lastBath" before the sofa).
+  if (save.lastCare === undefined) save.lastCare = { bath: save.lastBath || {} };
+  delete save.lastBath;
+  Object.keys(GAME_DATA.bonding).forEach(function (kind) {
+    if (GAME_DATA.bonding[kind].everyMinutes && !save.lastCare[kind]) save.lastCare[kind] = {};
+  });
   if (save.sashimi === undefined) save.sashimi = [];
   if (save.caughtAt === undefined) save.caughtAt = [];
   if (save.luckSeconds === undefined) save.luckSeconds = 0;
@@ -163,7 +168,7 @@ function newPlayer(playerName, characterId, kind) {
     unicorn: { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
     dancePoints: 0,           // Solve to Dance points; every few earn a gem (js/dance.js)
     bondingPoints: 0,         // earned by taking care of your pet (js/bonding.js)
-    lastBath: {},             // when each pet last had a bath: { "pet_owl": time }
+    lastCare: { bath: {}, cuddle: {} }, // when each pet was last cared for: { bath: { "pet_owl": time } }
     caughtAt: [],             // when each fish in the cooler you carry was caught: [{ id, at }]
     sashimi: [],              // fish in the cooler at Home that are Sashimi Grade (one id each)
     luckSeconds: 0,           // seconds of Luck Potion left (js/luck.js)

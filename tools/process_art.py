@@ -40,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_", "lake_", "cafe_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 
@@ -143,8 +143,14 @@ def process_drawing(path, settings):
     is_item = path.stem.startswith(ITEM_PREFIXES)
     img = load_photo(path, settings.get("crop"))
     flat = flatten_paper(img)
-    mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE),
-                        settings.get("ink_level", 190), settings.get("see_through", False))
+    if settings.get("whole"):
+        # Keep the whole cut-out piece of paper as a little card, for things
+        # drawn too small and pale to cut around (the Lakeside Store's food).
+        mask = Image.new("L", flat.size, 0)
+        ImageDraw.Draw(mask).rounded_rectangle((0, 0, flat.width - 1, flat.height - 1), radius=min(flat.size) // 6, fill=255)
+    else:
+        mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE),
+                            settings.get("ink_level", 190), settings.get("see_through", False))
 
     # Brighter colours and darker pencil lines.
     pretty = ImageEnhance.Color(flat).enhance(1.4)

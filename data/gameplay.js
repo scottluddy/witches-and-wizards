@@ -9,7 +9,13 @@
 //   inGame    true once it's in the game; false while it's still an idea
 //   note      anything else worth remembering
 GAME_DATA.activities = [
-  { "name": "Take care of your pet", "kind": "Bonding", "where": "Home", "inGame": false,
+  { "name": "Give your pet a bath", "kind": "Bonding", "where": "Home", "inGame": true,
+    "note": "The Bath Tub at Home: +1 Bonding Point per pet every 5 minutes." },
+  { "name": "Cuddle your pet on the sofa", "kind": "Bonding", "where": "Cozy Lounge (Meadows)", "inGame": true,
+    "note": "Bring a pet in your backpack to the Big Sofa: +1 Bonding Point per pet every 5 minutes." },
+  { "name": "Walk or train your pet", "kind": "Bonding", "where": "the Meadows", "inGame": false,
+    "note": "Scott's idea (2026-10-12): walk a dog, or falconry training with a hawk or other bird." },
+  { "name": "Feed and play with your pet", "kind": "Bonding", "where": "Home", "inGame": false,
     "note": "" },
   { "name": "Clean Room", "kind": "Chores", "where": "Home", "inGame": true,
     "note": "The room gets dustier the longer you stay. Sweep it with a broomstick from your backpack for Chore Points (data/chores.js)." },

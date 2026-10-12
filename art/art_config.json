@@ -600,5 +600,117 @@
         100
       ]
     ]
+  },
+  "pet_beluga": {
+    "ink_level": 230,
+    "gap": 12,
+    "min_part": 0.05
+  },
+  "pet_jellyfish": {
+    "ink_level": 225,
+    "gap": 8,
+    "min_part": 0.05
+  },
+  "pet_capybara": {
+    "ink_level": 215
+  },
+  "lake_muffins": {
+    "whole": true
+  },
+  "lake_lollipops": {
+    "whole": true
+  },
+  "lake_board_star": {
+    "whole": true
+  },
+  "lake_board_heart": {
+    "whole": true
+  },
+  "lake_beanie_heart": {
+    "whole": true
+  },
+  "lake_beanie_star": {
+    "whole": true
+  },
+  "lake_beanie_gem": {
+    "whole": true
+  },
+  "lake_burger": {
+    "whole": true
+  },
+  "lake_salad": {
+    "whole": true
+  },
+  "lake_fries": {
+    "whole": true
+  },
+  "lake_pizza": {
+    "whole": true
+  },
+  "lake_banana": {
+    "whole": true
+  },
+  "lake_apple": {
+    "whole": true
+  },
+  "lake_orange": {
+    "whole": true
+  },
+  "lake_flower_vase": {
+    "whole": true
+  },
+  "lake_flower_pot": {
+    "whole": true
+  },
+  "lake_popcorn": {
+    "whole": true
+  },
+  "lake_popsicles": {
+    "whole": true
+  },
+  "lake_pie": {
+    "whole": true
+  },
+  "potion_freezing": {
+    "whole": true
+  },
+  "potion_unfreezing": {
+    "whole": true
+  },
+  "lake_raft": {
+    "whole": true
+  },
+  "lake_fishing_rod": {
+    "whole": true
+  },
+  "lake_bait_worm": {
+    "whole": true
+  },
+  "lake_bait_jar": {
+    "whole": true
+  },
+  "lake_sand_dollars": {
+    "whole": true
+  },
+  "cafe_salad": {
+    "whole": true
+  },
+  "cafe_pizza": {
+    "whole": true
+  },
+  "cafe_burger": {
+    "whole": true
+  },
+  "cafe_pie": {
+    "whole": true
+  },
+  "cafe_soup": {
+    "whole": true
+  },
+  "cafe_salmon": {
+    "whole": true
+  },
+  "cafe_fish": {
+    "whole": true
   }
 }

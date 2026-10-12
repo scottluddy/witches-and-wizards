@@ -11,6 +11,8 @@
 //   emoji       shown until there's a drawing
 //   food        "healthy" or "snack": it can be eaten. Healthy food takes away as
 //               many hunger points as its price, snacks half that (data/hunger.js)
+//   pet         true for a pet sold in a shop that isn't a Pet shelf (the Lakeside Store)
+//   shelfHeight how tall (percent) a drawn item stands on its shop picture
 //   inPicture   true when the item is already drawn in its shop's picture: only
 //               its price tag shows there, at shelfX/shelfY (percent)
 GAME_DATA.items = [
@@ -107,5 +109,41 @@ GAME_DATA.items = [
   {"id": "wand_set_3", "name": "Purple Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 73.1, "shelfY": 69.8, "description": "A stripy wand from the Wand Set."},
   {"id": "wand_set_4", "name": "Pink Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 34.6, "shelfY": 33.1, "description": "A stripy wand from the Wand Set."},
   {"id": "wand_set_5", "name": "Orange Wand", "category": "Wand Set", "gems": 2, "emoji": "🪄", "inPicture": true, "shelfX": 31.7, "shelfY": 51.0, "description": "A stripy wand from the Wand Set."},
-  {"id": "wand_set_6", "name": "Rainbow Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 28.8, "shelfY": 74.2, "description": "A stripy wand from the Wand Set."}
+  {"id": "wand_set_6", "name": "Rainbow Stripe Wand", "category": "Wand Set", "gems": 1, "emoji": "🪄", "inPicture": true, "shelfX": 28.8, "shelfY": 74.2, "description": "A stripy wand from the Wand Set."},
+  {"id": "lake_muffins", "name": "Muffins", "category": "Lakeside Store Floor 1", "gems": 2, "emoji": "🧁", "inPicture": true, "shelfX": 12.5, "shelfY": 88, "description": "Five frosted muffins in a row.", "food": "snack"},
+  {"id": "lake_lollipops", "name": "Lollipops", "category": "Lakeside Store Floor 1", "gems": 2, "emoji": "🍭", "inPicture": true, "shelfX": 33, "shelfY": 90, "description": "Three tall lollipops on a stand.", "food": "snack"},
+  {"id": "lake_board_star", "name": "Star Board", "category": "Lakeside Store Floor 1", "gems": 5, "emoji": "🏄", "inPicture": true, "shelfX": 70, "shelfY": 31, "description": "A blue board with a gold star, for paddling on the lake."},
+  {"id": "lake_board_heart", "name": "Heart Board", "category": "Lakeside Store Floor 1", "gems": 5, "emoji": "🏄", "inPicture": true, "shelfX": 90, "shelfY": 31, "description": "A white board with a pink heart, for paddling on the lake."},
+  {"id": "lake_beanie_heart", "name": "Heart Beanie", "category": "Lakeside Store Floor 1", "gems": 3, "emoji": "🧢", "inPicture": true, "shelfX": 67, "shelfY": 75, "description": "A rainbow beanie with a red heart."},
+  {"id": "lake_beanie_star", "name": "Star Beanie", "category": "Lakeside Store Floor 1", "gems": 3, "emoji": "🧢", "inPicture": true, "shelfX": 81, "shelfY": 75, "description": "A rainbow beanie with a yellow star."},
+  {"id": "lake_beanie_gem", "name": "Gem Beanie", "category": "Lakeside Store Floor 1", "gems": 3, "emoji": "🧢", "inPicture": true, "shelfX": 94, "shelfY": 75, "description": "A rainbow beanie with a purple gem."},
+  {"id": "lake_burger", "name": "Burger", "category": "Lakeside Store Floor 2", "gems": 6, "emoji": "🍔", "inPicture": true, "shelfX": 5, "shelfY": 26, "description": "A big burger.", "food": "healthy"},
+  {"id": "lake_salad", "name": "Salad", "category": "Lakeside Store Floor 2", "gems": 6, "emoji": "🥗", "inPicture": true, "shelfX": 13, "shelfY": 26, "description": "A bowl of salad.", "food": "healthy"},
+  {"id": "lake_fries", "name": "Fries", "category": "Lakeside Store Floor 2", "gems": 2, "emoji": "🍟", "inPicture": true, "shelfX": 5, "shelfY": 46, "description": "A box of fries.", "food": "snack"},
+  {"id": "lake_pizza", "name": "Pizza", "category": "Lakeside Store Floor 2", "gems": 2, "emoji": "🍕", "inPicture": true, "shelfX": 12.5, "shelfY": 46, "description": "A slice of pizza.", "food": "snack"},
+  {"id": "lake_banana", "name": "Banana", "category": "Lakeside Store Floor 2", "gems": 1, "emoji": "🍌", "inPicture": true, "shelfX": 8, "shelfY": 59, "description": "A yellow banana.", "food": "healthy"},
+  {"id": "lake_apple", "name": "Apple", "category": "Lakeside Store Floor 2", "gems": 1, "emoji": "🍎", "inPicture": true, "shelfX": 18, "shelfY": 59, "description": "A rosy apple.", "food": "healthy"},
+  {"id": "lake_orange", "name": "Orange", "category": "Lakeside Store Floor 2", "gems": 1, "emoji": "🍊", "inPicture": true, "shelfX": 19, "shelfY": 72, "description": "A juicy orange.", "food": "healthy"},
+  {"id": "lake_flower_vase", "name": "Vase of Flowers", "category": "Lakeside Store Floor 2", "gems": 5, "emoji": "💐", "inPicture": true, "shelfX": 4, "shelfY": 96, "description": "Pink and yellow flowers in a glass vase."},
+  {"id": "lake_flower_pot", "name": "Pot of Flowers", "category": "Lakeside Store Floor 2", "gems": 5, "emoji": "🌼", "inPicture": true, "shelfX": 10.5, "shelfY": 96, "description": "Yellow flowers in a little pot."},
+  {"id": "lake_popcorn", "name": "Popcorn", "category": "Lakeside Store Floor 2", "gems": 1, "emoji": "🍿", "inPicture": true, "shelfX": 59, "shelfY": 33, "description": "Fresh buttery popcorn.", "food": "snack"},
+  {"id": "lake_popsicles", "name": "Popsicles", "category": "Lakeside Store Floor 2", "gems": 2, "emoji": "🍡", "inPicture": true, "shelfX": 59, "shelfY": 62, "description": "Pink ice popsicles.", "food": "snack"},
+  {"id": "lake_pie", "name": "Pie", "category": "Lakeside Store Floor 2", "gems": 6, "emoji": "🥧", "inPicture": true, "shelfX": 83, "shelfY": 57, "description": "A warm pie, just baked.", "food": "snack"},
+  {"id": "potion_freezing", "name": "Freezing Potion", "category": "Lakeside Store Floor 3", "gems": 3, "emoji": "🧊", "inPicture": true, "shelfX": 54, "shelfY": 28, "description": "An orange potion that freezes things solid."},
+  {"id": "potion_unfreezing", "name": "Unfreezing Potion", "category": "Lakeside Store Floor 3", "gems": 3, "emoji": "🔥", "inPicture": true, "shelfX": 63, "shelfY": 28, "description": "A blue potion that unfreezes them again."},
+  {"id": "lake_raft", "name": "Raft", "category": "Lakeside Store Floor 3", "gems": 3, "emoji": "🛶", "inPicture": true, "shelfX": 62, "shelfY": 90, "description": "A little wooden raft tied with rope."},
+  {"id": "lake_fishing_rod", "name": "Fishing Rod", "category": "Lakeside Store Floor 3", "gems": 2, "emoji": "🎣", "inPicture": true, "shelfX": 83, "shelfY": 87, "description": "Your very own fishing rod."},
+  {"id": "lake_bait_worm", "name": "Bait Worm", "category": "Lakeside Store Floor 3", "gems": 1, "emoji": "🪱", "inPicture": true, "shelfX": 3.5, "shelfY": 76, "description": "A wiggly worm for fishing (name is Claude's guess)."},
+  {"id": "lake_bait_jar", "name": "Bait Jar", "category": "Lakeside Store Floor 3", "gems": 2, "emoji": "🫙", "inPicture": true, "shelfX": 12, "shelfY": 76, "description": "A jar of fishing bait (name is Claude's guess)."},
+  {"id": "lake_sand_dollars", "name": "Sand Dollars", "category": "Lakeside Store Floor 3", "gems": 1, "emoji": "🪙", "inPicture": true, "shelfX": 9, "shelfY": 93, "description": "Sand dollars from the lake shore."},
+  {"id": "pet_beluga", "name": "Beluga Whale", "category": "Lakeside Store Floor 3", "gems": 8, "emoji": "🐋", "shelfX": 10, "shelfY": 50, "pet": true, "shelfHeight": 30, "description": "A happy beluga whale with a little gold crown."},
+  {"id": "pet_jellyfish", "name": "Jellyfish", "category": "Lakeside Store Floor 3", "gems": 5, "emoji": "🪼", "shelfX": 22, "shelfY": 50, "pet": true, "shelfHeight": 30, "description": "A pink jellyfish with rosy cheeks and wiggly tentacles."},
+  {"id": "pet_capybara", "name": "Capybara", "category": "Lakeside Store Floor 3", "gems": 6, "emoji": "🦫", "shelfX": 37, "shelfY": 96, "pet": true, "shelfHeight": 30, "description": "A calm, cuddly capybara."},
+  {"id": "cafe_salad", "name": "Salad", "category": "Cafe Menu", "gems": 6, "emoji": "🥗", "inPicture": true, "description": "Menu number 1.", "food": "healthy"},
+  {"id": "cafe_pizza", "name": "Pizza", "category": "Cafe Menu", "gems": 4, "emoji": "🍕", "inPicture": true, "description": "Menu number 2 (the price is Claude's best reading of the menu).", "food": "healthy"},
+  {"id": "cafe_burger", "name": "Burger", "category": "Cafe Menu", "gems": 6, "emoji": "🍔", "inPicture": true, "description": "Menu number 3.", "food": "healthy"},
+  {"id": "cafe_pie", "name": "Pie", "category": "Cafe Menu", "gems": 5, "emoji": "🥧", "inPicture": true, "description": "Menu number 4.", "food": "healthy"},
+  {"id": "cafe_soup", "name": "Soup", "category": "Cafe Menu", "gems": 6, "emoji": "🍲", "inPicture": true, "description": "Menu number 5.", "food": "healthy"},
+  {"id": "cafe_salmon", "name": "Salmon", "category": "Cafe Menu", "gems": 7, "emoji": "🍣", "inPicture": true, "description": "Menu number 6.", "food": "healthy"},
+  {"id": "cafe_fish", "name": "Fish", "category": "Cafe Menu", "gems": 5, "emoji": "🐟", "inPicture": true, "description": "Menu number 7.", "food": "healthy"}
 ];

@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -300,6 +300,8 @@ function showPlace(id) {
     if (child.type === "selling") return openGemsShelf();          // js/trading.js
     if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     if (child.type === "bath") return openBath();                // js/bonding.js
+    if (child.type === "cuddle") return openCuddle();            // js/bonding.js
+    if (child.type === "cafe") return openCafe(child);           // js/cafe.js
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
     goTo(childId);

@@ -278,30 +278,30 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "35"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=35"></script>
-  <script src="data/places.js?v=35"></script>
-  <script src="data/items.js?v=35"></script>
-  <script src="data/ideas.js?v=35"></script>
-  <script src="data/fish.js?v=35"></script>
-  <script src="data/digging.js?v=35"></script>
-  <script src="data/mining.js?v=35"></script>
-  <script src="data/troll.js?v=35"></script>
-  <script src="data/levels.js?v=35"></script>
-  <script src="data/luck.js?v=35"></script>
-  <script src="data/bonding.js?v=35"></script>
-  <script src="data/gameplay.js?v=35"></script>
-  <script src="data/extras.js?v=35"></script>
-  <script src="data/hunger.js?v=35"></script>
-  <script src="data/orchard.js?v=35"></script>
-  <script src="data/dance.js?v=35"></script>
-  <script src="data/trading.js?v=35"></script>
-  <script src="data/unicorns.js?v=35"></script>
-  <script src="data/spells.js?v=35"></script>
-  <script src="data/furniture.js?v=35"></script>
-  <script src="data/next_steps.js?v=35"></script>
-  <script src="data/logic.js?v=35"></script>
-  <script src="data/drawn.js?v=35"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "36"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=36"></script>
+  <script src="data/places.js?v=36"></script>
+  <script src="data/items.js?v=36"></script>
+  <script src="data/ideas.js?v=36"></script>
+  <script src="data/fish.js?v=36"></script>
+  <script src="data/digging.js?v=36"></script>
+  <script src="data/mining.js?v=36"></script>
+  <script src="data/troll.js?v=36"></script>
+  <script src="data/levels.js?v=36"></script>
+  <script src="data/luck.js?v=36"></script>
+  <script src="data/bonding.js?v=36"></script>
+  <script src="data/gameplay.js?v=36"></script>
+  <script src="data/extras.js?v=36"></script>
+  <script src="data/hunger.js?v=36"></script>
+  <script src="data/orchard.js?v=36"></script>
+  <script src="data/dance.js?v=36"></script>
+  <script src="data/trading.js?v=36"></script>
+  <script src="data/unicorns.js?v=36"></script>
+  <script src="data/spells.js?v=36"></script>
+  <script src="data/furniture.js?v=36"></script>
+  <script src="data/next_steps.js?v=36"></script>
+  <script src="data/logic.js?v=36"></script>
+  <script src="data/drawn.js?v=36"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -334,7 +334,8 @@
       if (place.type === "fishing") return "fishing spot";
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
       const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
-        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet", piano: "piano: play it and everyone dances", piano_lesson: "piano lessons: learn the piano" };
+        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet", piano: "piano: play it and everyone dances", piano_lesson: "piano lessons: learn the piano",
+        cuddle: "sofa: cuddle your pet", cafe: "cafe menu: order a meal and eat it here" };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
@@ -592,7 +593,8 @@
         const label = {
           fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
           person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
-          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet", piano: "🎹 play the piano", piano_lesson: "🎹 learn the piano"
+          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet", piano: "🎹 play the piano", piano_lesson: "🎹 learn the piano",
+          cuddle: "🛋️ cuddle your pet", cafe: "🍽️ eat a meal"
         }[c.type];
         if (label && tags.indexOf(label) === -1) tags.push(label);
         if (c.shelf && c.in !== "store") {
@@ -682,14 +684,17 @@
 
     // Spending: every shop with its money and price range.
     (function () {
-      const shops = places.filter(function (p) { return p.shelf; });
+      // Shops have a shelf; the Cafe has a menu (a spot inside it).
+      const shops = places.filter(function (p) { return p.shelf || p.menu; });
       const seen = [];
       shops.forEach(function (shop) {
-        if (seen.indexOf(shop.shelf) !== -1) return;
-        seen.push(shop.shelf);
-        const items = (GAME_DATA.items || []).filter(function (i) { return i.category === shop.shelf; });
+        const category = shop.shelf || shop.menu;
+        if (seen.indexOf(category) !== -1) return;
+        seen.push(category);
+        const items = (GAME_DATA.items || []).filter(function (i) { return i.category === category; });
         if (items.length === 0) return;
-        const where = shop.in === "store" ? "Campus Store: " + shop.name : shop.name;
+        const where = shop.in === "store" ? "Campus Store: " + shop.name
+          : shop.menu ? places.find(function (p) { return p.id === shop.in; }).name + " " + shop.name : shop.name;
         if (items[0].trade) return addRow("logic-spend", [where, "none (trade only)", String(items.length), "one of your things each"], [2]);
         const gems = items.filter(function (i) { return i.gems !== undefined; });
         const money = gems.length ? "Gems" : "Crystals";
