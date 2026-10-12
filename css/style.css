@@ -989,3 +989,18 @@ body.holding-apple, body.holding-apple * {
 }
 .hall-piano .piano-keys { margin: 8px 0; }
 .hall-piano .piano-key { width: 52px; height: 92px; }
+
+/* ---- Find the Pearls! (js/pearls.js) ---- */
+#place-pearls { position: absolute; inset: 0; pointer-events: none; }
+#place-pearls[hidden] { display: none; }
+.pearl-splash {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  animation: splash 1.5s ease-out forwards;
+}
+.pearl-splash.found { font-size: clamp(2.4rem, 6vw, 4.5rem); }
+@keyframes splash {
+  from { opacity: 1; translate: 0 0; }
+  to   { opacity: 0; translate: 0 -60%; }
+}

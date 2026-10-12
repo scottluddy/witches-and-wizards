@@ -12,14 +12,14 @@ const STORAGE = {
   bucket:     { title: "🪣 Bucket",         empty: "Your bucket is empty. Dig at Pebble Beach!" },
   homeCooler: { title: "🧊 Home Cooler",    empty: "Nothing in here yet.", from: "cooler" },
   homeChest:  { title: "🧰 Treasure Chest", empty: "Nothing in here yet.", from: "bucket" },
-  satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave!" },
+  satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave, or find pearls in the Pearl Cave!" },
   basket:     { title: "🧺 Fruit Basket",   empty: "Your fruit basket is empty. Pick fruit in the Fruit Orchard!" },
-  homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave.", from: "satchel" }
+  homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave and pearls from the Pearl Cave.", from: "satchel" }
 };
 
 // Every kind of thing that can be kept, so each one shows with its picture.
 function keepableThings() {
-  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || [], GAME_DATA.fruits || []);
+  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || [], GAME_DATA.pearlFinds || [], GAME_DATA.fruits || []);
 }
 
 let openStorageName = null; // which store the pop-up is showing

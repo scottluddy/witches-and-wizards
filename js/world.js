@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "travel" ? "➡️ " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -302,6 +302,7 @@ function showPlace(id) {
     if (child.type === "bath") return openBath();                // js/bonding.js
     if (child.type === "cuddle") return openCuddle();            // js/bonding.js
     if (child.type === "cafe") return openCafe(child);           // js/cafe.js
+    if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
     goTo(childId);
@@ -312,6 +313,7 @@ function showPlace(id) {
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
+  showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   showScreen("screen-place");
 }
 

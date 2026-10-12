@@ -712,5 +712,35 @@
   },
   "cafe_fish": {
     "whole": true
+  },
+  "place_peak": {
+    "rotate": 90,
+    "crop": [
+      2,
+      1,
+      99.5,
+      99
+    ]
+  },
+  "place_waterfall": {
+    "rotate": 90,
+    "crop": [
+      1.5,
+      2,
+      98,
+      99
+    ]
+  },
+  "place_pearl_cave": {
+    "rotate": 90,
+    "crop": [
+      0.5,
+      0,
+      98.5,
+      97
+    ]
+  },
+  "extra_binocular_view": {
+    "whole": true
   }
 }

@@ -36,7 +36,13 @@ GAME_DATA.nextSteps = {
       "note": "They count toward the next Level now. They could also buy something at Home." },
     { "text": "What happens with the Turtle Egg? Does it hatch?", "who": "Girls" },
     { "text": "What other fruit grows in the Fruit Orchard, and what does the Treehouse's fruit cooler do?", "who": "Girls" },
-    { "text": "What can you do at the Fish Hut, the Crafting Cabin's supplies and Pearl Waterfall?", "who": "Girls",
+    { "text": "Where is the Binocular view looking?", "who": "Girls",
+      "note": "It's saved for later. One idea: it's what you see when you \"look down\" from Windy Peak." },
+    { "text": "Windy Peak: what do Look down, Ski down and the Snowy owl dropoff do?", "who": "Scott",
+      "note": "They're on the drawing but not built yet (Scott said to wait). The Lake, Forest and Village arrows work." },
+    { "text": "Which spells use pearls?", "who": "Girls",
+      "note": "Pearls from the Pearl Cave go in the satchel as spell ingredients, but no spell needs them yet." },
+    { "text": "What can you do at the Fish Hut and with the Crafting Cabin's supplies?", "who": "Girls",
       "note": "They have pictures but nothing to click yet." }
   ],
   "consider": [

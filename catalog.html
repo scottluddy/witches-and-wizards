@@ -242,6 +242,10 @@
     <p class="lede">Mined in the Crystal Cave with a pickaxe from the rack (listed in <code>data/mining.js</code>). Crystals add to your Crystals; bones go in your satchel, which you can empty at the Spell Book Table at Home.</p>
     <div id="cave-finds" class="grid"></div>
 
+    <h3>Pearl Cave finds</h3>
+    <p class="lede">Found in the water of the Pearl Cave, behind the Pearl Waterfall (listed in <code>data/pearls.js</code>). Click the water to search. They go in your satchel as spell ingredients.</p>
+    <div id="pearl-finds" class="grid"></div>
+
   </div>
 
   <!-- Page: Game Play -->
@@ -314,30 +318,31 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "37"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=37"></script>
-  <script src="data/places.js?v=37"></script>
-  <script src="data/items.js?v=37"></script>
-  <script src="data/ideas.js?v=37"></script>
-  <script src="data/fish.js?v=37"></script>
-  <script src="data/digging.js?v=37"></script>
-  <script src="data/mining.js?v=37"></script>
-  <script src="data/troll.js?v=37"></script>
-  <script src="data/levels.js?v=37"></script>
-  <script src="data/luck.js?v=37"></script>
-  <script src="data/bonding.js?v=37"></script>
-  <script src="data/gameplay.js?v=37"></script>
-  <script src="data/extras.js?v=37"></script>
-  <script src="data/hunger.js?v=37"></script>
-  <script src="data/orchard.js?v=37"></script>
-  <script src="data/dance.js?v=37"></script>
-  <script src="data/trading.js?v=37"></script>
-  <script src="data/unicorns.js?v=37"></script>
-  <script src="data/spells.js?v=37"></script>
-  <script src="data/furniture.js?v=37"></script>
-  <script src="data/next_steps.js?v=37"></script>
-  <script src="data/logic.js?v=37"></script>
-  <script src="data/drawn.js?v=37"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "38"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=38"></script>
+  <script src="data/places.js?v=38"></script>
+  <script src="data/items.js?v=38"></script>
+  <script src="data/ideas.js?v=38"></script>
+  <script src="data/fish.js?v=38"></script>
+  <script src="data/digging.js?v=38"></script>
+  <script src="data/mining.js?v=38"></script>
+  <script src="data/troll.js?v=38"></script>
+  <script src="data/levels.js?v=38"></script>
+  <script src="data/luck.js?v=38"></script>
+  <script src="data/bonding.js?v=38"></script>
+  <script src="data/pearls.js?v=38"></script>
+  <script src="data/gameplay.js?v=38"></script>
+  <script src="data/extras.js?v=38"></script>
+  <script src="data/hunger.js?v=38"></script>
+  <script src="data/orchard.js?v=38"></script>
+  <script src="data/dance.js?v=38"></script>
+  <script src="data/trading.js?v=38"></script>
+  <script src="data/unicorns.js?v=38"></script>
+  <script src="data/spells.js?v=38"></script>
+  <script src="data/furniture.js?v=38"></script>
+  <script src="data/next_steps.js?v=38"></script>
+  <script src="data/logic.js?v=38"></script>
+  <script src="data/drawn.js?v=38"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -371,7 +376,7 @@
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
       const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
         marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet", piano: "piano: play it and everyone dances", piano_lesson: "piano lessons: learn the piano",
-        cuddle: "sofa: cuddle your pet", cafe: "cafe menu: order a meal and eat it here" };
+        cuddle: "sofa: cuddle your pet", cafe: "cafe menu: order a meal and eat it here", travel: "arrow: go to " + (place.to || "") };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
@@ -642,6 +647,17 @@
     logic.rules.forEach(function (rule) { document.getElementById("logic-rules").appendChild(el("li", "", rule)); });
 
     // What you can do somewhere, as short tags (worked out from places.js).
+    // Pearl Cave: pearls hidden in the water (data/pearls.js).
+    const pearlHunt = GAME_DATA.pearlHunt;
+    if (pearlHunt) {
+      (GAME_DATA.pearlFinds || []).forEach(function (find) {
+        document.getElementById("pearl-finds").appendChild(card(find.name, find.id, find.emoji, [
+          el("span", "price", "+" + find.gems + " gems, for the satchel"),
+          el("span", "kind", find.description + " (" + pearlHunt.pearls + " hide each visit; more after " + pearlHunt.refillMinutes + " minutes)")
+        ]));
+      });
+    }
+
     function whatToDo(place) {
       const tags = [];
       if (place.shelf) {
@@ -655,7 +671,7 @@
           fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
           person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
           marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet", piano: "🎹 play the piano", piano_lesson: "🎹 learn the piano",
-          cuddle: "🛋️ cuddle your pet", cafe: "🍽️ eat a meal"
+          cuddle: "🛋️ cuddle your pet", cafe: "🍽️ eat a meal", travel: "➡️ shortcuts"
         }[c.type];
         if (label && tags.indexOf(label) === -1) tags.push(label);
         if (c.shelf && c.in !== "store") {
@@ -722,6 +738,14 @@
         addRow("logic-earn", ["Crystal Cave (Mountain)", "Mining with a pickaxe (" + mining.pickaxeGems + " gems a visit)",
           mining.crystalSquares + " Crystals and " + mining.boneSquares + " bones a visit, and a troll",
           "about " + perMinute(mining.crystalSquares, seconds) + " crystals if you dig every square"], [3]);
+      }
+      if (pearlHunt) {
+        // a few clicks to find each pearl, then wait for the refill
+        const pearl = (GAME_DATA.pearlFinds || [])[0] || { gems: 0 };
+        const gems = pearl.gems * pearlHunt.pearls;
+        addRow("logic-earn", ["Pearl Cave (Lake)", "Finding pearls in the water",
+          pearlHunt.pearls + " pearls (" + pearl.gems + " gems each), then more after " + pearlHunt.refillMinutes + " minutes",
+          "about " + Math.round(gems / pearlHunt.refillMinutes * 10) / 10 + " gems (only " + gems + " every " + pearlHunt.refillMinutes + " minutes)"], [3]);
       }
       const dance = GAME_DATA.dance;
       if (dance) {
