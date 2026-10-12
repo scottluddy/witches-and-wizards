@@ -56,6 +56,18 @@ function openInfoPanel(art, title, message) {
   return body;
 }
 
+// The girls' fun picture for a finished adventure of this kind
+// (data/adventures.js), or "fallback" (an emoji) if there isn't one.
+function celebrationArt(kind, fallback) {
+  const celebration = GAME_DATA.celebrations[kind];
+  if (!celebration || !isDrawn(celebration.picture)) return fallback;
+  const img = document.createElement("img");
+  img.className = "celebration";
+  img.src = picture(celebration.picture);
+  img.alt = celebration.name;
+  return img;
+}
+
 document.getElementById("btn-info-close").addEventListener("click", function () {
   document.getElementById("info-panel").hidden = true;
 });

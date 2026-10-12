@@ -913,3 +913,11 @@ body.holding-apple, body.holding-apple * {
 .spot-picture { width: 100%; height: auto; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.25)); transition: transform 0.15s; }
 .spot.with-picture:hover .spot-picture { transform: scale(1.06); }
 .spot.with-picture .dot { display: none; }
+
+/* The girls' picture for a finished adventure (js/game.js celebrationArt). */
+.info-art img.celebration { max-height: 260px; max-width: 90%; animation: celebrate 1s ease-out; }
+@keyframes celebrate {
+  0%   { scale: 0.3; rotate: -8deg; opacity: 0; }
+  70%  { scale: 1.1; rotate: 3deg; opacity: 1; }
+  100% { scale: 1; rotate: 0deg; }
+}

@@ -11,7 +11,7 @@ GAME_DATA.logic = {
     "There are two kinds of money. Crystals (💎) are common and buy dresses. Gems are rarer and buy almost everything else.",
     "The Scholarship gives one free item from each Campus Store shelf.",
     "Each item can only be owned once. Eating a snack, selling it or trading it lets you get it again.",
-    "Adventures earn Adventure Points. So far the only adventure is reuniting a blind unicorn with its family.",
+    "Adventures earn Adventure Points and show a fun picture when done: love birds for reuniting adventures, a narwhal for water adventures. So far the only adventure is reuniting a blind unicorn with its family.",
     "Going up a Level needs 3 more Adventure Points, Chore Points and Bonding Points and 1 more Skill (a spell) since your last Level, and costs 10 gems × your Level. Click the Level in the top bar to see your progress.",
     "Bonding Points come from taking care of your pet. So far: give it a bath in the tub at Home (once every 5 minutes per pet).",
     "Fish are healthy food. A fish put in the cooler at Home within 5 minutes of being caught is Sashimi Grade, and fills you up more.",

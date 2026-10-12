@@ -12,6 +12,7 @@
 //   5. feed it 2 to 4 more apples (a random number), one at a time
 // Then a new blind unicorn comes along.
 GAME_DATA.unicorns = {
+  "kind": "reuniting",        // its celebration picture (data/adventures.js)
   "spell": "seeing",
   "apples": [2, 4],
   "food": "fruit_apple",

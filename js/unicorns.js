@@ -253,7 +253,7 @@ function feedUnicorn() {
   writeSave(player);
   const unicornPic = document.getElementById("meadow-unicorn");
   if (unicornPic) unicornPic.classList.add("gallop");
-  openInfoPanel("🦄💖🦄", "Back With Its Family!",
+  openInfoPanel(celebrationArt(u.kind, "🦄💖🦄"), "Back With Its Family!",
     "The unicorn sees its family across the meadow and gallops off to join them. You finished an adventure: +" +
     u.adventurePoints + " Adventure Point! Another shy blind unicorn is hiding in the trees now. It comes out less often...");
   // The new unicorn starts hidden.

@@ -580,5 +580,8 @@
     "ink_level": 215,
     "gap": 16,
     "min_part": 0.05
+  },
+  "celebrate_birds": {
+    "min_part": 0.02
   }
 }
