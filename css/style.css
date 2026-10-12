@@ -921,3 +921,71 @@ body.holding-apple, body.holding-apple * {
   70%  { scale: 1.1; rotate: 3deg; opacity: 1; }
   100% { scale: 1; rotate: 0deg; }
 }
+
+/* ---- the Disco Dance Hall and piano (js/music.js) ---- */
+
+#dance-floor { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#dance-floor[hidden] { display: none; }
+.dancer {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: clamp(1.6rem, 4.5vw, 3.4rem);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#dance-floor.dancing .dancer { opacity: 1; animation: boogie 0.6s ease-in-out infinite alternate; }
+@keyframes boogie {
+  from { transform: translate(-50%, -50%) rotate(-12deg) translateY(0); }
+  to   { transform: translate(-50%, -50%) rotate(12deg) translateY(-18%); }
+}
+/* Coloured lights spinning off the disco ball while the music plays. */
+.disco-glow {
+  position: absolute;
+  width: 60%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(#ff5fa2aa, #ffd84daa, #5ce1e6aa, #b07cffaa, #ff5fa2aa);
+  mask: radial-gradient(circle, transparent 8%, black 9%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.6s;
+}
+#dance-floor.dancing .disco-glow { opacity: 0.55; animation: spin 3s linear infinite; }
+@keyframes spin { to { rotate: 360deg; } }
+
+.piano-keys { display: flex; justify-content: center; gap: 8px; margin: 14px 0; }
+.piano-key {
+  width: 64px;
+  height: 120px;
+  border: 3px solid #3a2a20;
+  border-radius: 0 0 12px 12px;
+  font: inherit;
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: white;
+  text-shadow: 0 1px 2px #0008;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 10px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #3a2a20;
+}
+.piano-key:active, .piano-key.pressed { transform: translateY(4px); box-shadow: 0 1px 0 #3a2a20; filter: brightness(1.35); }
+.piano-key.pressed { transition: transform 0.25s, filter 0.25s; }
+.piano-keys.listening .piano-key { cursor: wait; }
+/* The keys over the bottom of the hall picture, so you see the dancers while you play. */
+.hall-piano {
+  position: absolute;
+  left: 50%;
+  bottom: 2%;
+  transform: translateX(-50%);
+  pointer-events: auto;
+  background: rgba(255, 250, 240, 0.9);
+  border: 3px solid var(--magic);
+  border-radius: 18px;
+  padding: 4px 16px 10px;
+  text-align: center;
+}
+.hall-piano .piano-keys { margin: 8px 0; }
+.hall-piano .piano-key { width: 52px; height: 92px; }

@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -300,6 +300,8 @@ function showPlace(id) {
     if (child.type === "selling") return openGemsShelf();          // js/trading.js
     if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     if (child.type === "bath") return openBath();                // js/bonding.js
+    if (child.type === "piano") return openPiano();              // js/music.js
+    if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
@@ -307,6 +309,7 @@ function showPlace(id) {
   showChore(place);      // dust and the Clean Room button (js/chores.js)
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
+  showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showScreen("screen-place");
 }
 

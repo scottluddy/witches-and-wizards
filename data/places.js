@@ -46,8 +46,12 @@ GAME_DATA.places = [
   { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 24, "y": 34, "shelf": "Dresses",
     "rows": [[6, 28], [58, 76]],
     "description": "Dresses for every season hang on the walls, priced in Crystals. The dressmaker waves from the counter." },
+  { "id": "disco_hall", "name": "Disco Dance Hall", "type": "place", "in": "village", "x": 58, "y": 80,
+    "description": "A dance floor under a big disco ball, and a grand piano. If you can play the piano, everyone dances!" },
+  { "id": "hall_piano", "name": "Piano", "type": "piano", "in": "disco_hall", "x": 21, "y": 70 },
+  { "id": "piano_lessons", "name": "Piano Lessons", "type": "piano_lesson", "in": "school", "x": 50, "y": 55 },
   { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 79, "y": 62,
-    "description": "Behind the round wall, young witches and wizards learn magic." },
+    "description": "Behind the round wall, young witches and wizards learn magic, and music too. Click Piano Lessons to learn the piano." },
 
   { "id": "shelf_brooms",  "name": "Broomsticks",   "type": "place", "in": "store", "x": 13, "y": 35, "shelf": "Broomstick",
     "rows": [[17, 31], [33, 45], [47, 60], [63, 78]], "perRow": 5 },

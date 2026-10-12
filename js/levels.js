@@ -2,8 +2,9 @@
 // The plan (what counts, how many, the gems it costs) is in data/levels.js.
 
 // How many of one thing you have: a number, or how many are in a list
-// (like the spells in your spell book).
+// (like the spells in your spell book). Several names are added together.
 function counterOf(id) {
+  if (Array.isArray(id)) return id.reduce(function (sum, one) { return sum + counterOf(one); }, 0);
   const value = player[id];
   return Array.isArray(value) ? value.length : value || 0;
 }

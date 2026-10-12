@@ -72,6 +72,7 @@ function fillIn(save) {
   if (save.holding === undefined) save.holding = null;
   if (save.dancePoints === undefined) save.dancePoints = 0;
   if (save.bondingPoints === undefined) save.bondingPoints = 0;
+  if (save.skills === undefined) save.skills = [];
   if (save.lastBath === undefined) save.lastBath = {};
   if (save.sashimi === undefined) save.sashimi = [];
   if (save.caughtAt === undefined) save.caughtAt = [];
@@ -158,6 +159,7 @@ function newPlayer(playerName, characterId, kind) {
     marshmallows: [],         // hot chocolates in the backpack that have marshmallows
     basket: [],               // fruit picked in the Fruit Orchard, carried (js/orchard.js)
     spells: [],               // spells in your spell book, like "seeing" (js/spells.js)
+    skills: [],               // other skills learned, like "piano" (js/music.js)
     unicorn: { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
     dancePoints: 0,           // Solve to Dance points; every few earn a gem (js/dance.js)
     bondingPoints: 0,         // earned by taking care of your pet (js/bonding.js)

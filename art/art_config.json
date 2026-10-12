@@ -583,5 +583,22 @@
   },
   "celebrate_birds": {
     "min_part": 0.02
+  },
+  "place_disco_hall": {
+    "rotate": 90,
+    "crop": [
+      3,
+      9,
+      97,
+      96
+    ],
+    "erase": [
+      [
+        74,
+        73,
+        88,
+        100
+      ]
+    ]
   }
 }

@@ -278,30 +278,30 @@
     </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "34"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=34"></script>
-  <script src="data/places.js?v=34"></script>
-  <script src="data/items.js?v=34"></script>
-  <script src="data/ideas.js?v=34"></script>
-  <script src="data/fish.js?v=34"></script>
-  <script src="data/digging.js?v=34"></script>
-  <script src="data/mining.js?v=34"></script>
-  <script src="data/troll.js?v=34"></script>
-  <script src="data/levels.js?v=34"></script>
-  <script src="data/luck.js?v=34"></script>
-  <script src="data/bonding.js?v=34"></script>
-  <script src="data/gameplay.js?v=34"></script>
-  <script src="data/extras.js?v=34"></script>
-  <script src="data/hunger.js?v=34"></script>
-  <script src="data/orchard.js?v=34"></script>
-  <script src="data/dance.js?v=34"></script>
-  <script src="data/trading.js?v=34"></script>
-  <script src="data/unicorns.js?v=34"></script>
-  <script src="data/spells.js?v=34"></script>
-  <script src="data/furniture.js?v=34"></script>
-  <script src="data/next_steps.js?v=34"></script>
-  <script src="data/logic.js?v=34"></script>
-  <script src="data/drawn.js?v=34"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "35"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=35"></script>
+  <script src="data/places.js?v=35"></script>
+  <script src="data/items.js?v=35"></script>
+  <script src="data/ideas.js?v=35"></script>
+  <script src="data/fish.js?v=35"></script>
+  <script src="data/digging.js?v=35"></script>
+  <script src="data/mining.js?v=35"></script>
+  <script src="data/troll.js?v=35"></script>
+  <script src="data/levels.js?v=35"></script>
+  <script src="data/luck.js?v=35"></script>
+  <script src="data/bonding.js?v=35"></script>
+  <script src="data/gameplay.js?v=35"></script>
+  <script src="data/extras.js?v=35"></script>
+  <script src="data/hunger.js?v=35"></script>
+  <script src="data/orchard.js?v=35"></script>
+  <script src="data/dance.js?v=35"></script>
+  <script src="data/trading.js?v=35"></script>
+  <script src="data/unicorns.js?v=35"></script>
+  <script src="data/spells.js?v=35"></script>
+  <script src="data/furniture.js?v=35"></script>
+  <script src="data/next_steps.js?v=35"></script>
+  <script src="data/logic.js?v=35"></script>
+  <script src="data/drawn.js?v=35"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -334,7 +334,7 @@
       if (place.type === "fishing") return "fishing spot";
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
       const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
-        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet" };
+        marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet", piano: "piano: play it and everyone dances", piano_lesson: "piano lessons: learn the piano" };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
@@ -592,7 +592,7 @@
         const label = {
           fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
           person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
-          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet"
+          marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet", piano: "🎹 play the piano", piano_lesson: "🎹 learn the piano"
         }[c.type];
         if (label && tags.indexOf(label) === -1) tags.push(label);
         if (c.shelf && c.in !== "store") {

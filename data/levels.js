@@ -4,7 +4,8 @@
 // last Level, and you pay some gems. Click the Level in the top bar to see
 // how close you are.
 //   id     the counter in the saved game it counts (js/save.js); for a
-//          list, like "spells", it counts how many are in it
+//          list, like "spells", it counts how many are in it; several
+//          names in [ ] are added together
 //   name   what it's called on screen
 //   emoji  its little picture
 //   count  how many more you need for each new Level
@@ -19,10 +20,11 @@ GAME_DATA.levels = {
       "how": "Sweep your room at Home with a broomstick." },
     { "id": "bondingPoints",   "name": "Bonding Points",   "emoji": "🐾", "count": 3,
       "how": "Take care of your pet, like giving it a bath in the tub at Home." },
-    // Skills: spells in your spell book (and later other skills). Only 1 for
-    // now, because the Seeing Spell is the only spell so far.
-    { "id": "spells",          "name": "Skills (spells learned)", "emoji": "📖", "count": 1,
-      "how": "Make a spell at the Crafting Table in the Crafting Cabin." }
+    // Skills: spells in your spell book, plus other skills like playing the
+    // piano (two lists, added together). Only 1 for now, because there are
+    // only two skills so far.
+    { "id": ["spells", "skills"], "name": "Skills (spells and music)", "emoji": "📖", "count": 1,
+      "how": "Make a spell at the Crafting Table in the Crafting Cabin, or learn the piano at the Wizard School." }
   ],
   // Going up costs gems too: 10 to reach Level 2, 20 to reach Level 3, and so on.
   "gemsPerLevel": 10,

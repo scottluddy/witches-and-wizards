@@ -16,6 +16,7 @@ GAME_DATA.logic = {
     "Bonding Points come from taking care of your pet. So far: give it a bath in the tub at Home (once every 5 minutes per pet).",
     "Fish are healthy food. A fish put in the cooler at Home within 5 minutes of being caught is Sashimi Grade, and fills you up more.",
     "Dancing is just for fun (and a few gems).",
+    "Skills are spells you've made and things you've learned, like the piano (lessons at the Wizard School). If you can play the piano, play it in the Disco Dance Hall and everyone dances.",
     "Luck makes good things happen more often. Each Level above 1 makes you 5% luckier, and the Luck Potion adds 25% for 5 minutes.",
     "The troll lives in the Crystal Cave and under the Crystal Dig Spot. When it wakes, it steals 1 to 3 Crystals.",
     "Crystals are rare: an easy way to get them should only just pay off on average (more found than the troll steals, but not by much).",
