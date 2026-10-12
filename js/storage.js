@@ -39,11 +39,16 @@ function openStorage(name) {
     const sashimi = name === "homeCooler" ? Math.min(count, countOf(player.sashimi, thing.id)) : 0;
     if (sashimi) list.appendChild(fishCard(thing, name, sashimi, true));
     if (count === sashimi) return;
-    if (isFish(thing)) return list.appendChild(fishCard(thing, name, count - sashimi, false));
+    if (isFish(thing)) {
+      const fishBox = fishCard(thing, name, count - sashimi, false);
+      if (store.from) fishBox.appendChild(takeOutButton(thing, name));
+      return list.appendChild(fishBox);
+    }
     const card = itemCard(thing, null);
     card.querySelector(".item-name").textContent = thing.name + (count > 1 ? " × " + count : "");
     if (name === "basket" && thing.food) card.appendChild(eatFromBasket(thing)); // fruit can be eaten
     if (name === "basket") card.appendChild(holdButton(thing));                 // ...or held, for the unicorn
+    if (store.from) card.appendChild(takeOutButton(thing, name));               // at Home: take one back
     list.appendChild(card);
   });
 
@@ -81,6 +86,26 @@ function holdButton(fruit) {
   button.addEventListener("click", function () {
     holdFruit(fruit);
     document.getElementById("storage-panel").hidden = true;
+  });
+  return button;
+}
+
+// At Home: a button to take one thing back out, into the bag it came from
+// (Home Cooler -> cooler, Treasure Chest -> bucket, Spell Materials -> satchel).
+// Sashimi Grade fish stay at Home (they're only Sashimi Grade in the Home
+// cooler), so their cards don't get this button; eat them here instead.
+function takeOutButton(thing, name) {
+  const bag = STORAGE[name].from;
+  const button = document.createElement("button");
+  button.className = "small-button";
+  button.textContent = "↩️ Take one (into your " + bag + ")";
+  button.addEventListener("click", function () {
+    const list = player[name];
+    list.splice(list.indexOf(thing.id), 1);
+    player[bag].push(thing.id);
+    writeSave(player);
+    openStorage(name);
+    document.getElementById("storage-title").textContent = "↩️ The " + thing.name + " is in your " + bag + " now.";
   });
   return button;
 }
