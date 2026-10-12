@@ -41,7 +41,7 @@ GAME_DATA.nextSteps = {
     { "text": "Windy Peak: what do Look down, Ski down and the Snowy owl dropoff do?", "who": "Scott",
       "note": "They're on the drawing but not built yet (Scott said to wait). The Lake, Forest and Village arrows work." },
     { "text": "Which spells use pearls?", "who": "Girls",
-      "note": "Pearls from the Pearl Cave go in the satchel as spell ingredients, but no spell needs them yet." },
+      "note": "Pearls from the Pearl Cave go in the bucket and are spell ingredients, but no spell needs them yet." },
     { "text": "What can you do at the Fish Hut and with the Crafting Cabin's supplies?", "who": "Girls",
       "note": "They have pictures but nothing to click yet." }
   ],

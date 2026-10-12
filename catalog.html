@@ -243,7 +243,7 @@
     <div id="cave-finds" class="grid"></div>
 
     <h3>Pearl Cave finds</h3>
-    <p class="lede">Found in the water of the Pearl Cave, behind the Pearl Waterfall (listed in <code>data/pearls.js</code>). Click the water to search. They go in your satchel as spell ingredients.</p>
+    <p class="lede">Found in the water of the Pearl Cave, behind the Pearl Waterfall (listed in <code>data/pearls.js</code>). Click the water to search. They go in your bucket (empty it into the treasure chest at Home) and are spell ingredients.</p>
     <div id="pearl-finds" class="grid"></div>
 
   </div>
@@ -318,31 +318,31 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "38"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=38"></script>
-  <script src="data/places.js?v=38"></script>
-  <script src="data/items.js?v=38"></script>
-  <script src="data/ideas.js?v=38"></script>
-  <script src="data/fish.js?v=38"></script>
-  <script src="data/digging.js?v=38"></script>
-  <script src="data/mining.js?v=38"></script>
-  <script src="data/troll.js?v=38"></script>
-  <script src="data/levels.js?v=38"></script>
-  <script src="data/luck.js?v=38"></script>
-  <script src="data/bonding.js?v=38"></script>
-  <script src="data/pearls.js?v=38"></script>
-  <script src="data/gameplay.js?v=38"></script>
-  <script src="data/extras.js?v=38"></script>
-  <script src="data/hunger.js?v=38"></script>
-  <script src="data/orchard.js?v=38"></script>
-  <script src="data/dance.js?v=38"></script>
-  <script src="data/trading.js?v=38"></script>
-  <script src="data/unicorns.js?v=38"></script>
-  <script src="data/spells.js?v=38"></script>
-  <script src="data/furniture.js?v=38"></script>
-  <script src="data/next_steps.js?v=38"></script>
-  <script src="data/logic.js?v=38"></script>
-  <script src="data/drawn.js?v=38"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "39"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=39"></script>
+  <script src="data/places.js?v=39"></script>
+  <script src="data/items.js?v=39"></script>
+  <script src="data/ideas.js?v=39"></script>
+  <script src="data/fish.js?v=39"></script>
+  <script src="data/digging.js?v=39"></script>
+  <script src="data/mining.js?v=39"></script>
+  <script src="data/troll.js?v=39"></script>
+  <script src="data/levels.js?v=39"></script>
+  <script src="data/luck.js?v=39"></script>
+  <script src="data/bonding.js?v=39"></script>
+  <script src="data/pearls.js?v=39"></script>
+  <script src="data/gameplay.js?v=39"></script>
+  <script src="data/extras.js?v=39"></script>
+  <script src="data/hunger.js?v=39"></script>
+  <script src="data/orchard.js?v=39"></script>
+  <script src="data/dance.js?v=39"></script>
+  <script src="data/trading.js?v=39"></script>
+  <script src="data/unicorns.js?v=39"></script>
+  <script src="data/spells.js?v=39"></script>
+  <script src="data/furniture.js?v=39"></script>
+  <script src="data/next_steps.js?v=39"></script>
+  <script src="data/logic.js?v=39"></script>
+  <script src="data/drawn.js?v=39"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -652,7 +652,7 @@
     if (pearlHunt) {
       (GAME_DATA.pearlFinds || []).forEach(function (find) {
         document.getElementById("pearl-finds").appendChild(card(find.name, find.id, find.emoji, [
-          el("span", "price", "+" + find.gems + " gems, for the satchel"),
+          el("span", "price", "+" + find.gems + " gems, for the bucket"),
           el("span", "kind", find.description + " (" + pearlHunt.pearls + " hide each visit; more after " + pearlHunt.refillMinutes + " minutes)")
         ]));
       });

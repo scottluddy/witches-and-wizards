@@ -9,12 +9,12 @@
 
 const STORAGE = {
   cooler:     { title: "🧊 Cooler",         empty: "Your cooler is empty. Go fishing at the Dock!" },
-  bucket:     { title: "🪣 Bucket",         empty: "Your bucket is empty. Dig at Pebble Beach!" },
+  bucket:     { title: "🪣 Bucket",         empty: "Your bucket is empty. Dig at Pebble Beach, or find pearls in the Pearl Cave!" },
   homeCooler: { title: "🧊 Home Cooler",    empty: "Nothing in here yet.", from: "cooler" },
   homeChest:  { title: "🧰 Treasure Chest", empty: "Nothing in here yet.", from: "bucket" },
-  satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave, or find pearls in the Pearl Cave!" },
+  satchel:    { title: "👜 Satchel",        empty: "Your satchel is empty. Mine in the Crystal Cave!" },
   basket:     { title: "🧺 Fruit Basket",   empty: "Your fruit basket is empty. Pick fruit in the Fruit Orchard!" },
-  homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave and pearls from the Pearl Cave.", from: "satchel" }
+  homeMaterials: { title: "📖 Spell Materials", empty: "Nothing in here yet. Bring bones from the Crystal Cave.", from: "satchel" }
 };
 
 // Every kind of thing that can be kept, so each one shows with its picture.

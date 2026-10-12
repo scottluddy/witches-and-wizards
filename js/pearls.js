@@ -64,14 +64,14 @@ function searchForPearl(event) {
 function foundPearl(i) {
   const spot = player.pearls.hidden.splice(i, 1)[0];
   const pearl = GAME_DATA.pearlFinds[0];
-  player.satchel.push(pearl.id);   // spell ingredients go in the satchel (js/storage.js)
+  player.bucket.push(pearl.id);    // pearls come from the water, like beach finds (js/storage.js)
   player.gems += pearl.gems;
   if (player.pearls.hidden.length === 0) {
     player.pearls.refillAt = Date.now() + GAME_DATA.pearlHunt.refillMinutes * 60000;
   }
   writeSave(player);
   showSplash(spot[0], spot[1], pearl.emoji).classList.add("found");
-  pearlSay("✨ You found a pearl! +" + pearl.gems + " gems, and it's in your satchel for spells. " + pearlCount());
+  pearlSay("✨ You found a pearl! +" + pearl.gems + " gems, and it's in your bucket. " + pearlCount());
 }
 
 // A little picture that pops up where you clicked, then fades away.

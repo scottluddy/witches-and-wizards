@@ -2,7 +2,7 @@
 //
 // A few pearls hide somewhere in the cave's water on each visit. Click the
 // water to search: "Warmer!" means a pearl is close. Found pearls go in your
-// satchel: they're spell ingredients (Scott), and they earn a few gems.
+// bucket (Scott), like beach finds; they're spell ingredients and earn a few gems.
 // When you've found them all, new pearls wash in after a while.
 //
 //   place          the place where you search

@@ -28,7 +28,7 @@ GAME_DATA.activities = [
   { "name": "Fishing", "kind": "Mining", "where": "the Dock", "inGame": true,
     "note": "Fish and treasures for the cooler. (Put under Mining for now.)" },
   { "name": "Find the pearls", "kind": "Mining", "where": "Pearl Cave (behind the Pearl Waterfall)", "inGame": true,
-    "note": "Click the water to search; \"Warmer!\" means you're close. 3 pearls hide each visit and come back after 5 minutes. Pearls go in the satchel for spells (data/pearls.js)." },
+    "note": "Click the water to search; \"Warmer!\" means you're close. 3 pearls hide each visit and come back after 5 minutes. Pearls go in the bucket and are for spells (data/pearls.js)." },
   { "name": "Mine in the Crystal Cave", "kind": "Mining", "where": "Crystal Cave", "inGame": true,
     "note": "Pay 3 gems at the pickaxe rack beside the cave for a pickaxe (it goes back when you leave), then click the wall. Only the last 3 dug spots stay marked. Crystals add to your Crystals; bones go in the satchel for spells (data/mining.js)." },
   { "name": "Solve to Dance", "kind": "Learning", "where": "Mushroom Ring", "inGame": true,
