@@ -138,7 +138,13 @@
     .big-box span { color: var(--muted); }
     .big-box[aria-expanded="true"] { background: var(--line); }
     .steps { background: var(--panel); border: 3px solid var(--accent); border-radius: 16px; padding: 4px 20px 16px; margin-top: 14px; }
-    .steps[hidden] { display: none; }
+    .steps[hidden], .subpage[hidden] { display: none; }
+    .back-link { display: inline-block; margin-bottom: 12px; font-weight: 700; color: var(--accent); }
+    .outline { padding-left: 22px; line-height: 1.7; }
+    #outline { font-size: 1.1rem; }
+    #outline > li { font-family: var(--display); font-size: 1.3rem; margin-top: 10px; }
+    #outline li li { font-family: inherit; font-size: 1rem; }
+    .outline-kind { color: var(--muted); font-size: 0.9rem; }
     .steps h2 { margin-top: 16px; }
     .who { margin-left: 6px; }
     .who.girls { color: #a13c78; background: #f8dcea; }
@@ -161,21 +167,31 @@
 </head>
 <body>
   <main class="page">
+  <div class="subpage" data-page="home">
     <h1>Witches &amp; Wizards Catalog</h1>
     <p class="lede">Everything in the game: the world and its places, the characters and the store's items, plus ideas for later.
       Orange tags show pictures still waiting for a drawing, with the file name to save it as.</p>
     <div id="tally" class="tally"></div>
 
-    <!-- The two big boxes: Next Steps opens right here; Game Play Logic jumps down the page. -->
+    <!-- The big boxes open their own pages (shown one at a time, see showPage below). -->
     <div class="jump-row">
-      <button id="btn-next-steps" class="big-box" aria-expanded="false" aria-controls="next-steps">
-        <b>🧭 Next Steps</b><span>What to draw, answer and think about next. Open this to decide what to do next.</span>
-      </button>
-      <a class="big-box" href="#logic">
-        <b>⚙️ Game Play Logic</b><span>How the game works: rules, money, bags, and where you earn and spend.</span>
+      <a class="big-box" href="#next-steps">
+        <b>🧭 Next Steps</b><span>What to draw, answer and think about next.</span>
+      </a>
+      <a class="big-box" href="#gameplay">
+        <b>⚙️ Game Play</b><span>Good things to do, the counters, and how the game works: rules, money, bags, food and Levels.</span>
+      </a>
+      <a class="big-box" href="#outline">
+        <b>🗺️ World Outline</b><span>A simple list of the whole world: territories, places and what's inside them.</span>
       </a>
     </div>
-    <section id="next-steps" class="steps" hidden>
+  </div>
+
+  <!-- Page: Next Steps -->
+  <div class="subpage" data-page="next-steps" hidden>
+    <a class="back-link" href="#">⬅ Back to the catalog</a>
+    <h1>🧭 Next Steps</h1>
+    <section id="next-steps" class="steps">
       <h2>🖍️ Draw next</h2>
       <p class="lede">Pictures that are still placeholders, places first. Save each drawing with the file name shown.</p>
       <div id="steps-draw"></div>
@@ -186,7 +202,17 @@
       <p class="lede">Places where the game might be too easy, too hard or a bit unfair.</p>
       <ol id="steps-consider" class="todo-list"></ol>
     </section>
+  </div>
 
+  <!-- Page: World Outline -->
+  <div class="subpage" data-page="outline" hidden>
+    <a class="back-link" href="#">⬅ Back to the catalog</a>
+    <h1>🗺️ World Outline</h1>
+    <p class="lede">Every territory and place in the game, and the spots inside them (from <code>data/places.js</code>).</p>
+    <ul id="outline" class="outline"></ul>
+  </div>
+
+  <div class="subpage" data-page="home">
     <h2>The World</h2>
     <ul id="world" class="tree"></ul>
 
@@ -216,6 +242,12 @@
     <p class="lede">Mined in the Crystal Cave with a pickaxe from the rack (listed in <code>data/mining.js</code>). Crystals add to your Crystals; bones go in your satchel, which you can empty at the Spell Book Table at Home.</p>
     <div id="cave-finds" class="grid"></div>
 
+  </div>
+
+  <!-- Page: Game Play -->
+  <div class="subpage" data-page="gameplay" hidden>
+    <a class="back-link" href="#">⬅ Back to the catalog</a>
+    <h1>⚙️ Game Play</h1>
     <h2>Good things to do</h2>
     <p class="lede">Activities that reward you for good things: Bonding (caring for your pet), Chores (tidying up), Mining (gathering things) and Learning (like the maths puzzle at the Mushroom Ring). Ideas go in <code>data/gameplay.js</code> first, then get built into the right places in the game.</p>
     <div id="activities"></div>
@@ -264,6 +296,9 @@
     </table></div>
     <p id="logic-luck" class="lede"></p>
 
+  </div>
+
+  <div class="subpage" data-page="home">
     <h2>Saved for later</h2>
     <p class="lede">Drawings that aren't in the game yet, kept ready for when we need them (listed in <code>data/extras.js</code>).</p>
     <div id="extras" class="grid"></div>
@@ -276,32 +311,33 @@
         <li>Run <code>python3 tools/process_art.py</code>. The drawing replaces the placeholder and its tag turns green.</li>
       </ol>
     </div>
+  </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "36"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=36"></script>
-  <script src="data/places.js?v=36"></script>
-  <script src="data/items.js?v=36"></script>
-  <script src="data/ideas.js?v=36"></script>
-  <script src="data/fish.js?v=36"></script>
-  <script src="data/digging.js?v=36"></script>
-  <script src="data/mining.js?v=36"></script>
-  <script src="data/troll.js?v=36"></script>
-  <script src="data/levels.js?v=36"></script>
-  <script src="data/luck.js?v=36"></script>
-  <script src="data/bonding.js?v=36"></script>
-  <script src="data/gameplay.js?v=36"></script>
-  <script src="data/extras.js?v=36"></script>
-  <script src="data/hunger.js?v=36"></script>
-  <script src="data/orchard.js?v=36"></script>
-  <script src="data/dance.js?v=36"></script>
-  <script src="data/trading.js?v=36"></script>
-  <script src="data/unicorns.js?v=36"></script>
-  <script src="data/spells.js?v=36"></script>
-  <script src="data/furniture.js?v=36"></script>
-  <script src="data/next_steps.js?v=36"></script>
-  <script src="data/logic.js?v=36"></script>
-  <script src="data/drawn.js?v=36"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "37"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=37"></script>
+  <script src="data/places.js?v=37"></script>
+  <script src="data/items.js?v=37"></script>
+  <script src="data/ideas.js?v=37"></script>
+  <script src="data/fish.js?v=37"></script>
+  <script src="data/digging.js?v=37"></script>
+  <script src="data/mining.js?v=37"></script>
+  <script src="data/troll.js?v=37"></script>
+  <script src="data/levels.js?v=37"></script>
+  <script src="data/luck.js?v=37"></script>
+  <script src="data/bonding.js?v=37"></script>
+  <script src="data/gameplay.js?v=37"></script>
+  <script src="data/extras.js?v=37"></script>
+  <script src="data/hunger.js?v=37"></script>
+  <script src="data/orchard.js?v=37"></script>
+  <script src="data/dance.js?v=37"></script>
+  <script src="data/trading.js?v=37"></script>
+  <script src="data/unicorns.js?v=37"></script>
+  <script src="data/spells.js?v=37"></script>
+  <script src="data/furniture.js?v=37"></script>
+  <script src="data/next_steps.js?v=37"></script>
+  <script src="data/logic.js?v=37"></script>
+  <script src="data/drawn.js?v=37"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -506,13 +542,38 @@
 
     // ---------------------------------------------------------------- Next Steps
 
-    // The big box opens (and closes) the Next Steps section.
-    document.getElementById("btn-next-steps").addEventListener("click", function () {
-      const section = document.getElementById("next-steps");
-      section.hidden = !section.hidden;
-      this.setAttribute("aria-expanded", String(!section.hidden));
-      if (!section.hidden) section.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
+    // The catalog is one file with a few pages: the main catalog, Next Steps,
+    // Game Play and the World Outline. The part of the address after # says
+    // which page to show (#next-steps), so the browser's Back button works too.
+    function showPage() {
+      const name = location.hash.slice(1);
+      const page = name === "logic" ? "gameplay" : name;       // old link to Game Play Logic
+      const known = document.querySelector('.subpage[data-page="' + page + '"]') ? page : "home";
+      document.querySelectorAll(".subpage").forEach(function (box) {
+        box.hidden = box.dataset.page !== known;
+      });
+      if (name === "logic") document.getElementById("logic").scrollIntoView();
+      else window.scrollTo(0, 0);
+    }
+    window.addEventListener("hashchange", showPage);
+    showPage();
+
+    // ---------------------------------------------------------------- World Outline
+
+    // World → territories → places → spots, as a nested list of names.
+    function outlineOf(id) {
+      const list = el("ul", "outline");
+      places.filter(function (p) { return p.in === id && !p.opens; }).forEach(function (p) {
+        const item = el("li", "", p.name);
+        const kind = p.type === "map" ? "territory" : p.type === "place" ? (p.shelf ? "shop" : "") : kindOf(p);
+        if (kind) item.appendChild(el("span", "outline-kind", " (" + kind + ")"));
+        const inside = outlineOf(p.id);
+        if (inside.children.length) item.appendChild(inside);
+        list.appendChild(item);
+      });
+      return list;
+    }
+    document.getElementById("outline").replaceWith(Object.assign(outlineOf("world"), { id: "outline" }));
 
     function isDrawn(name) { return drawn.indexOf(name) !== -1; }
 

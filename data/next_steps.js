@@ -16,6 +16,8 @@ GAME_DATA.nextSteps = {
       "note": "A sample plan is built: 3 Adventure Points, Chore Points and Bonding Points, 1 Skill, plus some gems. For now each Level only makes you 5% luckier. Ideas: walk farther before getting hungry, a cheaper pickaxe, a new place that opens at Level 3." },
     { "text": "What other ways can you bond with your pet?", "who": "Girls",
       "note": "So far: a bath in the tub at Home, and a cuddle on the big sofa in the Cozy Lounge. Scott's idea: walk or train your pet in the Meadows (walk a dog, falconry with a hawk). Other ideas: feed it, play with it." },
+    { "text": "Which classrooms does the Wizard School have, and what do you learn in each?", "who": "Girls",
+      "note": "The school drawing is on its way: classrooms by subject that each open for lessons or a Skill. Piano Lessons is in the school now and will move into a Music classroom. Spells are made at the Crafting Table in the Crafting Cabin; a Spells classroom could teach them instead or as well. Each new Skill helps with going up a Level." },
     { "text": "What other Skills are there besides spells and the piano?", "who": "Girls",
       "note": "Each new Level needs 1 more Skill. There are only two so far (the Seeing Spell and the piano), so after Level 3 you can't go up until there are more." },
     { "text": "What's on the other floors of the Disco Dance Hall?", "who": "Girls",
