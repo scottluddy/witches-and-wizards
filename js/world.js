@@ -71,7 +71,9 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (SPOT_ICONS[place.type] ? SPOT_ICONS[place.type] + " " : "") + (place.spotName || place.name); // "spotName": a different name on the spot, like "Go inside"
+    // A bonding spot shows its own picture from data/bonding.js (🦉 falconry, 🐢 swimming...).
+    const icon = place.type === "care" ? GAME_DATA.bonding[place.care].emoji : SPOT_ICONS[place.type];
+    button.querySelector(".label").textContent = (icon ? icon + " " : "") + (place.spotName || place.name); // "spotName": a different name on the spot, like "Go inside"
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -317,6 +319,7 @@ function showPlace(id) {
     if (child.type === "look") return lookThrough(child);        // binoculars, below
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+    if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
     if (child.type === "honey") return openBeehive();            // js/honey.js
     if (child.type === "archery") return openArchery();          // js/sports.js
     if (child.type === "soccer") return openSoccer();            // js/sports.js
