@@ -318,31 +318,34 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "41"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=41"></script>
-  <script src="data/places.js?v=41"></script>
-  <script src="data/items.js?v=41"></script>
-  <script src="data/ideas.js?v=41"></script>
-  <script src="data/fish.js?v=41"></script>
-  <script src="data/digging.js?v=41"></script>
-  <script src="data/mining.js?v=41"></script>
-  <script src="data/troll.js?v=41"></script>
-  <script src="data/levels.js?v=41"></script>
-  <script src="data/luck.js?v=41"></script>
-  <script src="data/bonding.js?v=41"></script>
-  <script src="data/pearls.js?v=41"></script>
-  <script src="data/gameplay.js?v=41"></script>
-  <script src="data/extras.js?v=41"></script>
-  <script src="data/hunger.js?v=41"></script>
-  <script src="data/orchard.js?v=41"></script>
-  <script src="data/dance.js?v=41"></script>
-  <script src="data/trading.js?v=41"></script>
-  <script src="data/unicorns.js?v=41"></script>
-  <script src="data/spells.js?v=41"></script>
-  <script src="data/furniture.js?v=41"></script>
-  <script src="data/next_steps.js?v=41"></script>
-  <script src="data/logic.js?v=41"></script>
-  <script src="data/drawn.js?v=41"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "42"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=42"></script>
+  <script src="data/places.js?v=42"></script>
+  <script src="data/items.js?v=42"></script>
+  <script src="data/ideas.js?v=42"></script>
+  <script src="data/fish.js?v=42"></script>
+  <script src="data/digging.js?v=42"></script>
+  <script src="data/mining.js?v=42"></script>
+  <script src="data/troll.js?v=42"></script>
+  <script src="data/levels.js?v=42"></script>
+  <script src="data/luck.js?v=42"></script>
+  <script src="data/bonding.js?v=42"></script>
+  <script src="data/pearls.js?v=42"></script>
+  <script src="data/sports.js?v=42"></script>
+  <script src="data/pixie.js?v=42"></script>
+  <script src="data/supplies.js?v=42"></script>
+  <script src="data/gameplay.js?v=42"></script>
+  <script src="data/extras.js?v=42"></script>
+  <script src="data/hunger.js?v=42"></script>
+  <script src="data/orchard.js?v=42"></script>
+  <script src="data/dance.js?v=42"></script>
+  <script src="data/trading.js?v=42"></script>
+  <script src="data/unicorns.js?v=42"></script>
+  <script src="data/spells.js?v=42"></script>
+  <script src="data/furniture.js?v=42"></script>
+  <script src="data/next_steps.js?v=42"></script>
+  <script src="data/logic.js?v=42"></script>
+  <script src="data/drawn.js?v=42"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -377,7 +380,10 @@
       const spots = { picking: "fruit tree", crafting: "crafting table: make spells", dance_puzzle: "maths puzzle",
         marshmallows: "marshmallow machine", selling: "Gems shelf: sell things for gems", bath: "bath tub: wash your pet", piano: "piano: play it and everyone dances", piano_lesson: "piano lessons: learn the piano",
         cuddle: "sofa: cuddle your pet", cafe: "cafe menu: order a meal and eat it here", travel: "arrow: go to " + (place.to || ""), classroom: "classroom (no teacher yet): " + (place.teaches || ""),
-        look: "binoculars: look far away", owl_dropoff: "owl dropoff: let your snowy owl fly" };
+        look: "binoculars: look far away", owl_dropoff: "owl dropoff: let your snowy owl fly",
+        archery: "archery: shoot at the moving target", soccer: "soccer: kick past the goalie", riddle: "troll: answer its riddle",
+        bridge: "bridge: cross once the troll lets you", pond: "pond: a turtle pops out", smores: "s'mores: grab one to roast",
+        fireplace: "fireplace: roast your s'more and eat it", hot_chocolate: "hot chocolate: drink it here" };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";
@@ -672,7 +678,7 @@
           fishing: "🎣 fishing", digging: c.finds === "crystals" ? "⛏️ dig for crystals" : "⛏️ dig for beach finds",
           person: "💬 " + c.name, picking: "🍎 pick fruit", crafting: "📖 make spells", dance_puzzle: "🧮 maths puzzle",
           marshmallows: "🍡 marshmallows", selling: "💎 sell for gems", bath: "🛁 wash your pet", piano: "🎹 play the piano", piano_lesson: "🎹 learn the piano",
-          cuddle: "🛋️ cuddle your pet", cafe: "🍽️ eat a meal", travel: "➡️ shortcuts", classroom: "🚪 empty classrooms", look: "🔭 look through binoculars", owl_dropoff: "🦉 let your owl fly"
+          cuddle: "🛋️ cuddle your pet", cafe: "🍽️ eat a meal", travel: "➡️ shortcuts", classroom: "🚪 empty classrooms", look: "🔭 look through binoculars", owl_dropoff: "🦉 let your owl fly", archery: "🏹 archery", soccer: "⚽ soccer", riddle: "❓ a troll's riddle", bridge: "🌉 a bridge", pond: "🐢 a turtle pond", smores: "🍫 s'mores", fireplace: "🔥 roast s'mores", hot_chocolate: "☕ hot chocolate"
         }[c.type];
         if (label && tags.indexOf(label) === -1) tags.push(label);
         if (c.shelf && c.in !== "store") {

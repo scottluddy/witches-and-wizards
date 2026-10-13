@@ -790,5 +790,67 @@
         9.3
       ]
     ]
+  },
+  "place_stadium": {
+    "crop": [
+      4,
+      5,
+      96,
+      86
+    ],
+    "erase": [
+      [
+        87,
+        33,
+        96,
+        60
+      ]
+    ]
+  },
+  "place_troll_bridge": {
+    "rotate": 180,
+    "crop": [
+      3,
+      3,
+      97,
+      97
+    ]
+  },
+  "place_pond_house": {
+    "rotate": 180,
+    "crop": [
+      2,
+      1,
+      99,
+      94
+    ]
+  },
+  "place_pond_house_inside": {
+    "rotate": 180,
+    "crop": [
+      3,
+      7,
+      95,
+      93
+    ]
+  },
+  "sport_target": {
+    "min_part": 0.02
+  },
+  "sport_goalie": {
+    "min_part": 0.05
+  },
+  "sport_bow": {
+    "see_through": true
+  },
+  "pixie": {
+    "ink_level": 225,
+    "min_part": 0.02,
+    "gap": 14
+  },
+  "pet_pond_turtle": {
+    "ink_level": 225,
+    "min_part": 0.02,
+    "gap": 20
   }
 }

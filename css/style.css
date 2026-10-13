@@ -1039,3 +1039,86 @@ body.holding-apple, body.holding-apple * {
   box-shadow: 0 0 0 6px #777;
 }
 .binocular-view img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); } /* hides the card's edge */
+
+/* ---- Archery and soccer at the Stadium (js/sports.js) ---- */
+.archery-range, .soccer-field {
+  position: relative;
+  width: min(640px, 80vw);
+  aspect-ratio: 16 / 9;
+  margin: 8px auto;
+  border-radius: 18px;
+  background: linear-gradient(#bfe3f5 0 35%, #8fcf7a 35% 100%);
+  overflow: hidden;
+  cursor: crosshair;
+  user-select: none;
+}
+.archery-target {
+  position: absolute;
+  width: 20%;
+  transition-property: left, top;
+  transition-timing-function: ease-in-out;
+}
+.archery-target-picture { display: block; width: 100%; }
+.archery-hit {
+  position: absolute;
+  width: 10px; height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 50%;
+  background: #4a2c12;
+  box-shadow: 0 0 0 2px #fff;
+  pointer-events: none;
+}
+.archery-bow {
+  position: absolute;
+  left: 3%; bottom: 3%;
+  height: 45%;
+  padding: 4px;
+  border: none;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 3rem;
+}
+.archery-bow-picture { height: 100%; display: block; }
+.archery-bow.loaded { background: #ffe680; box-shadow: 0 0 14px #ffcc00; }
+.archery-bow.loaded::after { content: "➶"; position: absolute; right: -14px; top: 30%; font-size: 2rem; }
+.sport-score { font-size: 1.2rem; text-align: center; margin: 4px; }
+
+.soccer-goal { position: absolute; left: 15%; top: 4%; width: 70%; }
+.soccer-goal-picture { display: block; width: 100%; }
+.soccer-goalie {
+  position: absolute;
+  bottom: 12%;
+  left: 40%;
+  transition-property: left;
+  transition-timing-function: ease-in-out;
+  pointer-events: none;
+}
+.soccer-ball {
+  position: absolute;
+  left: 50%; top: 86%;
+  width: 7%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: left 0.45s ease-out, top 0.45s ease-out, width 0.45s ease-out;
+}
+.soccer-ball.kicked { width: 4.5%; }
+
+/* ---- The Pixie and the troll's riddle (js/pixie.js) ---- */
+#place-pixie { position: absolute; inset: 0; pointer-events: none; }
+#place-pixie[hidden] { display: none; }
+.pixie {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  pointer-events: auto;
+  font-size: 2.5rem;
+  animation: flutter 1.4s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 8px #fff6a8);
+}
+.pixie img { width: 100%; display: block; }
+@keyframes flutter { from { margin-top: -6px; } to { margin-top: 6px; } }
+.riddle-answers { display: flex; flex-direction: column; gap: 8px; align-items: center; }

@@ -34,6 +34,8 @@ GAME_DATA.items = [
   {"id": "broom_no10", "name": "Saturn", "category": "Broomstick", "gems": 5, "emoji": "🧹", "description": "The Saturn broomstick."},
   {"id": "broom_no11", "name": "Play-doh", "category": "Broomstick", "gems": 5, "emoji": "🧹", "description": "The Play-doh broomstick."},
   {"id": "pet_turtle", "name": "Healing Turtle", "category": "Pet", "gems": 3, "emoji": "🐢", "description": "A gentle turtle whose shell glows when someone needs healing."},
+  {"id": "potion_finding", "name": "Finding Potion", "category": "Pixie Gifts", "emoji": "🧪", "description": "A purple potion from the Pixie. Drink it to find a secret place."},
+  {"id": "pet_pond_turtle", "name": "Pond Turtle", "category": "Pond House", "pet": true, "emoji": "🐢", "description": "A turtle that popped out of the pond by the Pond House."},
   {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
   {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},

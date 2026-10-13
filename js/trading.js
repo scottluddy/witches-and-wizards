@@ -23,7 +23,7 @@ function openTradePicker(item, message) {
 // One for one: what you give leaves your backpack, the new item goes in.
 function trade(give, get) {
   player.backpack.splice(player.backpack.indexOf(give.id), 1);
-  player.marshmallows = player.marshmallows.filter(function (id) { return id !== give.id; });
+  removeOne(player.marshmallows, give.id); // js/items.js
   player.backpack.push(get.id);
   writeSave(player);
   openInfoPanel("🤝", "It's a Trade!", "You gave the " + give.name + " and got the " + get.name +
@@ -107,7 +107,7 @@ function sell(thing, from, value) {
   const list = player[from];
   list.splice(list.indexOf(thing.id), 1);
   if (from === "cooler") forgetCatch(thing.id); // js/storage.js
-  player.marshmallows = player.marshmallows.filter(function (id) { return id !== thing.id; });
+  removeOne(player.marshmallows, thing.id); // js/items.js
   player[value.money] += value.amount;
   writeSave(player);
   openGemsShelf("Sold the " + thing.name + " for " + value.amount + " " + moneyName(value) + "!");

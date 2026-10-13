@@ -64,7 +64,13 @@ GAME_DATA.places = [
   { "id": "magic_classroom", "name": "Magic Classroom", "type": "classroom", "teaches": "Spells and charms. For now, spells are made at the Crafting Table in the Crafting Cabin.", "in": "school", "x": 50, "y": 17 },
   { "id": "potions_classroom", "name": "Potions Classroom", "type": "classroom", "teaches": "Mixing potions, like the Luck Potion.", "in": "school", "x": 84, "y": 13 },
   { "id": "flying_classroom", "name": "Flying Classroom", "type": "classroom", "teaches": "Riding your broomstick.", "in": "school", "x": 14, "y": 54 },
-  { "id": "sports_classroom", "name": "Sports Classroom", "type": "classroom", "teaches": "Games and races.", "in": "school", "x": 50, "y": 53 },
+  // The Sports Classroom leads out to the Stadium (Scott, 2026-10-13): archery and soccer (js/sports.js).
+  { "id": "sports_classroom", "name": "Sports Classroom", "type": "place", "in": "school", "x": 50, "y": 53,
+    "description": "Sports class is outside today! Go to the Stadium to learn archery and soccer." },
+  { "id": "stadium", "name": "Stadium", "type": "place", "in": "sports_classroom", "x": 50, "y": 50,
+    "description": "Archery targets and a soccer goal. Pass a test to earn each one as a Skill." },
+  { "id": "archery", "name": "Archery", "type": "archery", "in": "stadium", "x": 73, "y": 62 },
+  { "id": "soccer", "name": "Soccer", "type": "soccer", "in": "stadium", "x": 28, "y": 65 },
   { "id": "aquatic_classroom", "name": "Aquatic Classroom", "type": "classroom", "teaches": "Swimming and diving, and the animals of the lake.", "in": "school", "x": 84, "y": 50 },
   { "id": "animals_classroom", "name": "Animal Care Classroom", "type": "classroom", "teaches": "Looking after your pet: walking, training and grooming.", "in": "school", "x": 17, "y": 87 },
   { "id": "art_classroom", "name": "Art Classroom", "type": "classroom", "teaches": "Drawing and painting, like the girls do for this game!", "in": "school", "x": 52, "y": 86 },
@@ -114,6 +120,22 @@ GAME_DATA.places = [
   { "id": "trade_brooms_right",  "name": "Broomsticks", "type": "place", "in": "trading_post", "x": 78, "y": 82, "opens": "trade_brooms" },
   { "id": "trader", "name": "Trader", "type": "person", "in": "trading_post", "x": 46, "y": 32,
     "says": "Welcome to the Trading Post! Bring me something from your backpack and pick anything you like in return." },
+  // The Pixie adventure (Scott, 2026-10-13; js/pixie.js). "hidden" places don't show
+  // as spots: the only way to the Troll Bridge is the Pixie's Finding Potion, and
+  // the only way to the Pond House is answering the troll's riddle.
+  { "id": "troll_bridge", "name": "Troll Bridge", "type": "place", "in": "forest", "hidden": true, "x": 50, "y": 95,
+    "description": "A troll lives under this bridge. Answer its riddle to cross to the Pond House." },
+  { "id": "riddle_troll", "name": "Troll", "type": "riddle", "in": "troll_bridge", "x": 47, "y": 65 },
+  { "id": "cross_bridge", "name": "Cross the bridge", "type": "bridge", "in": "troll_bridge", "x": 50, "y": 20, "to": "pond_house" },
+  { "id": "pond_house", "name": "Pond House", "type": "place", "in": "troll_bridge", "hidden": true, "x": 50, "y": 20,
+    "description": "A little flower house by a pond. Something lives in the pond..." },
+  { "id": "pond", "name": "Pond", "type": "pond", "in": "pond_house", "x": 22, "y": 46 },
+  { "id": "pond_house_inside", "name": "Inside the Pond House", "spotName": "Go inside", "type": "place", "in": "pond_house", "x": 57, "y": 56,
+    "description": "A crackling fireplace, a table of s'mores, hot chocolate and a comfy couch." },
+  { "id": "smores_table", "name": "S'mores", "type": "smores", "in": "pond_house_inside", "x": 81, "y": 52 },
+  { "id": "fireplace", "name": "Fireplace", "type": "fireplace", "in": "pond_house_inside", "x": 75, "y": 22 },
+  { "id": "pond_hot_chocolate", "name": "Hot Chocolate", "type": "hot_chocolate", "in": "pond_house_inside", "x": 17, "y": 78 },
+  { "id": "pond_couch", "name": "Couch", "type": "cuddle", "in": "pond_house_inside", "x": 53, "y": 52 },
   { "id": "orchard",   "name": "Fruit Orchard", "type": "place", "in": "forest", "x": 62, "y": 80,
     "description": "Fruit trees and berry bushes, and a basket for picking." },
 

@@ -86,6 +86,9 @@ function fillIn(save) {
   if (save.luckSeconds === undefined) save.luckSeconds = 0;
   if (save.levelStart === undefined) save.levelStart = {};
   if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
+  if (save.bridgeOpen === undefined) save.bridgeOpen = false;
+  if (save.stock === undefined) save.stock = {};
+  if (save.smore === undefined) save.smore = null;
   renameItem(save, "broom_snowball", "broom_snowflake"); // the coloured Snowflake replaced Snowball
   // Scott named the Floor 1 Snack Shack shelves.
   renameItem(save, "snack_jars", "snack_water");
@@ -179,6 +182,9 @@ function newPlayer(playerName, characterId, kind) {
     levelStart: {},           // the counters when you last went up a Level (js/levels.js)
     holding: null,            // a fruit taken out of the basket and held in your hand (js/unicorns.js)
     unicornsHelped: 0,        // unicorns that found their families (js/unicorns.js)
+    stock: {},                // how many of each supply the shops have left: { itemId: { left, at } } (js/items.js)
+    bridgeOpen: false,        // answered the troll's riddle at the Troll Bridge (js/pixie.js)
+    smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }
     backpack: [],             // item ids the character carries (never shown as a bag)

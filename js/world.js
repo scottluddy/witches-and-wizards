@@ -13,10 +13,19 @@ function findPlace(id) {
   return GAME_DATA.places.find(function (place) { return place.id === id; });
 }
 
-// The places that sit inside a map or place.
+// The places that sit inside a map or place. "hidden" places (like the Troll
+// Bridge) aren't shown: you only get there by magic or by a riddle.
 function placesIn(id) {
-  return GAME_DATA.places.filter(function (place) { return place.in === id; });
+  return GAME_DATA.places.filter(function (place) { return place.in === id && !place.hidden; });
 }
+
+// A little picture in front of each kind of spot's name.
+const SPOT_ICONS = {
+  fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
+  cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
+  piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
+  pond: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
+};
 
 function isDrawn(name) {
   return (GAME_DATA.drawn || []).indexOf(name) !== -1;
@@ -62,7 +71,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "travel" ? "➡️ " : place.type === "classroom" ? "🚪 " : place.type === "look" ? "🔭 " : place.type === "owl_dropoff" ? "🦉 " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
+    button.querySelector(".label").textContent = (SPOT_ICONS[place.type] ? SPOT_ICONS[place.type] + " " : "") + (place.spotName || place.name); // "spotName": a different name on the spot, like "Go inside"
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -307,6 +316,14 @@ function showPlace(id) {
     if (child.type === "look") return lookThrough(child);        // binoculars, below
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+    if (child.type === "archery") return openArchery();          // js/sports.js
+    if (child.type === "soccer") return openSoccer();            // js/sports.js
+    if (child.type === "riddle") return askRiddle();             // js/pixie.js
+    if (child.type === "bridge") return crossBridge(child);      // js/pixie.js
+    if (child.type === "pond") return openPond();                // js/pixie.js
+    if (child.type === "smores") return grabSmore();             // js/pixie.js
+    if (child.type === "fireplace") return roastSmore();         // js/pixie.js
+    if (child.type === "hot_chocolate") return drinkHotChocolate(); // js/pixie.js
     if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
       document.getElementById("place-description").textContent =
         "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
@@ -321,6 +338,7 @@ function showPlace(id) {
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
+  showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showScreen("screen-place");
 }
 

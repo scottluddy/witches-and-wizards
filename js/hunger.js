@@ -42,7 +42,7 @@ function eat(item, from) {
   const before = player.hunger;
   player.hunger = Math.max(0, player.hunger - foodIn(item));
   list.splice(list.indexOf(item.id), 1);
-  player.marshmallows = player.marshmallows.filter(function (id) { return id !== item.id; });
+  removeOne(player.marshmallows, item.id); // js/items.js
   writeSave(player);
   return before - player.hunger; // how much less hungry you are
 }

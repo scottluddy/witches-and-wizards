@@ -75,10 +75,63 @@ function hasFreePick(category) {
 
 // Owned means carried in the backpack or left somewhere.
 function owns(itemId) {
-  if (player.backpack.indexOf(itemId) !== -1) return true;
-  return Object.keys(player.stored).some(function (placeId) {
-    return player.stored[placeId].indexOf(itemId) !== -1;
+  return howMany(itemId) > 0;
+}
+
+// How many of this item you have, carried or left somewhere.
+function howMany(itemId) {
+  let count = player.backpack.filter(function (id) { return id === itemId; }).length;
+  Object.keys(player.stored).forEach(function (placeId) {
+    count += player.stored[placeId].filter(function (id) { return id === itemId; }).length;
   });
+  return count;
+}
+
+// ---------------------------------------------------------------- supplies (data/supplies.js)
+
+// Food, drinks and bait stack: you can have a few of each. Everything else is one of each.
+function isSupply(item) {
+  return !!item.food && !item.trade || GAME_DATA.supplies.alsoSupplies.indexOf(item.id) !== -1;
+}
+
+// How many of a supply the shop has left. One more goes back on the shelf
+// every "restockMinutes" (worked out like apples growing back, js/orchard.js).
+function shopStock(item) {
+  const rules = GAME_DATA.supplies;
+  const every = rules.restockMinutes * 60000;
+  const state = player.stock[item.id] || { left: rules.shopStock, at: Date.now() };
+  const restocked = Math.floor((Date.now() - state.at) / every);
+  if (restocked > 0) {
+    state.left = Math.min(rules.shopStock, state.left + restocked);
+    state.at += restocked * every;
+  }
+  if (state.left === rules.shopStock) state.at = Date.now(); // a full shelf doesn't fill up more
+  player.stock[item.id] = state;
+  return state.left;
+}
+
+function takeFromStock(item) {
+  shopStock(item); // brings the count up to date first
+  player.stock[item.id].left -= 1;
+}
+
+// Minutes until the shop has another one.
+function minutesToRestock(item) {
+  const state = player.stock[item.id];
+  return Math.max(1, Math.ceil((state.at + GAME_DATA.supplies.restockMinutes * 60000 - Date.now()) / 60000));
+}
+
+// Can you get one more of this? Keepsakes: only if you don't have it.
+// Supplies: if you have fewer than "most" and the shop has some left.
+function canGetMore(item) {
+  if (!isSupply(item)) return !owns(item.id);
+  return howMany(item.id) < GAME_DATA.supplies.most && shopStock(item) > 0;
+}
+
+// Take just one of this item out of a list (there may be several the same).
+function removeOne(list, itemId) {
+  const i = list.indexOf(itemId);
+  if (i !== -1) list.splice(i, 1);
 }
 
 // The Scholarship covers the Campus Store's shelves (not other shops, like
@@ -122,7 +175,7 @@ function showShelfItems(place) {
     const y = item.shelfY !== undefined ? item.shelfY : gap[1];
 
     const button = document.createElement("button");
-    button.className = "shelf-item" + (owns(item.id) ? " owned" : "") + (item.inPicture ? " in-picture" : "");
+    button.className = "shelf-item" + (canGetMore(item) ? "" : " owned") + (item.inPicture ? " in-picture" : "");
     button.style.left = x + "%";
     button.style.top = y + "%";
     // fits inside the gap, unless the item says how tall it is (like the Lakeside Store's pets)
@@ -132,7 +185,9 @@ function showShelfItems(place) {
     art.appendChild(itemArt(item));
     const tag = document.createElement("span");
     tag.className = "price-tag";
-    if (owns(item.id)) tag.textContent = "Yours ✓";
+    if (isSupply(item) && shopStock(item) === 0) tag.textContent = "Sold out";
+    else if (isSupply(item) && howMany(item.id) >= GAME_DATA.supplies.most) tag.textContent = "Yours ×" + howMany(item.id);
+    else if (!isSupply(item) && owns(item.id)) tag.textContent = "Yours ✓";
     else if (item.trade) tag.textContent = "🔄 Trade";
     else if (hasFreePick(item.category)) tag.textContent = "FREE";
     else tag.appendChild(moneyLabel(priceOf(item).money, priceOf(item).amount));
@@ -164,7 +219,8 @@ function showLeftHere(place) {
     const item = findItem(itemId);
     if (!item) return;
     list.appendChild(itemCard(item, "Pick up", function () {
-      player.stored[place.id] = here.filter(function (id) { return id !== itemId; });
+      removeOne(here, itemId); // just this one (you may have left two the same)
+      player.stored[place.id] = here;
       if (player.stored[place.id].length === 0) delete player.stored[place.id];
       player.backpack.push(itemId);
       writeSave(player);
@@ -209,7 +265,14 @@ function openItemPanel(itemId) {
   const getButton = document.getElementById("btn-item-get");
   getButton.hidden = false;
   getButton.disabled = false;
-  if (owns(item.id)) {
+  const supply = isSupply(item);
+  if (supply && howMany(item.id) >= GAME_DATA.supplies.most) {
+    message.textContent = "You have " + howMany(item.id) + " already. That's the most you can have! Eat one first.";
+    getButton.hidden = true;
+  } else if (supply && shopStock(item) === 0) {
+    message.textContent = "Sold out! The shop gets another one in about " + minutesToRestock(item) + " minute" + (minutesToRestock(item) === 1 ? "" : "s") + ".";
+    getButton.hidden = true;
+  } else if (!supply && owns(item.id)) {
     message.textContent = "You already have this one!";
     getButton.hidden = true;
   } else if (item.trade) {
@@ -221,7 +284,7 @@ function openItemPanel(itemId) {
   } else {
     const cost = priceOf(item);
     const have = player[cost.money];
-    message.textContent = "";
+    message.textContent = supply ? "The shop has " + shopStock(item) + " left. You have " + howMany(item.id) + ". " : "";
     message.append("It costs ", moneyLabel(cost.money, cost.amount), ". You have ",
       moneyLabel(cost.money, have), ".");
     if (canAfford(item)) {
@@ -247,7 +310,7 @@ document.getElementById("btn-item-close").addEventListener("click", closeItemPan
 
 document.getElementById("btn-item-get").addEventListener("click", function () {
   const item = shownItem;
-  if (!item || owns(item.id)) return;
+  if (!item || !canGetMore(item)) return;
   if (item.trade) {
     closeItemPanel();
     return openTradePicker(item); // js/trading.js
@@ -260,10 +323,11 @@ document.getElementById("btn-item-get").addEventListener("click", function () {
   } else {
     return;
   }
+  if (isSupply(item)) takeFromStock(item);
   player.backpack.push(item.id);
   writeSave(player);
   closeItemPanel();
-  showPlace(player.at); // redraw the shelf so it shows "Yours ✓"
+  showPlace(player.at); // redraw the shelf so it shows "Yours ✓" (or how many are left)
   document.getElementById("shelf-note").textContent =
     "🎒 " + item.name + " went into your backpack!";
 });
@@ -297,7 +361,7 @@ function openBackpack() {
     if (!item) return;
     const putDown = canPutDownHere() ? "Put down here" : null;
     const card = itemCard(item, putDown, function () {
-      player.backpack = player.backpack.filter(function (id) { return id !== itemId; });
+      removeOne(player.backpack, itemId);
       player.stored[place.id] = (player.stored[place.id] || []).concat([itemId]);
       writeSave(player);
       openBackpack();
@@ -306,6 +370,7 @@ function openBackpack() {
     if (hasMarshmallows(item.id)) card.querySelector(".item-name").textContent += " with marshmallows";
     if (item.food) card.appendChild(eatButton(item)); // snacks (js/hunger.js)
     if (isLuckPotion(item)) card.appendChild(drinkButton(item)); // js/luck.js
+    if (isFindingPotion(item)) card.appendChild(findingDrinkButton(item)); // js/pixie.js
     list.appendChild(card);
   });
 
