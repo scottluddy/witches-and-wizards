@@ -1,14 +1,22 @@
 // Sports at the Stadium (in the Wizard School's Sports Classroom): archery
-// and soccer. Pass each test to earn it as a Skill (player.skills), which
-// counts toward your next Level. The numbers are in data/sports.js.
+// and soccer. Each game is a test: pass it to raise that skill one Level
+// (js/skills.js), then wait a few minutes before the next, harder test.
+// The numbers for each Level are in data/sports.js.
 
-function knowsSkill(skill) {
-  return player.skills.indexOf(skill) !== -1;
+// The rules for the next test: Level 1's test if you haven't started, and so on.
+function nextTest(rules) {
+  const level = skillLevel(rules.skill) + 1;
+  return Object.assign({ level: level }, rules.levels[level - 1]);
 }
 
-function learnSkill(skill) {
-  if (!knowsSkill(skill)) player.skills.push(skill);
-  writeSave(player);
+// "You passed!": one more Level, and when the next test is.
+function passedTest(rules, score) {
+  const level = gainSkillLevel(rules.skill); // js/skills.js
+  const next = level >= GAME_DATA.skills.maxLevel
+    ? " You've mastered " + rules.name + "!"
+    : " Your next test is ready in " + Math.round(skillWaitMinutes(level)) + " minutes.";
+  sportSay("🌟 " + score + "! You passed: " + rules.name + " Level " + level + " (it counts toward your next Level)." + next);
+  showPlace(player.at); // greys out the sport until the next test
 }
 
 // A picture, or its emoji if the girls haven't drawn it.
@@ -43,15 +51,17 @@ function againButton(body, start) {
 // Click the bow to load an arrow, then click the moving target to shoot.
 function openArchery() {
   const rules = GAME_DATA.sports.archery;
+  const test = nextTest(rules);
   const game = { arrows: rules.arrows, score: 0, loaded: false };
-  const body = openInfoPanel("🏹", "Archery", "Click the bow to load an arrow, then click the target to shoot. " +
-    (knowsSkill(rules.skill) ? "You already know archery: shoot for fun!" : "Score " + rules.passPoints + " points with " + rules.arrows + " arrows to earn the Archery Skill."));
+  const body = openInfoPanel("🏹", "Archery Level " + test.level + " Test", "Click the bow to load an arrow, then click the target to shoot. " +
+    "Score " + test.passPoints + " points with " + rules.arrows + " arrows to pass.");
 
   const range = document.createElement("div");
   range.className = "archery-range";
   const target = document.createElement("div");
   target.className = "archery-target";
-  target.style.transitionDuration = rules.moveSeconds + "s";
+  target.style.transitionDuration = test.moveSeconds + "s";
+  target.style.width = test.size + "%";
   target.appendChild(sportPicture("sport_target", "🎯", "archery-target-picture"));
   const bow = document.createElement("button");
   bow.className = "archery-bow";
@@ -74,19 +84,19 @@ function openArchery() {
     shootArrow(event, target, game, rules);
     bow.classList.remove("loaded");
     showArcheryScore(score, game);
-    if (game.arrows === 0) finishArchery(body, game, rules);
+    if (game.arrows === 0) finishArchery(body, game, rules, test);
   });
 
-  moveTarget(target);
+  moveTarget(target, test);
   const mover = setInterval(function () {
     if (!range.isConnected) return clearInterval(mover); // the pop-up was closed
-    moveTarget(target);
-  }, rules.moveSeconds * 1000);
+    moveTarget(target, test);
+  }, test.moveSeconds * 1000);
 }
 
 // Off to a new random spot on the range (CSS slides it there).
-function moveTarget(target) {
-  target.style.left = randomBetween(5, 70) + "%"; // js/digging.js
+function moveTarget(target, test) {
+  target.style.left = randomBetween(5, 92 - test.size) + "%"; // js/digging.js
   target.style.top = randomBetween(2, 40) + "%";
 }
 
@@ -115,16 +125,9 @@ function showArcheryScore(score, game) {
   score.textContent = "Score: " + game.score + "   ·   Arrows left: " + "🏹".repeat(game.arrows);
 }
 
-function finishArchery(body, game, rules) {
-  const passed = game.score >= rules.passPoints;
-  if (passed && !knowsSkill(rules.skill)) {
-    learnSkill(rules.skill);
-    sportSay("🌟 " + game.score + " points! You passed: Archery is a new Skill (it counts toward your next Level)!");
-  } else if (passed) {
-    sportSay("🌟 " + game.score + " points! Great shooting.");
-  } else {
-    sportSay(game.score + " points. You need " + rules.passPoints + " to pass. Keep practising!");
-  }
+function finishArchery(body, game, rules, test) {
+  if (game.score >= test.passPoints) return passedTest(rules, game.score + " points");
+  sportSay(game.score + " points. You need " + test.passPoints + " to pass. Try again!");
   againButton(body, openArchery);
 }
 
@@ -133,9 +136,10 @@ function finishArchery(body, game, rules) {
 // The goalie paces across the goal. Click a spot in the goal to kick the ball there.
 function openSoccer() {
   const rules = GAME_DATA.sports.soccer;
+  const test = nextTest(rules);
   const game = { kicks: rules.kicks, goals: 0, kicking: false };
-  const body = openInfoPanel("⚽", "Soccer", "Click a spot in the goal to kick the ball there. Don't let the goalie stop it! " +
-    (knowsSkill(rules.skill) ? "You already know soccer: play for fun!" : "Score " + rules.goalsNeeded + " goals in " + rules.kicks + " kicks to earn the Soccer Skill."));
+  const body = openInfoPanel("⚽", "Soccer Level " + test.level + " Test", "Click a spot in the goal to kick the ball there. Don't let the goalie stop it! " +
+    "Score " + test.goalsNeeded + " goals in " + rules.kicks + " kicks to pass.");
 
   const field = document.createElement("div");
   field.className = "soccer-field";
@@ -143,8 +147,8 @@ function openSoccer() {
   goal.className = "soccer-goal";
   goal.appendChild(sportPicture("sport_goal", "🥅", "soccer-goal-picture"));
   const goalie = sportPicture("sport_goalie", "🧍", "soccer-goalie");
-  goalie.style.width = rules.goalieWidth + "%";
-  goalie.style.transitionDuration = rules.goalieSeconds + "s";
+  goalie.style.width = test.goalieWidth + "%";
+  goalie.style.transitionDuration = test.goalieSeconds + "s";
   goal.appendChild(goalie);
   const ball = sportPicture("sport_ball", "⚽", "soccer-ball");
   ball.style.transitionDuration = rules.ballSeconds + "s";
@@ -158,20 +162,20 @@ function openSoccer() {
     if (game.kicking || game.kicks === 0) return;
     kickBall(event, field, ball, goalie, game, function () {
       showSoccerScore(score, game);
-      if (game.kicks === 0) finishSoccer(body, game, rules);
+      if (game.kicks === 0) finishSoccer(body, game, rules, test);
     });
   });
 
-  paceGoalie(goalie, rules);
+  paceGoalie(goalie, test);
   const pacer = setInterval(function () {
     if (!field.isConnected) return clearInterval(pacer); // the pop-up was closed
-    paceGoalie(goalie, rules);
-  }, rules.goalieSeconds * 1000);
+    paceGoalie(goalie, test);
+  }, test.goalieSeconds * 1000);
 }
 
 // The goalie walks to a random spot across the goal.
-function paceGoalie(goalie, rules) {
-  goalie.style.left = randomBetween(8, 92 - rules.goalieWidth) + "%";
+function paceGoalie(goalie, test) {
+  goalie.style.left = randomBetween(8, 92 - test.goalieWidth) + "%";
 }
 
 // The ball flies to where you clicked. When it gets there: if the goalie is in
@@ -208,15 +212,8 @@ function showSoccerScore(score, game) {
   score.textContent = "Goals: " + game.goals + "   ·   Kicks left: " + "⚽".repeat(game.kicks);
 }
 
-function finishSoccer(body, game, rules) {
-  const passed = game.goals >= rules.goalsNeeded;
-  if (passed && !knowsSkill(rules.skill)) {
-    learnSkill(rules.skill);
-    sportSay("🌟 " + game.goals + " goals! You passed: Soccer is a new Skill (it counts toward your next Level)!");
-  } else if (passed) {
-    sportSay("🌟 " + game.goals + " goals! What a striker.");
-  } else {
-    sportSay(game.goals + " goal" + (game.goals === 1 ? "" : "s") + ". You need " + rules.goalsNeeded + " to pass. Keep practising!");
-  }
+function finishSoccer(body, game, rules, test) {
+  if (game.goals >= test.goalsNeeded) return passedTest(rules, game.goals + " goals");
+  sportSay(game.goals + " goal" + (game.goals === 1 ? "" : "s") + ". You need " + test.goalsNeeded + " to pass. Try again!");
   againButton(body, openSoccer);
 }

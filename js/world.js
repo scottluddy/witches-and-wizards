@@ -85,6 +85,7 @@ function drawSpots(box, places, onClick) {
       button.classList.add("with-picture");
       button.style.width = (place.size || 10) + "%";
     }
+    markSkillSpot(button, place); // "(Level 2) ⏳ 3:05", greyed out while waiting or if it needs a skill Level (js/skills.js)
     button.addEventListener("click", function () { onClick(place.id); });
     box.appendChild(button);
   });
@@ -208,6 +209,10 @@ function findRoute(startId, goalId) {
 
 function travelTo(id) {
   if (walking || placementMode) return;
+  if (!meetsSkill(findPlace(id).needsSkill)) { // a place that needs a skill Level (js/skills.js)
+    document.getElementById("map-hint").textContent = needsSkillText(findPlace(id).needsSkill);
+    return;
+  }
   const mapId = player.at;
   const here = player.spots[mapId];
   if (!here || id === here) {
@@ -298,6 +303,7 @@ function showPlace(id) {
   drawSpots(document.getElementById("place-spots"), placesIn(id), function (childId) {
     if (placementMode) return;
     const child = findPlace(childId);
+    if (skillSpotLocked(child)) return; // waiting for the next skill test, or needs a skill Level (js/skills.js)
     if (child.type === "person") {
       // People talk instead of opening a new picture.
       document.getElementById("place-description").textContent =

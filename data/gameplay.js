@@ -46,7 +46,7 @@ GAME_DATA.activities = [
   { "name": "Help a blind unicorn", "kind": "Bonding", "where": "Unicorn Meadow", "inGame": true,
     "note": "Spot the shy unicorn when it comes out from behind the trees, hold an apple and feed it so it trusts you, cast the Seeing Spell, then feed it 2 to 4 more apples: it finds its family. +1 Adventure Point. Each new unicorn comes out less often." },
   { "name": "Archery and soccer", "kind": "Learning", "where": "Stadium (Sports Classroom, Wizard School)", "inGame": true,
-    "note": "Pass a test to earn each as a Skill." },
+    "note": "10 Levels each: pass a test to go up a Level, then wait 3 to 5 minutes for the next, harder one." },
   { "name": "Find the Pond House", "kind": "Adventure", "where": "the Pixie (Forest), the Troll Bridge", "inGame": true,
     "note": "Give the Pixie a Crystal Fish, drink the Finding Potion, answer the troll's riddle." },
   { "name": "Collect honey", "kind": "Food", "where": "Beehive (Meadows)", "inGame": true,
