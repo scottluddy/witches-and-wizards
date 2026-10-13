@@ -21,7 +21,7 @@
 GAME_DATA.sports = {
   "archery": {
     "skill": "archery", "name": "Archery", "arrows": 5, "passPoints": 15,
-    "centre": [46, 53], "radius": [44, 45],
+    "centre": [54, 47], "radius": [44, 45],
     "rings": [
       { "name": "yellow", "upTo": 0.13, "points": 5 },
       { "name": "red",    "upTo": 0.31, "points": 3 },
