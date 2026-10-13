@@ -176,10 +176,24 @@ GAME_DATA.places = [
   { "id": "snack_keeper", "name": "Shopkeeper", "type": "person", "in": "snack_shack", "x": 45, "y": 52,
     "says": "Have a nice day! Crystals here, please." },
 
-  { "id": "unicorn_meadow", "name": "Unicorn Meadow", "type": "place", "in": "meadows", "x": 50, "y": 50, "start": true,
+  // The girls' Meadows map (Scott, 2026-10-13, art/raw/sheets/meadows_map.jpeg). The Poppy Patch,
+  // Pet Training Field, Rosy Hills, Stream, Beehive and Butterfly Garden have no pictures or things to do yet.
+  { "id": "poppy_patch", "name": "Poppy Patch", "type": "place", "in": "meadows", "x": 43, "y": 43,
+    "description": "A little house in a field of poppies." },
+  { "id": "pet_training_field", "name": "Pet Training Field", "type": "place", "in": "meadows", "x": 29, "y": 71,
+    "description": "Grass and pine trees: room to walk and train your pet. (Coming soon!)" },
+  { "id": "rosy_hills", "name": "Rosy Hills", "type": "place", "in": "meadows", "x": 62, "y": 87,
+    "description": "Rolling hills covered in flowers, with a tiny house." },
+  { "id": "stream", "name": "Stream", "type": "place", "in": "meadows", "x": 81, "y": 63,
+    "description": "A little stream winding through the Meadows." },
+  { "id": "beehive", "name": "Beehive", "type": "place", "in": "meadows", "x": 64, "y": 29,
+    "description": "A beehive hanging in a big tree. Buzz buzz!" },
+  { "id": "butterfly_garden", "name": "Butterfly Garden", "type": "place", "in": "meadows", "x": 90, "y": 77,
+    "description": "Flowers everywhere, and butterflies fluttering between them." },
+  { "id": "unicorn_meadow", "name": "Unicorn Meadow", "type": "place", "in": "meadows", "x": 72, "y": 48, "start": true,
     "description": "A shy blind unicorn hides behind these trees. Watch for it, then hold an apple from your basket and click it." },
 
-  { "id": "cozy_lounge", "name": "Cozy Lounge", "type": "place", "in": "meadows", "x": 28, "y": 38,
+  { "id": "cozy_lounge", "name": "Cozy Lounge", "type": "place", "in": "meadows", "x": 20, "y": 38,
     "description": "Comfy sofas and armchairs. Sit on the big sofa with your pet to bond." },
   { "id": "lounge_sofa", "name": "Big Sofa", "type": "cuddle", "in": "cozy_lounge", "x": 68, "y": 72 },
 

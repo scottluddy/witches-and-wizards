@@ -22,6 +22,8 @@ GAME_DATA.nextSteps = {
       "note": "The Disco Dance Hall piano plays Song 1, Song 2 and Song 3. For now they're simple tunes Claude added (Mary Had a Little Lamb, Hot Cross Buns, and a made-up one) in data/music.js." },
     { "text": "What other Skills are there?", "who": "Girls",
       "note": "Each new Level needs 1 more Skill. There are four so far: the Seeing Spell, the piano, archery and soccer, so after Level 5 you can't go up until there are more." },
+    { "text": "What do you do at each new Meadows place?", "who": "Girls",
+      "note": "The Meadows map has the Poppy Patch, Pet Training Field, Rosy Hills, Stream, Beehive and Butterfly Garden. They're spots on the map with placeholder pictures. Ideas: train or walk your pet (Pet Training Field), collect honey (Beehive), pick poppies (Poppy Patch), spot butterflies (Butterfly Garden). Draw the inside of each one too." },
     { "text": "Draw the Sports Classroom", "who": "Girls",
       "note": "It has a placeholder picture with one spot that leads out to the Stadium." },
     { "text": "Is finding the Pond House an adventure?", "who": "Scott",
