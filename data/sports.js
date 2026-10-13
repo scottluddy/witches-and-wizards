@@ -16,6 +16,8 @@
 //   goalieWidth      how wide the goalie is, in percent of the goal (a kick this
 //                    close to the goalie's middle is saved)
 //   goalieSeconds    how long the goalie takes to pace to the next spot
+//   ballSeconds      how long the ball takes to fly to the goal (slower is harder:
+//                    the goalie has longer to wander into the way; Scott, 2026-10-13)
 GAME_DATA.sports = {
   "archery": {
     "skill": "archery", "name": "Archery", "arrows": 5, "passPoints": 15,
@@ -30,6 +32,6 @@ GAME_DATA.sports = {
   },
   "soccer": {
     "skill": "soccer", "name": "Soccer", "kicks": 5, "goalsNeeded": 3,
-    "goalieWidth": 20, "goalieSeconds": 0.9
+    "goalieWidth": 20, "goalieSeconds": 0.9, "ballSeconds": 0.9
   }
 };

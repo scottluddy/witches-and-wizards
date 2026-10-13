@@ -147,6 +147,7 @@ function openSoccer() {
   goalie.style.transitionDuration = rules.goalieSeconds + "s";
   goal.appendChild(goalie);
   const ball = sportPicture("sport_ball", "⚽", "soccer-ball");
+  ball.style.transitionDuration = rules.ballSeconds + "s";
   const score = document.createElement("p");
   score.className = "sport-score";
   field.append(goal, ball);
@@ -200,7 +201,7 @@ function kickBall(event, field, ball, goalie, game, done) {
       game.kicking = false;
       done();
     }, 700);
-  }, 450); // how long the ball takes to fly (same as .soccer-ball in css/style.css)
+  }, GAME_DATA.sports.soccer.ballSeconds * 1000); // when the ball reaches the goal
 }
 
 function showSoccerScore(score, game) {

@@ -1100,7 +1100,7 @@ body.holding-apple, body.holding-apple * {
   width: 7%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  transition: left 0.45s ease-out, top 0.45s ease-out, width 0.45s ease-out;
+  transition: left 0.9s ease-out, top 0.9s ease-out, width 0.9s ease-out; /* the time is set from data/sports.js */
 }
 .soccer-ball.kicked { width: 4.5%; }
 
