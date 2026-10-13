@@ -1,6 +1,7 @@
-// Music: learn the piano at the Wizard School, then play the piano in the
-// Disco Dance Hall and everyone dances under the disco ball. The keys, the
-// lessons and the dancers are in data/music.js.
+// Music: learn the piano in the Wizard School's Music Classroom (the
+// rehearsal studio, where you can practise too), then play a song on the
+// piano in the Disco Dance Hall and everyone dances under the disco ball.
+// The keys, the lessons, the songs and the dancers are in data/music.js.
 
 let sound = null;        // the browser's sound maker, made on the first note
 let danceTimer = null;   // stops the dancing a little after the last note
@@ -60,14 +61,36 @@ function playTune(row, tune, gapMs, done) {
   if (done) setTimeout(done, tune.length * gapMs);
 }
 
-// ---------------------------------------------------------------- lessons at the Wizard School
+// A button for each song in data/music.js. onNote is called on every note it plays.
+function songButtons(row, onNote) {
+  const box = document.createElement("div");
+  box.className = "song-buttons";
+  GAME_DATA.music.songs.forEach(function (song) {
+    const button = document.createElement("button");
+    button.className = "small-button";
+    button.textContent = "🎵 " + song.name;
+    button.addEventListener("click", function () {
+      playTune(row, song.keys, 380);
+      if (onNote) song.keys.forEach(function (key, n) { setTimeout(onNote, n * 380); });
+    });
+    box.appendChild(button);
+  });
+  return box;
+}
+
+// ---------------------------------------------------------------- the Music Classroom
 
 function openPianoLesson() {
-  if (knowsPiano()) {
-    openInfoPanel("🎹", "Piano Lessons", "You already know how to play the piano! Go and play it in the Disco Dance Hall.");
-    return;
-  }
+  if (knowsPiano()) return openRehearsal();
   startLesson(0);
+}
+
+// Once you can play: the rehearsal studio, to practise the keys and the songs.
+function openRehearsal() {
+  const body = openInfoPanel("🎹", "Rehearsal Studio",
+    "You know how to play the piano! Practise here, then play for everyone at the Disco Dance Hall.");
+  const row = pianoKeys(function () {});
+  body.append(row, songButtons(row));
 }
 
 // A lesson: the teacher plays a short tune, then you play it back.
@@ -119,7 +142,7 @@ function playedKey(i) {
   writeSave(player);
   setTimeout(function () {
     openInfoPanel("🎹🌟", "You Can Play the Piano!",
-      "Bravo! You passed all the lessons. Playing the piano is a new Skill (it counts toward your next Level). Go and play the piano in the Disco Dance Hall!");
+      "Bravo! You passed all the lessons. Playing the piano is a new Skill (it counts toward your next Level). Practise here any time, or go and play a song in the Disco Dance Hall!");
   }, 700);
 }
 
@@ -152,7 +175,7 @@ function showDanceFloor(place) {
 function openPiano() {
   if (!knowsPiano()) {
     document.getElementById("place-description").textContent =
-      "🎹 You don't know how to play the piano yet. Take Piano Lessons at the Wizard School, here in the Village!";
+      "🎹 You don't know how to play the piano yet. Take Piano Lessons in the Music Classroom at the Wizard School, here in the Village!";
     return;
   }
   const floor = document.getElementById("dance-floor");
@@ -161,16 +184,9 @@ function openPiano() {
   keys = document.createElement("div");
   keys.className = "hall-piano";
   const row = pianoKeys(startDancing);
-  const song = document.createElement("button");
-  song.className = "small-button";
-  song.textContent = "🎵 Play a song";
-  song.addEventListener("click", function () {
-    playTune(row, GAME_DATA.music.song, 380);
-    GAME_DATA.music.song.forEach(function (key, n) { setTimeout(startDancing, n * 380); });
-  });
-  keys.append(row, song);
+  keys.append(row, songButtons(row, startDancing));
   floor.appendChild(keys);
-  document.getElementById("place-description").textContent = "🎶 Play the keys and everyone dances! Click the piano again to put the keys away.";
+  document.getElementById("place-description").textContent = "🎶 Play a song (or the keys) and everyone dances! Click the piano again to put the keys away.";
 }
 
 // Music is playing: everyone dances, and stops a few seconds after the last note.

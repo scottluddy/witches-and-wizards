@@ -62,7 +62,7 @@ function drawSpots(box, places, onClick) {
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
-    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "travel" ? "➡️ " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
+    button.querySelector(".label").textContent = (place.type === "fishing" ? "🎣 " : place.type === "digging" ? "⛏️ " : place.type === "picking" ? "🍎 " : place.type === "selling" ? "💎 " : place.type === "bath" ? "🛁 " : place.type === "cuddle" ? "🛋️ " : place.type === "cafe" ? "🍽️ " : place.type === "travel" ? "➡️ " : place.type === "classroom" ? "🚪 " : place.type === "look" ? "🔭 " : place.type === "owl_dropoff" ? "🦉 " : place.type === "piano" || place.type === "piano_lesson" ? "🎹 " : "") + place.name;
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
     if (place.picture) {
@@ -303,8 +303,15 @@ function showPlace(id) {
     if (child.type === "cuddle") return openCuddle();            // js/bonding.js
     if (child.type === "cafe") return openCafe(child);           // js/cafe.js
     if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
+    if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
+    if (child.type === "look") return lookThrough(child);        // binoculars, below
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+    if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
+      document.getElementById("place-description").textContent =
+        "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
+      return;
+    }
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
@@ -315,6 +322,19 @@ function showPlace(id) {
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   showScreen("screen-place");
+}
+
+// A spot you look through, like Windy Peak's binoculars: shows a picture
+// ("picture" on the spot) in a round binocular view.
+function lookThrough(spot) {
+  const lens = document.createElement("div");
+  lens.className = "binocular-view";
+  const view = document.createElement("img");
+  view.src = picture(spot.picture);
+  view.alt = spot.name;
+  lens.appendChild(view);
+  openInfoPanel("🔭", spot.name, spot.says || "");
+  document.getElementById("info-body").appendChild(lens);
 }
 
 // ---------------------------------------------------------------- placement mode

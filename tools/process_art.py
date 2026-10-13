@@ -40,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_", "lake_", "cafe_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_", "lake_", "cafe_", "tree_", "fruit_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 
@@ -487,6 +487,33 @@ def draw_bath_tub():
 COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub}
 
 
+# ---------------------------------------------------------------- close-ups
+
+def close_up(name, settings):
+    """A bigger picture of one thing in a drawn page, like the apple tree in the
+    Fruit Orchard, with soft round edges (art_config.json: "close_up_of" names
+    the page, "box" is [left, top, right, bottom] percent of it).
+    "paint_out_red" rubs out the drawn apples, so the game can put real ones on."""
+    page = Image.open(OUT_DIR / f"{settings['close_up_of']}.png").convert("RGB")
+    w, h = page.size
+    box = settings["box"]
+    img = page.crop((w * box[0] // 100, h * box[1] // 100, w * box[2] // 100, h * box[3] // 100))
+    if settings.get("paint_out_red"):
+        px = np.asarray(img).astype(int)
+        red = (px[..., 0] > px[..., 1] + 40) & (px[..., 0] > px[..., 2] + 40)
+        red = Image.fromarray((red * 255).astype("uint8")).filter(ImageFilter.MaxFilter(7))
+        img = Image.composite(Image.new("RGB", img.size, PARCHMENT), img, red)
+    for box in settings.get("erase", []):  # stray marks, [left, top, right, bottom] percent of the close-up
+        ImageDraw.Draw(img).rectangle((img.width * box[0] / 100, img.height * box[1] / 100,
+                                       img.width * box[2] / 100, img.height * box[3] / 100), fill=PARCHMENT)
+    img = img.resize((img.width * 2, img.height * 2), Image.LANCZOS)
+    fade = Image.new("L", img.size, 0)
+    ImageDraw.Draw(fade).ellipse((img.width * 0.06, img.height * 0.04, img.width * 0.94, img.height * 0.96), fill=255)
+    out = img.convert("RGBA")
+    out.putalpha(fade.filter(ImageFilter.GaussianBlur(img.width * 0.04)))
+    out.save(OUT_DIR / f"{name}.png")
+
+
 # ---------------------------------------------------------------- main
 
 def main():
@@ -514,6 +541,13 @@ def main():
                 print(f"  ...and used it for {other}.png")
         except Exception as err:
             print(f"  could not process {path.name}: {err}")
+
+    # Close-ups cut from drawn pages (they need the page made first).
+    for name, settings in config.items():
+        if "close_up_of" in settings and settings["close_up_of"] in drawn:
+            close_up(name, settings)
+            drawn.append(name)
+            print(f"  made the close-up {name}.png")
 
     # 2. Placeholders for every map and place nobody has drawn yet.
     places = read_data("places.js")

@@ -49,6 +49,7 @@ function fillIn(save) {
   if (!save.homeChest) save.homeChest = [];
   if (!save.satchel) save.satchel = [];
   if (!save.pearls) save.pearls = { hidden: [], refillAt: 0 };
+  if (!save.trees) save.trees = {};
   if (!save.homeMaterials) save.homeMaterials = [];
   if (save.treasures) {
     // Treasures used to have their own list: fishing ones go in the cooler,
@@ -165,12 +166,13 @@ function newPlayer(playerName, characterId, kind) {
     walked: 0,                // map-widths walked toward the next hunger point
     marshmallows: [],         // hot chocolates in the backpack that have marshmallows
     basket: [],               // fruit picked in the Fruit Orchard, carried (js/orchard.js)
+    trees: {},                // fruit left on each tree, and when it last grew: { "apple_tree": { fruit: 5, at: ... } }
     spells: [],               // spells in your spell book, like "seeing" (js/spells.js)
     skills: [],               // other skills learned, like "piano" (js/music.js)
     unicorn: { trusted: false, canSee: false, applesNeeded: 0, applesFed: 0 }, // the blind unicorn you're helping
     dancePoints: 0,           // Solve to Dance points; every few earn a gem (js/dance.js)
     bondingPoints: 0,         // earned by taking care of your pet (js/bonding.js)
-    lastCare: { bath: {}, cuddle: {} }, // when each pet was last cared for: { bath: { "pet_owl": time } }
+    lastCare: { bath: {}, cuddle: {}, fly: {} }, // when each pet was last cared for: { bath: { "pet_owl": time } }
     caughtAt: [],             // when each fish in the cooler you carry was caught: [{ id, at }]
     sashimi: [],              // fish in the cooler at Home that are Sashimi Grade (one id each)
     luckSeconds: 0,           // seconds of Luck Potion left (js/luck.js)

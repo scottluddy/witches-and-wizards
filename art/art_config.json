@@ -584,7 +584,7 @@
   "celebrate_birds": {
     "min_part": 0.02
   },
-  "place_disco_hall": {
+  "place_music_classroom": {
     "rotate": 90,
     "crop": [
       3,
@@ -742,5 +742,53 @@
   },
   "extra_binocular_view": {
     "whole": true
+  },
+  "tree_apple": {
+    "close_up_of": "place_orchard",
+    "box": [
+      35,
+      11,
+      63,
+      52
+    ],
+    "paint_out_red": true,
+    "erase": [
+      [
+        0,
+        0,
+        100,
+        4.5
+      ],
+      [
+        10,
+        4.5,
+        40,
+        7.8
+      ],
+      [
+        56,
+        4.5,
+        80,
+        7.8
+      ],
+      [
+        84,
+        48,
+        100,
+        62
+      ],
+      [
+        34,
+        7,
+        39.5,
+        9.3
+      ],
+      [
+        49,
+        7,
+        52,
+        9.3
+      ]
+    ]
   }
 }

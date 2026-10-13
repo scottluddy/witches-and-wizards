@@ -10,9 +10,12 @@
 //               everyMinutes: a pet gets dirty again after this long, so it
 //               can have another bath (Claude's guess)
 //   cuddle      the same for a cuddle on the Cozy Lounge's big sofa
+//   fly         the same for letting your owl fly at the Snowy Owl Dropoff on
+//               Windy Peak (Scott, 2026-10-13); "pets" lists which pets can go
 GAME_DATA.bonding = {
   "pets": ["Pet", "Trading Pets"],
   "notPets": ["pet_turtle_egg"],
   "bath": { "points": 1, "everyMinutes": 5 },
-  "cuddle": { "points": 1, "everyMinutes": 5 }
+  "cuddle": { "points": 1, "everyMinutes": 5 },
+  "fly": { "points": 1, "everyMinutes": 5, "pets": ["pet_owl"] }
 };

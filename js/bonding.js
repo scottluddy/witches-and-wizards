@@ -1,6 +1,7 @@
 // Bonding with your pet: taking care of it earns Bonding Points, which
 // count toward the next Level (js/levels.js). So far: a bath in the tub at
-// Home, and a cuddle on the big sofa in the Cozy Lounge (Meadows).
+// Home, a cuddle on the big sofa in the Cozy Lounge (Meadows), and letting
+// your snowy owl fly at the Snowy Owl Dropoff (Windy Peak).
 // The numbers are in data/bonding.js.
 
 // Is this item a pet? Pets come from the pet shelves, or say "pet": true
@@ -68,6 +69,19 @@ function openBath(message) {
     ask: "Which pet needs a bath? Taking care of your pet earns Bonding Points.",
     noPets: "You need a pet to give a bath to. Find one on the Campus Store's Pet shelf, at the Trading Post or at the Lakeside Store, then bring it Home.",
     thanks: "🛁 Splish, splash! Your PET is all clean and happy.", open: openBath
+  }, message);
+}
+
+// The Snowy Owl Dropoff on Windy Peak: let your snowy owl out to fly around.
+function openOwlDropoff(message) {
+  const owls = petsIn(player.backpack).filter(function (pet) {
+    return GAME_DATA.bonding.fly.pets.indexOf(pet.id) !== -1;
+  });
+  openCare("fly", owls, {
+    art: "🦉", title: "Snowy Owl Dropoff", button: "🦉 Let it fly", done: "🪶 Resting. Ready to fly again in ",
+    ask: "Let your snowy owl stretch its wings over the mountains. Flying together earns Bonding Points.",
+    noPets: "This is where snowy owls fly! Bring a Snowy Owl in your backpack (the Campus Store's Pet shelf has one).",
+    thanks: "🦉 Your PET swoops and soars over Windy Peak, then flies back to you!", open: openOwlDropoff
   }, message);
 }
 
