@@ -43,6 +43,8 @@ GAME_DATA.activities = [
     "note": "Pass a test to earn each as a Skill." },
   { "name": "Find the Pond House", "kind": "Adventure", "where": "the Pixie (Forest), the Troll Bridge", "inGame": true,
     "note": "Give the Pixie a Crystal Fish, drink the Finding Potion, answer the troll's riddle." },
+  { "name": "Collect honey", "kind": "Food", "where": "Beehive (Meadows)", "inGame": true,
+    "note": "Scoop honey into your pot and put it in your basket before the bees come out. Bees spill your pot and may sting you; heal with a Healing Potion or wait 10 minutes." },
   { "name": "Roast s'mores", "kind": "Food", "where": "Pond House", "inGame": true,
     "note": "Grab one from the table, roast it at the fireplace: -2 hunger." },
   { "name": "Trade at the Trading Post", "kind": "Trading", "where": "Trading Post (Forest)", "inGame": true,

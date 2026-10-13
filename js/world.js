@@ -23,7 +23,7 @@ function placesIn(id) {
 const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
-  piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
+  honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
 };
 
@@ -92,6 +92,7 @@ function drawSpots(box, places, onClick) {
 
 function showMap(mapId) {
   const map = findPlace(mapId);
+  leaveBeehive(map); // honey still in your pot goes in the basket (js/honey.js)
   returnPickaxe(); // out of the Crystal Cave, the pickaxe goes back on its rack (js/mining.js)
   const spots = placesIn(mapId);
   player.at = mapId;
@@ -316,6 +317,7 @@ function showPlace(id) {
     if (child.type === "look") return lookThrough(child);        // binoculars, below
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+    if (child.type === "honey") return openBeehive();            // js/honey.js
     if (child.type === "archery") return openArchery();          // js/sports.js
     if (child.type === "soccer") return openSoccer();            // js/sports.js
     if (child.type === "riddle") return askRiddle();             // js/pixie.js
@@ -338,6 +340,7 @@ function showPlace(id) {
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
+  leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showScreen("screen-place");
 }

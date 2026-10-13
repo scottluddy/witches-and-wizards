@@ -371,6 +371,7 @@ function openBackpack() {
     if (item.food) card.appendChild(eatButton(item)); // snacks (js/hunger.js)
     if (isLuckPotion(item)) card.appendChild(drinkButton(item)); // js/luck.js
     if (isFindingPotion(item)) card.appendChild(findingDrinkButton(item)); // js/pixie.js
+    if (isHealingPotion(item)) card.appendChild(healDrinkButton(item)); // heals bee stings (js/honey.js)
     list.appendChild(card);
   });
 

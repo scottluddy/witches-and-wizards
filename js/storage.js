@@ -19,7 +19,7 @@ const STORAGE = {
 
 // Every kind of thing that can be kept, so each one shows with its picture.
 function keepableThings() {
-  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || [], GAME_DATA.pearlFinds || [], GAME_DATA.fruits || []);
+  return GAME_DATA.fish.concat(GAME_DATA.treasures || [], GAME_DATA.beachFinds || [], GAME_DATA.mineFinds || [], GAME_DATA.pearlFinds || [], GAME_DATA.fruits || [], GAME_DATA.honeyFinds || []);
 }
 
 let openStorageName = null; // which store the pop-up is showing

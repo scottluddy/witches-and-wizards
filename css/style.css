@@ -1122,3 +1122,9 @@ body.holding-apple, body.holding-apple * {
 .pixie img { width: 100%; display: block; }
 @keyframes flutter { from { margin-top: -6px; } to { margin-top: 6px; } }
 .riddle-answers { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+
+/* ---- The Beehive (js/honey.js) ---- */
+.honey-pot { font-size: 1.3rem; text-align: center; }
+.bee-swarm { position: relative; height: 90px; overflow: hidden; }
+.bee-swarm span { position: absolute; top: 60%; font-size: 2rem; animation: buzz 0.9s ease-in-out infinite alternate; }
+@keyframes buzz { from { transform: translate(-10px, 10px) rotate(-15deg); } to { transform: translate(14px, -40px) rotate(15deg); } }
