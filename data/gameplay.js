@@ -67,7 +67,7 @@ GAME_DATA.activities = [
 //   inGame    true once it works in the game
 GAME_DATA.metrics = [
   { "name": "Level", "shows": "Witch Level 1 / Wizard Level 1", "inGame": true,
-    "earn": "3 each of Adventure Points, Chore Points and Bonding Points and 1 Skill since your last Level, plus gems (data/levels.js). Click the Level in the top bar.", "use": "Each Level above 1 makes you 5% luckier." },
+    "earn": "3 each of Adventure Points, Chore Points, Bonding Points and Skills since your last Level, plus gems (data/levels.js). Click the Level in the top bar.", "use": "Each Level above 1 makes you 5% luckier." },
   { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": true,
     "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "3 of them (with other things) raise your Level." },
   { "name": "Crystals", "shows": "💎", "inGame": true,
@@ -76,6 +76,8 @@ GAME_DATA.metrics = [
     "earn": "Fishing, digging at Pebble Beach, the Solve to Dance puzzle, and selling on the Trading Post's Gems shelf.", "use": "Buying things priced in gems (pets, potions, brooms, snacks), using a pickaxe, and making spells." },
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,
     "earn": "Catching fish (treasures don't count).", "use": "Saved for something later." },
+  { "name": "Skills", "shows": "🎓 4 (click it for every skill and its Level)", "inGame": true,
+    "earn": "Passing a skill test at the Wizard School (each Level adds 1) and making spells.", "use": "3 of them (with other things) raise your Level." },
   { "name": "Chore Points", "shows": "🧹", "inGame": true,
     "earn": "Doing chores, like sweeping your room (1 point per level of dust).", "use": "3 of them (with other things) raise your Level." },
   { "name": "Hunger", "shows": "🍽️ 0/10", "inGame": true,

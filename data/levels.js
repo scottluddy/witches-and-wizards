@@ -20,9 +20,10 @@ GAME_DATA.levels = {
       "how": "Sweep your room at Home with a broomstick." },
     { "id": "bondingPoints",   "name": "Bonding Points",   "emoji": "🐾", "count": 3,
       "how": "Take care of your pet, like giving it a bath in the tub at Home." },
-    // Skills: spells in your spell book, plus every skill Level gained (piano,
-    // Archery Level 2 counts as 2...). Two lists, added together.
-    { "id": ["spells", "skills"], "name": "Skills (spells and skill Levels)", "emoji": "📖", "count": 1,
+    // Skills (🎓 in the top bar): every skill Level gained (Archery Level 2
+    // counts as 2) plus spells in your spell book. Two lists, added together.
+    // 3 of them: 3 Levels of one skill, or 1 Level each of three (Scott, 2026-10-13).
+    { "id": ["spells", "skills"], "name": "Skills", "emoji": "🎓", "count": 3,
       "how": "Make a spell at the Crafting Table in the Crafting Cabin, or pass a skill test at the Wizard School (piano, archery, soccer)." }
   ],
   // Going up costs gems too: 10 to reach Level 2, 20 to reach Level 3, and so on.

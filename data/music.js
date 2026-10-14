@@ -7,8 +7,12 @@
 //   skill     the skill's name in your list of skills (player.skills)
 //   keys      the piano keys: a note name, how high it sounds (hertz) and a colour.
 //             These five notes always sound nice together, whatever you play.
-//   lessons   how many notes each lesson's tune has: listen, then play it back
-//             (Claude's idea, Scott said to suggest a way to learn)
+//   levels    the Piano's 5 Levels (Scott, 2026-10-13: "limit it to 5 for now").
+//             Each Level's test is a lesson of tunes: listen, then play each
+//             one back (Claude's idea). "tunes" = how many notes each tune
+//             has, "noteMs" = how fast the teacher plays (smaller is faster).
+//             After passing you wait before the next Level (data/skills.js),
+//             but you can practise any time.
 //   songs     tunes the piano can play by itself: a name and the keys to play
 //             (key numbers, 0 = the first key). Stand-ins until the family
 //             records real songs (Scott, 2026-10-13): Song 1 is "Mary Had a
@@ -26,7 +30,13 @@ GAME_DATA.music = {
     { "note": "A", "hertz": 440.0, "colour": "#4a90e2" },
     { "note": "C", "hertz": 523.3, "colour": "#9b6ad6" }
   ],
-  "lessons": [3, 4, 5],
+  "levels": [
+    { "tunes": [3, 4, 5], "noteMs": 600 },
+    { "tunes": [4, 5, 6], "noteMs": 560 },
+    { "tunes": [5, 6, 7], "noteMs": 520 },
+    { "tunes": [6, 7, 8], "noteMs": 480 },
+    { "tunes": [7, 8, 9], "noteMs": 440 }
+  ],
   "songs": [
     { "name": "Song 1", "keys": [2, 1, 0, 1, 2, 2, 2, 1, 1, 1, 2, 3, 3, 2, 1, 0, 1, 2, 2, 2, 2, 1, 1, 2, 1, 0] },
     { "name": "Song 2", "keys": [2, 1, 0, 2, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 1, 0] },

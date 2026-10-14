@@ -12,10 +12,7 @@ function nextTest(rules) {
 // "You passed!": one more Level, and when the next test is.
 function passedTest(rules, score) {
   const level = gainSkillLevel(rules.skill); // js/skills.js
-  const next = level >= GAME_DATA.skills.maxLevel
-    ? " You've mastered " + rules.name + "!"
-    : " Your next test is ready in " + Math.round(skillWaitMinutes(level)) + " minutes.";
-  sportSay("🌟 " + score + "! You passed: " + rules.name + " Level " + level + " (it counts toward your next Level)." + next);
+  sportSay("🌟 " + score + "! You passed: " + rules.name + " Level " + level + " (it counts toward your Skills)." + nextTestText(rules.skill));
   showPlace(player.at); // greys out the sport until the next test
 }
 

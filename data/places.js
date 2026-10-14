@@ -61,7 +61,8 @@ GAME_DATA.places = [
   // (There's also a drawing with 25 boxes, art/raw/sheets/grid_25_boxes.jpeg, if we need more.)
   { "id": "music_classroom", "name": "Music Classroom", "type": "place", "in": "school", "x": 14, "y": 20,
     "description": "The rehearsal studio. Take Piano Lessons here, then practise any time before you play at the Disco Dance Hall." },
-  { "id": "piano_lessons", "name": "Piano Lessons", "type": "piano_lesson", "in": "music_classroom", "x": 21, "y": 70 },
+  { "id": "piano_lessons", "name": "Piano Lessons", "type": "piano_lesson", "in": "music_classroom", "x": 21, "y": 70,
+    "skill": "piano", "practice": true },
   { "id": "magic_classroom", "name": "Magic Classroom", "type": "classroom", "teaches": "Spells and charms. For now, spells are made at the Crafting Table in the Crafting Cabin.", "in": "school", "x": 50, "y": 17 },
   { "id": "potions_classroom", "name": "Potions Classroom", "type": "classroom", "teaches": "Mixing potions, like the Luck Potion.", "in": "school", "x": 84, "y": 13 },
   { "id": "flying_classroom", "name": "Flying Classroom", "type": "classroom", "teaches": "Riding your broomstick.", "in": "school", "x": 14, "y": 54 },

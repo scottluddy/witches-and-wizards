@@ -5,7 +5,7 @@
 
 let sound = null;        // the browser's sound maker, made on the first note
 let danceTimer = null;   // stops the dancing a little after the last note
-let lesson = null;       // the lesson being played: { number, tune, played }
+let lesson = null;       // the lesson being played: { level, number, tune, played }
 
 function knowsPiano() {
   return player.skills.indexOf(GAME_DATA.music.skill) !== -1;
@@ -80,31 +80,44 @@ function songButtons(row, onNote) {
 
 // ---------------------------------------------------------------- the Music Classroom
 
+// Piano Lessons: before your first Level, straight into the Level 1 test.
+// After that: the Rehearsal Studio to practise, and the next Level's test
+// (which waits a few minutes after each Level, js/skills.js).
 function openPianoLesson() {
   if (knowsPiano()) return openRehearsal();
   startLesson(0);
 }
 
-// Once you can play: the rehearsal studio, to practise the keys and the songs.
 function openRehearsal() {
+  const skill = GAME_DATA.music.skill;
   const body = openInfoPanel("🎹", "Rehearsal Studio",
-    "You know how to play the piano! Practise here, then play for everyone at the Disco Dance Hall.");
+    "You're Piano Level " + skillLevel(skill) + " of " + topLevel(skill) + "! Practise here, then play for everyone at the Disco Dance Hall.");
   const row = pianoKeys(function () {});
   body.append(row, songButtons(row));
+  const test = document.createElement("button");
+  test.className = "big-button";
+  test.disabled = skillLocked(skill);
+  test.textContent = isMastered(skill) ? "⭐ You've mastered the piano!"
+    : test.disabled ? "⏳ Piano Level " + (skillLevel(skill) + 1) + " test in " + minutesAndSeconds(skillWaitLeft(skill))
+    : "🌟 Take the Piano Level " + (skillLevel(skill) + 1) + " test";
+  test.addEventListener("click", function () { startLesson(0); });
+  body.appendChild(test);
 }
 
 // A lesson: the teacher plays a short tune, then you play it back.
+// "number" counts the tunes in this Level's test (0 is the first).
 function startLesson(number) {
+  const level = GAME_DATA.music.levels[skillLevel(GAME_DATA.music.skill)]; // the next Level's test
   const keys = GAME_DATA.music.keys.length;
   const tune = [];
-  for (let n = 0; n < GAME_DATA.music.lessons[number]; n++) tune.push(randomBetween(0, keys - 1)); // js/digging.js
-  lesson = { number: number, tune: tune, played: [] };
-  showLesson("Lesson " + (number + 1) + " of " + GAME_DATA.music.lessons.length +
+  for (let n = 0; n < level.tunes[number]; n++) tune.push(randomBetween(0, keys - 1)); // js/digging.js
+  lesson = { level: level, number: number, tune: tune, played: [] };
+  showLesson("Tune " + (number + 1) + " of " + level.tunes.length +
     ": listen to the teacher's tune, then play it back.");
 }
 
 function showLesson(message) {
-  const body = openInfoPanel("🎹", "Piano Lessons", message);
+  const body = openInfoPanel("🎹", "Piano Level " + (skillLevel(GAME_DATA.music.skill) + 1) + " Test", message);
   const row = pianoKeys(playedKey);
   body.appendChild(row);
   const again = document.createElement("button");
@@ -119,7 +132,7 @@ function showLesson(message) {
 function listen(row) {
   row.classList.add("listening");
   setTimeout(function () {
-    playTune(row, lesson.tune, 600, function () { row.classList.remove("listening"); });
+    playTune(row, lesson.tune, lesson.level.noteMs, function () { row.classList.remove("listening"); });
   }, 500);
 }
 
@@ -133,16 +146,18 @@ function playedKey(i) {
   }
   if (lesson.played.length < lesson.tune.length) return;
   // Played the whole tune!
-  if (lesson.number + 1 < GAME_DATA.music.lessons.length) {
+  if (lesson.number + 1 < lesson.level.tunes.length) {
     const next = lesson.number + 1;
     return setTimeout(function () { startLesson(next); }, 700);
   }
-  player.skills.push(GAME_DATA.music.skill);
+  const skill = GAME_DATA.music.skill;
+  const level = gainSkillLevel(skill); // js/skills.js
   lesson = null;
-  writeSave(player);
+  showPlace(player.at); // the spot shows the new Level and the wait
   setTimeout(function () {
-    openInfoPanel("🎹🌟", "You Can Play the Piano!",
-      "Bravo! You passed all the lessons. Playing the piano is a new Skill (it counts toward your next Level). Practise here any time, or go and play a song in the Disco Dance Hall!");
+    openInfoPanel("🎹🌟", "Piano Level " + level + "!",
+      "Bravo! You passed: Piano Level " + level + " (it counts toward your Skills)." + nextTestText(skill) +
+      (level === 1 ? " Now you can play songs on the piano in the Disco Dance Hall!" : "") + " Practise here any time.");
   }, 700);
 }
 
