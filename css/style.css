@@ -1193,8 +1193,10 @@ body.holding-apple, body.holding-apple * {
 }
 .sniff-turtle > * { display: block; animation: waddle 0.6s ease-in-out infinite alternate; }
 .sniff-turtle img { width: 100%; }
-.sniff-turtle.sitting > * { animation: none; }
-.sniff-turtle.sitting { filter: drop-shadow(0 0 8px gold); }
+/* --glow goes from 0 (far) to 1 (right there), set by js/pixie.js glowShell */
+.sniff-turtle { --glow: 0; filter: drop-shadow(0 0 calc(var(--glow) * 18px) gold) drop-shadow(0 0 calc(var(--glow) * 8px) gold) brightness(calc(1 + var(--glow) * 0.4)); }
+.sniff-turtle.shining > * { animation: shell-shine 0.5s ease-in-out infinite alternate; }
+@keyframes shell-shine { from { filter: drop-shadow(0 0 10px gold) brightness(1.3); } to { filter: drop-shadow(0 0 28px #fff3a0) drop-shadow(0 0 14px gold) brightness(1.8); } }
 @keyframes waddle { from { rotate: -6deg; } to { rotate: 6deg; } }
 .map-join-mark { position: absolute; transform: translate(-50%, -50%); font-size: 2.2rem; opacity: 0; transition: opacity 1s; }
 .map-join-board.path-shown .map-join-mark { opacity: 1; }

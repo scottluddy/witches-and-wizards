@@ -490,7 +490,7 @@ function turtleSniff() {
     sprite.textContent = "🐢";
   }
   box.appendChild(sprite);
-  sayHere("🐢 Your " + turtle.name + " sniffs the air... and sets off, very... very... slowly. Which way is it going?");
+  sayHere("🐢 Your " + turtle.name + " sets off, very... very... slowly. Watch its shell: it glows when it gets near the " + GAME_DATA.pixieQuest.treasure.name + "!");
   crawl(sprite, rules.start.slice(), player.at);
 }
 
@@ -502,48 +502,102 @@ function faceTurtle(sprite, angle) {
   else sprite.style.scale = Math.cos(angle) < 0 ? "1 1" : "-1 1";
 }
 
-// One small step at a time. The turtle wanders left and right of the way to
-// the acorn, but never more than "wander" degrees, so every step takes it a
-// little closer. That's why it can never cross its own trail: each spot on
-// the trail is closer to the acorn than every spot before it.
+// One small step at a time. The turtle doesn't know where the acorn is: it
+// wanders, and its shell tells it (and you) when it's getting close.
 function crawl(sprite, at, placeId) {
   const rules = GAME_DATA.pixieQuest.turtle;
   const step = 0.2; // seconds between steps
-  const most = rules.wander * Math.PI / 180;
-  let off = (Math.random() - 0.5) * 2 * most; // how far off course it's heading
-  let sinceFootprint = 0;
+  const turtle = {
+    heading: Math.random() * 2 * Math.PI, // which way it's facing
+    turnTo: null,       // after a shine: the way it's slowly turning
+    best: null,         // the brightest spot so far, and how close that was
+    bestDistance: Infinity,
+    leash: rules.leash, // how far it will wander from the best spot
+    pausedUntil: 0,     // it stops still while it shines
+    restUntil: 0,       // and can't shine again straight away
+    sinceFootprint: 0
+  };
   const timer = setInterval(function () {
     const acorn = player.pixieQuest.acornAt;
     if (player.at !== placeId || !acorn || !sprite.isConnected) { // you left, or found it
       clearInterval(timer);
       return sprite.remove();
     }
-    const left = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]) - rules.closest;
-    if (left < 0.5) {
-      clearInterval(timer);
-      sprite.classList.add("sitting");
-      return sayHere("🐢 Your turtle is tired out. It sits down and sniffs: the " + GAME_DATA.pixieQuest.treasure.name + " must be somewhere around here!");
-    }
-    off += (Math.random() - 0.5) * 2 * rules.turn * Math.PI / 180;
-    off = Math.max(-most, Math.min(most, off));
-    const distance = rules.speed * Math.max(0.15, Math.min(1, left / 20)) * step; // slower near the end
-    const toward = Math.atan2(acorn[1] - at[1], acorn[0] - at[0]);
-    let next = stepFrom(at, toward + off, distance);
-    if (offPicture(next)) { off = -off; next = stepFrom(at, toward + off, distance); } // bump the wall: turn the other way
-    if (offPicture(next)) { off = 0; next = stepFrom(at, toward, distance); }        // still stuck: straight on
-    at[0] = next[0];
-    at[1] = next[1];
-    sinceFootprint += distance;
-    if (sinceFootprint >= rules.footprintEvery) { // little footprints, so you can see the way it went
-      sinceFootprint = 0;
-      leaveFootprint(sprite.parentNode, at);
-    }
-    sprite.style.left = at[0] + "%";
-    sprite.style.top = at[1] + "%";
-    faceTurtle(sprite, toward + off);
+    const now = Date.now();
+    const distance = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]);
+    glowShell(sprite, distance);
+    if (now < turtle.pausedUntil) return;
+    if (distance <= rules.shineDistance && now >= turtle.restUntil) return shine(sprite, turtle, at, acorn, distance);
+    steer(turtle, at);
+    move(sprite, turtle, at);
   }, step * 1000);
   sprite.style.left = at[0] + "%";
   sprite.style.top = at[1] + "%";
+}
+
+// The closer it is, the more its shell glows.
+function glowShell(sprite, distance) {
+  const glow = Math.max(0, 1 - distance / GAME_DATA.pixieQuest.turtle.glowRange);
+  sprite.style.setProperty("--glow", glow.toFixed(2));
+}
+
+// Close enough: the shell shines bright, the turtle stops, then it knows
+// which way to turn, and remembers this spot if it's the brightest yet.
+function shine(sprite, turtle, at, acorn, distance) {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  const now = Date.now();
+  turtle.pausedUntil = now + rules.shineSeconds * 1000;
+  turtle.restUntil = now + (rules.shineSeconds + rules.restSeconds) * 1000;
+  turtle.turnTo = Math.atan2(acorn[1] - at[1], acorn[0] - at[0]);
+  if (distance < turtle.bestDistance) {
+    if (turtle.best) turtle.leash = Math.max(rules.smallestLeash, turtle.leash * rules.leashShrink);
+    turtle.best = at.slice();
+    turtle.bestDistance = distance;
+  }
+  sprite.classList.add("shining");
+  setTimeout(function () { sprite.classList.remove("shining"); }, rules.shineSeconds * 1000);
+  sayHere("✨ Your turtle's shell shines bright! It stops, sniffs... and slowly turns.");
+}
+
+// Which way to go: turning slowly after a shine, back toward the brightest
+// spot if it's wandered too far, otherwise just wandering.
+function steer(turtle, at) {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  const noise = (Math.random() - 0.5) * 2 * rules.turn * Math.PI / 180;
+  if (turtle.turnTo === null && turtle.best && Math.hypot(turtle.best[0] - at[0], turtle.best[1] - at[1]) > turtle.leash) {
+    turtle.turnTo = Math.atan2(turtle.best[1] - at[1], turtle.best[0] - at[0]);
+  }
+  if (turtle.turnTo === null) return turtle.heading += noise;
+  let left = turtle.turnTo - turtle.heading;
+  left = Math.atan2(Math.sin(left), Math.cos(left)); // the short way round
+  const most = rules.turnRate * Math.PI / 180;
+  if (Math.abs(left) <= most) {
+    turtle.heading = turtle.turnTo;
+    turtle.turnTo = null;
+  } else {
+    turtle.heading += Math.sign(left) * most;
+  }
+}
+
+function move(sprite, turtle, at) {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  const distance = rules.speed * 0.2;
+  let next = stepFrom(at, turtle.heading, distance);
+  if (offPicture(next)) { // bumped a wall: turn toward the middle of the room
+    turtle.heading = Math.atan2(50 - at[1], 50 - at[0]);
+    turtle.turnTo = null;
+    next = stepFrom(at, turtle.heading, distance);
+  }
+  at[0] = next[0];
+  at[1] = next[1];
+  sprite.style.left = at[0] + "%";
+  sprite.style.top = at[1] + "%";
+  faceTurtle(sprite, turtle.heading);
+  turtle.sinceFootprint += distance;
+  if (turtle.sinceFootprint >= rules.footprintEvery) { // little footprints, so you can see the way it went
+    turtle.sinceFootprint = 0;
+    leaveFootprint(sprite.parentNode, at);
+  }
 }
 
 function leaveFootprint(box, at) {

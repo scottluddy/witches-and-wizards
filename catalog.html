@@ -339,38 +339,38 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "56"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=56"></script>
-  <script src="data/places.js?v=56"></script>
-  <script src="data/items.js?v=56"></script>
-  <script src="data/ideas.js?v=56"></script>
-  <script src="data/fish.js?v=56"></script>
-  <script src="data/digging.js?v=56"></script>
-  <script src="data/mining.js?v=56"></script>
-  <script src="data/troll.js?v=56"></script>
-  <script src="data/levels.js?v=56"></script>
-  <script src="data/luck.js?v=56"></script>
-  <script src="data/bonding.js?v=56"></script>
-  <script src="data/pearls.js?v=56"></script>
-  <script src="data/skills.js?v=56"></script>
-  <script src="data/sports.js?v=56"></script>
-  <script src="data/pixie.js?v=56"></script>
-  <script src="data/supplies.js?v=56"></script>
-  <script src="data/honey.js?v=56"></script>
-  <script src="data/gameplay.js?v=56"></script>
-  <script src="data/extras.js?v=56"></script>
-  <script src="data/hunger.js?v=56"></script>
-  <script src="data/orchard.js?v=56"></script>
-  <script src="data/dance.js?v=56"></script>
-  <script src="data/trading.js?v=56"></script>
-  <script src="data/unicorns.js?v=56"></script>
-  <script src="data/spells.js?v=56"></script>
-  <script src="data/furniture.js?v=56"></script>
-  <script src="data/next_steps.js?v=56"></script>
-  <script src="data/logic.js?v=56"></script>
-  <script src="data/chores.js?v=56"></script>
-  <script src="data/music.js?v=56"></script>
-  <script src="data/drawn.js?v=56"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "57"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=57"></script>
+  <script src="data/places.js?v=57"></script>
+  <script src="data/items.js?v=57"></script>
+  <script src="data/ideas.js?v=57"></script>
+  <script src="data/fish.js?v=57"></script>
+  <script src="data/digging.js?v=57"></script>
+  <script src="data/mining.js?v=57"></script>
+  <script src="data/troll.js?v=57"></script>
+  <script src="data/levels.js?v=57"></script>
+  <script src="data/luck.js?v=57"></script>
+  <script src="data/bonding.js?v=57"></script>
+  <script src="data/pearls.js?v=57"></script>
+  <script src="data/skills.js?v=57"></script>
+  <script src="data/sports.js?v=57"></script>
+  <script src="data/pixie.js?v=57"></script>
+  <script src="data/supplies.js?v=57"></script>
+  <script src="data/honey.js?v=57"></script>
+  <script src="data/gameplay.js?v=57"></script>
+  <script src="data/extras.js?v=57"></script>
+  <script src="data/hunger.js?v=57"></script>
+  <script src="data/orchard.js?v=57"></script>
+  <script src="data/dance.js?v=57"></script>
+  <script src="data/trading.js?v=57"></script>
+  <script src="data/unicorns.js?v=57"></script>
+  <script src="data/spells.js?v=57"></script>
+  <script src="data/furniture.js?v=57"></script>
+  <script src="data/next_steps.js?v=57"></script>
+  <script src="data/logic.js?v=57"></script>
+  <script src="data/chores.js?v=57"></script>
+  <script src="data/music.js?v=57"></script>
+  <script src="data/drawn.js?v=57"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -761,7 +761,7 @@
             line("2", "Find the troll: he hides in a Forest place and moves every " + GAME_DATA.pixieQuest.trollMoveMinutes + " minutes. The Finding Potion has " + GAME_DATA.pixieQuest.sips + " sips; a sip where he is takes you to him, a sip anywhere else flashes up where he's hiding"),
             line("3", "Answer the troll's riddles: each right answer is a map piece (" + GAME_DATA.pixieQuest.mapPieces + " make the whole map)"),
             line("4", "The pieces join up and the Secret Pathway appears on the Forest map: walk it to the Pond House"),
-            line("5", "Search inside for the " + GAME_DATA.pixieQuest.treasure.name + ". Clues from: " + GAME_DATA.pixieQuest.clues.map(function (c) { return (findPlace(c.at) || {}).name; }).join(", ") + ". The " + (findItem(GAME_DATA.pixieQuest.turtle.pet) || {}).name + " (from the pond) slowly crawls toward it"),
+            line("5", "Search inside for the " + GAME_DATA.pixieQuest.treasure.name + ". Clues from: " + GAME_DATA.pixieQuest.clues.map(function (c) { return (findPlace(c.at) || {}).name; }).join(", ") + ". The " + (findItem(GAME_DATA.pixieQuest.turtle.pet) || {}).name + " (from the pond) wanders; its shell glows brighter near it"),
             line("6", "Take it back to the Pixie"),
             line("Earns", GAME_DATA.pixieQuest.adventurePoints + " Adventure Point"),
             line("At the Pond House", "a turtle pet, s'mores, hot chocolate and a cozy couch")]));

@@ -47,13 +47,18 @@ GAME_DATA.pixieQuest = {
   "trollMoveMinutes": 2,
   "flashSeconds": 1,
   "secret": "pixie_path",
-  // The Pond Turtle (from the pond outside) can sniff out the acorn, but it's
-  // a turtle (Scott, 2026-10-14: slow, roundabout, never crossing its own
-  // trail, never quite getting there). It crawls up to "speed" percent of the
-  // picture a second, slower as it gets near, wandering up to "wander" degrees
-  // off course (changing by up to "turn" degrees a step), and sits down
-  // "closest" percent from the acorn: about 2 to 3 minutes.
-  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 0.5, "wander": 80, "turn": 7, "closest": 16,
+  // The Pond Turtle (from the pond outside) doesn't know where the acorn is,
+  // but its shell glows (Scott, 2026-10-14). It wanders "speed" percent of the
+  // picture a second, turning up to "turn" degrees a step. Its shell glows
+  // brighter the closer it is ("glowRange"). Within "shineDistance" it shines
+  // bright for "shineSeconds", then slowly turns ("turnRate" degrees a step)
+  // the right way. After each shine it stays nearer the brightest spot so far:
+  // within "leash", shrinking by "leashShrink" each shine down to
+  // "smallestLeash", so left alone it narrows the search to a small spot.
+  // It can shine again after "restSeconds".
+  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 1, "turn": 12, "turnRate": 3,
+    "glowRange": 45, "shineDistance": 22, "shineSeconds": 2, "restSeconds": 6,
+    "leash": 25, "leashShrink": 0.7, "smallestLeash": 5,
     // It leaves a footprint every "footprintEvery" percent; each fades away after "footprintSeconds".
     "footprintEvery": 2, "footprintSeconds": 90 },
   // Clues in the Pond House (Scott, 2026-10-14: doing things there makes the
