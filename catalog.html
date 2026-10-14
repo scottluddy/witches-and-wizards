@@ -161,6 +161,14 @@
     .territory b { font-family: var(--display); font-size: 1.1rem; }
     .tag { display: inline-block; margin: 3px 4px 0 0; padding: 1px 8px; border-radius: 999px; background: var(--line); font-size: 0.85rem; }
 
+    .topics-title { margin-top: 28px; }
+    .topic-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 20px; }
+    .topic-button { padding: 10px 18px; border-radius: 999px; border: 3px solid var(--line); background: var(--panel);
+      font-family: var(--display); font-size: 1.15rem; color: inherit; text-decoration: none; }
+    .topic-button:hover, .topic-button.chosen { border-color: #7b4bb5; background: #efe3ff; }
+    .topic-outline > li { font-family: var(--display); font-size: 1.25rem; margin-top: 14px; }
+    .topic-outline li li { font-family: inherit; font-size: 1rem; }
+    .topic-outline .outline-kind { font-family: inherit; }
     .howto { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 4px 20px 12px; }
     .howto li { margin-block: 6px; }
   </style>
@@ -185,6 +193,19 @@
         <b>🗺️ World Outline</b><span>A simple list of the whole world: territories, places and what's inside them.</span>
       </a>
     </div>
+
+    <!-- Topics (Scott, 2026-10-14): each button opens a simple outline of one topic. -->
+    <h2 class="topics-title">📚 Look up a topic</h2>
+    <div class="topic-row"></div>
+  </div>
+
+  <!-- Page: one topic's outline (the address says which, like #topic-bonding) -->
+  <div class="subpage" data-page="topic" hidden>
+    <a class="back-link" href="#">⬅ Back to the catalog</a>
+    <div class="topic-row"></div>
+    <h1 id="topic-title"></h1>
+    <p id="topic-about" class="lede"></p>
+    <ul id="topic-outline" class="outline topic-outline"></ul>
   </div>
 
   <!-- Page: Next Steps -->
@@ -318,36 +339,38 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "50"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=50"></script>
-  <script src="data/places.js?v=50"></script>
-  <script src="data/items.js?v=50"></script>
-  <script src="data/ideas.js?v=50"></script>
-  <script src="data/fish.js?v=50"></script>
-  <script src="data/digging.js?v=50"></script>
-  <script src="data/mining.js?v=50"></script>
-  <script src="data/troll.js?v=50"></script>
-  <script src="data/levels.js?v=50"></script>
-  <script src="data/luck.js?v=50"></script>
-  <script src="data/bonding.js?v=50"></script>
-  <script src="data/pearls.js?v=50"></script>
-  <script src="data/skills.js?v=50"></script>
-  <script src="data/sports.js?v=50"></script>
-  <script src="data/pixie.js?v=50"></script>
-  <script src="data/supplies.js?v=50"></script>
-  <script src="data/honey.js?v=50"></script>
-  <script src="data/gameplay.js?v=50"></script>
-  <script src="data/extras.js?v=50"></script>
-  <script src="data/hunger.js?v=50"></script>
-  <script src="data/orchard.js?v=50"></script>
-  <script src="data/dance.js?v=50"></script>
-  <script src="data/trading.js?v=50"></script>
-  <script src="data/unicorns.js?v=50"></script>
-  <script src="data/spells.js?v=50"></script>
-  <script src="data/furniture.js?v=50"></script>
-  <script src="data/next_steps.js?v=50"></script>
-  <script src="data/logic.js?v=50"></script>
-  <script src="data/drawn.js?v=50"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "51"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=51"></script>
+  <script src="data/places.js?v=51"></script>
+  <script src="data/items.js?v=51"></script>
+  <script src="data/ideas.js?v=51"></script>
+  <script src="data/fish.js?v=51"></script>
+  <script src="data/digging.js?v=51"></script>
+  <script src="data/mining.js?v=51"></script>
+  <script src="data/troll.js?v=51"></script>
+  <script src="data/levels.js?v=51"></script>
+  <script src="data/luck.js?v=51"></script>
+  <script src="data/bonding.js?v=51"></script>
+  <script src="data/pearls.js?v=51"></script>
+  <script src="data/skills.js?v=51"></script>
+  <script src="data/sports.js?v=51"></script>
+  <script src="data/pixie.js?v=51"></script>
+  <script src="data/supplies.js?v=51"></script>
+  <script src="data/honey.js?v=51"></script>
+  <script src="data/gameplay.js?v=51"></script>
+  <script src="data/extras.js?v=51"></script>
+  <script src="data/hunger.js?v=51"></script>
+  <script src="data/orchard.js?v=51"></script>
+  <script src="data/dance.js?v=51"></script>
+  <script src="data/trading.js?v=51"></script>
+  <script src="data/unicorns.js?v=51"></script>
+  <script src="data/spells.js?v=51"></script>
+  <script src="data/furniture.js?v=51"></script>
+  <script src="data/next_steps.js?v=51"></script>
+  <script src="data/logic.js?v=51"></script>
+  <script src="data/chores.js?v=51"></script>
+  <script src="data/music.js?v=51"></script>
+  <script src="data/drawn.js?v=51"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -555,6 +578,225 @@
       document.getElementById("extras").appendChild(c);
     });
 
+
+    // ---------------------------------------------------------------- Topics
+
+    // A row of topic buttons (Scott, 2026-10-14). Each one opens a page with
+    // a simple outline of that topic, worked out from the game's data files,
+    // so it stays up to date. Each line is [text, extra (grey), [lines inside]].
+    const items = GAME_DATA.items || [];
+    function findItem(id) {
+      return items.concat(GAME_DATA.fish || [], GAME_DATA.treasures || [], GAME_DATA.beachFinds || [],
+        GAME_DATA.fruits || [], GAME_DATA.honeyFinds || [], GAME_DATA.mineFinds || [])
+        .find(function (i) { return i.id === id; });
+    }
+
+    // "Meadows › Pet Training Field": where a place is (leaving out the World map).
+    function pathTo(id) {
+      const names = [];
+      for (let p = findPlace(id); p && p.in; p = findPlace(p.in)) names.unshift(p.name);
+      return names.join(" › ");
+    }
+
+    // Spots and places, by a test, as "where" names (the place a spot is in).
+    function whereAll(test) {
+      return places.filter(test).map(function (spot) {
+        return spot.type === "place" || spot.type === "map" ? pathTo(spot.id) : pathTo(spot.in);
+      }).filter(function (w, i, all) { return all.indexOf(w) === i; });
+    }
+
+    // The price of a shop item: "3 gems", "5 💎", or "trade".
+    function priceOf(item) {
+      if (item.trade) return "trade for any of your things";
+      if (item.gems !== undefined) return item.gems + " gem" + (item.gems === 1 ? "" : "s");
+      if (item.price !== undefined) return item.price + " 💎";
+      return "";
+    }
+
+    // Where to get an item: the shop whose shelf holds it, or a special place.
+    function whereToGet(item) {
+      const shop = places.find(function (p) { return p.shelf === item.category || p.menu === item.category; });
+      if (shop) return (shop.in === "store" ? "Campus Store › " + shop.name : shop.menu ? pathTo(shop.in) : pathTo(shop.id)) +
+        (priceOf(item) ? ", " + priceOf(item) : "");
+      if (GAME_DATA.pixie && item.id === GAME_DATA.pixie.gives) return "a gift from the Pixie (Forest)";
+      if (GAME_DATA.pondHouse && item.id === GAME_DATA.pondHouse.turtle) return "the pond at the Pond House (secret)";
+      return "";
+    }
+
+    function line(text, extra, inside) { return [text, extra || "", inside || []]; }
+
+    const TOPICS = [
+      { id: "bonding", name: "🐾 Pets & Bonding", about: "Every pet, where to get it, and the ways to bond with it. Each way gives +1 Bonding Point, once per pet every few minutes.",
+        lines: function () {
+          const b = GAME_DATA.bonding;
+          const ways = Object.keys(b).filter(function (k) { return b[k] && b[k].points; });
+          return Object.keys(b.animals).map(function (animal) {
+            const pets = b.animals[animal].map(findItem).filter(Boolean);
+            const mine = ways.filter(function (k) {
+              const w = b[k];
+              return (w.animals || []).indexOf(animal) !== -1 ||
+                (w.pets || []).some(function (id) { return b.animals[animal].indexOf(id) !== -1; });
+            }).map(function (k) {
+              const w = b[k];
+              const title = w.title || { bath: "Bath Tub", cuddle: "Cuddle on a couch or sofa", fly: "Fly at the Snowy Owl Dropoff" }[k] || k;
+              const where = whereAll(function (p) {
+                return (p.type === "care" && p.care === k) || p.type === k || (k === "fly" && p.type === "owl_dropoff");
+              });
+              const bonus = w.bonus ? " (sometimes a bonus: " + w.bonus.points + " points!)" : "";
+              const only = w.pets ? " (only the " + w.pets.map(function (id) { return findItem(id).name; }).join(", ") + ")" : "";
+              return line("Bond: " + (w.emoji ? w.emoji + " " : "") + title + only + bonus, where.join(", ") || "nowhere yet");
+            });
+            const many = /fish$/.test(animal) ? animal : animal === "wolf" ? "wolves" : animal + "s"; // jellyfish, wolves, owls
+            const name = many.charAt(0).toUpperCase() + many.slice(1);
+            const petLines = pets.length ? pets.map(function (pet) { return line("Pet: " + pet.name, whereToGet(pet)); })
+              : [line("No pets yet", "draw one!")];
+            return line(name, "", petLines.concat(mine));
+          });
+        } },
+
+      { id: "chores", name: "🧹 Chores", about: "Chores earn Chore Points, which help you go up a Level.",
+        lines: function () {
+          return (GAME_DATA.chores || []).map(function (c) {
+            return line(c.name, pathTo(c.place), [
+              line("You need", "a " + (c.needs || "nothing").toLowerCase() + " in your backpack"),
+              line("It gets dirtier", "one level every " + Math.round(c.secondsPerLevel / 60) + " minute(s) you spend there: " + c.levels.join(", ")),
+              line("Earns", c.pointsPerLevel + " Chore Point for each level of dirt you clean")
+            ]);
+          });
+        } },
+
+      { id: "skills", name: "🎓 Skills", about: "Skills are learned at the Wizard School. Each test passed is one Level, and every Level (and every spell) adds 1 to your Skills.",
+        lines: function () {
+          const s = GAME_DATA.skills;
+          const skillLines = s.list.map(function (skill) {
+            const where = whereAll(function (p) { return p.skill === skill.id; });
+            return line(skill.name, skill.levels + " Levels", [
+              line("Where", where.join(", ")),
+              line("Wait between tests", s.waitMinutes.from + " to " + s.waitMinutes.to + " minutes")
+            ]);
+          });
+          const spells = (GAME_DATA.spells || []).map(function (spell) {
+            return line("Spell: " + spell.emoji + " " + spell.name, spell.use, [
+              line("Make it at", whereAll(function (p) { return p.type === "crafting"; }).join(", ")),
+              line("Needs", spell.needs.map(function (n) { return n.count + " " + (n.money || n.name); }).join(", "))
+            ]);
+          });
+          return skillLines.concat(spells);
+        } },
+
+      { id: "food", name: "🍽️ Food", about: "Food takes away hunger. Healthy food takes away its full price in hunger points, snacks half.",
+        lines: function () {
+          const groups = {};
+          items.filter(function (i) { return i.food; }).forEach(function (item) {
+            const where = whereToGet(item).split(",")[0] || "other";
+            (groups[where] = groups[where] || []).push(line(item.name, (item.food === "healthy" ? "🥦 healthy" : "🍬 snack") + ", " + priceOf(item)));
+          });
+          const result = Object.keys(groups).map(function (where) { return line(where, "", groups[where]); });
+          result.push(line("Free food you find", "", [
+            line("Apples", "pick them in the Fruit Orchard (Forest)"),
+            line("Honey", "scoop it at the Beehive (Meadows), watch out for bees"),
+            line("Fish", "catch them at the Dock (Lake): healthy, and better as Sashimi Grade"),
+            line("S'mores and hot chocolate", "at the Pond House (secret)")
+          ]));
+          return result;
+        } },
+
+      { id: "earning", name: "💎 Gems & Crystals", about: "All the ways to earn money, and what you can find.",
+        lines: function () {
+          const list = function (things) { return things.map(function (t) { return line(t.emoji + " " + t.name, (t.gems || 0) + " gems"); }); };
+          const result = [
+            line("Fishing", whereAll(function (p) { return p.type === "fishing"; }).join(", "), list((GAME_DATA.fish || []).concat(GAME_DATA.treasures || []))),
+            line("Digging for beach finds", whereAll(function (p) { return p.type === "digging" && p.finds !== "crystals"; }).join(", "), list(GAME_DATA.beachFinds || [])),
+            line("Digging for Crystals", whereAll(function (p) { return p.type === "digging" && p.finds === "crystals"; }).join(", "),
+              [line("Each dig", GAME_DATA.digging.crystalChance + "% a Crystal, " + GAME_DATA.digging.trollChance + "% wakes the troll")])
+          ];
+          if (GAME_DATA.mining) result.push(line("Mining", pathTo(GAME_DATA.mining.place),
+            [line("Each visit", GAME_DATA.mining.crystalSquares + " Crystals and " + GAME_DATA.mining.boneSquares + " bones hide in the wall, and a troll; a pickaxe costs " + GAME_DATA.mining.pickaxeGems + " gems")]));
+          if (GAME_DATA.pearlHunt) result.push(line("Pearl hunt", whereAll(function (p) { return p.id === "pearl_cave"; }).join(", "), list(GAME_DATA.pearlFinds || [])));
+          if (GAME_DATA.dance) result.push(line("Solve to Dance", whereAll(function (p) { return p.type === "dance_puzzle"; }).join(", "),
+            [line("Maths problems", "every " + GAME_DATA.dance.pointsPerGem + " dance points makes 1 gem")]));
+          result.push(line("Selling", whereAll(function (p) { return p.type === "selling"; }).join(", "), [line("Sell your things", "for gems")]));
+          return result;
+        } },
+
+      { id: "potions", name: "🧪 Potions", about: "Every potion and where to get it. Most are just for fun for now; the ones that do something say so.",
+        lines: function () {
+          const does = {};
+          if (GAME_DATA.luck) does[GAME_DATA.luck.potion] = "drink it: +" + GAME_DATA.luck.boost + "% luck for " + GAME_DATA.luck.minutes + " minutes";
+          if (GAME_DATA.pixie) does[GAME_DATA.pixie.gives] = "drink it: takes you to the Troll Bridge";
+          if (GAME_DATA.honey) does[GAME_DATA.honey.healPotion] = "drink it: heals a bee sting";
+          (GAME_DATA.spells || []).forEach(function (spell) {
+            spell.needs.forEach(function (n) { (n.things || []).forEach(function (id) { if (id.indexOf("potion_") === 0) does[id] = "used to make the " + spell.name; }); });
+          });
+          return items.filter(function (i) { return i.id.indexOf("potion_") === 0; }).map(function (potion) {
+            return line(potion.emoji + " " + potion.name, whereToGet(potion), does[potion.id] ? [line("⭐ In the game", does[potion.id])] : []);
+          });
+        } },
+
+      { id: "shops", name: "🛍️ Shops", about: "Every shop and what it sells.",
+        lines: function () {
+          const seen = [];
+          return places.filter(function (p) { return p.shelf || p.menu; }).map(function (shop) {
+            const category = shop.shelf || shop.menu;
+            if (seen.indexOf(category) !== -1) return null;
+            seen.push(category);
+            const stock = items.filter(function (i) { return i.category === category; });
+            if (!stock.length) return null;
+            const where = shop.in === "store" ? "Campus Store › " + shop.name : shop.menu ? pathTo(shop.in) : pathTo(shop.id);
+            return line(where, stock.length + (stock.length === 1 ? " thing" : " things"), stock.map(function (i) { return line(i.name, priceOf(i)); }));
+          }).filter(Boolean);
+        } },
+
+      { id: "adventures", name: "⭐ Adventures", about: "Adventures earn Adventure Points, which help you go up a Level.",
+        lines: function () {
+          const result = [];
+          if (GAME_DATA.unicorns) result.push(line("🦄 Reunite a blind unicorn", "Meadows › Unicorn Meadow", [
+            line("1", "Spot it when it peeks out from behind a tree"),
+            line("2", "Hold an apple and click it so it trusts you"),
+            line("3", "Cast the Seeing Spell on it"),
+            line("4", "Feed it " + GAME_DATA.unicorns.apples[0] + " to " + GAME_DATA.unicorns.apples[1] + " more apples"),
+            line("Earns", GAME_DATA.unicorns.adventurePoints + " Adventure Point")]));
+          if (GAME_DATA.pixie) result.push(line("🧚 The Pixie and the Troll Bridge", "Forest (she moves every " + GAME_DATA.pixie.stayMinutes + " minutes)", [
+            line("1", "Find the Pixie and give her a " + (findItem(GAME_DATA.pixie.wants) || {}).name),
+            line("2", "Drink her Finding Potion to reach the Troll Bridge"),
+            line("3", "Answer the troll's riddle and cross to the Pond House"),
+            line("At the Pond House", "a turtle pet, s'mores, hot chocolate and a cozy couch")]));
+          return result;
+        } }
+    ];
+
+    // The buttons, on the catalog's front page and at the top of each topic page.
+    document.querySelectorAll(".topic-row").forEach(function (row) {
+      TOPICS.forEach(function (topic) {
+        const a = el("a", "topic-button", topic.name);
+        a.href = "#topic-" + topic.id;
+        a.dataset.topic = topic.id;
+        row.appendChild(a);
+      });
+    });
+
+    function outlineLines(lines) {
+      const list = el("ul", "outline");
+      lines.forEach(function (l) {
+        const item = el("li", "", l[0]);
+        if (l[1]) item.appendChild(el("span", "outline-kind", ": " + l[1]));
+        if (l[2].length) item.appendChild(outlineLines(l[2]));
+        list.appendChild(item);
+      });
+      return list;
+    }
+
+    function showTopic(id) {
+      const topic = TOPICS.find(function (t) { return t.id === id; }) || TOPICS[0];
+      document.getElementById("topic-title").textContent = topic.name;
+      document.getElementById("topic-about").textContent = topic.about;
+      const list = outlineLines(topic.lines());
+      list.id = "topic-outline";
+      list.className = "outline topic-outline";
+      document.getElementById("topic-outline").replaceWith(list);
+      document.querySelectorAll(".topic-button").forEach(function (b) { b.classList.toggle("chosen", b.dataset.topic === topic.id); });
+    }
+
     // ---------------------------------------------------------------- Next Steps
 
     // The catalog is one file with a few pages: the main catalog, Next Steps,
@@ -562,7 +804,8 @@
     // which page to show (#next-steps), so the browser's Back button works too.
     function showPage() {
       const name = location.hash.slice(1);
-      const page = name === "logic" ? "gameplay" : name;       // old link to Game Play Logic
+      let page = name === "logic" ? "gameplay" : name;         // old link to Game Play Logic
+      if (name.indexOf("topic-") === 0) { page = "topic"; showTopic(name.slice(6)); }
       const known = document.querySelector('.subpage[data-page="' + page + '"]') ? page : "home";
       document.querySelectorAll(".subpage").forEach(function (box) {
         box.hidden = box.dataset.page !== known;
