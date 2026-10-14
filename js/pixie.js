@@ -511,6 +511,7 @@ function crawl(sprite, at, placeId) {
   const step = 0.2; // seconds between steps
   const most = rules.wander * Math.PI / 180;
   let off = (Math.random() - 0.5) * 2 * most; // how far off course it's heading
+  let sinceFootprint = 0;
   const timer = setInterval(function () {
     const acorn = player.pixieQuest.acornAt;
     if (player.at !== placeId || !acorn || !sprite.isConnected) { // you left, or found it
@@ -532,12 +533,27 @@ function crawl(sprite, at, placeId) {
     if (offPicture(next)) { off = 0; next = stepFrom(at, toward, distance); }        // still stuck: straight on
     at[0] = next[0];
     at[1] = next[1];
+    sinceFootprint += distance;
+    if (sinceFootprint >= rules.footprintEvery) { // little footprints, so you can see the way it went
+      sinceFootprint = 0;
+      leaveFootprint(sprite.parentNode, at);
+    }
     sprite.style.left = at[0] + "%";
     sprite.style.top = at[1] + "%";
     faceTurtle(sprite, toward + off);
   }, step * 1000);
   sprite.style.left = at[0] + "%";
   sprite.style.top = at[1] + "%";
+}
+
+function leaveFootprint(box, at) {
+  const print = document.createElement("span");
+  print.className = "turtle-footprint";
+  print.style.left = at[0] + "%";
+  print.style.top = at[1] + "%";
+  print.style.animationDuration = GAME_DATA.pixieQuest.turtle.footprintSeconds + "s";
+  box.appendChild(print);
+  setTimeout(function () { print.remove(); }, GAME_DATA.pixieQuest.turtle.footprintSeconds * 1000);
 }
 
 function stepFrom(at, angle, distance) {

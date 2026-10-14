@@ -53,7 +53,9 @@ GAME_DATA.pixieQuest = {
   // picture a second, slower as it gets near, wandering up to "wander" degrees
   // off course (changing by up to "turn" degrees a step), and sits down
   // "closest" percent from the acorn: about 2 to 3 minutes.
-  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 0.5, "wander": 80, "turn": 7, "closest": 16 },
+  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 0.5, "wander": 80, "turn": 7, "closest": 16,
+    // It leaves a footprint every "footprintEvery" percent; each fades away after "footprintSeconds".
+    "footprintEvery": 2, "footprintSeconds": 90 },
   // Clues in the Pond House (Scott, 2026-10-14: doing things there makes the
   // acorn easier to find). Each one, the first time you do it while
   // searching, says something helpful and makes the search "bigger" (you can
