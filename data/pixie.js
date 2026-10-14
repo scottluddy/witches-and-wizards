@@ -55,24 +55,27 @@ GAME_DATA.pixieQuest = {
   // the right way. After each shine it stays nearer the brightest spot so far:
   // within "leash", shrinking by "leashShrink" each shine down to
   // "smallestLeash", so left alone it narrows the search to a small spot.
-  // It can shine again after "restSeconds".
+  // It can shine again after "restSeconds". Every "feelEvery" steps it feels
+  // if its shell got dimmer, and if so turns "colderTurn" degrees a step until
+  // it's getting brighter again.
   "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 1, "turn": 12, "turnRate": 3,
-    "glowRange": 45, "shineDistance": 22, "shineSeconds": 2, "restSeconds": 6,
+    "glowRange": 70, "shineDistance": 22, "shineSeconds": 2, "restSeconds": 6,
     "leash": 25, "leashShrink": 0.7, "smallestLeash": 5,
+    "feelEvery": 5, "colderTurn": 4,
     // It leaves a footprint every "footprintEvery" percent; each fades away after "footprintSeconds".
     "footprintEvery": 2, "footprintSeconds": 90 },
-  // Clues in the Pond House (Scott, 2026-10-14: doing things there makes the
-  // acorn easier to find). Each one, the first time you do it while
-  // searching, says something helpful and makes the search "bigger" (you can
-  // click a little farther from the acorn and still find it). SIDE becomes
-  // "left" or "right" and HEIGHT "up high" or "down low", from where the
-  // acorn really is. Claude's ideas.
+  // Clues in the Pond House (Scott, 2026-10-14: doing things there helps you
+  // narrow down where the acorn is, but you still click just as close).
+  // Each one, the first time you do it while searching, says something
+  // helpful. From where the acorn really is: SIDE becomes "left" or "right",
+  // HEIGHT "up high" or "down low", and NEAREST the thing in the room it's
+  // closest to. Claude's ideas.
   "clues": [
-    { "at": "fireplace", "bigger": 4,
-      "says": "The fire blazes up and lights the whole room. Now it's much easier to spot things!" },
-    { "at": "pond_hot_chocolate", "bigger": 2,
+    { "at": "fireplace",
+      "says": "The fire blazes up, and in its light you see something glint near the NEAREST!" },
+    { "at": "pond_hot_chocolate",
       "says": "Next to the mugs you spot muddy troll footprints. They lead to the SIDE of the room!" },
-    { "at": "pond_couch", "bigger": 2,
+    { "at": "pond_couch",
       "says": "Under a couch cushion there's a note in wobbly troll writing: \"Hid it HEIGHT. Grrr.\"" }
   ]
 };

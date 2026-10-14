@@ -408,14 +408,6 @@ function showAcornHunt(place) {
     "(Doing things here might turn up clues, and turtles have great noses...)";
 }
 
-// How close a click has to be, made bigger by each clue found.
-function acornDistance(base) {
-  const found = player.pixieQuest.clues || [];
-  return GAME_DATA.pixieQuest.clues.reduce(function (sum, clue) {
-    return sum + (found.indexOf(clue.at) !== -1 ? clue.bigger : 0);
-  }, base);
-}
-
 function searchForAcorn(event) {
   const place = findPlace(player.at);
   if (placementMode || !place || !huntingAcorn(place)) return;
@@ -429,9 +421,9 @@ function searchForAcorn(event) {
   const distance = Math.hypot(spot[0] - x, spot[1] - y);
   const box = document.getElementById("place-pixie");
   box.hidden = false;
-  if (distance <= acornDistance(quest.findDistance)) return foundAcorn(box);
+  if (distance <= quest.findDistance) return foundAcorn(box);
   showSplash(x, y, "🔍", box); // js/pearls.js
-  document.getElementById("place-description").textContent = distance <= acornDistance(quest.warmDistance)
+  document.getElementById("place-description").textContent = distance <= quest.warmDistance
     ? "🔥 Warmer! The " + quest.treasure.name + " is close by." : "Nothing here. Keep looking!";
 }
 
@@ -459,7 +451,17 @@ function acornClue(spotId) {
   writeSave(player);
   const side = state.acornAt[0] < 50 ? "left" : "right";
   const height = state.acornAt[1] < 60 ? "up high" : "down low";
-  return " 🔎 Clue! " + clue.says.replace("SIDE", side).replace("HEIGHT", height);
+  return " 🔎 Clue! " + clue.says.replace("SIDE", side).replace("HEIGHT", height).replace("NEAREST", nearestThing(state.acornAt));
+}
+
+// The name of the thing in the Pond House closest to a spot, like "Couch".
+function nearestThing(spot) {
+  const things = placesIn(GAME_DATA.pixieQuest.hiddenIn).filter(function (p) { return p.type !== "turtle_sniff"; });
+  let best = things[0];
+  things.forEach(function (thing) {
+    if (Math.hypot(thing.x - spot[0], thing.y - spot[1]) < Math.hypot(best.x - spot[0], best.y - spot[1])) best = thing;
+  });
+  return best.name.toLowerCase();
 }
 
 document.getElementById("place-picture").addEventListener("click", searchForAcorn);
@@ -515,7 +517,10 @@ function crawl(sprite, at, placeId) {
     leash: rules.leash, // how far it will wander from the best spot
     pausedUntil: 0,     // it stops still while it shines
     restUntil: 0,       // and can't shine again straight away
-    sinceFootprint: 0
+    sinceFootprint: 0,
+    lastGlow: 0,        // how bright its shell was a moment ago
+    sinceSniff: 0,      // steps since it last compared
+    sniffTurn: 0        // which way it's turning while it's getting colder
   };
   const timer = setInterval(function () {
     const acorn = player.pixieQuest.acornAt;
@@ -525,8 +530,9 @@ function crawl(sprite, at, placeId) {
     }
     const now = Date.now();
     const distance = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]);
-    glowShell(sprite, distance);
+    const glow = glowShell(sprite, distance);
     if (now < turtle.pausedUntil) return;
+    feelWarmer(turtle, glow);
     if (distance <= rules.shineDistance && now >= turtle.restUntil) return shine(sprite, turtle, at, acorn, distance);
     steer(turtle, at);
     move(sprite, turtle, at);
@@ -535,10 +541,25 @@ function crawl(sprite, at, placeId) {
   sprite.style.top = at[1] + "%";
 }
 
-// The closer it is, the more its shell glows.
+// The closer it is, the more its shell glows: from a dim blue far away,
+// through green and yellow, to bright gold right next to it (css/style.css).
 function glowShell(sprite, distance) {
   const glow = Math.max(0, 1 - distance / GAME_DATA.pixieQuest.turtle.glowRange);
   sprite.style.setProperty("--glow", glow.toFixed(2));
+  return glow;
+}
+
+// Every few steps the turtle feels whether its shell got brighter. Brighter:
+// keep going this way. Dimmer: start turning (one way, until it's brighter
+// again). So its path keeps getting better, a little at a time.
+function feelWarmer(turtle, glow) {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  turtle.sinceSniff++;
+  if (turtle.sinceSniff < rules.feelEvery) return;
+  turtle.sinceSniff = 0;
+  if (glow > turtle.lastGlow) turtle.sniffTurn = 0;
+  else if (glow < turtle.lastGlow && turtle.sniffTurn === 0) turtle.sniffTurn = Math.random() < 0.5 ? -1 : 1;
+  turtle.lastGlow = glow;
 }
 
 // Close enough: the shell shines bright, the turtle stops, then it knows
@@ -567,7 +588,7 @@ function steer(turtle, at) {
   if (turtle.turnTo === null && turtle.best && Math.hypot(turtle.best[0] - at[0], turtle.best[1] - at[1]) > turtle.leash) {
     turtle.turnTo = Math.atan2(turtle.best[1] - at[1], turtle.best[0] - at[0]);
   }
-  if (turtle.turnTo === null) return turtle.heading += noise;
+  if (turtle.turnTo === null) return turtle.heading += noise + turtle.sniffTurn * rules.colderTurn * Math.PI / 180;
   let left = turtle.turnTo - turtle.heading;
   left = Math.atan2(Math.sin(left), Math.cos(left)); // the short way round
   const most = rules.turnRate * Math.PI / 180;
