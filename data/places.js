@@ -208,6 +208,7 @@ GAME_DATA.places = [
     "description": "Click a Lucky Rod to go fishing. Fish go in your cooler." },
   { "id": "rod_1",     "name": "Lucky Rod #1",   "type": "fishing", "in": "dock", "x": 35, "y": 33 },
   { "id": "dock_swim", "name": "Swim", "type": "care", "care": "swim", "in": "dock", "x": 70, "y": 75 },
+  { "id": "dock_whale_swim", "name": "Beluga Swim", "type": "care", "care": "whale_swim", "in": "dock", "x": 82, "y": 42 },
   { "id": "rod_2",     "name": "Lucky Rod #2",   "type": "fishing", "in": "dock", "x": 12, "y": 33 },
   { "id": "island",    "name": "Tiny Island",    "type": "place", "in": "lake", "x": 52, "y": 36,
     "description": "Just big enough for one tree, a picnic and a fishing rod." },
@@ -233,6 +234,7 @@ GAME_DATA.places = [
   { "id": "beach",     "name": "Pebble Beach",   "type": "place", "in": "lake", "x": 82, "y": 52,
     "description": "Pebbles, sand dollars and the Turtle Cove. Grab a shovel and dig!" },
   { "id": "turtle_cove", "name": "Turtle Cove", "type": "care", "care": "swim", "in": "beach", "x": 68, "y": 42 },
+  { "id": "beach_whale_swim", "name": "Beluga Swim", "type": "care", "care": "whale_swim", "in": "beach", "x": 40, "y": 36 },
   { "id": "dig_spot",    "name": "Dig Spot",         "type": "digging", "in": "beach", "x": 86, "y": 57, "finds": "beach" },
   { "id": "crystal_dig", "name": "Crystal Dig Spot", "type": "digging", "in": "beach", "x": 19, "y": 82, "finds": "crystals" }
 ];

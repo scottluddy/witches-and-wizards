@@ -5,7 +5,8 @@
 //   cats        cuddle on any couch or sofa, or play with yarn at Home
 //   capybaras   a bath in the tub at Home
 //   turtles     swimming at any water, with bonus points if a (very rare) turtle run happens
-//   belugas and jellyfish   clean their tanks at the Fish Hut
+//   belugas     swim in the lake from the Dock or Pebble Beach
+//   jellyfish   clean their tanks at the Fish Hut
 //   dogs and wolves         walks, runs and tricks at the Pet Training Field (no dogs yet!)
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
@@ -52,10 +53,16 @@ GAME_DATA.bonding = {
     "thanks": "🌊 You and your PET paddle around together. Splash!",
     "bonus": { "chance": 0.03, "points": 3, "emoji": "🐢🐢🐢",
       "says": "A TURTLE RUN! Baby turtles are hatching and racing to the water. You and your PET help them get there safely!" } },
-  "tank": { "points": 1, "everyMinutes": 5, "animals": ["beluga", "jellyfish"], "from": "backpack",
+  // Belugas swim in the lake, from the Dock or Pebble Beach (Scott, 2026-10-14: a tank doesn't make sense for a whale).
+  "whale_swim": { "points": 1, "everyMinutes": 5, "animals": ["beluga"], "from": "backpack",
+    "title": "Beluga Swim", "emoji": "🐋", "button": "🌊 Swim in the lake", "done": "💤 Resting. Ready again in ",
+    "ask": "Belugas need lots of room! Let your beluga out into the lake for a swim.",
+    "noPets": "The lake is big enough for a beluga whale! Bring one in your backpack (the Lakeside Store has one).",
+    "thanks": "🐋 Your PET splashes out into the lake, swims big circles around you and sings a happy whale song!" },
+  "tank": { "points": 1, "everyMinutes": 5, "animals": ["jellyfish"], "from": "backpack",
     "title": "Fish Tanks", "emoji": "🫧", "button": "🧽 Clean the tank", "done": "✨ Sparkling. Dirty again in ",
-    "ask": "Your water pet needs a clean tank. Scrub, scrub!",
-    "noPets": "These tanks are for belugas and jellyfish. Bring one in your backpack (the Lakeside Store has them).",
+    "ask": "Your jellyfish needs a clean tank. Scrub, scrub!",
+    "noPets": "These tanks are for jellyfish. Bring one in your backpack (the Lakeside Store has them).",
     "thanks": "🧽 The tank is sparkling clean and your PET swims happy circles." },
   "dog_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf"], "from": "backpack",
     "title": "Walks and Tricks", "emoji": "🐕", "button": "🐕 Go for a walk", "done": "💤 Resting. Ready again in ",
