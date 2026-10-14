@@ -14,7 +14,7 @@ function openTradePicker(item, message) {
   row.className = "item-row";
   player.backpack.forEach(function (giveId) {
     const give = findItem(giveId);
-    if (!give) return;
+    if (!give || give.quest) return; // quest things, like the Golden Acorn, aren't yours to trade
     row.appendChild(itemCard(give, "Give this", function () { trade(give, item); }));
   });
   body.appendChild(row);
@@ -60,7 +60,7 @@ function sellableThings() {
   const list = [];
   player.backpack.forEach(function (id) {
     const item = findItem(id);
-    if (item && !isScholarshipItem(id)) list.push({ thing: item, from: "backpack" });
+    if (item && !item.quest && !isScholarshipItem(id)) list.push({ thing: item, from: "backpack" });
   });
   ["cooler", "bucket", "satchel", "basket"].forEach(function (bag) {
     keepableThings().forEach(function (thing) {        // js/storage.js

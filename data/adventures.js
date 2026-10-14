@@ -6,7 +6,7 @@
 GAME_DATA.celebrations = {
   "reuniting": { "picture": "celebrate_birds",   "name": "Love birds" },  // bringing families back together
   "aquatic":   { "picture": "celebrate_narwhal", "name": "Narwhal" },     // any water adventure (none yet)
-  "quest":     { "picture": "celebrate_quest",   "name": "Quest" }        // finding something lost, like the Pixie's acorn (not drawn yet)
+  "quest":     { "picture": "celebrate_narwhal", "name": "Narwhal" }      // finding something lost, like the Pixie's acorn (Scott: the narwhal for now, until a quest picture is drawn)
 };
 
 // Getting adventures (Scott, 2026-10-14). You start with none: every
@@ -40,7 +40,7 @@ GAME_DATA.adventureList = [
     "steps": [
       "Bring the Pixie a Crystal Fish for a Finding Potion",
       "Find the troll who stole her Golden Acorn: a sip shows where he's hiding, and the potion bubbles when you're there",
-      "Answer his riddles to win the 3 pieces of his map",
+      "Answer his riddles to win the 3 pieces of his map, then put them in order",
       "Follow the Secret Pathway to the Pond House and find the acorn",
       "Give it back to the Pixie"
     ] },

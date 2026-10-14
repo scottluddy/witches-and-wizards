@@ -37,7 +37,7 @@ GAME_DATA.nextSteps = {
     { "text": "Draw the Head Witch and the Head Wizard", "who": "The girls",
       "note": "They pop out at the corner of the screen to tell you about a new adventure. They show as 🧙‍♀️ and 🧙‍♂️ for now (head_witch, head_wizard)." },
     { "text": "Draw the Pixie Quest things: the 3 map pieces, the Golden Acorn and a Quest picture for when it's done", "who": "The girls",
-      "note": "They show as 🗺️ and 🌰 for now. The troll's 8 riddles and the 3 Pond House clues are Claude's (data/pixie.js)." },
+      "note": "The map pieces are strips of the Forest map; the acorn shows as 🌰 and the Quest picture is the narwhal for now. The troll's 48 riddles and the couch note are Claude's (data/pixie.js): swap in any riddles you like." },
     { "text": "Which things should stack?", "who": "Scott",
       "note": "Food, drinks and bait: you can have up to 3 of each, and a shop has 3 and puts one back every 3 minutes (data/supplies.js). Everything else, potions too, is one of each until it's used up or sold." },
     { "text": "What's on Floors 3, 4 and 6 of the Multi-House?", "who": "Girls",

@@ -66,7 +66,7 @@ GAME_DATA.places = [
   { "id": "multi_dance_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_dance", "x": 77, "y": 80 },
   { "id": "multi_coaster", "name": "Roller Coaster", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
     "description": "Floor 2: a twisty roller coaster! Hop in the car at the start. Bring a pet in your backpack to ride together." },
-  { "id": "coaster_ride", "name": "Ride", "type": "coaster", "in": "multi_coaster", "x": 39, "y": 88 },
+  { "id": "coaster_ride", "name": "Ride", "type": "coaster", "in": "multi_coaster", "x": 49, "y": 86 },
   { "id": "multi_coaster_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_coaster", "x": 87, "y": 86 },
   { "id": "multi_jewelry", "name": "Jewelry Shop", "type": "place", "in": "village", "hidden": true, "building": "multi_house", "shelf": "Jewelry",
     "description": "Floor 5: necklaces and bracelets with sparkly stones. The jeweler smiles from the counter." },

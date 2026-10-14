@@ -362,6 +362,7 @@ function showPlace(id) {
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
+  showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)

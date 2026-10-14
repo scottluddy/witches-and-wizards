@@ -7,11 +7,13 @@
 // 2. The troll hides in a Forest place and moves every couple of minutes. The
 //    potion only works where he is: a sip anywhere else flashes up the map
 //    to show where he's hiding. It has 4 sips (🎒 backpack).
-// 3. Each riddle answered right gives a piece of the troll's map.
-// 4. The pieces join up, and the Secret Pathway to the Pond House appears on
-//    the Forest map.
-// 5. Search inside the Pond House for the acorn. The fireplace, hot chocolate
-//    and couch give clues, and the Pond Turtle slowly crawls toward it.
+// 3. Each riddle answered right gets you a piece of the troll's map.
+// 4. Put the pieces in the right order: the Secret Pathway to the Pond House
+//    appears on the Forest map.
+// 5. Search inside the Pond House for the acorn. The fireplace lights up the
+//    right part of the room, hot chocolate tells you warm or cold, the couch
+//    has a note, and the Pond Turtle's shell glows when it's close. Found,
+//    the acorn goes in your backpack.
 // 6. Give the acorn back to the Pixie: the Quest is done (+1 Adventure Point).
 // The pond has a turtle pet. Inside: s'mores to roast, hot chocolate, a couch.
 
@@ -79,7 +81,10 @@ function meetPixie() {
   const quest = GAME_DATA.pixieQuest;
   const fish = findFish(rules.wants); // js/fishing.js
   const potion = findItem(rules.gives);
-  if (player.pixieQuest.hasAcorn) return giveBackAcorn();
+  if (carryingAcorn()) return offerAcorn();
+  if (player.pixieQuest.hasAcorn) {
+    return openInfoPanel("🧚", "Pixie", "\"You found my " + quest.treasure.name + "? Oh, please bring it to me in your backpack!\"");
+  }
   if (owns(rules.gives)) {
     return openInfoPanel("🧚", "Pixie", "\"You have my " + potion.name + "! Drink it from your backpack and it will take you to the troll. Please find my " + quest.treasure.name + "!\"" + questProgress());
   }
@@ -124,10 +129,26 @@ function questProgress() {
   return "";
 }
 
+function carryingAcorn() {
+  return player.backpack.indexOf(GAME_DATA.pixieQuest.treasure.item) !== -1;
+}
+
+// Back at the Pixie with her acorn: a button to give it to her.
+function offerAcorn() {
+  const quest = GAME_DATA.pixieQuest;
+  const body = openInfoPanel("🧚", "Pixie", "\"Is that... my " + quest.treasure.name + "? You found it?\"");
+  const give = document.createElement("button");
+  give.className = "big-button";
+  give.textContent = quest.treasure.emoji + " Give back her " + quest.treasure.name;
+  give.addEventListener("click", giveBackAcorn);
+  body.appendChild(give);
+}
+
 // The end of the Quest: the acorn goes back to the Pixie.
 function giveBackAcorn() {
   const quest = GAME_DATA.pixieQuest;
   const state = player.pixieQuest;
+  removeOne(player.backpack, quest.treasure.item); // js/items.js
   player.adventurePoints += quest.adventurePoints;
   // Start fresh, in case the troll ever steals it again.
   // The troll grabs his map back, so the Secret Pathway disappears too.
@@ -240,12 +261,27 @@ function haveWholeMap() {
   return player.pixieQuest.pieces >= GAME_DATA.pixieQuest.mapPieces;
 }
 
-// A riddle not asked yet in this Quest (once they're all used, any riddle).
+// A riddle you've never heard (player.riddlesHeard remembers them, across
+// every Quest). Once you've heard them all, they start over.
 function nextRiddle() {
-  const asked = player.pixieQuest.asked;
-  let left = GAME_DATA.riddles.filter(function (r, i) { return asked.indexOf(i) === -1; });
-  if (left.length === 0) left = GAME_DATA.riddles;
+  let left = GAME_DATA.riddles.filter(function (r) { return player.riddlesHeard.indexOf(r.question) === -1; });
+  if (left.length === 0) {
+    player.riddlesHeard = [];
+    left = GAME_DATA.riddles;
+  }
   return left[randomBetween(0, left.length - 1)]; // js/digging.js
+}
+
+// The answers in a mixed-up order (in data/pixie.js the right one is first).
+function mixedAnswers(riddle) {
+  const answers = riddle.answers.map(function (text, i) { return { text: text, right: i === 0 }; });
+  for (let i = answers.length - 1; i > 0; i--) {
+    const j = randomBetween(0, i);
+    const swap = answers[i];
+    answers[i] = answers[j];
+    answers[j] = swap;
+  }
+  return answers;
 }
 
 function mapPieces() {
@@ -255,50 +291,79 @@ function mapPieces() {
 
 function askRiddle() {
   if (haveWholeMap()) {
+    if (!secretFound(GAME_DATA.pixieQuest.secret)) return offerMapPuzzle("\"Grrr. You have all my map pieces. Bet you can't put them together!\""); // js/world.js
     return openInfoPanel(trollArt(), "Troll", "\"Grrr. You have my whole map now. Go on then, follow the Secret Pathway on the Forest map... if you dare!\"");
   }
   const riddle = nextRiddle();
-  player.pixieQuest.asked.push(GAME_DATA.riddles.indexOf(riddle));
+  player.riddlesHeard.push(riddle.question);
+  writeSave(player);
   const intro = player.pixieQuest.pieces === 0
     ? "\"Want my map to the secret part of the Forest? Ha! Answer my riddles: one map piece for each right answer!\" "
     : "\"Another riddle, then!\" ";
   const body = openInfoPanel(trollArt(), "Troll's Riddle", intro + riddle.question);
   const row = document.createElement("div");
   row.className = "riddle-answers";
-  riddle.answers.forEach(function (answer, i) {
+  mixedAnswers(riddle).forEach(function (answer) {
     const button = document.createElement("button");
     button.className = "big-button secondary";
-    button.textContent = answer;
-    button.addEventListener("click", function () { answerRiddle(i === riddle.right); });
+    button.textContent = answer.text;
+    button.addEventListener("click", function () { answerRiddle(answer.right); });
     row.appendChild(button);
   });
   body.appendChild(row);
 }
 
 function answerRiddle(right) {
-  const message = right ? "\"Grrr... that's right!\" The troll grumbles and hands you a piece of his map."
-    : "\"Wrong! Ha ha!\" No map piece this time. But the troll likes riddles so much, he'll ask you another.";
-  if (right) player.pixieQuest.pieces++;
+  const state = player.pixieQuest;
+  if (!right) {
+    const body = openInfoPanel(trollArt(), "Troll's Riddle", "\"Wrong! Ha ha!\" No map piece this time. But the troll likes riddles so much, he'll ask you another." + mapPieces());
+    return body.appendChild(nextRiddleButton());
+  }
+  // The pieces come in a mixed-up order, so you have to work out where each goes.
+  if (!state.pieceOrder) state.pieceOrder = shuffledPieces();
+  state.pieces++;
   if (haveWholeMap()) hideAcorn();
   writeSave(player);
-  if (haveWholeMap()) {
-    const body = openInfoPanel(GAME_DATA.pixieQuest.mapEmoji.repeat(GAME_DATA.pixieQuest.mapPieces), "The Whole Map!", message + mapPieces() +
-      " That's all of them! Put them together and see where they lead.");
-    const join = document.createElement("button");
-    join.className = "big-button";
-    join.textContent = "🧩 Put the pieces together";
-    join.addEventListener("click", function () {
-      document.getElementById("info-panel").hidden = true;
-      joinMapPieces();
-    });
-    return body.appendChild(join);
-  }
-  const body = openInfoPanel(trollArt(), "Troll's Riddle", message + mapPieces());
+  const piece = mapPieceView(state.pieceOrder[state.pieces - 1]);
+  const message = "\"Grrr... that's right!\" The troll grumbles and tears off a piece of his map for you." + mapPieces();
+  if (haveWholeMap()) return offerMapPuzzle(message + " That's all of them! Now put them in the right order.", piece);
+  openInfoPanel(piece, "A Map Piece!", message).appendChild(nextRiddleButton());
+}
+
+function nextRiddleButton() {
   const again = document.createElement("button");
   again.className = "big-button";
   again.textContent = "❓ Next riddle";
   again.addEventListener("click", askRiddle);
-  body.appendChild(again);
+  return again;
+}
+
+// 0, 1, 2... in a random order (never already in the right order).
+function shuffledPieces() {
+  const count = GAME_DATA.pixieQuest.mapPieces;
+  const order = [];
+  for (let i = 0; i < count; i++) order.push(i);
+  while (order.every(function (n, i) { return n === i; })) {
+    for (let i = count - 1; i > 0; i--) {
+      const j = randomBetween(0, i);
+      const swap = order[i];
+      order[i] = order[j];
+      order[j] = swap;
+    }
+  }
+  return order;
+}
+
+function offerMapPuzzle(message, art) {
+  const body = openInfoPanel(art || GAME_DATA.pixieQuest.mapEmoji.repeat(GAME_DATA.pixieQuest.mapPieces), "The Troll's Map", message);
+  const join = document.createElement("button");
+  join.className = "big-button";
+  join.textContent = "🧩 Put the pieces together";
+  join.addEventListener("click", function () {
+    document.getElementById("info-panel").hidden = true;
+    mapPuzzle();
+  });
+  body.appendChild(join);
 }
 
 // The troll's picture (js/troll.js has the girls' drawing).
@@ -312,60 +377,113 @@ function trollArt() {
 
 // ---------------------------------------------------------------- the map pieces
 
-// The three pieces are strips of the Forest map. They fly together, the
-// Secret Pathway appears on them, then the whole map slides onto the real
-// Forest map, where the path stays (player.secrets) until the Quest is done.
-function joinMapPieces() {
+// The troll's map is the part of the Forest map around the Secret Pathway
+// ("mapArea" in data/pixie.js), cut into strips. One strip: "piece" 0 is the
+// left one.
+function pieceArea(piece) {
   const quest = GAME_DATA.pixieQuest;
-  const forest = GAME_DATA.pixie.territory;
-  if (player.secrets.indexOf(quest.secret) === -1) player.secrets.push(quest.secret);
-  writeSave(player);
+  const a = quest.mapArea;
+  const width = (a[2] - a[0]) / quest.mapPieces;
+  return [a[0] + piece * width, a[1], a[0] + (piece + 1) * width, a[3]];
+}
 
-  const overlay = document.createElement("div");
-  overlay.className = "map-join";
-  const board = document.createElement("div");
-  board.className = "map-join-board";
-  const sizer = document.createElement("img"); // an invisible copy of the map, so the board is the map's shape
-  sizer.className = "map-join-sizer";
-  sizer.src = picture("map_" + forest);
-  sizer.alt = "";
-  board.appendChild(sizer);
-  for (let i = 0; i < quest.mapPieces; i++) board.appendChild(mapPiece(i, quest.mapPieces, forest));
-  board.appendChild(secretPathDrawing(quest.secret));
+// A window onto part of the Forest map: [left, top, right, bottom] percent.
+// Inside it is the whole map (with the secret path, hidden until the pieces
+// fit), moved so only that part shows.
+function mapWindow(area) {
+  const quest = GAME_DATA.pixieQuest;
+  const mapId = GAME_DATA.pixie.territory;
+  const width = area[2] - area[0];
+  const height = area[3] - area[1];
+  const view = document.createElement("div");
+  view.className = "map-window";
+  const whole = document.createElement("div");
+  whole.className = "map-window-whole";
+  whole.style.width = (100 * 100 / width) + "%";
+  whole.style.left = (-area[0] * 100 / width) + "%";
+  whole.style.top = (-area[1] * 100 / height) + "%";
+  const map = document.createElement("img");
+  map.src = picture("map_" + mapId);
+  map.alt = "";
+  // The window is the shape of its part of the map (known once the map has loaded).
+  const shape = function () { view.style.aspectRatio = (width * map.naturalWidth) / (height * map.naturalHeight); };
+  if (map.complete && map.naturalWidth) shape(); else map.addEventListener("load", shape);
+  whole.appendChild(map);
+  whole.appendChild(secretPathDrawing(quest.secret));
   const house = findPlace(GAME_DATA.paths.find(function (p) { return p.secret === quest.secret; }).to);
   const mark = document.createElement("span"); // a little house where the path ends
   mark.className = "map-join-mark";
   mark.textContent = "🏡";
   mark.style.left = house.x + "%";
   mark.style.top = house.y + "%";
-  board.appendChild(mark);
+  whole.appendChild(mark);
+  view.appendChild(whole);
+  return view;
+}
+
+function mapPieceView(piece) {
+  const view = mapWindow(pieceArea(piece));
+  view.classList.add("map-piece");
+  view.dataset.piece = piece;
+  return view;
+}
+
+// Put the pieces in order: click one piece, then another, to swap them. When
+// they're all in the right place they join up, the Secret Pathway appears,
+// and the map slides onto the real Forest map, where the path stays
+// (player.secrets) until the Quest is done.
+function mapPuzzle() {
+  const overlay = document.createElement("div");
+  overlay.className = "map-join";
+  const board = document.createElement("div");
+  board.className = "map-join-board";
+  player.pixieQuest.pieceOrder.forEach(function (piece) { board.appendChild(mapPieceView(piece)); });
   const words = document.createElement("p");
   words.className = "map-join-words";
-  words.textContent = "🧩 The pieces fit together...";
+  words.textContent = "🧩 Click two pieces to swap them, until the map fits together.";
   overlay.appendChild(board);
   overlay.appendChild(words);
   document.body.appendChild(overlay);
 
-  setTimeout(function () { board.classList.add("joined"); }, 100);          // the pieces fly together
-  setTimeout(function () {                                                   // the path appears
-    board.classList.add("path-shown");
-    words.textContent = "✨ A Secret Pathway to the Pond House!";
-  }, 1600);
-  setTimeout(function () { slideOntoMap(overlay, board, forest); }, 4000);   // onto the Forest map
+  let picked = null;
+  board.addEventListener("click", function (event) {
+    const piece = event.target.closest(".map-piece");
+    if (!piece || board.classList.contains("joined")) return;
+    if (!picked) {
+      picked = piece;
+      return piece.classList.add("picked");
+    }
+    picked.classList.remove("picked");
+    if (picked !== piece) swapPieces(board, picked, piece);
+    picked = null;
+    if (piecesInOrder(board)) mapFits(overlay, board, words);
+  });
 }
 
-// One strip of the map, starting tilted and far from where it belongs.
-function mapPiece(i, count, mapId) {
-  const piece = document.createElement("div");
-  piece.className = "map-join-piece";
-  piece.style.left = (i * 100 / count) + "%";
-  piece.style.width = (100 / count) + "%";
-  piece.style.backgroundImage = "url(" + picture("map_" + mapId) + ")";
-  piece.style.backgroundSize = (count * 100) + "% 100%";
-  piece.style.backgroundPosition = (i * 100 / (count - 1)) + "% 0";
-  const spread = (i - (count - 1) / 2) * 45;      // left piece left, right piece right
-  piece.style.setProperty("--start", "translate(" + spread + "%, " + (i % 2 ? 25 : -20) + "%) rotate(" + (spread / 3 + 6) + "deg)");
-  return piece;
+function swapPieces(board, one, two) {
+  const marker = document.createElement("span");
+  board.insertBefore(marker, one);
+  board.insertBefore(one, two);
+  board.insertBefore(two, marker);
+  marker.remove();
+}
+
+function piecesInOrder(board) {
+  return Array.prototype.every.call(board.children, function (piece, i) { return Number(piece.dataset.piece) === i; });
+}
+
+// They fit! The pieces close up, the path appears, then onto the Forest map.
+function mapFits(overlay, board, words) {
+  const quest = GAME_DATA.pixieQuest;
+  if (player.secrets.indexOf(quest.secret) === -1) player.secrets.push(quest.secret);
+  writeSave(player);
+  board.classList.add("joined");
+  words.textContent = "🧩 It fits!";
+  setTimeout(function () {
+    board.classList.add("path-shown");
+    words.textContent = "✨ A Secret Pathway to the Pond House!";
+  }, 900);
+  setTimeout(function () { slideOntoMap(overlay, board, GAME_DATA.pixie.territory); }, 3400);
 }
 
 // The secret road, drawn the same way the map draws roads.
@@ -383,16 +501,19 @@ function secretPathDrawing(secret) {
   return svg;
 }
 
-// Show the real Forest map underneath, then shrink the joined map onto it.
+// Show the real Forest map underneath, then shrink the joined map onto its
+// part of it.
 function slideOntoMap(overlay, board, mapId) {
   const found = player.pixieQuest.foundTrollAt;
   if (findPlace(found)) player.spots[mapId] = found; // you're back where you found the troll
   showMap(mapId);
-  const target = document.getElementById("map").getBoundingClientRect();
+  const map = document.getElementById("map").getBoundingClientRect();
+  const a = GAME_DATA.pixieQuest.mapArea;
   const now = board.getBoundingClientRect();
   board.style.transformOrigin = "0 0";
   board.style.transition = "transform 1.2s ease-in-out";
-  board.style.transform = "translate(" + (target.left - now.left) + "px, " + (target.top - now.top) + "px) scale(" + (target.width / now.width) + ")";
+  board.style.transform = "translate(" + (map.left + map.width * a[0] / 100 - now.left) + "px, " +
+    (map.top + map.height * a[1] / 100 - now.top) + "px) scale(" + (map.width * (a[2] - a[0]) / 100 / now.width) + ")";
   overlay.classList.add("sliding");
   setTimeout(function () {
     overlay.remove();
@@ -411,18 +532,23 @@ function hideAcorn() {
   const a = GAME_DATA.pixieQuest.area;
   state.acornAt = [a[0] + Math.random() * (a[2] - a[0]), a[1] + Math.random() * (a[3] - a[1])];
   state.clues = [];
+  state.lit = false;
 }
 
 function huntingAcorn(place) {
   return place.id === GAME_DATA.pixieQuest.hiddenIn && !!player.pixieQuest.acornAt;
 }
 
-// Called by showPlace: in the Pond House while the acorn is hidden, say so.
+// Called by showPlace: in the Pond House while the acorn is hidden, say so
+// (and the firelight stays on the part of the room you've lit up).
 function showAcornHunt(place) {
+  const old = document.querySelector(".fire-shade");
+  if (old) old.remove();
   if (!huntingAcorn(place)) return;
+  if (player.pixieQuest.lit) showFirelight();
   document.getElementById("place-description").textContent = "🌰 The troll hid the Pixie's " +
     GAME_DATA.pixieQuest.treasure.name + " somewhere in here! Click around the room to search. " +
-    "(Doing things here might turn up clues, and turtles have great noses...)";
+    "(Doing things here might help you find it, and turtles have great noses...)";
 }
 
 function searchForAcorn(event) {
@@ -438,25 +564,57 @@ function searchForAcorn(event) {
   const distance = Math.hypot(spot[0] - x, spot[1] - y);
   const box = document.getElementById("place-pixie");
   box.hidden = false;
-  if (distance <= quest.findDistance) return foundAcorn(box);
+  if (distance <= quest.findDistance) return foundAcorn();
+  const left = warmSecondsLeft();
+  if (left > 0) return feelWarmth(x, y, distance, left, box);
   showSplash(x, y, "🔍", box); // js/pearls.js
-  document.getElementById("place-description").textContent = distance <= quest.warmDistance
-    ? "🔥 Warmer! The " + quest.treasure.name + " is close by." : "Nothing here. Keep looking!";
+  document.getElementById("place-description").textContent = "Nothing here. Keep looking!";
 }
 
-function foundAcorn(box) {
+// ---------------------------------------------------------------- the clues
+
+// The fireplace: the firelight shines on the quarter of the room the acorn
+// is in, and the rest goes dark.
+function showFirelight() {
   const quest = GAME_DATA.pixieQuest;
-  const spot = player.pixieQuest.acornAt;
-  player.pixieQuest.acornAt = null;
-  player.pixieQuest.hasAcorn = true;
-  writeSave(player);
-  showSplash(spot[0], spot[1], quest.treasure.emoji, box).classList.add("found");
-  document.getElementById("place-description").textContent = "✨ You found the " + quest.treasure.name +
-    "! Take it back to the Pixie. She's hiding somewhere in the Forest.";
+  const a = quest.area;
+  const acorn = player.pixieQuest.acornAt;
+  const middleX = (a[0] + a[2]) / 2;
+  const middleY = (a[1] + a[3]) / 2;
+  const left = acorn[0] < middleX ? 0 : middleX;
+  const right = acorn[0] < middleX ? middleX : 100;
+  const top = acorn[1] < middleY ? 0 : middleY;
+  const bottom = acorn[1] < middleY ? middleY : 100;
+  const shade = document.createElement("div");
+  shade.className = "fire-shade";
+  const light = document.createElement("div");
+  light.className = "fire-light";
+  light.style.left = left + "%";
+  light.style.top = top + "%";
+  light.style.width = (right - left) + "%";
+  light.style.height = (bottom - top) + "%";
+  light.style.setProperty("--shadow", quest.fireLight.shadow);
+  shade.appendChild(light);
+  document.getElementById("place-picture").appendChild(shade);
 }
 
-// A clue from doing something in the Pond House while the acorn is hidden:
-// the words to add to that spot's message (or "" if no new clue).
+// Hot chocolate: a warm feeling for a minute. Each mug adds another minute.
+function warmSecondsLeft() {
+  return Math.max(0, Math.ceil(((player.pixieQuest.warmUntil || 0) - Date.now()) / 1000));
+}
+
+// A click while you're feeling warm: Cold, Cool, Warm or Warmer!, in colour.
+function feelWarmth(x, y, distance, secondsLeft, box) {
+  const words = GAME_DATA.pixieQuest.warmSense.words;
+  const feeling = words.find(function (w) { return distance <= w.within; }) || words[words.length - 1];
+  const word = showSplash(x, y, feeling.word, box);
+  word.classList.add("warm-word");
+  word.style.color = feeling.colour;
+  document.getElementById("place-description").textContent = "☕ " + feeling.word + " (" + minutesAndSeconds(secondsLeft) + " of warm feeling left)"; // js/skills.js
+}
+
+// The couch: a clue the first time you sit on it while searching (the words
+// to add to its message, or "" if no new clue).
 function acornClue(spotId) {
   const state = player.pixieQuest;
   if (!state.acornAt) return "";
@@ -466,19 +624,76 @@ function acornClue(spotId) {
   if (state.clues.indexOf(spotId) !== -1) return "";
   state.clues.push(spotId);
   writeSave(player);
-  const side = state.acornAt[0] < 50 ? "left" : "right";
-  const height = state.acornAt[1] < 60 ? "up high" : "down low";
-  return " 🔎 Clue! " + clue.says.replace("SIDE", side).replace("HEIGHT", height).replace("NEAREST", nearestThing(state.acornAt));
+  return " 🔎 Clue! " + clue.says.replace("NEAREST", nearestThing(state.acornAt));
 }
 
-// The name of the thing in the Pond House closest to a spot, like "Couch".
+// The name of the thing in the Pond House closest to a spot, like "couch".
 function nearestThing(spot) {
   const things = placesIn(GAME_DATA.pixieQuest.hiddenIn).filter(function (p) { return p.type !== "turtle_sniff"; });
   let best = things[0];
   things.forEach(function (thing) {
     if (Math.hypot(thing.x - spot[0], thing.y - spot[1]) < Math.hypot(best.x - spot[0], best.y - spot[1])) best = thing;
   });
-  return best.name.toLowerCase();
+  return (best.spotName || best.name).toLowerCase();
+}
+
+// ---------------------------------------------------------------- found it!
+
+// A big moment: the acorn shines in the middle of the screen, then it goes
+// into your backpack.
+function foundAcorn() {
+  const quest = GAME_DATA.pixieQuest;
+  const item = findItem(quest.treasure.item);
+  player.pixieQuest.acornAt = null;
+  player.pixieQuest.hasAcorn = true;
+  player.pixieQuest.warmUntil = 0;
+  player.backpack.push(item.id);
+  writeSave(player);
+  showAcornHunt(findPlace(player.at)); // the firelight goes out
+
+  const overlay = document.createElement("div");
+  overlay.className = "acorn-found";
+  const rays = document.createElement("div");
+  rays.className = "acorn-rays";
+  const acorn = document.createElement("div");
+  acorn.className = "acorn-big";
+  const art = itemArt(item);
+  if (typeof art === "string") acorn.textContent = art; else acorn.appendChild(art);
+  const words = document.createElement("p");
+  words.className = "acorn-words";
+  words.textContent = "✨ You found the " + quest.treasure.name + "! ✨";
+  const put = document.createElement("button");
+  put.className = "big-button";
+  put.textContent = "🎒 Put it in my backpack";
+  overlay.append(rays, acorn, words, put);
+  for (let i = 0; i < 14; i++) overlay.appendChild(sparkle());
+  document.body.appendChild(overlay);
+  put.addEventListener("click", function () { acornToBackpack(overlay, acorn); });
+}
+
+function sparkle() {
+  const star = document.createElement("span");
+  star.className = "acorn-sparkle";
+  star.textContent = Math.random() < 0.5 ? "✨" : "⭐";
+  star.style.left = (10 + Math.random() * 80) + "%";
+  star.style.top = (10 + Math.random() * 80) + "%";
+  star.style.animationDelay = (Math.random() * 1.5) + "s";
+  return star;
+}
+
+// The acorn flies up to the backpack button in the top bar.
+function acornToBackpack(overlay, acorn) {
+  const from = acorn.getBoundingClientRect();
+  const to = document.getElementById("btn-backpack").getBoundingClientRect();
+  acorn.style.transition = "transform 1s ease-in, opacity 1s ease-in";
+  acorn.style.transform = "translate(" + (to.left + to.width / 2 - from.left - from.width / 2) + "px, " +
+    (to.top + to.height / 2 - from.top - from.height / 2) + "px) scale(0.1)";
+  overlay.classList.add("leaving");
+  setTimeout(function () {
+    overlay.remove();
+    document.getElementById("place-description").textContent = "🎒 The " + GAME_DATA.pixieQuest.treasure.name +
+      " is in your backpack. Take it back to the Pixie! She's hiding somewhere in the Forest.";
+  }, 1000);
 }
 
 document.getElementById("place-picture").addEventListener("click", searchForAcorn);
@@ -685,12 +900,30 @@ function roastSmore() {
   }
   player.smore = null;
   eatHere(GAME_DATA.pondHouse.smores);
-  openInfoPanel("🔥", "Fireplace", "You toast the marshmallow until it's golden and gooey, then gobble it up. Mmm! " + hungerNow() + acornClue("fireplace"));
+  let clue = "";
+  // While you're searching, the fire blazes up and lights part of the room.
+  if (huntingAcorn(findPlace(player.at)) && !player.pixieQuest.lit) {
+    player.pixieQuest.lit = true;
+    writeSave(player);
+    showFirelight();
+    clue = " 🔥 Whoosh! The fire blazes up and lights one part of the room. The acorn must be there, where the light shines!";
+  }
+  openInfoPanel("🔥", "Fireplace", "You toast the marshmallow until it's golden and gooey, then gobble it up. Mmm! " + hungerNow() + clue);
 }
 
+// Hot chocolate: while you're searching, it gives you a warm feeling for a
+// minute (more mugs, more minutes): every click says how warm you are.
 function drinkHotChocolate() {
   eatHere(GAME_DATA.pondHouse.hotChocolate);
-  openInfoPanel("☕", "Hot Chocolate", "A warm mug of hot chocolate by the fire. Lovely! " + hungerNow() + acornClue("pond_hot_chocolate"));
+  let clue = "";
+  if (huntingAcorn(findPlace(player.at))) {
+    const state = player.pixieQuest;
+    state.warmUntil = Math.max(Date.now(), state.warmUntil || 0) + GAME_DATA.pixieQuest.warmSense.seconds * 1000;
+    writeSave(player);
+    clue = " ☕ You feel all warm inside... For " + minutesAndSeconds(warmSecondsLeft()) +
+      ", every click tells you if you're cold, cool, warm or warmer! (Another mug adds more time.)";
+  }
+  openInfoPanel("☕", "Hot Chocolate", "A warm mug of hot chocolate by the fire. Lovely! " + hungerNow() + clue);
 }
 
 // Treats at the Pond House are eaten on the spot (nothing to carry).

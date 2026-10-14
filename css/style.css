@@ -1172,16 +1172,19 @@ body.holding-apple, body.holding-apple * {
 }
 .map-join.sliding { background: transparent; }
 .map-join.sliding .map-join-words { opacity: 0; }
-.map-join-board { position: relative; width: min(70vw, 95vh); }
-.map-join-sizer { display: block; width: 100%; visibility: hidden; }
-.map-join-piece {
-  position: absolute; top: 0; bottom: 0;
-  background-repeat: no-repeat;
-  transform: var(--start);
-  transition: transform 1.3s cubic-bezier(0.3, 1.4, 0.6, 1);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
-}
-.map-join-board.joined .map-join-piece { transform: none; box-shadow: none; }
+/* The troll's map pieces: click two to swap them until they fit (js/pixie.js). */
+.map-join-board { display: flex; gap: 22px; transition: gap 0.8s ease-in-out; }
+.map-join-board.joined { gap: 0; }
+.map-window { position: relative; overflow: hidden; background: #f3e3c0; }
+.map-window-whole { position: absolute; }
+.map-window-whole > img { display: block; width: 100%; }
+.map-window-whole .map-paths { position: absolute; inset: 0; width: 100%; height: 100%; }
+.map-piece { width: min(24vw, 26vh); box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45); }
+.map-join-board .map-piece { cursor: pointer; transition: transform 0.2s, box-shadow 0.8s; }
+.map-join-board .map-piece:hover { transform: translateY(-4px); }
+.map-join-board .map-piece.picked { outline: 5px solid var(--gold); transform: translateY(-10px) rotate(-2deg); }
+.map-join-board.joined .map-piece { box-shadow: none; cursor: default; transform: none; }
+#info-art .map-piece { margin: 0 auto; width: 120px; transform: rotate(-3deg); }
 .map-join-path { opacity: 0; transition: opacity 1s; }
 .map-join-board.path-shown .map-join-path { opacity: 1; }
 .map-join-path polyline { stroke-dasharray: 2 12; animation: glow-path 0.6s ease-in-out infinite alternate; }
@@ -1224,12 +1227,12 @@ body.holding-apple, body.holding-apple * {
 }
 .head-guide.leaving { transform: translateX(140%); opacity: 0; }
 @keyframes guide-in { from { transform: translateX(140%); } to { transform: none; } }
-.head-guide-face { font-size: 5rem; line-height: 1; animation: bob 1.6s ease-in-out infinite alternate; }
-.head-guide-face img { max-height: 140px; max-width: 140px; display: block; }
+.head-guide-face { font-size: min(40vh, 22rem); line-height: 1; animation: bob 1.6s ease-in-out infinite alternate; }
+.head-guide-face img { max-height: 60vh; max-width: 40vw; display: block; }
 .head-guide-bubble {
-  max-width: 220px; padding: 10px 14px; margin-bottom: 60px;
-  background: #fffaf0; border: 3px solid var(--gold); border-radius: 18px;
-  font-size: 1.05rem; color: #4a2a6a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  max-width: 340px; padding: 16px 22px; margin-bottom: 30vh;
+  background: #fffaf0; border: 4px solid var(--gold); border-radius: 22px;
+  font-size: 1.6rem; color: #4a2a6a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 .adventure-card {
   text-align: left; margin: 8px auto; max-width: 520px;
@@ -1243,12 +1246,61 @@ body.holding-apple, body.holding-apple * {
 .elevator-floors { display: flex; flex-direction: column; gap: 6px; align-items: center; }
 .elevator-floors button { min-width: 280px; }
 
-/* The Multi-House roller coaster car riding along the drawn track (js/coaster.js). */
-.coaster-car {
+/* The Multi-House roller coaster (js/coaster.js): the girls' car, with you
+   and your pet riding in it. The car turns with the track; riders stay upright. */
+.coaster-train {
   position: absolute;
+  width: 6.5%;
+  aspect-ratio: 0.5;
   transform: translate(-50%, -50%);
-  font-size: 2.5rem;
   pointer-events: none;
   z-index: 5;
-  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
 }
+.coaster-car { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
+.coaster-car img { width: 100%; height: 100%; object-fit: contain; }
+.coaster-riders {
+  position: absolute; left: 50%; bottom: 30%; transform: translateX(-50%);
+  display: flex; align-items: flex-end; gap: 2px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+.coaster-riders img { height: 5.5vh; width: auto; display: block; }
+.coaster-pet { font-size: 3.6vh; line-height: 1; }
+.coaster-pet img { height: 3.8vh; width: auto; display: block; }
+
+/* Pond House clues (js/pixie.js): the firelight on one part of the room, and
+   the hot chocolate's warm and cold words. */
+.fire-shade { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 3; }
+.fire-light {
+  position: absolute;
+  box-shadow: 0 0 0 300vmax rgba(20, 10, 30, var(--shadow, 0.6));
+  background: radial-gradient(circle, rgba(255, 200, 90, 0.22), transparent 75%);
+  animation: flicker 1.8s ease-in-out infinite alternate;
+}
+@keyframes flicker { from { opacity: 0.92; } to { opacity: 1; } }
+.pearl-splash.warm-word { font-weight: bold; font-size: clamp(1.6rem, 3vw, 2.4rem); text-shadow: 0 0 6px white, 0 0 3px white; }
+
+/* Found the Golden Acorn! */
+.acorn-found {
+  position: fixed; inset: 0; z-index: 250;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px;
+  background: radial-gradient(circle, rgba(90, 50, 120, 0.85), rgba(20, 10, 40, 0.92));
+  overflow: hidden; transition: opacity 1s;
+}
+.acorn-found.leaving { opacity: 0; pointer-events: none; }
+.acorn-found.leaving .acorn-words, .acorn-found.leaving .big-button { opacity: 0; }
+.acorn-rays {
+  position: absolute; width: 160vmax; height: 160vmax;
+  background: repeating-conic-gradient(rgba(255, 215, 80, 0.28) 0 10deg, transparent 10deg 20deg);
+  animation: spin 12s linear infinite;
+}
+.acorn-big {
+  position: relative; font-size: min(38vh, 16rem); line-height: 1;
+  filter: drop-shadow(0 0 30px gold) drop-shadow(0 0 10px gold);
+  animation: acorn-pop 1s cubic-bezier(0.3, 1.6, 0.6, 1);
+}
+.acorn-big img { height: min(38vh, 16rem); display: block; }
+@keyframes acorn-pop { from { transform: scale(0) rotate(-40deg); } to { transform: none; } }
+.acorn-words { position: relative; color: #ffe27a; font-size: 2.4rem; text-shadow: 0 3px 8px black; margin: 0; transition: opacity 0.5s; }
+.acorn-found .big-button { position: relative; transition: opacity 0.5s; }
+.acorn-sparkle { position: absolute; font-size: 2.4rem; animation: twinkle 1.6s ease-in-out infinite alternate; }
+@keyframes twinkle { from { opacity: 0.1; transform: scale(0.6); } to { opacity: 1; transform: scale(1.2); } }

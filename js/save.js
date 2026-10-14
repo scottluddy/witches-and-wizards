@@ -98,7 +98,10 @@ function fillIn(save) {
     save.adventures.revealed = save.adventures.unlocked.slice();
   }
   // A whole map from before the Secret Pathway was on the Forest map.
-  if (save.pixieQuest.pieces >= GAME_DATA.pixieQuest.mapPieces && save.secrets.indexOf("pixie_path") === -1) save.secrets.push("pixie_path");
+  if (save.pixieQuest.pieces >= GAME_DATA.pixieQuest.mapPieces && !save.pixieQuest.pieceOrder && save.secrets.indexOf("pixie_path") === -1) save.secrets.push("pixie_path");
+  // The Golden Acorn became a thing in your backpack (Scott, 2026-10-14).
+  if (save.pixieQuest.hasAcorn && save.backpack.indexOf("quest_golden_acorn") === -1) save.backpack.push("quest_golden_acorn");
+  if (save.riddlesHeard === undefined) save.riddlesHeard = [];
   if (save.stock === undefined) save.stock = {};
   if (save.stungAt === undefined) save.stungAt = 0;
   if (save.skillWait === undefined) save.skillWait = {};
@@ -201,7 +204,8 @@ function newPlayer(playerName, characterId, kind) {
     stock: {},                // how many of each supply the shops have left: { itemId: { left, at } } (js/items.js)
     adventures: { unlocked: [], revealed: [], waiting: [], lastGuideAt: 0, guideTurn: 0 }, // adventures earned, found, and still to announce (js/adventures.js)
     secrets: [], // secret places and roads found, like "pixie_path" (js/world.js secretFound)
-    pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, riddles asked, where the acorn hides (js/pixie.js)
+    pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, where the acorn hides, clues (js/pixie.js)
+    riddlesHeard: [], // the troll's riddles you've heard, so they don't repeat (js/pixie.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }

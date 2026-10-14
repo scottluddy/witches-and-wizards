@@ -62,6 +62,7 @@ GAME_DATA.items = [
   {"id": "snack_straws", "name": "Straws", "category": "Snack Shack Floor 1", "gems": 1, "emoji": "🥤", "inPicture": true, "shelfX": 4, "shelfY": 49, "description": "Straws from the top of the shelf."},
   // The Jewelry Shop on Floor 5 of the Multi-House (Scott, 2026-10-14; names from the girls' drawing,
   // prices in gems are Claude's guesses: copper and brass 2, silver 3, gold 4, one more for two stones).
+  {"id": "quest_golden_acorn", "name": "Golden Acorn", "category": "Quest", "emoji": "🌰", "quest": true, "description": "The Pixie's treasure, stolen by the troll. Give it back to her! (Quest things can't be sold or traded.)"},
   {"id": "jewel_silver_sapphire_bracelet", "name": "Silver Sapphire Bracelet", "category": "Jewelry", "gems": 3, "emoji": "💍", "inPicture": true, "shelfX": 39, "shelfY": 8.5, "description": "A silver bracelet with a blue sapphire."},
   {"id": "jewel_gold_ruby_bracelet", "name": "Gold Ruby Bracelet", "category": "Jewelry", "gems": 4, "emoji": "💍", "inPicture": true, "shelfX": 44.5, "shelfY": 8.5, "description": "A gold bracelet covered in red rubies."},
   {"id": "jewel_obsidian_opal_necklace", "name": "Obsidian Opal Necklace", "category": "Jewelry", "gems": 4, "emoji": "📿", "inPicture": true, "shelfX": 50, "shelfY": 8.5, "description": "A dark obsidian necklace with a shimmering opal."},
