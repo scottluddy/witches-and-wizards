@@ -851,6 +851,10 @@ h2 {
   pointer-events: auto;
   filter: drop-shadow(0 6px 4px rgba(60, 40, 10, 0.35));
 }
+/* The girls' drawn trees sit exactly where they are in the picture. */
+.meadow-tree.drawn-tree { transform: none; font-size: 0; transform-origin: 50% 100%; filter: none; }
+.meadow-tree.drawn-tree img { width: 100%; height: 100%; object-fit: fill; display: block; }
+#place-woods.drawn .meadow-unicorn { width: 16%; }  /* the drawn trees are smaller than the emoji ones */
 .meadow-tree.rustle { animation: rustle 0.8s ease-in-out; }
 @keyframes rustle {
   0%, 100% { rotate: 0deg; }

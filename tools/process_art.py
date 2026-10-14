@@ -225,6 +225,11 @@ def process_page(path, settings, furniture=None):
       washes  - list of [x, y, size, "#colour"] soft paint blobs under the drawing
       also_as - other picture names to use the same drawing for, e.g. one shelf
                 drawing for every store shelf: ["place_shelf_brooms", ...]
+      in_front - list of [left, top, right, bottom] boxes: things cut out and
+                laid back on top in the game, so something can hide behind
+                them (the Unicorn Meadow's trees). They are saved like
+                furniture, as furniture_<place>_front_1.png and so on, but
+                stay where they are.
     """
     img = ImageOps.exif_transpose(Image.open(path)).convert("RGB")
     img = img.rotate(settings.get("rotate", 0), expand=True)
@@ -255,6 +260,10 @@ def process_page(path, settings, furniture=None):
     if furniture:
         empty = cut_out_furniture(path.stem[len("place_"):], drawing, paper, furniture)
         save_page(on_paper(empty, paper), OUT_DIR / f"{path.stem}_room.png")
+    front = [{"id": f"front_{i + 1}", "name": f"front piece {i + 1}", "box": box}
+             for i, box in enumerate(settings.get("in_front", []))]
+    if front:
+        cut_out_furniture(path.stem[len("place_"):], drawing, paper, front)
 
 
 def on_paper(drawing, paper):

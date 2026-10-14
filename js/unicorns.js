@@ -7,6 +7,7 @@
 let unicornTimer = null;   // when the unicorn next comes out (or goes back)
 let rustleTimer = null;    // trees rustling now and then while it hides
 let unicornOut = false;    // true while it's out from behind a tree
+let hidingSpots = [];      // where the unicorn can come out: [x, y] percent, one per tree
 
 function randomBetween(low, high) {
   return low + Math.floor(Math.random() * (high - low + 1));
@@ -64,13 +65,21 @@ function showUnicornWoods(place) {
   if (woods.hidden) return;
 
   const u = GAME_DATA.unicorns;
-  u.trees.forEach(function (spot, i) {
+  const drawn = drawnTrees();
+  woods.classList.toggle("drawn", drawn.length > 0);
+  hidingSpots = drawn.length ? drawn.map(treeFoot) : u.trees;
+  hidingSpots.forEach(function (spot, i) {
     const tree = document.createElement("button");
     tree.className = "meadow-tree";
     tree.dataset.tree = i;
-    tree.style.left = spot[0] + "%";
-    tree.style.top = spot[1] + "%";
-    tree.textContent = i % 2 ? "🌲" : "🌳";
+    if (drawn.length) {
+      placeDrawnTree(tree, drawn[i]);
+    } else {
+      // Not drawn yet: emoji trees.
+      tree.style.left = spot[0] + "%";
+      tree.style.top = spot[1] + "%";
+      tree.textContent = i % 2 ? "🌲" : "🌳";
+    }
     tree.title = "A tree";
     tree.addEventListener("click", function () {
       if (placementMode) return;
@@ -107,10 +116,43 @@ function hiddenTime() {
   return Math.max(5, seconds) * 1000;
 }
 
+// The girls' drawn trees: the art script cuts each one out of the meadow
+// picture ("in_front" in art/art_config.json) so it can be laid back on
+// top, exactly where it was, with the unicorn hiding behind it.
+function drawnTrees() {
+  if (!isDrawn("place_unicorn_meadow")) return [];
+  const boxes = GAME_DATA.furnitureBoxes || {};
+  return Object.keys(boxes).filter(function (key) {
+    return key.indexOf("unicorn_meadow/front_") === 0;
+  }).map(function (key) {
+    return { picture: "furniture_" + key.replace("/", "_"), box: boxes[key] };
+  });
+}
+
+function placeDrawnTree(button, tree) {
+  const box = tree.box; // [left, top, right, bottom] percent
+  button.classList.add("drawn-tree");
+  button.style.left = box[0] + "%";
+  button.style.top = box[1] + "%";
+  button.style.width = (box[2] - box[0]) + "%";
+  button.style.height = (box[3] - box[1]) + "%";
+  const img = document.createElement("img");
+  img.src = picture(tree.picture);
+  img.alt = "";
+  img.draggable = false;
+  button.appendChild(img);
+}
+
+// The unicorn comes out near the bottom of a drawn tree (by its trunk).
+function treeFoot(tree) {
+  const box = tree.box;
+  return [(box[0] + box[2]) / 2, box[1] + (box[3] - box[1]) * 0.85];
+}
+
 // Out it comes, from behind one of the trees, for "showSeconds".
 function comeOut() {
   const u = GAME_DATA.unicorns;
-  const spot = u.trees[randomBetween(0, u.trees.length - 1)];
+  const spot = hidingSpots[randomBetween(0, hidingSpots.length - 1)];
   const unicorn = document.getElementById("meadow-unicorn");
   if (!unicorn) return;
   unicorn.style.left = spot[0] + "%";
