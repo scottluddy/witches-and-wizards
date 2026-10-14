@@ -87,6 +87,10 @@ function fillIn(save) {
   if (save.levelStart === undefined) save.levelStart = {};
   if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
   if (save.pixieQuest === undefined) save.pixieQuest = { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0 };
+  if (save.pixieQuest.sips === undefined) save.pixieQuest.sips = GAME_DATA.pixieQuest.sips;
+  if (save.secrets === undefined) save.secrets = [];
+  // A whole map from before the Secret Pathway was on the Forest map.
+  if (save.pixieQuest.pieces >= GAME_DATA.pixieQuest.mapPieces && save.secrets.indexOf("pixie_path") === -1) save.secrets.push("pixie_path");
   if (save.stock === undefined) save.stock = {};
   if (save.stungAt === undefined) save.stungAt = 0;
   if (save.skillWait === undefined) save.skillWait = {};
@@ -187,7 +191,8 @@ function newPlayer(playerName, characterId, kind) {
     skillWait: {},            // when each skill's next test is ready (js/skills.js)
     stungAt: 0,               // when a bee stung you at the Beehive (0 = not stung) (js/honey.js)
     stock: {},                // how many of each supply the shops have left: { itemId: { left, at } } (js/items.js)
-    pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0 }, // the Pixie Quest: map pieces, riddles asked, where the acorn hides (js/pixie.js)
+    secrets: [], // secret places and roads found, like "pixie_path" (js/world.js secretFound)
+    pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, riddles asked, where the acorn hides (js/pixie.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }

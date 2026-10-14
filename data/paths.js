@@ -26,6 +26,8 @@ GAME_DATA.paths = [
   { "from": "cabin",          "to": "treehouse", "via": [[19, 58]] },
   { "from": "treehouse",      "to": "orchard",   "via": [[21, 70], [31, 75], [46, 75]] },
   { "from": "mushrooms",      "to": "orchard",   "via": [[67, 63]] },
+  // The Secret Pathway from the troll's map: only there once the map is whole (js/pixie.js).
+  { "from": "mushrooms",      "to": "pond_house", "via": [[84, 61], [88, 69], [94, 65]], "secret": "pixie_path" },
 
   // Mountain
   { "from": "cave",        "to": "hut",        "via": [] },

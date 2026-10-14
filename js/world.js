@@ -14,9 +14,17 @@ function findPlace(id) {
 }
 
 // The places that sit inside a map or place. "hidden" places (like the Troll
-// Bridge) aren't shown: you only get there by magic or by a riddle.
+// Bridge) aren't shown: you only get there by magic. "secret" places (like the
+// Pond House) only show up once you've found the secret (player.secrets).
 function placesIn(id) {
-  return GAME_DATA.places.filter(function (place) { return place.in === id && !place.hidden; });
+  return GAME_DATA.places.filter(function (place) {
+    return place.in === id && !place.hidden && secretFound(place.secret);
+  });
+}
+
+// No secret, or one the player has found (like "pixie_path", from the troll's map).
+function secretFound(secret) {
+  return !secret || player.secrets.indexOf(secret) !== -1;
 }
 
 // A little picture in front of each kind of spot's name.
@@ -24,7 +32,7 @@ const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
-  pond: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
+  pond: "🐢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
 };
 
 function isDrawn(name) {
@@ -67,6 +75,7 @@ function drawSpots(box, places, onClick) {
   places.forEach(function (place) {
     const button = document.createElement("button");
     button.className = "spot";
+    if (place.secret) button.classList.add("secret"); // a secret place, like the Pond House
     button.dataset.id = place.id;
     button.style.left = place.x + "%";
     button.style.top = place.y + "%";
@@ -139,6 +148,7 @@ function drawPaths(mapId) {
     const points = roadPoints(path.from, path.to);
     const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
     line.setAttribute("points", points.map(function (p) { return p.join(","); }).join(" "));
+    if (path.secret) line.classList.add("secret-path"); // the Secret Pathway glows
     svg.appendChild(line);
   });
 }
@@ -147,7 +157,7 @@ function roadsOn(mapId) {
   return GAME_DATA.paths.filter(function (path) {
     const from = findPlace(path.from);
     const to = findPlace(path.to);
-    return from && to && from.in === mapId && to.in === mapId;
+    return from && to && from.in === mapId && to.in === mapId && secretFound(path.secret);
   });
 }
 
@@ -175,6 +185,7 @@ function roadPoints(fromId, toId) {
 function neighbours(id) {
   const result = [];
   GAME_DATA.paths.forEach(function (p) {
+    if (!secretFound(p.secret)) return; // a secret road you haven't found yet
     if (p.from === id) result.push(p.to);
     if (p.to === id) result.push(p.from);
   });
@@ -330,7 +341,7 @@ function showPlace(id) {
     if (child.type === "archery") return openArchery();          // js/sports.js
     if (child.type === "soccer") return openSoccer();            // js/sports.js
     if (child.type === "riddle") return askRiddle();             // js/pixie.js
-    if (child.type === "bridge") return crossBridge(child);      // js/pixie.js
+    if (child.type === "turtle_sniff") return turtleSniff();     // js/pixie.js
     if (child.type === "pond") return openPond();                // js/pixie.js
     if (child.type === "smores") return grabSmore();             // js/pixie.js
     if (child.type === "fireplace") return roastSmore();         // js/pixie.js

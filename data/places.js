@@ -122,14 +122,14 @@ GAME_DATA.places = [
   { "id": "trade_brooms_right",  "name": "Broomsticks", "type": "place", "in": "trading_post", "x": 78, "y": 82, "opens": "trade_brooms" },
   { "id": "trader", "name": "Trader", "type": "person", "in": "trading_post", "x": 46, "y": 32,
     "says": "Welcome to the Trading Post! Bring me something from your backpack and pick anything you like in return." },
-  // The Pixie adventure (Scott, 2026-10-13; js/pixie.js). "hidden" places don't show
-  // as spots: the only way to the Troll Bridge is the Pixie's Finding Potion, and
-  // the only way to the Pond House is answering the troll's riddle.
+  // The Pixie Quest (Scott, 2026-10-13; js/pixie.js). "hidden" places don't show
+  // as spots: the only way to the Troll Bridge is the Pixie's Finding Potion. The
+  // Pond House is "secret": on the Forest map once the troll's map is whole.
   { "id": "troll_bridge", "name": "Troll Bridge", "type": "place", "in": "forest", "hidden": true, "x": 50, "y": 95,
-    "description": "A troll lives under this bridge. Answer its riddle to cross to the Pond House." },
+    "description": "The troll lives under this bridge. Answer his riddles to win the pieces of his map." },
   { "id": "riddle_troll", "name": "Troll", "type": "riddle", "in": "troll_bridge", "x": 47, "y": 65 },
-  { "id": "cross_bridge", "name": "Secret Pathway", "type": "bridge", "in": "troll_bridge", "x": 50, "y": 20, "to": "pond_house" },
-  { "id": "pond_house", "name": "Pond House", "type": "place", "in": "troll_bridge", "hidden": true, "x": 50, "y": 20,
+  // "secret": only on the Forest map once the troll's map is whole (js/pixie.js).
+  { "id": "pond_house", "name": "Pond House", "type": "place", "in": "forest", "secret": "pixie_path", "x": 92, "y": 57,
     "description": "A little flower house by a pond. Something lives in the pond..." },
   { "id": "pond_swim", "name": "Swim", "type": "care", "care": "swim", "in": "pond_house", "x": 22, "y": 62 },
   { "id": "pond", "name": "Pond", "type": "pond", "in": "pond_house", "x": 22, "y": 46 },
@@ -139,6 +139,7 @@ GAME_DATA.places = [
   { "id": "fireplace", "name": "Fireplace", "type": "fireplace", "in": "pond_house_inside", "x": 75, "y": 22 },
   { "id": "pond_hot_chocolate", "name": "Hot Chocolate", "type": "hot_chocolate", "in": "pond_house_inside", "x": 17, "y": 78 },
   { "id": "pond_couch", "name": "Couch", "type": "cuddle", "in": "pond_house_inside", "x": 53, "y": 52 },
+  { "id": "turtle_sniff", "name": "Turtle Sniff", "type": "turtle_sniff", "in": "pond_house_inside", "x": 30, "y": 90 },
   { "id": "orchard",   "name": "Fruit Orchard", "type": "place", "in": "forest", "x": 62, "y": 80,
     "description": "Fruit trees and berry bushes, and a basket for picking." },
 

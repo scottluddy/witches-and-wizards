@@ -4,20 +4,23 @@
 // 1. The Pixie hides in one of the Forest's places and flies to another every
 //    few minutes. The troll stole her Golden Acorn. Give her a Crystal Fish
 //    and she gives you a Finding Potion.
-// 2. Drink the potion (🎒 backpack) to go to the troll at the Troll Bridge.
+// 2. The troll hides in a Forest place and moves every couple of minutes. The
+//    potion only works where he is: a sip anywhere else flashes up the map
+//    to show where he's hiding. It has 4 sips (🎒 backpack).
 // 3. Each riddle answered right gives a piece of the troll's map.
-// 4. The whole map shows the Secret Pathway to the Pond House.
+// 4. The pieces join up, and the Secret Pathway to the Pond House appears on
+//    the Forest map.
 // 5. Search inside the Pond House for the acorn. The fireplace, hot chocolate
-//    and couch give clues that make it easier to find.
+//    and couch give clues, and the Pond Turtle slowly crawls toward it.
 // 6. Give the acorn back to the Pixie: the Quest is done (+1 Adventure Point).
 // The pond has a turtle pet. Inside: s'mores to roast, hot chocolate, a couch.
 
 // ---------------------------------------------------------------- the Pixie
 
-// The Forest places she can hide in.
+// The Forest places she (and the troll) can hide in.
 function pixiePlaces() {
   return placesIn(GAME_DATA.pixie.territory).filter(function (place) {
-    return place.type === "place" && !place.opens;
+    return place.type === "place" && !place.opens && !place.secret;
   });
 }
 
@@ -96,16 +99,18 @@ function givePixieFish(bag) {
   player[bag].splice(player[bag].indexOf(rules.wants), 1);
   if (bag === "cooler") forgetCatch(rules.wants); // js/storage.js: it can't become Sashimi Grade now
   player.backpack.push(rules.gives);
+  player.pixieQuest.sips = GAME_DATA.pixieQuest.sips;
   writeSave(player);
   openInfoPanel(itemArt(findItem(rules.gives)), "A Finding Potion!",
-    "\"Yum! Thank you!\" The Pixie gives you a Finding Potion. It's in your backpack: drink it to find the troll. Answer his riddles to get his map!");
+    "\"Yum! Thank you!\" The Pixie gives you a Finding Potion with " + GAME_DATA.pixieQuest.sips + " sips. " +
+    "It only works where the troll is hiding, somewhere in the Forest. Take a sip anywhere else and you'll see a flash of where he is. Answer his riddles to get his map!");
 }
 
 // " (Map pieces: 2 of 3)" so you always know how far along the Quest is.
 function questProgress() {
   const state = player.pixieQuest;
   const quest = GAME_DATA.pixieQuest;
-  if (state.acornAt) return " (You have the whole map. The " + quest.treasure.name + " is hidden in the Pond House!)";
+  if (state.acornAt) return " (You have the whole map. Follow the Secret Pathway on the Forest map: the " + quest.treasure.name + " is hidden in the Pond House!)";
   if (state.pieces > 0) return " (Map pieces: " + state.pieces + " of " + quest.mapPieces + ")";
   return "";
 }
@@ -116,7 +121,9 @@ function giveBackAcorn() {
   const state = player.pixieQuest;
   player.adventurePoints += quest.adventurePoints;
   // Start fresh, in case the troll ever steals it again.
-  player.pixieQuest = { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: state.done + 1 };
+  // The troll grabs his map back, so the Secret Pathway disappears too.
+  player.pixieQuest = { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: state.done + 1, sips: state.sips };
+  player.secrets = player.secrets.filter(function (s) { return s !== quest.secret; });
   writeSave(player);
   openInfoPanel(celebrationArt(quest.kind, "🧚" + quest.treasure.emoji + "✨"), "Quest Complete!", // js/game.js
     "\"My " + quest.treasure.name + "! You found it! Thank you, thank you!\" The Pixie twirls with joy. You finished the Quest: +" +
@@ -129,20 +136,84 @@ function isFindingPotion(item) {
   return item.id === GAME_DATA.pixie.gives;
 }
 
-// The "Drink" button on the Finding Potion in the backpack.
+// Where the troll is hiding right now: a Forest place, worked out from the
+// clock like the Pixie (but on his own timer, so they're rarely together).
+function trollNow() {
+  const slot = Math.floor(Date.now() / (GAME_DATA.pixieQuest.trollMoveMinutes * 60000));
+  const places = pixiePlaces();
+  const random = Math.abs(Math.sin(slot * 39.3467 + 11.135) * 24634.6345) % 1;
+  return places[Math.floor(random * places.length)];
+}
+
+// Are you in that place (or somewhere inside it)?
+function besideTroll() {
+  const troll = trollNow();
+  for (let place = findPlace(player.at); place; place = findPlace(place.in)) {
+    if (place.id === troll.id) return true;
+  }
+  return false;
+}
+
+// The "Sip" button on the Finding Potion in the backpack.
 function findingDrinkButton(item) {
   const button = document.createElement("button");
   button.className = "small-button";
-  button.textContent = "🧪 Drink";
+  button.textContent = "🧪 Sip (" + player.pixieQuest.sips + " left)";
   button.addEventListener("click", function () {
-    player.backpack.splice(player.backpack.indexOf(item.id), 1); // drunk, so it's gone
-    writeSave(player);
     document.getElementById("backpack-panel").hidden = true;
-    goTo(GAME_DATA.pixie.takesYouTo);
-    document.getElementById("place-description").textContent =
-      "✨ Whoosh! The potion swirls you away to a bridge deep in the Forest. The troll who stole the acorn lives under it...";
+    sipFindingPotion(item);
   });
   return button;
+}
+
+function sipFindingPotion(item) {
+  const state = player.pixieQuest;
+  state.sips--;
+  if (besideTroll()) {
+    player.backpack.splice(player.backpack.indexOf(item.id), 1); // the rest of it swirls away
+    state.sips = 0;
+    state.foundTrollAt = trollNow().id;
+    writeSave(player);
+    goTo(GAME_DATA.pixie.takesYouTo);
+    return document.getElementById("place-description").textContent =
+      "✨ Whoosh! The potion glows bright... there he is! The troll who stole the acorn was hiding right here, under his bridge.";
+  }
+  if (state.sips <= 0) player.backpack.splice(player.backpack.indexOf(item.id), 1); // all gone
+  writeSave(player);
+  flashTroll(trollNow());
+  sayHere(state.sips > 0
+    ? "✨ Flash! Did you see where the troll is hiding? Go there and take another sip. (" + state.sips + " sip" + (state.sips === 1 ? "" : "s") +
+      " left, and hurry: he moves every " + GAME_DATA.pixieQuest.trollMoveMinutes + " minutes!)"
+    : "✨ Flash! That was the last sip, and the troll wasn't here. Out of luck! Bring the Pixie another Crystal Fish for a new potion.");
+}
+
+// A message under the map or the place picture, wherever you are.
+function sayHere(message) {
+  const onMap = !document.getElementById("screen-map").hidden;
+  document.getElementById(onMap ? "map-hint" : "place-description").textContent = message;
+}
+
+// The screen flashes and, just for a moment, shows the Forest map with the
+// troll where he's hiding.
+function flashTroll(place) {
+  const flash = document.createElement("div");
+  flash.className = "troll-flash";
+  const map = document.createElement("div");
+  map.className = "troll-flash-map";
+  const img = document.createElement("img");
+  img.src = picture("map_" + place.in);
+  img.alt = "";
+  map.appendChild(img);
+  const troll = document.createElement("span");
+  troll.className = "troll-flash-troll";
+  troll.style.left = place.x + "%";
+  troll.style.top = place.y + "%";
+  troll.appendChild(typeof trollArt() === "string" ? document.createTextNode("👹") : trollArt());
+  map.appendChild(troll);
+  flash.appendChild(map);
+  document.body.appendChild(flash);
+  setTimeout(function () { flash.classList.add("fading"); }, GAME_DATA.pixieQuest.flashSeconds * 1000);
+  setTimeout(function () { flash.remove(); }, GAME_DATA.pixieQuest.flashSeconds * 1000 + 400);
 }
 
 // ---------------------------------------------------------------- the Troll Bridge
@@ -167,7 +238,7 @@ function mapPieces() {
 
 function askRiddle() {
   if (haveWholeMap()) {
-    return openInfoPanel(trollArt(), "Troll", "\"Grrr. You have my whole map now. Go on then, follow the Secret Pathway... if you dare!\"");
+    return openInfoPanel(trollArt(), "Troll", "\"Grrr. You have my whole map now. Go on then, follow the Secret Pathway on the Forest map... if you dare!\"");
   }
   const riddle = nextRiddle();
   player.pixieQuest.asked.push(GAME_DATA.riddles.indexOf(riddle));
@@ -194,9 +265,16 @@ function answerRiddle(right) {
   if (haveWholeMap()) hideAcorn();
   writeSave(player);
   if (haveWholeMap()) {
-    return openInfoPanel(GAME_DATA.pixieQuest.mapEmoji, "The Whole Map!", message + mapPieces() +
-      " The pieces fit together and show a Secret Pathway to a hidden part of the Forest: the Pond House! The " +
-      GAME_DATA.pixieQuest.treasure.name + " must be there.");
+    const body = openInfoPanel(GAME_DATA.pixieQuest.mapEmoji.repeat(GAME_DATA.pixieQuest.mapPieces), "The Whole Map!", message + mapPieces() +
+      " That's all of them! Put them together and see where they lead.");
+    const join = document.createElement("button");
+    join.className = "big-button";
+    join.textContent = "🧩 Put the pieces together";
+    join.addEventListener("click", function () {
+      document.getElementById("info-panel").hidden = true;
+      joinMapPieces();
+    });
+    return body.appendChild(join);
   }
   const body = openInfoPanel(trollArt(), "Troll's Riddle", message + mapPieces());
   const again = document.createElement("button");
@@ -215,11 +293,96 @@ function trollArt() {
   return img;
 }
 
-// The Secret Pathway only shows up on the whole map.
-function crossBridge(spot) {
-  if (haveWholeMap()) return goTo(spot.to);
-  document.getElementById("place-description").textContent =
-    "🌫️ There's no path here that you can see. Maybe the troll's map shows the way: answer his riddles to get the pieces." + mapPieces();
+// ---------------------------------------------------------------- the map pieces
+
+// The three pieces are strips of the Forest map. They fly together, the
+// Secret Pathway appears on them, then the whole map slides onto the real
+// Forest map, where the path stays (player.secrets) until the Quest is done.
+function joinMapPieces() {
+  const quest = GAME_DATA.pixieQuest;
+  const forest = GAME_DATA.pixie.territory;
+  if (player.secrets.indexOf(quest.secret) === -1) player.secrets.push(quest.secret);
+  writeSave(player);
+
+  const overlay = document.createElement("div");
+  overlay.className = "map-join";
+  const board = document.createElement("div");
+  board.className = "map-join-board";
+  const sizer = document.createElement("img"); // an invisible copy of the map, so the board is the map's shape
+  sizer.className = "map-join-sizer";
+  sizer.src = picture("map_" + forest);
+  sizer.alt = "";
+  board.appendChild(sizer);
+  for (let i = 0; i < quest.mapPieces; i++) board.appendChild(mapPiece(i, quest.mapPieces, forest));
+  board.appendChild(secretPathDrawing(quest.secret));
+  const house = findPlace(GAME_DATA.paths.find(function (p) { return p.secret === quest.secret; }).to);
+  const mark = document.createElement("span"); // a little house where the path ends
+  mark.className = "map-join-mark";
+  mark.textContent = "🏡";
+  mark.style.left = house.x + "%";
+  mark.style.top = house.y + "%";
+  board.appendChild(mark);
+  const words = document.createElement("p");
+  words.className = "map-join-words";
+  words.textContent = "🧩 The pieces fit together...";
+  overlay.appendChild(board);
+  overlay.appendChild(words);
+  document.body.appendChild(overlay);
+
+  setTimeout(function () { board.classList.add("joined"); }, 100);          // the pieces fly together
+  setTimeout(function () {                                                   // the path appears
+    board.classList.add("path-shown");
+    words.textContent = "✨ A Secret Pathway to the Pond House!";
+  }, 1600);
+  setTimeout(function () { slideOntoMap(overlay, board, forest); }, 4000);   // onto the Forest map
+}
+
+// One strip of the map, starting tilted and far from where it belongs.
+function mapPiece(i, count, mapId) {
+  const piece = document.createElement("div");
+  piece.className = "map-join-piece";
+  piece.style.left = (i * 100 / count) + "%";
+  piece.style.width = (100 / count) + "%";
+  piece.style.backgroundImage = "url(" + picture("map_" + mapId) + ")";
+  piece.style.backgroundSize = (count * 100) + "% 100%";
+  piece.style.backgroundPosition = (i * 100 / (count - 1)) + "% 0";
+  const spread = (i - (count - 1) / 2) * 45;      // left piece left, right piece right
+  piece.style.setProperty("--start", "translate(" + spread + "%, " + (i % 2 ? 25 : -20) + "%) rotate(" + (spread / 3 + 6) + "deg)");
+  return piece;
+}
+
+// The secret road, drawn the same way the map draws roads.
+function secretPathDrawing(secret) {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 100 100");
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.classList.add("map-paths", "map-join-path");
+  GAME_DATA.paths.filter(function (p) { return p.secret === secret; }).forEach(function (path) {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    line.setAttribute("points", roadPoints(path.from, path.to).map(function (p) { return p.join(","); }).join(" "));
+    line.classList.add("secret-path");
+    svg.appendChild(line);
+  });
+  return svg;
+}
+
+// Show the real Forest map underneath, then shrink the joined map onto it.
+function slideOntoMap(overlay, board, mapId) {
+  const found = player.pixieQuest.foundTrollAt;
+  if (findPlace(found)) player.spots[mapId] = found; // you're back where you found the troll
+  showMap(mapId);
+  const target = document.getElementById("map").getBoundingClientRect();
+  const now = board.getBoundingClientRect();
+  board.style.transformOrigin = "0 0";
+  board.style.transition = "transform 1.2s ease-in-out";
+  board.style.transform = "translate(" + (target.left - now.left) + "px, " + (target.top - now.top) + "px) scale(" + (target.width / now.width) + ")";
+  overlay.classList.add("sliding");
+  setTimeout(function () {
+    overlay.remove();
+    document.getElementById("map").classList.add("secret-new"); // the path and the Pond House glow for a bit
+    setTimeout(function () { document.getElementById("map").classList.remove("secret-new"); }, 4000);
+    document.getElementById("map-hint").textContent = "🗺️ The Secret Pathway is on the Forest map now! Click the Pond House to follow it.";
+  }, 1300);
 }
 
 // ---------------------------------------------------------------- the Golden Acorn
@@ -242,7 +405,7 @@ function showAcornHunt(place) {
   if (!huntingAcorn(place)) return;
   document.getElementById("place-description").textContent = "🌰 The troll hid the Pixie's " +
     GAME_DATA.pixieQuest.treasure.name + " somewhere in here! Click around the room to search. " +
-    "(Doing things here might turn up clues.)";
+    "(Doing things here might turn up clues, and turtles have great noses...)";
 }
 
 // How close a click has to be, made bigger by each clue found.
@@ -300,6 +463,72 @@ function acornClue(spotId) {
 }
 
 document.getElementById("place-picture").addEventListener("click", searchForAcorn);
+
+// ---------------------------------------------------------------- the turtle's nose
+
+// The Pond Turtle can smell the acorn, but it's slow and wobbles off course:
+// watch which way it heads, and search there. It sits down once it's close.
+function turtleSniff() {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  const turtle = findItem(rules.pet);
+  const state = player.pixieQuest;
+  if (player.backpack.indexOf(rules.pet) === -1) {
+    return sayHere("🐢 Turtles have great noses. Maybe the " + turtle.name + " from the pond outside could sniff things out, if you carried it in your backpack.");
+  }
+  if (!state.acornAt) return sayHere("🐢 Your " + turtle.name + " sniffs around, but there's nothing hidden in here.");
+  if (document.querySelector(".sniff-turtle")) return; // it's already crawling
+  const box = document.getElementById("place-pixie");
+  box.hidden = false;
+  const sprite = document.createElement("span");
+  sprite.className = "sniff-turtle";
+  if (isDrawn(rules.pet)) {
+    const img = document.createElement("img");
+    img.src = picture(rules.pet);
+    img.alt = turtle.name;
+    sprite.appendChild(img);
+  } else {
+    sprite.textContent = "🐢";
+  }
+  box.appendChild(sprite);
+  sayHere("🐢 Your " + turtle.name + " sniffs the air... and sets off, very... very... slowly. Which way is it going?");
+  crawl(sprite, rules.start.slice(), player.at);
+}
+
+// Turn the turtle the way it's crawling. The girls drew it head down; the
+// emoji 🐢 looks left.
+function faceTurtle(sprite, angle) {
+  const degrees = angle * 180 / Math.PI;
+  if (sprite.querySelector("img")) sprite.style.rotate = (degrees - 90) + "deg";
+  else sprite.style.scale = Math.cos(angle) < 0 ? "1 1" : "-1 1";
+}
+
+// One small step at a time, toward the acorn but wobbling.
+function crawl(sprite, at, placeId) {
+  const rules = GAME_DATA.pixieQuest.turtle;
+  const step = 0.2; // seconds between steps
+  const timer = setInterval(function () {
+    const acorn = player.pixieQuest.acornAt;
+    if (player.at !== placeId || !acorn || !sprite.isConnected) { // you left, or found it
+      clearInterval(timer);
+      return sprite.remove();
+    }
+    const distance = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]);
+    if (distance <= GAME_DATA.pixieQuest.warmDistance) {
+      clearInterval(timer);
+      sprite.classList.add("sitting");
+      return sayHere("🐢 Your turtle stops and sniffs hard. The " + GAME_DATA.pixieQuest.treasure.name + " must be close by!");
+    }
+    const wobble = (Math.random() - 0.5) * rules.wobble * Math.PI / 180;
+    const angle = Math.atan2(acorn[1] - at[1], acorn[0] - at[0]) + wobble;
+    at[0] += Math.cos(angle) * rules.speed * step;
+    at[1] += Math.sin(angle) * rules.speed * step;
+    sprite.style.left = at[0] + "%";
+    sprite.style.top = at[1] + "%";
+    faceTurtle(sprite, angle);
+  }, step * 1000);
+  sprite.style.left = at[0] + "%";
+  sprite.style.top = at[1] + "%";
+}
 
 // ---------------------------------------------------------------- the Pond House
 

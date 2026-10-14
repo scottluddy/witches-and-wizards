@@ -39,6 +39,18 @@ GAME_DATA.pixieQuest = {
   "warmDistance": 18,
   "adventurePoints": 1,
   "kind": "quest",
+  // The Finding Potion (Scott, 2026-10-14): it only works where the troll is
+  // hiding. Each sip somewhere else flashes up the Forest map for a moment,
+  // showing where he is. "sips" in a potion; he moves to another Forest
+  // place every "trollMoveMinutes"; the flash lasts "flashSeconds".
+  "sips": 4,
+  "trollMoveMinutes": 2,
+  "flashSeconds": 1,
+  "secret": "pixie_path",
+  // The Pond Turtle (from the pond outside) can sniff out the acorn, but it's
+  // a turtle: it crawls "speed" percent of the picture a second, wobbling up
+  // to "wobble" degrees off course, and sits down once it's "warmDistance" close.
+  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 1.5, "wobble": 70 },
   // Clues in the Pond House (Scott, 2026-10-14: doing things there makes the
   // acorn easier to find). Each one, the first time you do it while
   // searching, says something helpful and makes the search "bigger" (you can
