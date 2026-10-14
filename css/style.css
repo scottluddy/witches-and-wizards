@@ -1212,3 +1212,29 @@ body.holding-apple, body.holding-apple * {
   animation: footprint-fade linear forwards;
 }
 @keyframes footprint-fade { from { opacity: 1; } to { opacity: 0; } }
+
+/* ---- The Head Witch and Head Wizard, and the Adventures pop-up (js/adventures.js) ---- */
+.head-guide {
+  position: fixed; right: 24px; bottom: 24px; z-index: 150;
+  display: flex; align-items: flex-end; gap: 8px;
+  border: none; background: none; padding: 0; cursor: pointer;
+  font-family: inherit;
+  animation: guide-in 0.8s cubic-bezier(0.3, 1.5, 0.6, 1);
+  transition: transform 0.8s, opacity 0.8s;
+}
+.head-guide.leaving { transform: translateX(140%); opacity: 0; }
+@keyframes guide-in { from { transform: translateX(140%); } to { transform: none; } }
+.head-guide-face { font-size: 5rem; line-height: 1; animation: bob 1.6s ease-in-out infinite alternate; }
+.head-guide-face img { max-height: 140px; max-width: 140px; display: block; }
+.head-guide-bubble {
+  max-width: 220px; padding: 10px 14px; margin-bottom: 60px;
+  background: #fffaf0; border: 3px solid var(--gold); border-radius: 18px;
+  font-size: 1.05rem; color: #4a2a6a; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+.adventure-card {
+  text-align: left; margin: 8px auto; max-width: 520px;
+  background: #fffaf0; border: 2px solid var(--gold); border-radius: 12px; padding: 8px 14px;
+}
+.adventure-card summary { font-weight: bold; cursor: pointer; font-size: 1.15rem; }
+.adventure-card p { margin: 8px 0 4px; }
+.adventure-card ol { margin: 4px 0 6px; padding-left: 22px; }

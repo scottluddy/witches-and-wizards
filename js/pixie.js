@@ -45,7 +45,7 @@ function showPixie(place) {
   showAcornHunt(place);
   potionBubbles(place);
   const now = pixieNow();
-  box.hidden = place.id !== now.place;
+  box.hidden = place.id !== now.place || !adventureUnlocked("pixie"); // only once you've earned this adventure (js/adventures.js)
   if (box.hidden) return;
   const pixie = document.createElement("button");
   pixie.className = "pixie";
@@ -74,6 +74,7 @@ function pixieFishBag() {
 }
 
 function meetPixie() {
+  revealAdventure("pixie"); // you found her: the Adventures list shows its steps now (js/adventures.js)
   const rules = GAME_DATA.pixie;
   const quest = GAME_DATA.pixieQuest;
   const fish = findFish(rules.wants); // js/fishing.js
@@ -100,11 +101,18 @@ function givePixieFish(bag) {
   player[bag].splice(player[bag].indexOf(rules.wants), 1);
   if (bag === "cooler") forgetCatch(rules.wants); // js/storage.js: it can't become Sashimi Grade now
   player.backpack.push(rules.gives);
-  player.pixieQuest.sips = GAME_DATA.pixieQuest.sips;
+  player.pixieQuest.sips = potionSips();
   writeSave(player);
   openInfoPanel(itemArt(findItem(rules.gives)), "A Finding Potion!",
-    "\"Yum! Thank you!\" The Pixie gives you a Finding Potion with " + GAME_DATA.pixieQuest.sips + " sips. " +
+    "\"Yum! Thank you!\" The Pixie gives you a Finding Potion with " + potionSips() + " sips. " +
     "It only works where the troll is hiding, somewhere in the Forest. Take a sip anywhere else and you'll see a flash of where he is. Answer his riddles to get his map!");
+}
+
+// Sips in a new potion: fewer each time you've done the Quest, so doing it
+// again is a little harder (Scott, 2026-10-14).
+function potionSips() {
+  const quest = GAME_DATA.pixieQuest;
+  return Math.max(quest.fewestSips, quest.sips - quest.fewerSipsEachTime * player.pixieQuest.done);
 }
 
 // " (Map pieces: 2 of 3)" so you always know how far along the Quest is.

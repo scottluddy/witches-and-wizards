@@ -8,3 +8,44 @@ GAME_DATA.celebrations = {
   "aquatic":   { "picture": "celebrate_narwhal", "name": "Narwhal" },     // any water adventure (none yet)
   "quest":     { "picture": "celebrate_quest",   "name": "Quest" }        // finding something lost, like the Pixie's acorn (not drawn yet)
 };
+
+// Getting adventures (Scott, 2026-10-14). You start with none: every
+// "unlockEverySkills" Skills (skill Levels plus spells) earns a new one, picked
+// at random from the ones you don't have yet. The Head Witch and the Head
+// Wizard take turns popping out to tell you about it; click them to hear where
+// to go. The adventure's real name and steps stay a secret until you find
+// whoever needs help. If you haven't started one, they come back to remind you
+// every "reminderMinutes". They stay out for "staySeconds".
+GAME_DATA.adventureGuide = {
+  "unlockEverySkills": 2,
+  "reminderMinutes": 5,
+  "staySeconds": 20,
+  "guides": [
+    { "name": "Head Witch",  "picture": "head_witch",  "emoji": "🧙‍♀️" },
+    { "name": "Head Wizard", "picture": "head_wizard", "emoji": "🧙‍♂️" }
+  ]
+};
+
+// Every adventure. "hint" is what the Head Witch or Wizard tells you; "steps"
+// show in the Adventures pop-up once you've found whoever needs help.
+// Doing one again is a bit harder (Scott): the Pixie's potion has fewer sips
+// (data/pixie.js), and each new unicorn comes out less often (data/unicorns.js).
+GAME_DATA.adventureList = [
+  { "id": "pixie", "name": "The Pixie's Lost Treasure", "emoji": "🧚",
+    "hint": "Head to the Forest and find a pixie who needs your help. She flies to a different place every few minutes, so look carefully!",
+    "steps": [
+      "Bring the Pixie a Crystal Fish for a Finding Potion",
+      "Find the troll who stole her Golden Acorn: a sip shows where he's hiding, and the potion bubbles when you're there",
+      "Answer his riddles to win the 3 pieces of his map",
+      "Follow the Secret Pathway to the Pond House and find the acorn",
+      "Give it back to the Pixie"
+    ] },
+  { "id": "unicorn", "name": "Reunite the Unicorn", "emoji": "🦄",
+    "hint": "Go to the Unicorn Meadow in the Meadows. Someone shy is hiding in the trees. Bring apples!",
+    "steps": [
+      "Spot the unicorn when it peeks out from behind a tree",
+      "Hold an apple and click it so it trusts you",
+      "Cast the Seeing Spell on it",
+      "Feed it more apples, one at a time"
+    ] }
+];

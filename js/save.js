@@ -89,6 +89,14 @@ function fillIn(save) {
   if (save.pixieQuest === undefined) save.pixieQuest = { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0 };
   if (save.pixieQuest.sips === undefined) save.pixieQuest.sips = GAME_DATA.pixieQuest.sips;
   if (save.secrets === undefined) save.secrets = [];
+  if (save.adventures === undefined) {
+    save.adventures = { unlocked: [], revealed: [], waiting: [], lastGuideAt: 0, guideTurn: 0 };
+    // Adventures already started before you had to earn them.
+    const q = save.pixieQuest;
+    if (q.done || q.pieces || q.hasAcorn || save.backpack.indexOf("potion_finding") !== -1) save.adventures.unlocked.push("pixie");
+    if (save.unicornsHelped || (save.unicorn && save.unicorn.trusted)) save.adventures.unlocked.push("unicorn");
+    save.adventures.revealed = save.adventures.unlocked.slice();
+  }
   // A whole map from before the Secret Pathway was on the Forest map.
   if (save.pixieQuest.pieces >= GAME_DATA.pixieQuest.mapPieces && save.secrets.indexOf("pixie_path") === -1) save.secrets.push("pixie_path");
   if (save.stock === undefined) save.stock = {};
@@ -191,6 +199,7 @@ function newPlayer(playerName, characterId, kind) {
     skillWait: {},            // when each skill's next test is ready (js/skills.js)
     stungAt: 0,               // when a bee stung you at the Beehive (0 = not stung) (js/honey.js)
     stock: {},                // how many of each supply the shops have left: { itemId: { left, at } } (js/items.js)
+    adventures: { unlocked: [], revealed: [], waiting: [], lastGuideAt: 0, guideTurn: 0 }, // adventures earned, found, and still to announce (js/adventures.js)
     secrets: [], // secret places and roads found, like "pixie_path" (js/world.js secretFound)
     pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, riddles asked, where the acorn hides (js/pixie.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)

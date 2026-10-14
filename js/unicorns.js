@@ -103,6 +103,7 @@ function showUnicornWoods(place) {
   });
   woods.appendChild(unicorn);
 
+  if (!adventureUnlocked("unicorn")) return; // no unicorn until you've earned this adventure (js/adventures.js)
   rustle();
   unicornTimer = setTimeout(comeOut, hiddenTime());
 }
@@ -192,6 +193,7 @@ function rustle() {
 // ---------------------------------------------------------------- helping the unicorn
 
 function clickUnicorn() {
+  revealAdventure("unicorn"); // you found it: the Adventures list shows its steps now (js/adventures.js)
   const unicorn = player.unicorn;
   if (!unicorn.trusted) {
     if (holdingApple()) return feedUnicorn();

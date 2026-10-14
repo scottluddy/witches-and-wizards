@@ -34,6 +34,8 @@ GAME_DATA.nextSteps = {
       "note": "For now honey is just healthy food (1 hunger point) and can't be sold. The Healing Potion (Trading Post) heals a bee sting; Claude's guess is 10 minutes to heal on its own." },
     { "text": "Draw the Sports Classroom", "who": "Girls",
       "note": "It has a placeholder picture with one spot that leads out to the Stadium." },
+    { "text": "Draw the Head Witch and the Head Wizard", "who": "The girls",
+      "note": "They pop out at the corner of the screen to tell you about a new adventure. They show as 🧙‍♀️ and 🧙‍♂️ for now (head_witch, head_wizard)." },
     { "text": "Draw the Pixie Quest things: the 3 map pieces, the Golden Acorn and a Quest picture for when it's done", "who": "The girls",
       "note": "They show as 🗺️ and 🌰 for now. The troll's 8 riddles and the 3 Pond House clues are Claude's (data/pixie.js)." },
     { "text": "Which things should stack?", "who": "Scott",

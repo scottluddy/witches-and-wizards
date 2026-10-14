@@ -44,6 +44,8 @@ GAME_DATA.pixieQuest = {
   // showing where he is. "sips" in a potion; he moves to another Forest
   // place every "trollMoveMinutes"; the flash lasts "flashSeconds".
   "sips": 4,
+  "fewerSipsEachTime": 1, // each time you've done the Quest, the potion has 1 sip fewer...
+  "fewestSips": 2,        // ...but never fewer than 2
   "trollMoveMinutes": 2,
   "flashSeconds": 1,
   "secret": "pixie_path",
