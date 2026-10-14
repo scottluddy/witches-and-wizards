@@ -43,6 +43,7 @@ function showPixie(place) {
   const box = document.getElementById("place-pixie");
   box.innerHTML = "";
   showAcornHunt(place);
+  potionBubbles(place);
   const now = pixieNow();
   box.hidden = place.id !== now.place;
   if (box.hidden) return;
@@ -182,9 +183,17 @@ function sipFindingPotion(item) {
   writeSave(player);
   flashTroll(trollNow());
   sayHere(state.sips > 0
-    ? "✨ Flash! Did you see where the troll is hiding? Go there and take another sip. (" + state.sips + " sip" + (state.sips === 1 ? "" : "s") +
+    ? "✨ Flash! Did you see where the troll is hiding? Walk to that place, go in, and take another sip there: your potion bubbles when you're in the right place. (" + state.sips + " sip" + (state.sips === 1 ? "" : "s") +
       " left, and hurry: he moves every " + GAME_DATA.pixieQuest.trollMoveMinutes + " minutes!)"
     : "✨ Flash! That was the last sip, and the troll wasn't here. Out of luck! Bring the Pixie another Crystal Fish for a new potion.");
+}
+
+// Called by showPlace: with the Finding Potion in your backpack, it bubbles
+// when you walk into the place where the troll is hiding.
+function potionBubbles(place) {
+  if (!owns(GAME_DATA.pixie.gives) || !besideTroll()) return;
+  document.getElementById("place-description").textContent =
+    "🧪 Your Finding Potion is bubbling like crazy! The troll must be hiding here. Take a sip from your 🎒 backpack!";
 }
 
 // A message under the map or the place picture, wherever you are.
