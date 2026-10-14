@@ -48,9 +48,12 @@ GAME_DATA.pixieQuest = {
   "flashSeconds": 1,
   "secret": "pixie_path",
   // The Pond Turtle (from the pond outside) can sniff out the acorn, but it's
-  // a turtle: it crawls "speed" percent of the picture a second, wobbling up
-  // to "wobble" degrees off course, and sits down once it's "warmDistance" close.
-  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 1.5, "wobble": 70 },
+  // a turtle (Scott, 2026-10-14: slow, roundabout, never crossing its own
+  // trail, never quite getting there). It crawls up to "speed" percent of the
+  // picture a second, slower as it gets near, wandering up to "wander" degrees
+  // off course (changing by up to "turn" degrees a step), and sits down
+  // "closest" percent from the acorn: about 2 to 3 minutes.
+  "turtle": { "pet": "pet_pond_turtle", "start": [44, 80], "speed": 0.5, "wander": 80, "turn": 7, "closest": 16 },
   // Clues in the Pond House (Scott, 2026-10-14: doing things there makes the
   // acorn easier to find). Each one, the first time you do it while
   // searching, says something helpful and makes the search "bigger" (you can

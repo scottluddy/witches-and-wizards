@@ -502,32 +502,50 @@ function faceTurtle(sprite, angle) {
   else sprite.style.scale = Math.cos(angle) < 0 ? "1 1" : "-1 1";
 }
 
-// One small step at a time, toward the acorn but wobbling.
+// One small step at a time. The turtle wanders left and right of the way to
+// the acorn, but never more than "wander" degrees, so every step takes it a
+// little closer. That's why it can never cross its own trail: each spot on
+// the trail is closer to the acorn than every spot before it.
 function crawl(sprite, at, placeId) {
   const rules = GAME_DATA.pixieQuest.turtle;
   const step = 0.2; // seconds between steps
+  const most = rules.wander * Math.PI / 180;
+  let off = (Math.random() - 0.5) * 2 * most; // how far off course it's heading
   const timer = setInterval(function () {
     const acorn = player.pixieQuest.acornAt;
     if (player.at !== placeId || !acorn || !sprite.isConnected) { // you left, or found it
       clearInterval(timer);
       return sprite.remove();
     }
-    const distance = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]);
-    if (distance <= GAME_DATA.pixieQuest.warmDistance) {
+    const left = Math.hypot(acorn[0] - at[0], acorn[1] - at[1]) - rules.closest;
+    if (left < 0.5) {
       clearInterval(timer);
       sprite.classList.add("sitting");
-      return sayHere("🐢 Your turtle stops and sniffs hard. The " + GAME_DATA.pixieQuest.treasure.name + " must be close by!");
+      return sayHere("🐢 Your turtle is tired out. It sits down and sniffs: the " + GAME_DATA.pixieQuest.treasure.name + " must be somewhere around here!");
     }
-    const wobble = (Math.random() - 0.5) * rules.wobble * Math.PI / 180;
-    const angle = Math.atan2(acorn[1] - at[1], acorn[0] - at[0]) + wobble;
-    at[0] += Math.cos(angle) * rules.speed * step;
-    at[1] += Math.sin(angle) * rules.speed * step;
+    off += (Math.random() - 0.5) * 2 * rules.turn * Math.PI / 180;
+    off = Math.max(-most, Math.min(most, off));
+    const distance = rules.speed * Math.max(0.15, Math.min(1, left / 20)) * step; // slower near the end
+    const toward = Math.atan2(acorn[1] - at[1], acorn[0] - at[0]);
+    let next = stepFrom(at, toward + off, distance);
+    if (offPicture(next)) { off = -off; next = stepFrom(at, toward + off, distance); } // bump the wall: turn the other way
+    if (offPicture(next)) { off = 0; next = stepFrom(at, toward, distance); }        // still stuck: straight on
+    at[0] = next[0];
+    at[1] = next[1];
     sprite.style.left = at[0] + "%";
     sprite.style.top = at[1] + "%";
-    faceTurtle(sprite, angle);
+    faceTurtle(sprite, toward + off);
   }, step * 1000);
   sprite.style.left = at[0] + "%";
   sprite.style.top = at[1] + "%";
+}
+
+function stepFrom(at, angle, distance) {
+  return [at[0] + Math.cos(angle) * distance, at[1] + Math.sin(angle) * distance];
+}
+
+function offPicture(spot) {
+  return spot[0] < 3 || spot[0] > 97 || spot[1] < 3 || spot[1] > 97;
 }
 
 // ---------------------------------------------------------------- the Pond House
