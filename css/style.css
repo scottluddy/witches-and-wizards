@@ -1238,3 +1238,17 @@ body.holding-apple, body.holding-apple * {
 .adventure-card summary { font-weight: bold; cursor: pointer; font-size: 1.15rem; }
 .adventure-card p { margin: 8px 0 4px; }
 .adventure-card ol { margin: 4px 0 6px; padding-left: 22px; }
+
+/* ---- The elevator (js/world.js openElevator) ---- */
+.elevator-floors { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.elevator-floors button { min-width: 280px; }
+
+/* The Multi-House roller coaster car riding along the drawn track (js/coaster.js). */
+.coaster-car {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: 2.5rem;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.4));
+}

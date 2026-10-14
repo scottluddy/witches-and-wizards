@@ -1,8 +1,8 @@
 // Earning adventures, and the Head Witch and Head Wizard who tell you about
 // them (Scott, 2026-10-14). The rules and words are in data/adventures.js.
 //
-// You start with no adventures. Every few Skills earns a new one, picked at
-// random. The Head Witch and Head Wizard take turns popping out at the corner
+// You start with no adventures. Every few Skills earns room for a new one,
+// and carrying an adventure's item (a Crystal Fish, 5 apples...) unlocks it. The Head Witch and Head Wizard take turns popping out at the corner
 // of the screen; click them to hear where to go. Once you find whoever needs
 // help, the adventure is "revealed": the Adventures pop-up (click Adventure
 // at the top) shows its name and steps.
@@ -40,17 +40,47 @@ function adventuresEarned() {
   return Math.floor(skillsTotal() / GAME_DATA.adventureGuide.unlockEverySkills); // js/skills.js
 }
 
-// If your Skills have earned another adventure, pick one at random.
+// How many of an adventure's unlock item you're carrying (backpack, cooler
+// or fruit basket).
+function carryingKey(adventure) {
+  const key = adventure.unlockItem;
+  const carried = player.backpack.concat(player.cooler, player.basket);
+  return countOf(carried, key.item) >= key.count; // js/storage.js
+}
+
+// If your Skills have earned another adventure and you carry its item,
+// unlock it (picked at random if you carry the items for more than one).
 function unlockAdventures() {
   const state = player.adventures;
   while (state.unlocked.length < adventuresEarned()) {
-    const locked = GAME_DATA.adventureList.filter(function (a) { return !adventureUnlocked(a.id); });
-    if (locked.length === 0) return;
-    const next = locked[Math.floor(Math.random() * locked.length)];
+    const ready = GAME_DATA.adventureList.filter(function (a) { return !adventureUnlocked(a.id) && carryingKey(a); });
+    if (ready.length === 0) return;
+    const next = ready[Math.floor(Math.random() * ready.length)];
     state.unlocked.push(next.id);
     state.waiting.push(next.id); // the Head Witch or Wizard will come and tell you
     writeSave(player);
   }
+}
+
+// What the Adventures pop-up says about getting the next one.
+function nextAdventureNote() {
+  const state = player.adventures;
+  const locked = GAME_DATA.adventureList.filter(function (a) { return !adventureUnlocked(a.id); });
+  if (locked.length === 0) return "";
+  if (state.unlocked.length < adventuresEarned()) {
+    return " You've earned a new adventure! Carry the right thing to unlock it: " +
+      locked.map(function (a) { return keyName(a); }).join(", or ") + ".";
+  }
+  const every = GAME_DATA.adventureGuide.unlockEverySkills;
+  const toNext = every - (skillsTotal() % every);
+  return " Earn " + toNext + " more Skill" + (toNext === 1 ? "" : "s") + " (🎓 at the top) for a new adventure.";
+}
+
+// "a Crystal Fish" or "5 Apples".
+function keyName(adventure) {
+  const key = adventure.unlockItem;
+  const item = findItem(key.item) || findFish(key.item) || findFruit(key.item); // a shop item, a fish or a fruit
+  return (key.count === 1 ? "a " + item.name : key.count + " " + item.name + "s");
 }
 
 // ---------------------------------------------------------------- the Head Witch and Wizard
@@ -132,13 +162,9 @@ setInterval(maybeShowGuide, 3000);
 function openAdventuresPanel() {
   unlockAdventures();
   const state = player.adventures;
-  const every = GAME_DATA.adventureGuide.unlockEverySkills;
-  const toNext = every - (skillsTotal() % every);
-  const more = state.unlocked.length < GAME_DATA.adventureList.length
-    ? " Earn " + toNext + " more Skill" + (toNext === 1 ? "" : "s") + " (🎓 at the top) for a new adventure."
-    : "";
+  const more = nextAdventureNote();
   const body = openInfoPanel("🗺️", "Your Adventures",
-    (state.unlocked.length ? "Click an adventure to remember where to go." : "You haven't earned any adventures yet.") + more);
+    (state.unlocked.length ? "Click an adventure to remember where to go." : "No adventures yet.") + more);
   state.unlocked.forEach(function (id) { body.appendChild(adventureCard(findAdventure(id))); });
 }
 

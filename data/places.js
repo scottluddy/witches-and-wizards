@@ -50,6 +50,29 @@ GAME_DATA.places = [
   { "id": "disco_hall", "name": "Disco Dance Hall", "type": "place", "in": "village", "x": 58, "y": 80,
     "description": "A dance floor under a big disco ball, and a piano. If you can play the piano, play a song and everyone dances!" },
   { "id": "hall_piano", "name": "Piano", "type": "piano", "in": "disco_hall", "x": 27, "y": 62 },
+  // The Multi-House (Scott, 2026-10-14): six floors, reached by an elevator that
+  // only shows floor numbers, so you have to find out what's on each floor.
+  // "floors" lists them from Floor 1 up; null is a floor not drawn yet. Each
+  // floor's drawn floor list is the elevator back (type "elevator"). Where it
+  // lives isn't decided: the Village for now.
+  { "id": "multi_house", "name": "Multi-House", "type": "place", "in": "village", "x": 66, "y": 22,
+    "floors": ["multi_dance", "multi_coaster", null, null, "multi_jewelry", null] },
+  { "id": "multi_dance", "name": "Dance Floor", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
+    "danceFloor": { "ball": [48, 15], "dancers": [
+      { "emoji": "💃", "x": 42, "y": 50 }, { "emoji": "🕺", "x": 54, "y": 44 }, { "emoji": "💃", "x": 64, "y": 52 },
+      { "emoji": "🕺", "x": 46, "y": 70 }, { "emoji": "🧚", "x": 58, "y": 66 }, { "emoji": "💃", "x": 68, "y": 74 } ] },
+    "description": "Floor 1: a dance floor with a big disco ball and a piano." },
+  { "id": "multi_dance_piano", "name": "Piano", "type": "piano", "in": "multi_dance", "x": 22, "y": 62 },
+  { "id": "multi_dance_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_dance", "x": 77, "y": 80 },
+  { "id": "multi_coaster", "name": "Roller Coaster", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
+    "description": "Floor 2: a twisty roller coaster! Hop in the car at the start. Bring a pet in your backpack to ride together." },
+  { "id": "coaster_ride", "name": "Ride", "type": "coaster", "in": "multi_coaster", "x": 39, "y": 88 },
+  { "id": "multi_coaster_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_coaster", "x": 87, "y": 86 },
+  { "id": "multi_jewelry", "name": "Jewelry Shop", "type": "place", "in": "village", "hidden": true, "building": "multi_house", "shelf": "Jewelry",
+    "description": "Floor 5: necklaces and bracelets with sparkly stones. The jeweler smiles from the counter." },
+  { "id": "jeweler", "name": "Jeweler", "type": "person", "in": "multi_jewelry", "x": 46, "y": 60,
+    "says": "Welcome to the Jewelry Shop! Every piece is made with a real gemstone. Have a look!" },
+  { "id": "multi_jewelry_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_jewelry", "x": 84, "y": 82 },
   { "id": "cafe", "name": "Cafe", "type": "place", "in": "village", "x": 40, "y": 70,
     "description": "Sit down for a proper meal. Click the menu to order; you eat it right here." },
   { "id": "cafe_menu", "name": "Menu", "type": "cafe", "in": "cafe", "x": 20, "y": 22, "menu": "Cafe Menu" },

@@ -10,8 +10,10 @@ GAME_DATA.celebrations = {
 };
 
 // Getting adventures (Scott, 2026-10-14). You start with none: every
-// "unlockEverySkills" Skills (skill Levels plus spells) earns a new one, picked
-// at random from the ones you don't have yet. The Head Witch and the Head
+// "unlockEverySkills" Skills (skill Levels plus spells) earns room for a new
+// one, and the adventure's "unlockItem" is its key: once you have both (the
+// Skills and the item carried in a bag), it unlocks. If you carry the keys to
+// more than one, one is picked at random. The Head Witch and the Head
 // Wizard take turns popping out to tell you about it; click them to hear where
 // to go. The adventure's real name and steps stay a secret until you find
 // whoever needs help. If you haven't started one, they come back to remind you
@@ -26,12 +28,14 @@ GAME_DATA.adventureGuide = {
   ]
 };
 
-// Every adventure. "hint" is what the Head Witch or Wizard tells you; "steps"
+// Every adventure. "unlockItem" is the item (and how many) you carry to
+// unlock it, in your backpack, cooler or fruit basket. "hint" is what the Head Witch or Wizard tells you; "steps"
 // show in the Adventures pop-up once you've found whoever needs help.
 // Doing one again is a bit harder (Scott): the Pixie's potion has fewer sips
 // (data/pixie.js), and each new unicorn comes out less often (data/unicorns.js).
 GAME_DATA.adventureList = [
   { "id": "pixie", "name": "The Pixie's Lost Treasure", "emoji": "🧚",
+    "unlockItem": { "item": "fish_crystal", "count": 1 },
     "hint": "Head to the Forest and find a pixie who needs your help. She flies to a different place every few minutes, so look carefully!",
     "steps": [
       "Bring the Pixie a Crystal Fish for a Finding Potion",
@@ -41,6 +45,7 @@ GAME_DATA.adventureList = [
       "Give it back to the Pixie"
     ] },
   { "id": "unicorn", "name": "Reunite the Unicorn", "emoji": "🦄",
+    "unlockItem": { "item": "fruit_apple", "count": 5 },
     "hint": "Go to the Unicorn Meadow in the Meadows. Someone shy is hiding in the trees. Bring apples!",
     "steps": [
       "Spot the unicorn when it peeks out from behind a tree",

@@ -971,5 +971,32 @@
         87
       ]
     ]
+  },
+  "place_multi_coaster": {
+    "rotate": 180,
+    "crop": [
+      3,
+      8,
+      96,
+      92
+    ]
+  },
+  "place_multi_jewelry": {
+    "rotate": 180,
+    "crop": [
+      6,
+      9,
+      94,
+      93
+    ]
+  },
+  "place_multi_dance": {
+    "rotate": 90,
+    "crop": [
+      3,
+      9,
+      97,
+      96
+    ]
   }
 }

@@ -163,14 +163,17 @@ function playedKey(i) {
 
 // ---------------------------------------------------------------- the Disco Dance Hall
 
-// Called by showPlace for every place: only the Disco Dance Hall has a dance floor.
+// Called by showPlace for every place. The Disco Dance Hall has a dance floor
+// (its disco ball and dancers are in data/music.js); another place can have
+// one too with "danceFloor": { "ball": [x, y], "dancers": [...] } (the
+// Multi-House's Floor 1).
 function showDanceFloor(place) {
   const floor = document.getElementById("dance-floor");
   floor.innerHTML = "";
   floor.className = "";
-  floor.hidden = place.id !== "disco_hall";
+  const music = place.danceFloor || (place.id === "disco_hall" ? GAME_DATA.music : null);
+  floor.hidden = !music;
   if (floor.hidden) return;
-  const music = GAME_DATA.music;
   const glow = document.createElement("div");
   glow.className = "disco-glow";
   glow.style.left = music.ball[0] + "%";

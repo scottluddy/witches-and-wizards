@@ -32,7 +32,7 @@ const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
-  pond: "🐢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
+  pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
 };
 
 function isDrawn(name) {
@@ -53,6 +53,7 @@ function goTo(id) {
   const place = findPlace(id);
   if (!place) return showMap("world");
   if (place.opens) return goTo(place.opens); // skip straight into the place it opens
+  if (place.floors) return openElevator(place); // a building's door opens on its elevator
   if (place.type === "map") showMap(id);
   else showPlace(id);
 }
@@ -334,6 +335,8 @@ function showPlace(id) {
     if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
     if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
     if (child.type === "look") return lookThrough(child);        // binoculars, below
+    if (child.type === "elevator") return openElevator(child);   // a building with floors, below
+    if (child.type === "coaster") return openCoaster();          // js/coaster.js
     if (child.type === "piano") return openPiano();              // js/music.js
     if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
     if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
@@ -363,6 +366,47 @@ function showPlace(id) {
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showScreen("screen-place");
+}
+
+// The elevator in a building with floors (the Multi-House, Scott 2026-10-14).
+// The building lists its floors in "floors", Floor 1 first; null is a floor
+// not built yet. Like the girls' floor legends, but only the numbers show:
+// you have to ride up and find out what's on each floor. Floor 6 is at the
+// top and a star marks the floor you're on. "place" is the building itself
+// (you're outside) or an elevator spot inside it.
+function openElevator(place, message) {
+  const building = place.floors ? place : findPlace(place.building);
+  const body = openInfoPanel("🛗", building.name + " Elevator", message || "Which floor?");
+  const list = document.createElement("div");
+  list.className = "elevator-floors";
+  for (let floor = building.floors.length; floor >= 1; floor--) {
+    list.appendChild(floorButton(building, floor));
+  }
+  const exit = document.createElement("button");
+  exit.className = "big-button";
+  exit.textContent = "🚪 Exit";
+  exit.addEventListener("click", function () {
+    document.getElementById("info-panel").hidden = true;
+    goTo(building.in);
+  });
+  list.appendChild(exit);
+  body.appendChild(list);
+}
+
+function floorButton(building, floor) {
+  const placeId = building.floors[floor - 1];
+  const button = document.createElement("button");
+  button.className = "big-button secondary";
+  const here = placeId && placeId === player.at;
+  button.textContent = "Floor " + floor + (here ? " ★" : "");
+  button.disabled = here;
+  button.addEventListener("click", function () {
+    // A floor nobody has drawn yet: the doors open on an empty floor.
+    if (!placeId) return openElevator(building, "🚧 Floor " + floor + " is still being built. Try another floor!");
+    document.getElementById("info-panel").hidden = true;
+    goTo(placeId);
+  });
+  return button;
 }
 
 // A spot you look through, like Windy Peak's binoculars: shows a picture

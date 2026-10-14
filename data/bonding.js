@@ -7,6 +7,7 @@
 //   turtles     swimming at any water, with bonus points if a (very rare) turtle run happens
 //   belugas     swim in the lake from the Dock or Pebble Beach
 //   jellyfish   clean their tanks at the Fish Hut
+//   any pet     rides the roller coaster in the Multi-House with you
 //   dogs and wolves         walks, runs and tricks at the Pet Training Field (no dogs yet!)
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
@@ -35,6 +36,8 @@ GAME_DATA.bonding = {
   "bath": { "points": 1, "everyMinutes": 5, "animals": ["capybara"] },
   "cuddle": { "points": 1, "everyMinutes": 5, "animals": ["cat"] },
   "fly": { "points": 1, "everyMinutes": 5, "pets": ["pet_owl"] },
+  // Any pet can ride the Multi-House roller coaster with you (data/coaster.js).
+  "coaster": { "points": 1, "everyMinutes": 5 },
 
   "falconry": { "points": 1, "everyMinutes": 5, "animals": ["owl"], "from": "backpack",
     "title": "Falconry Lesson", "emoji": "🦉", "button": "🦉 Fly to your glove", "done": "🪶 Resting. Ready again in ",

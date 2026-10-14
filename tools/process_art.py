@@ -566,7 +566,8 @@ def main():
         kind = "map" if place["type"] == "map" else "place"
         if f"{kind}_{place['id']}" in drawn:
             continue
-        children = [p for p in places if p.get("in") == place["id"] and p["type"] in ("map", "place")]
+        # Hidden places (like the Multi-House's floors) aren't on the map.
+        children = [p for p in places if p.get("in") == place["id"] and p["type"] in ("map", "place") and not p.get("hidden")]
         if kind == "map":
             placeholder_map(place, children)
         else:

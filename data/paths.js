@@ -16,6 +16,7 @@ GAME_DATA.paths = [
   { "from": "store", "to": "disco_hall", "via": [[56, 60]] },
   { "from": "home",  "to": "cafe",   "via": [] },
   { "from": "store", "to": "dress_shop", "via": [[36, 36]] },
+  { "from": "store", "to": "multi_house", "via": [[58, 30]] },
 
   // Forest
   { "from": "crafting_cabin", "to": "old_oak",   "via": [[38, 22], [45, 17]] },
