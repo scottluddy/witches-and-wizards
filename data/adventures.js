@@ -5,5 +5,6 @@
 //   picture   the drawing shown when that kind of adventure is done
 GAME_DATA.celebrations = {
   "reuniting": { "picture": "celebrate_birds",   "name": "Love birds" },  // bringing families back together
-  "aquatic":   { "picture": "celebrate_narwhal", "name": "Narwhal" }      // any water adventure (none yet)
+  "aquatic":   { "picture": "celebrate_narwhal", "name": "Narwhal" },     // any water adventure (none yet)
+  "quest":     { "picture": "celebrate_quest",   "name": "Quest" }        // finding something lost, like the Pixie's acorn (not drawn yet)
 };

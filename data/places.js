@@ -128,7 +128,7 @@ GAME_DATA.places = [
   { "id": "troll_bridge", "name": "Troll Bridge", "type": "place", "in": "forest", "hidden": true, "x": 50, "y": 95,
     "description": "A troll lives under this bridge. Answer its riddle to cross to the Pond House." },
   { "id": "riddle_troll", "name": "Troll", "type": "riddle", "in": "troll_bridge", "x": 47, "y": 65 },
-  { "id": "cross_bridge", "name": "Cross the bridge", "type": "bridge", "in": "troll_bridge", "x": 50, "y": 20, "to": "pond_house" },
+  { "id": "cross_bridge", "name": "Secret Pathway", "type": "bridge", "in": "troll_bridge", "x": 50, "y": 20, "to": "pond_house" },
   { "id": "pond_house", "name": "Pond House", "type": "place", "in": "troll_bridge", "hidden": true, "x": 50, "y": 20,
     "description": "A little flower house by a pond. Something lives in the pond..." },
   { "id": "pond_swim", "name": "Swim", "type": "care", "care": "swim", "in": "pond_house", "x": 22, "y": 62 },

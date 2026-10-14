@@ -318,7 +318,7 @@ function showPlace(id) {
     if (child.type === "selling") return openGemsShelf();          // js/trading.js
     if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
     if (child.type === "bath") return openBath();                // js/bonding.js
-    if (child.type === "cuddle") return openCuddle();            // js/bonding.js
+    if (child.type === "cuddle") return openCuddle(acornClue(child.id).trim() || undefined); // js/bonding.js (the Pond House couch may hide a clue, js/pixie.js)
     if (child.type === "cafe") return openCafe(child);           // js/cafe.js
     if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
     if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js

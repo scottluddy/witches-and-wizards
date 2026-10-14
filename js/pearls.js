@@ -75,13 +75,13 @@ function foundPearl(i) {
 }
 
 // A little picture that pops up where you clicked, then fades away.
-function showSplash(x, y, emoji) {
+function showSplash(x, y, emoji, box) {
   const splash = document.createElement("span");
   splash.className = "pearl-splash";
   splash.textContent = emoji;
   splash.style.left = x + "%";
   splash.style.top = y + "%";
-  document.getElementById("place-pearls").appendChild(splash);
+  (box || document.getElementById("place-pearls")).appendChild(splash);
   setTimeout(function () { splash.remove(); }, 1500);
   return splash;
 }
