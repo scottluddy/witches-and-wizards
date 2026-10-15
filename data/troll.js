@@ -7,7 +7,7 @@
 //   emoji     shown if neither picture is there
 GAME_DATA.troll = {
   "name": "Troll",
-  "steals": [1, 3],
+  "steals": [1, 2], // was 1 to 3; Crystals are rarer now (Scott, 2026-10-15), so the troll takes a little less
   "photo": "art/troll/troll_photo.jpg",
   "emoji": "👹"
 };

@@ -20,7 +20,7 @@ function trollArt() {
   return img;
 }
 
-// Wake the troll: it takes 1 to 3 Crystals (but only what you have).
+// Wake the troll: it takes a few Crystals ("steals" in data/troll.js, but only what you have).
 // If you're lucky (js/luck.js), it may stay asleep and take nothing.
 function wakeTroll(whereText) {
   const range = GAME_DATA.troll.steals;

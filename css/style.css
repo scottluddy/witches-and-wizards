@@ -1304,3 +1304,72 @@ body.holding-apple, body.holding-apple * {
 .acorn-found .big-button { position: relative; transition: opacity 0.5s; }
 .acorn-sparkle { position: absolute; font-size: 2.4rem; animation: twinkle 1.6s ease-in-out infinite alternate; }
 @keyframes twinkle { from { opacity: 0.1; transform: scale(0.6); } to { opacity: 1; transform: scale(1.2); } }
+
+/* Brewing a spell in the cauldron (js/spells.js). */
+.brew { text-align: center; }
+.brew-says { min-height: 3em; font-size: 1.2rem; margin: 6px 0 10px; }
+.brew-stage { display: flex; align-items: flex-end; justify-content: center; gap: 28px; margin-bottom: 12px; }
+.brew-thermometer {
+  position: relative; width: 26px; height: 220px;
+  border: 3px solid #5a3d2b; border-radius: 14px; background: #fff8ec; overflow: hidden;
+}
+.brew-green { position: absolute; left: 0; right: 0; background: rgba(80, 190, 90, 0.45); }
+.brew-heat {
+  position: absolute; left: 4px; right: 4px; bottom: 0; border-radius: 8px;
+  background: #4fa3e0; transition: height 0.1s linear, background 0.3s;
+}
+.brew-heat.good { background: #3cb04b; }
+.brew-heat.hot { background: #e0301e; }
+.cauldron { position: relative; width: 200px; height: 220px; --bubble: 0; }
+.cauldron-pot {
+  position: absolute; left: 10px; right: 10px; bottom: 50px; height: 140px;
+  background: radial-gradient(circle at 35% 30%, #5a5a6a, #1e1e28 70%);
+  border-radius: 20px 20px 90px 90px; overflow: hidden;
+  box-shadow: inset 0 -10px 20px rgba(0, 0, 0, 0.6);
+}
+.cauldron-pot::before { /* the rim */
+  content: ""; position: absolute; left: -6px; right: -6px; top: 0; height: 16px;
+  background: #2b2b36; border-radius: 10px;
+}
+.cauldron-brew {
+  position: absolute; left: 8px; right: 8px; top: 12px; height: 26px; border-radius: 50%;
+  background: #3a3a48; transition: background 0.6s;
+}
+.cauldron.has-crystal .cauldron-brew { background: radial-gradient(circle, #8fd8ff, #3a3a48 60%); }
+.cauldron.lit .cauldron-brew {
+  background: radial-gradient(circle, #c8ff9a, #6fcf4f 60%, #3c8f2c);
+  animation: bubbling calc(1.4s - var(--bubble) * 1s) ease-in-out infinite alternate;
+}
+@keyframes bubbling { from { transform: scaleY(1); } to { transform: scaleY(1.35) translateY(-3px); } }
+.cauldron-pot.splash .cauldron-brew { animation: splash-in 0.5s; }
+@keyframes splash-in { 40% { transform: scale(1.2, 1.8) translateY(-8px); } }
+.cauldron-fire {
+  position: absolute; left: 50%; bottom: 0; width: 120px; height: 55px; transform: translateX(-50%);
+  opacity: 0; transition: opacity 0.5s;
+  background: radial-gradient(ellipse at 50% 100%, #ffd84d, #ff7a1a 45%, transparent 72%);
+}
+.cauldron.lit .cauldron-fire { opacity: calc(0.4 + var(--bubble) * 0.6); animation: flicker 0.3s ease-in-out infinite alternate; }
+.cauldron-fire.whoosh { animation: whoosh 0.5s; }
+@keyframes whoosh { 50% { transform: translateX(-50%) scale(1.4, 1.8); } }
+.cauldron-steam { position: absolute; left: 0; right: 0; top: -30px; height: 60px; opacity: 0; pointer-events: none; }
+.cauldron-steam::before, .cauldron-steam::after {
+  content: "☁️"; position: absolute; font-size: 2.6rem; left: 30%; animation: steam-up 1.6s ease-out infinite;
+}
+.cauldron-steam::after { left: 55%; animation-delay: 0.8s; }
+@keyframes steam-up { from { transform: translateY(30px) scale(0.6); opacity: 0.9; } to { transform: translateY(-40px) scale(1.3); opacity: 0; } }
+.cauldron.done .cauldron-steam { opacity: 1; }
+.cauldron.boiled-over .cauldron-brew { background: #6fcf4f; transform: scale(1.4, 2.4); }
+.cauldron.boiled-over .cauldron-pot { overflow: visible; }
+.cauldron.boiled-over .cauldron-pot::after { /* the spill */
+  content: ""; position: absolute; left: -20px; right: -20px; bottom: -48px; height: 24px;
+  background: #6fcf4f; border-radius: 50%;
+}
+.brew-book { font-size: 4rem; transition: filter 0.6s; }
+.brew-book.glowing { filter: drop-shadow(0 0 16px gold) drop-shadow(0 0 6px gold); }
+.spell-flying {
+  position: absolute; left: 50%; top: 20px; font-size: 3.4rem; transform: translateX(-50%);
+  transition: transform 1.2s ease-in-out; animation: acorn-pop 0.8s;
+}
+.brew-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.brew-thing { display: inline-flex; align-items: center; gap: 6px; }
+.brew-thing img { height: 32px; width: auto; }

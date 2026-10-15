@@ -73,7 +73,7 @@ GAME_DATA.metrics = [
   { "name": "Adventure Points", "shows": "Adventure ☆☆☆", "inGame": true,
     "earn": "Adventures: so far, reuniting a blind unicorn with its family.", "use": "3 of them (with other things) raise your Level." },
   { "name": "Crystals", "shows": "💎", "inGame": true,
-    "earn": "Digging at the Crystal Dig Spot and mining in the Crystal Cave.", "use": "Buying things priced in Crystals, like dresses, and making spells." },
+    "earn": "Digging at the Crystal Dig Spot and mining in the Crystal Cave.", "use": "Making spells: every spell needs one Crystal, its magic spark (Scott, 2026-10-15)." },
   { "name": "Gems", "shows": "the girls' gem drawing", "inGame": true,
     "earn": "Fishing, digging at Pebble Beach, the Solve to Dance puzzle, and selling on the Trading Post's Gems shelf.", "use": "Buying things priced in gems (pets, potions, brooms, snacks), using a pickaxe, and making spells." },
   { "name": "Fish caught", "shows": "(not shown yet)", "inGame": true,

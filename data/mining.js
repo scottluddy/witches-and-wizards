@@ -19,13 +19,15 @@
 //   marksShown     how many dug spots stay marked on the wall (Scott: the last 3,
 //                  so you can't just work through every square in order)
 //   pickSeconds    how long one swing of the pickaxe takes
-// Squares, crystals and troll are Scott's numbers (2026-10-10); the grid size is Claude's guess.
+// Squares, crystals and troll are Scott's numbers (2026-10-10; Scott,
+// 2026-10-15: Crystals a third as easy to get, so 2 crystal squares, not 5);
+// the grid size is Claude's guess.
 GAME_DATA.mining = {
   "place": "cave",
   "area": [4, 6, 94, 92],
   "columns": 8,
   "rows": 7,
-  "crystalSquares": 5,
+  "crystalSquares": 2,
   "boneSquares": 9,
   "trollSquares": 1,
   "crystals": 1,

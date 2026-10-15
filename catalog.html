@@ -339,39 +339,39 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "62"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=62"></script>
-  <script src="data/places.js?v=62"></script>
-  <script src="data/items.js?v=62"></script>
-  <script src="data/ideas.js?v=62"></script>
-  <script src="data/fish.js?v=62"></script>
-  <script src="data/digging.js?v=62"></script>
-  <script src="data/mining.js?v=62"></script>
-  <script src="data/troll.js?v=62"></script>
-  <script src="data/levels.js?v=62"></script>
-  <script src="data/luck.js?v=62"></script>
-  <script src="data/bonding.js?v=62"></script>
-  <script src="data/pearls.js?v=62"></script>
-  <script src="data/skills.js?v=62"></script>
-  <script src="data/sports.js?v=62"></script>
-  <script src="data/pixie.js?v=62"></script>
-  <script src="data/supplies.js?v=62"></script>
-  <script src="data/honey.js?v=62"></script>
-  <script src="data/gameplay.js?v=62"></script>
-  <script src="data/extras.js?v=62"></script>
-  <script src="data/hunger.js?v=62"></script>
-  <script src="data/orchard.js?v=62"></script>
-  <script src="data/dance.js?v=62"></script>
-  <script src="data/trading.js?v=62"></script>
-  <script src="data/unicorns.js?v=62"></script>
-  <script src="data/adventures.js?v=62"></script>
-  <script src="data/spells.js?v=62"></script>
-  <script src="data/furniture.js?v=62"></script>
-  <script src="data/next_steps.js?v=62"></script>
-  <script src="data/logic.js?v=62"></script>
-  <script src="data/chores.js?v=62"></script>
-  <script src="data/music.js?v=62"></script>
-  <script src="data/drawn.js?v=62"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "63"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=63"></script>
+  <script src="data/places.js?v=63"></script>
+  <script src="data/items.js?v=63"></script>
+  <script src="data/ideas.js?v=63"></script>
+  <script src="data/fish.js?v=63"></script>
+  <script src="data/digging.js?v=63"></script>
+  <script src="data/mining.js?v=63"></script>
+  <script src="data/troll.js?v=63"></script>
+  <script src="data/levels.js?v=63"></script>
+  <script src="data/luck.js?v=63"></script>
+  <script src="data/bonding.js?v=63"></script>
+  <script src="data/pearls.js?v=63"></script>
+  <script src="data/skills.js?v=63"></script>
+  <script src="data/sports.js?v=63"></script>
+  <script src="data/pixie.js?v=63"></script>
+  <script src="data/supplies.js?v=63"></script>
+  <script src="data/honey.js?v=63"></script>
+  <script src="data/gameplay.js?v=63"></script>
+  <script src="data/extras.js?v=63"></script>
+  <script src="data/hunger.js?v=63"></script>
+  <script src="data/orchard.js?v=63"></script>
+  <script src="data/dance.js?v=63"></script>
+  <script src="data/trading.js?v=63"></script>
+  <script src="data/unicorns.js?v=63"></script>
+  <script src="data/adventures.js?v=63"></script>
+  <script src="data/spells.js?v=63"></script>
+  <script src="data/furniture.js?v=63"></script>
+  <script src="data/next_steps.js?v=63"></script>
+  <script src="data/logic.js?v=63"></script>
+  <script src="data/chores.js?v=63"></script>
+  <script src="data/music.js?v=63"></script>
+  <script src="data/drawn.js?v=63"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -541,8 +541,8 @@
         ]));
       });
       document.getElementById("cave-finds").appendChild(card("Troll", "troll", "👹", [
-        el("span", "price", "Steals 1 to 5 Crystals"),
-        el("span", "kind", "Sleeps in " + mining.trollSquares + " cave square, and wakes on 20% of digs at the Crystal Dig Spot. Drawn by the girls.")
+        el("span", "price", "Steals " + GAME_DATA.troll.steals[0] + " to " + GAME_DATA.troll.steals[1] + " Crystals"),
+        el("span", "kind", "Sleeps in " + mining.trollSquares + " cave square, and wakes on " + GAME_DATA.digging.trollChance + "% of digs at the Crystal Dig Spot. Drawn by the girls.")
       ]));
       document.getElementById("cave-finds").appendChild(card("Pickaxe rack", "mine_pickaxes", "⛏️", [
         el("span", "kind", "Stands to the right of the Crystal Cave. Using a pickaxe costs " + mining.pickaxeGems +
@@ -1058,7 +1058,8 @@
       if (mining) addRow("logic-spend", ["Crystal Cave: pickaxe rack", "Gems", "1 pickaxe for one visit", String(mining.pickaxeGems)], [3]);
       (GAME_DATA.spells || []).forEach(function (spell) {
         const money = spell.needs.filter(function (n) { return n.money; }).map(function (n) { return n.count + " " + n.money; }).join(" and ");
-        addRow("logic-spend", ["Crafting Table: " + spell.name, "Crystals and Gems", "plus materials", money], []);
+        const rent = GAME_DATA.cauldron ? GAME_DATA.cauldron.rentGems + " gems to rent the cauldron, and " : "";
+        addRow("logic-spend", ["Crafting Table: " + spell.name, "Crystals and Gems", "plus a potion and materials", rent + money], []);
       });
     })();
 

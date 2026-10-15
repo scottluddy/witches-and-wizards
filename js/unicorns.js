@@ -223,7 +223,7 @@ function openUnicorn(message) {
     [true, "Spot it when it comes out from behind the trees"],
     [unicorn.trusted || holdingApple(), "Hold an apple: open your 🧺 basket and click ✋ Hold"],
     [unicorn.trusted, "Click the unicorn to feed it the apple, so it trusts you"],
-    [unicorn.canSee, "Cast the " + spell + " on it" + (knowsSpell(u.spell) ? "" : " (make it at the Crafting Table in the Crafting Cabin first)")],
+    [unicorn.canSee, "Cast the " + spell + " on it" + (knowsSpell(u.spell) ? "" : " (brew it in the cauldron at the Crafting Table in the Crafting Cabin first)")],
     [false, more + ", one at a time, to give it the strength to find its family"]
   ];
   const list = document.createElement("ol");
