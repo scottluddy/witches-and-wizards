@@ -1373,3 +1373,7 @@ body.holding-apple, body.holding-apple * {
 .brew-buttons { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .brew-thing { display: inline-flex; align-items: center; gap: 6px; }
 .brew-thing img { height: 32px; width: auto; }
+
+/* The 🧪 Test Tools pop-up (js/testing.js): buttons wrap onto several rows. */
+.test-tools { flex-wrap: wrap; justify-content: center; }
+.test-tools .big-button { font-size: 1rem; padding: 8px 14px; }

@@ -18,6 +18,7 @@ function showScreen(id) {
 function updateStatus() {
   showHolding(); // the apple in your hand, if any (js/unicorns.js)
   if (!player) return;
+  showTestButton(); // the 🧪 Test button, in a test game (js/testing.js)
   const character = findCharacter(player.characterId);
   document.getElementById("status-character").textContent = character ? character.name : "?";
   document.getElementById("status-player").textContent = "(" + player.playerName + ")";
@@ -103,7 +104,7 @@ function fillSavedGames() {
 
 function saveName(save) {
   const character = findCharacter(save.characterId);
-  return save.playerName + " as " + (character ? character.name : "?") + ", " + levelLabel(save);
+  return (save.tester ? "🧪 " : "") + save.playerName + " as " + (character ? character.name : "?") + ", " + levelLabel(save);
 }
 
 function whenSaved(save) {
@@ -213,8 +214,10 @@ document.getElementById("btn-start").addEventListener("click", function () {
   const name = document.getElementById("player-name").value.trim();
   if (!chosenCharacterId || !chosenKind || !name) return;
   player = newPlayer(name, chosenCharacterId, chosenKind);
+  if (isTestCode(name)) makeTester(player); // the secret code makes a test game (js/testing.js)
   writeSave(player);
   goTo(player.at);
+  if (!player.tester) tellWelcome(0); // the Head Witch or Wizard gets you started (js/story.js)
 });
 
 document.getElementById("btn-select-back").addEventListener("click", showTitle);

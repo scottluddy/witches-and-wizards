@@ -166,6 +166,11 @@ function openAdventuresPanel() {
   const body = openInfoPanel("🗺️", "Your Adventures",
     (state.unlocked.length ? "Click an adventure to remember where to go." : "No adventures yet.") + more);
   state.unlocked.forEach(function (id) { body.appendChild(adventureCard(findAdventure(id))); });
+  const again = document.createElement("button");
+  again.className = "big-button secondary";
+  again.textContent = "📜 Hear the welcome again";
+  again.addEventListener("click", function () { tellWelcome(0); }); // js/story.js
+  body.appendChild(again);
 }
 
 // One adventure: just its hint until you've found whoever needs help, then

@@ -23,8 +23,8 @@ GAME_DATA.adventureGuide = {
   "reminderMinutes": 5,
   "staySeconds": 20,
   "guides": [
-    { "name": "Head Witch",  "picture": "head_witch",  "emoji": "🧙‍♀️" },
-    { "name": "Head Wizard", "picture": "head_wizard", "emoji": "🧙‍♂️" }
+    { "name": "Head Witch",  "kind": "witch",  "picture": "head_witch",  "emoji": "🧙‍♀️" },
+    { "name": "Head Wizard", "kind": "wizard", "picture": "head_wizard", "emoji": "🧙‍♂️" }
   ]
 };
 
