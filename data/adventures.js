@@ -34,6 +34,8 @@ GAME_DATA.adventureGuide = {
 // show in the Adventures pop-up once you've found whoever needs help.
 // Doing one again is a bit harder (Scott): the Pixie's potion has fewer sips
 // (data/pixie.js), and each new unicorn comes out less often (data/unicorns.js).
+// "drawings" lists the pictures an adventure uses, so the catalog's Still to
+// Draw page can show what each adventure is still waiting for.
 GAME_DATA.adventureList = [
   { "id": "pixie", "name": "The Pixie's Lost Treasure", "emoji": "🧚",
     "unlockItem": { "item": "fish_crystal", "count": 1 },
@@ -44,6 +46,16 @@ GAME_DATA.adventureList = [
       "Answer his riddles to win the 3 pieces of his map, then put them in order",
       "Follow the Secret Pathway to the Pond House and find the acorn",
       "Give it back to the Pixie"
+    ],
+    "drawings": [
+      { "what": "The Pixie", "file": "pixie" },
+      { "what": "The troll", "file": "troll" },
+      { "what": "Troll Bridge", "file": "place_troll_bridge" },
+      { "what": "Pond House", "file": "place_pond_house" },
+      { "what": "Inside the Pond House", "file": "place_pond_house_inside" },
+      { "what": "Golden Acorn", "file": "quest_golden_acorn" },
+      { "what": "Pond Turtle", "file": "pet_pond_turtle" },
+      { "what": "Finding Potion", "file": "potion_finding" }
     ] },
   { "id": "unicorn", "name": "Reunite the Unicorn", "emoji": "🦄",
     "unlockItem": { "item": "fruit_apple", "count": 5 },
@@ -53,6 +65,11 @@ GAME_DATA.adventureList = [
       "Hold an apple and click it so it trusts you",
       "Cast the Seeing Spell on it",
       "Feed it more apples, one at a time"
+    ],
+    "drawings": [
+      { "what": "Unicorn Meadow", "file": "place_unicorn_meadow" },
+      { "what": "The blind unicorn", "file": "extra_unicorn" },
+      { "what": "Apple", "file": "fruit_apple" }
     ] },
   // Lost on Windy Peak (Scott, 2026-10-15; data/windy.js). Unlocked by letting your
   // Snowy Owl fly at Windy Peak while you own a Night Vision Potion, not by Skills.
@@ -63,5 +80,12 @@ GAME_DATA.adventureList = [
       "Find where they are",
       "Bring them somewhere warm",
       "Warm them up"
+    ],
+    "drawings": [
+      { "what": "The ski slope seen from the top (it gets cut into 48 pieces, so a few landmarks help)", "file": "place_ski_slope" },
+      { "what": "The little lost WIT", "file": "extra_little_wit" },
+      { "what": "Snowy Owl", "file": "pet_owl" },
+      { "what": "Night Vision Potion", "file": "potion_night_vision" },
+      { "what": "Snowy Hut", "file": "place_hut" }
     ] }
 ];

@@ -578,7 +578,8 @@ h2 {
 .furniture {
   position: absolute;
   object-fit: fill;
-  pointer-events: none;     /* only grabbable while rearranging */
+  pointer-events: auto;     /* drag any piece to move it */
+  cursor: grab;
   user-select: none;
   touch-action: none;       /* so dragging on a tablet doesn't scroll the page */
 }
@@ -587,24 +588,8 @@ h2 {
 .furniture.holds { pointer-events: auto; cursor: pointer; }
 .furniture.holds:hover { filter: drop-shadow(0 0 6px var(--gold)); }
 
-.rearranging .furniture {
-  pointer-events: auto;
-  cursor: grab;
-  filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 10px var(--gold));
-  animation: glow 1.2s ease-in-out infinite alternate;
-}
-
-.rearranging .furniture.dragging { cursor: grabbing; z-index: 2; animation: none; }
-.rearranging #place-spots, .rearranging #place-items { pointer-events: none; opacity: 0.4; }
-
-@keyframes glow {
-  from { filter: drop-shadow(0 0 3px var(--gold)); }
-  to   { filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 12px var(--gold)); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rearranging .furniture { animation: none; }
-}
+.furniture:hover { filter: drop-shadow(0 0 4px var(--gold)); }
+.furniture.dragging { cursor: grabbing; z-index: 2; filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 12px var(--gold)); }
 
 .picture-tools {
   display: flex;
@@ -616,8 +601,6 @@ h2 {
 }
 
 .tiny-button { font-size: 0.9rem; padding: 4px 12px; box-shadow: 0 3px 0 var(--magic-dark); }
-.rearrange-note { font-size: 1rem; font-weight: 700; color: var(--magic-dark); }
-.rearrange-note[hidden] { display: none; }
 
 /* ---- chores ---- */
 
@@ -1058,14 +1041,24 @@ body.holding-apple, body.holding-apple * {
 .slope-view img { height: auto; display: block; object-fit: fill; transform: none; } /* whole slope, so the lantern lines up with the pieces */
 .slope-view.night img, #place-image.night { filter: brightness(0.15) saturate(0.3); }
 .slope-view.night-vision img, #place-image.night-vision { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(0.7); }
-.slope-lantern { position: absolute; transform: translate(-50%, -50%); font-size: 2.2rem;
-  text-shadow: 0 0 18px #ffe066, 0 0 8px #fff; animation: lantern-glow 1.2s ease-in-out infinite alternate; }
+.slope-glow { position: absolute; transform: translate(-50%, -50%); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 240, 150, 0.7), rgba(255, 240, 150, 0.25) 45%, transparent 70%);
+  animation: lantern-glow 1.2s ease-in-out infinite alternate; }
 @keyframes lantern-glow { from { opacity: 0.55; } to { opacity: 1; } }
-#place-windy { position: absolute; inset: 0; }
+#place-windy { position: absolute; inset: 0; pointer-events: none; } /* furniture underneath can still be moved */
+.slope-pieces, .hut-mug.draggable, .little-wit { pointer-events: auto; }
+/* The Snowy Owl glides down the slope, then circles: the circle turns and the owl turns back so it stays upright. */
+.slope-owl-circle { position: absolute; aspect-ratio: 1; transform: translate(-50%, -50%);
+  transition: left 2.5s ease-in-out, top 2.5s ease-in-out; animation: owl-circle 3s linear infinite; }
+.slope-owl { position: absolute; right: 0; top: 50%; font-size: 2.6rem; transform: translate(50%, -50%);
+  animation: owl-upright 3s linear infinite; filter: drop-shadow(0 0 8px #fff); }
+.slope-owl img { width: 3.5rem; height: auto; display: block; }
+@keyframes owl-circle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes owl-upright { from { transform: translate(50%, -50%) rotate(0deg); } to { transform: translate(50%, -50%) rotate(-360deg); } }
 #place-windy[hidden] { display: none; }
 .slope-pieces { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(3, 1fr); }
-.slope-piece { background: transparent; border: 2px dashed rgba(200, 220, 255, 0.45); border-radius: 14px;
-  font-size: 2.4rem; cursor: pointer; color: #fff; }
+.slope-piece { background: transparent; border: 1px dashed rgba(200, 220, 255, 0.4); border-radius: 10px;
+  font-size: 1.4rem; padding: 0; cursor: pointer; color: #fff; }
 .slope-piece:hover { background: rgba(255, 255, 255, 0.12); }
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } }
@@ -1075,8 +1068,11 @@ body.holding-apple, body.holding-apple * {
 .hut-wit-bubble { background: #fff; border: 2px solid #557; border-radius: 16px; padding: 6px 12px; font-size: 1.1rem; margin-bottom: 6px; }
 .hut-wit-face { font-size: 4rem; animation: shake 0.6s infinite; } /* shivering */
 .hut-wit-face img { width: 6rem; height: auto; }
-.hut-mug { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; cursor: grab; touch-action: none; user-select: none; }
-.hut-mug.dragging { cursor: grabbing; font-size: 3.6rem; }
+.hut-mug { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; touch-action: none; user-select: none; }
+.hut-mug img { width: 100%; height: auto; display: block; }
+.hut-mug.draggable { cursor: grab; }
+.hut-mug.draggable:hover { filter: drop-shadow(0 0 6px var(--gold)); }
+.hut-mug.dragging { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); }
 
 /* ---- Archery and soccer at the Stadium (js/sports.js) ---- */
 .archery-range, .soccer-field {

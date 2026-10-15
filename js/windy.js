@@ -43,6 +43,7 @@ function startWindyRescue() {
   player.windy.spot = Math.floor(Math.random() * rules.columns * rules.rows);
   player.windy.tries = 0;
   player.windy.looked = [];
+  player.windy.glow = nearArea(player.windy.spot, rules.glowNear); // the binoculars' faint glow
   if (!adventureUnlocked("windy")) player.adventures.unlocked.push("windy"); // js/adventures.js
   revealAdventure("windy");
   writeSave(player);
@@ -79,11 +80,13 @@ function nightVisionButton(item) {
   return button;
 }
 
-// One sip: you can see in the dark for your next look. The last sip uses up the potion.
+// One sip: you can see in the dark for your next look. The last sip uses up the
+// potion. Each sip the owl circles over a slightly different point near the little WIT.
 function sipNightVision() {
   const left = sipsLeft() - 1;
   player.windy.sips = left;
   player.windy.seeing = true;
+  player.windy.owlAt = nearArea(player.windy.spot, windyRules().owlNear);
   if (left === 0) removeOne(player.backpack, windyRules().potion); // js/items.js
   writeSave(player);
   if (player.at === windyRules().slope) showSlope();
@@ -114,13 +117,14 @@ function windyLook(spot) {
   view.alt = "The ski slope";
   lens.appendChild(view);
   if (seeing) {
-    const lantern = document.createElement("span");
-    lantern.className = "slope-lantern";
-    const at = areaCentre(player.windy.spot);
-    lantern.style.left = at.x + "%";
-    lantern.style.top = at.y + "%";
-    lantern.textContent = "🏮";
-    lens.appendChild(lantern);
+    // Not the exact spot: a faint glow from the lantern, somewhere near the little WIT.
+    const glow = document.createElement("span");
+    glow.className = "slope-glow";
+    if (!player.windy.glow) player.windy.glow = nearArea(player.windy.spot, rules.glowNear); // older saves
+    glow.style.left = player.windy.glow.x + "%";
+    glow.style.top = player.windy.glow.y + "%";
+    glow.style.width = rules.glowSize * 100 / rules.columns + "%";
+    lens.appendChild(glow);
   }
   document.getElementById("info-body").appendChild(lens);
   return true;
@@ -135,6 +139,18 @@ function areaCentre(area) {
   };
 }
 
+// A point up to "pieces" puzzle pieces away from the middle of an area, in percent.
+function nearArea(area, pieces) {
+  const rules = windyRules();
+  const at = areaCentre(area);
+  const angle = Math.random() * Math.PI * 2;
+  const away = Math.random() * pieces;
+  return {
+    x: Math.min(97, Math.max(3, at.x + Math.cos(angle) * away * 100 / rules.columns)),
+    y: Math.min(97, Math.max(3, at.y + Math.sin(angle) * away * 100 / rules.rows))
+  };
+}
+
 // ---------------------------------------------------------------- the slope
 
 // Windy Peak's "Ski down" spot: onto the dark slope during the rescue,
@@ -144,20 +160,21 @@ function windySkiDown(spot) {
   goTo(stage === "lost" || stage === "found" ? windyRules().slope : spot.to);
 }
 
-// Called by showPlace: the dark slope, or the little WIT in the Snowy Hut.
+// Called by showPlace (and after furniture moves): the dark slope, or the
+// Snowy Hut's mug (and the cold little WIT).
 function showWindy(place) {
   const box = document.getElementById("place-windy");
   const image = document.getElementById("place-image");
   box.innerHTML = "";
   image.classList.remove("night", "night-vision");
   const rules = windyRules();
-  box.hidden = !(place.id === rules.slope || (place.id === rules.hut && player.windy.stage === "cold"));
+  box.hidden = !place || (place.id !== rules.slope && place.id !== rules.hut);
   if (box.hidden) return;
   if (place.id === rules.slope) showSlope();
-  else showColdWit();
+  else showHut();
 }
 
-// The slope's 12 puzzle-piece areas over the dark picture.
+// The slope's 48 puzzle-piece areas over the dark picture.
 function showSlope() {
   const rules = windyRules();
   const state = player.windy;
@@ -168,8 +185,10 @@ function showSlope() {
   const pieces = document.createElement("div");
   pieces.className = "slope-pieces";
   pieces.style.gridTemplateColumns = "repeat(" + rules.columns + ", 1fr)";
+  pieces.style.gridTemplateRows = "repeat(" + rules.rows + ", 1fr)";
   for (let area = 0; area < rules.columns * rules.rows; area++) pieces.appendChild(slopePiece(area));
   box.appendChild(pieces);
+  if (state.seeing && state.stage === "lost") box.appendChild(slopeOwl());
   document.getElementById("place-description").textContent =
     findPlace(rules.slope).description + (state.stage === "lost" ? " " + "🔦".repeat(rules.tries - state.tries) : "");
 }
@@ -182,6 +201,35 @@ function slopePiece(area) {
   if (state.stage === "found" && area === state.spot) piece.appendChild(littleWitButton());
   else if (state.stage === "lost") piece.addEventListener("click", function () { lookInArea(area, piece); });
   return piece;
+}
+
+// Your Snowy Owl, seen with night vision: it flies down from the top of the
+// slope and circles over a point near the little WIT.
+function slopeOwl() {
+  const rules = windyRules();
+  const at = player.windy.owlAt || nearArea(player.windy.spot, rules.owlNear);
+  const circle = document.createElement("div");
+  circle.className = "slope-owl-circle";
+  circle.style.width = rules.owlCircle * 100 / rules.columns + "%";
+  circle.style.left = "50%";
+  circle.style.top = "-10%";
+  const owl = document.createElement("span");
+  owl.className = "slope-owl";
+  if (isDrawn(rules.owl)) {
+    const img = document.createElement("img");
+    img.src = picture(rules.owl);
+    img.alt = "Snowy Owl";
+    owl.appendChild(img);
+  } else owl.textContent = "🦉";
+  circle.appendChild(owl);
+  // Next frame: glide down to its circle (the move is a CSS transition).
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      circle.style.left = at.x + "%";
+      circle.style.top = at.y + "%";
+    });
+  });
+  return circle;
 }
 
 // One look into an area of the slope: you need to have had a sip.
@@ -241,11 +289,50 @@ function skiDownTogether() {
 
 // ---------------------------------------------------------------- the Snowy Hut
 
-// The little WIT shivering in the hut, and a hot chocolate on the table to
-// drag over to them.
-function showColdWit() {
-  const rules = windyRules();
+// The hut's hot chocolate mug on the Snack Table, and during the rescue the
+// little WIT shivering, waiting for you to drag the mug over to them.
+function showHut() {
   const box = document.getElementById("place-windy");
+  const mug = hutMug();
+  box.appendChild(mug);
+  if (player.windy.stage !== "cold") return;
+  const wit = showColdWit(box);
+  mug.classList.add("draggable");
+  dragMug(mug, wit, box);
+}
+
+// The girls' mug (cut out of the hut drawing), standing where the Snack Table is now.
+function hutMug() {
+  const spec = windyRules().mug;
+  const mug = document.createElement("span");
+  mug.className = "hut-mug";
+  if (isDrawn(spec.picture)) {
+    const img = document.createElement("img");
+    img.src = picture(spec.picture);
+    img.alt = "Hot Chocolate";
+    img.draggable = false;
+    mug.appendChild(img);
+    mug.style.width = spec.width + "%";
+  } else mug.textContent = "☕";
+  const moved = tableMoved(spec.table);
+  mug.dataset.x = spec.x + moved[0];
+  mug.dataset.y = spec.y + moved[1];
+  mug.style.left = mug.dataset.x + "%";
+  mug.style.top = mug.dataset.y + "%";
+  return mug;
+}
+
+// How far the table has been moved from where it was drawn: [across, down] in percent.
+function tableMoved(tableId) {
+  const table = (GAME_DATA.furniture || []).find(function (p) { return p.place === windyRules().hut && p.id === tableId; });
+  if (!table || roomPieces(table.place).indexOf(table) === -1) return [0, 0]; // js/furniture.js
+  const drawn = GAME_DATA.furnitureBoxes[table.place + "/" + table.id];
+  const now = pieceRect(table);
+  return [now[0] - drawn[0], now[1] - drawn[1]];
+}
+
+function showColdWit(box) {
+  const rules = windyRules();
   const wit = document.createElement("div");
   wit.className = "hut-wit";
   wit.style.left = rules.hutSpot.x + "%";
@@ -260,14 +347,7 @@ function showColdWit() {
   else face.appendChild(art);
   wit.append(bubble, face);
   box.appendChild(wit);
-
-  const mug = document.createElement("span");
-  mug.className = "hut-mug";
-  mug.textContent = "☕";
-  mug.style.left = rules.mugSpot.x + "%";
-  mug.style.top = rules.mugSpot.y + "%";
-  box.appendChild(mug);
-  dragMug(mug, wit, box);
+  return wit;
 }
 
 // Drag the mug with the mouse; let go on the little WIT to give it to them.
@@ -288,7 +368,9 @@ function dragMug(mug, wit, box) {
     const target = wit.getBoundingClientRect();
     const onWit = event.clientX >= target.left && event.clientX <= target.right &&
       event.clientY >= target.top && event.clientY <= target.bottom;
-    if (onWit) warmUpTogether();
+    if (onWit) return warmUpTogether();
+    mug.style.left = mug.dataset.x + "%"; // back to the table
+    mug.style.top = mug.dataset.y + "%";
   });
 }
 
@@ -298,7 +380,7 @@ function warmUpTogether() {
   player.windy.done++;
   player.windy.stage = ""; // the owl can spot another lost WIT next time
   writeSave(player);
-  document.getElementById("place-windy").hidden = true;
+  showWindy(findPlace(rules.hut)); // the mug goes back on the table
   openInfoPanel(celebrationArt("rescue", "☕🧒☕"), "Rescued!", // js/game.js
     rules.words.done.replace("POINTS", rules.adventurePoints));
 }

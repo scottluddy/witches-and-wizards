@@ -237,7 +237,7 @@
   <div class="subpage" data-page="to-draw" hidden>
     <a class="back-link" href="#">⬅ Back to the catalog</a>
     <h1>🖍️ Still to Draw</h1>
-    <p class="lede">Every picture still shown as a placeholder or an emoji. Places are sorted by territory, items by where they're sold.
+    <p class="lede">Every picture still shown as a placeholder or an emoji. Each adventure's missing pictures come first, then places sorted by territory and items by where they're sold.
       Save each drawing with the file name shown, then run the art script.</p>
     <div id="draw-jump" class="draw-jump"></div>
     <div id="steps-draw"></div>
@@ -357,40 +357,40 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "76"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=76"></script>
-  <script src="data/places.js?v=76"></script>
-  <script src="data/items.js?v=76"></script>
-  <script src="data/ideas.js?v=76"></script>
-  <script src="data/fish.js?v=76"></script>
-  <script src="data/digging.js?v=76"></script>
-  <script src="data/mining.js?v=76"></script>
-  <script src="data/troll.js?v=76"></script>
-  <script src="data/levels.js?v=76"></script>
-  <script src="data/luck.js?v=76"></script>
-  <script src="data/bonding.js?v=76"></script>
-  <script src="data/pearls.js?v=76"></script>
-  <script src="data/skills.js?v=76"></script>
-  <script src="data/sports.js?v=76"></script>
-  <script src="data/pixie.js?v=76"></script>
-  <script src="data/supplies.js?v=76"></script>
-  <script src="data/honey.js?v=76"></script>
-  <script src="data/gameplay.js?v=76"></script>
-  <script src="data/extras.js?v=76"></script>
-  <script src="data/hunger.js?v=76"></script>
-  <script src="data/orchard.js?v=76"></script>
-  <script src="data/dance.js?v=76"></script>
-  <script src="data/trading.js?v=76"></script>
-  <script src="data/unicorns.js?v=76"></script>
-  <script src="data/adventures.js?v=76"></script>
-  <script src="data/spells.js?v=76"></script>
-  <script src="data/furniture.js?v=76"></script>
-  <script src="data/next_steps.js?v=76"></script>
-  <script src="data/adventure_ideas.js?v=76"></script>
-  <script src="data/logic.js?v=76"></script>
-  <script src="data/chores.js?v=76"></script>
-  <script src="data/music.js?v=76"></script>
-  <script src="data/drawn.js?v=76"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "77"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=77"></script>
+  <script src="data/places.js?v=77"></script>
+  <script src="data/items.js?v=77"></script>
+  <script src="data/ideas.js?v=77"></script>
+  <script src="data/fish.js?v=77"></script>
+  <script src="data/digging.js?v=77"></script>
+  <script src="data/mining.js?v=77"></script>
+  <script src="data/troll.js?v=77"></script>
+  <script src="data/levels.js?v=77"></script>
+  <script src="data/luck.js?v=77"></script>
+  <script src="data/bonding.js?v=77"></script>
+  <script src="data/pearls.js?v=77"></script>
+  <script src="data/skills.js?v=77"></script>
+  <script src="data/sports.js?v=77"></script>
+  <script src="data/pixie.js?v=77"></script>
+  <script src="data/supplies.js?v=77"></script>
+  <script src="data/honey.js?v=77"></script>
+  <script src="data/gameplay.js?v=77"></script>
+  <script src="data/extras.js?v=77"></script>
+  <script src="data/hunger.js?v=77"></script>
+  <script src="data/orchard.js?v=77"></script>
+  <script src="data/dance.js?v=77"></script>
+  <script src="data/trading.js?v=77"></script>
+  <script src="data/unicorns.js?v=77"></script>
+  <script src="data/adventures.js?v=77"></script>
+  <script src="data/spells.js?v=77"></script>
+  <script src="data/furniture.js?v=77"></script>
+  <script src="data/next_steps.js?v=77"></script>
+  <script src="data/adventure_ideas.js?v=77"></script>
+  <script src="data/logic.js?v=77"></script>
+  <script src="data/chores.js?v=77"></script>
+  <script src="data/music.js?v=77"></script>
+  <script src="data/drawn.js?v=77"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -928,11 +928,16 @@
         groups.push(["Items: " + category, (GAME_DATA.items || []).filter(function (i) { return i.category === category && !isDrawn(i.id); })
           .map(function (i) { return [i.name, i.id]; })]);
       });
+      // Each adventure's own pictures still to draw (they're in the lists below too).
+      (GAME_DATA.adventureList || []).forEach(function (a) {
+        groups.unshift(["Adventure: " + a.emoji + " " + a.name, (a.drawings || []).filter(function (d) { return !isDrawn(d.file); })
+          .map(function (d) { return [d.what, d.file, true]; })]);
+      });
       const jump = document.getElementById("draw-jump");
       let total = 0;
       groups.forEach(function (group, n) {
         if (group[1].length === 0) return;
-        total += group[1].length;
+        if (!group[1][0][2]) total += group[1].length; // adventure pictures are counted in their own lists
         const heading = el("h3", "", group[0] + " (" + group[1].length + ")");
         heading.id = "draw-group-" + n;
         box.appendChild(heading);

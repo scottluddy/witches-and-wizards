@@ -1,11 +1,13 @@
 // Rearranging furniture: in a room with movable furniture (data/furniture.js),
-// the small 🪑 Rearrange button lights up every piece so it can be dragged
-// somewhere else. Pieces aren't allowed to land on top of each other: if one
+// any piece can be dragged somewhere else (Scott, 2026-10-15: no Rearrange
+// button). A drag only starts once the mouse moves a little, so a plain click
+// still opens the cooler or chest at Home. Pieces aren't allowed to land on top of each other: if one
 // is dropped on another, it slides to the nearest free spot. Where each piece
 // stands is saved in player.furniture.
 
-let rearranging = false; // true while the Rearrange button is switched on
-let dragging = null;     // the piece being dragged: { piece, el, offsetX, offsetY, from }
+let dragging = null;     // the piece being held: { piece, el, offsetX, offsetY, from, startX, startY, moved }
+let justDragged = false; // stops the click at the end of a drag from opening the cooler or chest
+const DRAG_START = 6;    // pixels the mouse moves before a click becomes a drag
 
 // The movable pieces in a place (only ones the art script has cut out).
 function roomPieces(placeId) {
@@ -31,11 +33,8 @@ function pieceRect(piece) {
 
 function showFurniture(place) {
   const box = document.getElementById("place-furniture");
-  const button = document.getElementById("btn-rearrange");
   const pieces = roomPieces(place.id);
   box.innerHTML = "";
-  button.hidden = pieces.length === 0;
-  setRearranging(false);
   pieces.forEach(function (piece) {
     const img = document.createElement("img");
     img.className = "furniture";
@@ -49,7 +48,7 @@ function showFurniture(place) {
     if (piece.holds) {
       // The cooler and chest at Home open when clicked (js/storage.js).
       img.classList.add("holds");
-      img.addEventListener("click", function () { if (!rearranging) openStorage(piece.holds); });
+      img.addEventListener("click", function () { if (!justDragged) openStorage(piece.holds); });
     }
     box.appendChild(img);
   });
@@ -62,23 +61,9 @@ function placePiece(el, rect) {
   el.style.height = rect[3] + "%";
 }
 
-// ---------------------------------------------------------------- the Rearrange button
-
-function setRearranging(on) {
-  rearranging = on;
-  document.getElementById("place-picture").classList.toggle("rearranging", on);
-  document.getElementById("btn-rearrange").textContent = on ? "✓ Done" : "🪑 Rearrange";
-  document.getElementById("rearrange-note").hidden = !on;
-}
-
-document.getElementById("btn-rearrange").addEventListener("click", function () {
-  setRearranging(!rearranging);
-});
-
 // ---------------------------------------------------------------- dragging
 
 function startDrag(event, piece, el) {
-  if (!rearranging) return;
   event.preventDefault();
   const pic = document.getElementById("place-picture").getBoundingClientRect();
   const rect = pieceRect(piece);
@@ -88,14 +73,21 @@ function startDrag(event, piece, el) {
     // Where on the piece it was grabbed, so it doesn't jump under the finger.
     offsetX: (event.clientX - pic.left) / pic.width * 100 - rect[0],
     offsetY: (event.clientY - pic.top) / pic.height * 100 - rect[1],
-    from: rect
+    from: rect,
+    startX: event.clientX,
+    startY: event.clientY,
+    moved: false
   };
   el.setPointerCapture(event.pointerId);
-  el.classList.add("dragging");
 }
 
 document.addEventListener("pointermove", function (event) {
   if (!dragging) return;
+  if (!dragging.moved) {
+    if (Math.hypot(event.clientX - dragging.startX, event.clientY - dragging.startY) < DRAG_START) return;
+    dragging.moved = true;
+    dragging.el.classList.add("dragging");
+  }
   const pic = document.getElementById("place-picture").getBoundingClientRect();
   const rect = dragging.from.slice();
   rect[0] = (event.clientX - pic.left) / pic.width * 100 - dragging.offsetX;
@@ -105,6 +97,9 @@ document.addEventListener("pointermove", function (event) {
 
 document.addEventListener("pointerup", function () {
   if (!dragging) return;
+  if (!dragging.moved) { dragging = null; return; } // just a click
+  justDragged = true;
+  setTimeout(function () { justDragged = false; }, 0);
   const piece = dragging.piece;
   const el = dragging.el;
   const dropped = insideRoom([parseFloat(el.style.left), parseFloat(el.style.top),
@@ -118,6 +113,7 @@ document.addEventListener("pointerup", function () {
   if (!player.furniture[piece.place]) player.furniture[piece.place] = {};
   player.furniture[piece.place][piece.id] = [round1(spot[0]), round1(spot[1])];
   writeSave(player);
+  showWindy(findPlace(player.at)); // the Snowy Hut's mug moves with its table (js/windy.js)
 });
 
 function round1(n) {
