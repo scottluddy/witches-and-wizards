@@ -1021,5 +1021,32 @@
       95,
       95
     ]
+  },
+  "celebrate_bunny": {
+    "crop": [
+      3,
+      1,
+      92,
+      97
+    ],
+    "min_part": 0.02
+  },
+  "celebrate_pumpkin_witch": {
+    "crop": [
+      3,
+      1,
+      100,
+      100
+    ],
+    "min_part": 0.02
+  },
+  "celebrate_unicorn_donut": {
+    "crop": [
+      3,
+      2,
+      96,
+      98
+    ],
+    "min_part": 0.02
   }
 }
