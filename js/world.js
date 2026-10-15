@@ -30,7 +30,7 @@ function secretFound(secret) {
 // A little picture in front of each kind of spot's name.
 const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
-  cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
+  cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", ski_down: "⛷️", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
   museum_pay: "🎟️", menu_shop: "📋", seat: "🪑"
@@ -337,7 +337,8 @@ function showPlace(id) {
     if (child.type === "cafe") return openCafe(child);           // js/cafe.js
     if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
     if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
-    if (child.type === "look") return lookThrough(child);        // binoculars, below
+    if (child.type === "look") return windyLook(child) || lookThrough(child); // binoculars, below (or the Windy Peak rescue, js/windy.js)
+    if (child.type === "ski_down") return windySkiDown(child);   // the slope, or straight to the hut (js/windy.js)
     if (child.type === "elevator") return openElevator(child);   // a building with floors, below
     if (child.type === "coaster") return openCoaster();          // js/coaster.js
     if (child.type === "piano") return openPiano();              // js/music.js
@@ -368,6 +369,7 @@ function showPlace(id) {
   showFurniture(place);  // movable furniture (js/furniture.js)
   showChore(place);      // dust and the Clean Room button (js/chores.js)
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
+  windyArrive(place);    // bringing the little WIT to the Snowy Hut (js/windy.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)

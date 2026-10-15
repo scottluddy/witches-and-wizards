@@ -14,6 +14,7 @@ GAME_DATA.paths = [
   // Farm
   { "from": "farm_house", "to": "animal_farm", "via": [] },
   { "from": "farm_house", "to": "crop_fields", "via": [] },
+  { "from": "farm_house", "to": "barn", "via": [] },
 
   // Village
   { "from": "home",  "to": "store",  "via": [] },

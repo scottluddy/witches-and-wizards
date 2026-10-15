@@ -16,6 +16,7 @@ function enterTesterMode() {
   player.crystals += start.crystals;
   player.hunger = start.hunger;
   fillTestBags(player);
+  player.falconryDone = GAME_DATA.items.filter(function (i) { return i.id.indexOf("pet_owl") === 0; }).map(function (i) { return i.id; }); // owls can fly at Windy Peak
   if (start.everySpell) GAME_DATA.spells.forEach(function (spell) {
     if (player.spells.indexOf(spell.id) === -1) player.spells.push(spell.id);
   });
@@ -144,6 +145,7 @@ function unlockEveryAdventure() {
     player.adventures.unlocked.push(a.id);
     player.adventures.waiting.push(a.id);
   });
+  if (player.windy.stage === "") startWindyRescue(); // the owl has already spotted the little WIT (js/windy.js)
   return "Every adventure is unlocked. The Head Witch or Wizard will pop out to tell you.";
 }
 

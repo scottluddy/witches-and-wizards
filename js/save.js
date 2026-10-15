@@ -46,6 +46,9 @@ function fillIn(save) {
   if (save.fishCount === undefined) save.fishCount = save.cooler.length;
   if (!save.bucket) save.bucket = [];
   if (!save.museum) save.museum = { visited: [] }; // the Museum (js/museum.js)
+  if (!save.windy) save.windy = newWindy(); // Lost on Windy Peak (js/windy.js)
+  // Owls that had a falconry lesson before this list existed still count.
+  if (!save.falconryDone) save.falconryDone = Object.keys((save.lastCare || {}).falconry || {});
   if (!save.homeCooler) save.homeCooler = [];
   if (!save.homeChest) save.homeChest = [];
   if (!save.satchel) save.satchel = [];
@@ -156,6 +159,11 @@ function levelLabel(player) {
   return kind + "Level " + player.level;
 }
 
+// Lost on Windy Peak, not started yet (js/windy.js).
+function newWindy() {
+  return { stage: "", slope: [], spot: 0, tries: 0, looked: [], sips: 0, done: 0 };
+}
+
 // A brand-new player, as made on the character select screen.
 function newPlayer(playerName, characterId, kind) {
   return {
@@ -208,6 +216,8 @@ function newPlayer(playerName, characterId, kind) {
     pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, where the acorn hides, clues (js/pixie.js)
     riddlesHeard: [], // the troll's riddles you've heard, so they don't repeat (js/pixie.js)
     museum: { visited: [] },  // Exhibit Rooms visited since the last ticket (js/museum.js)
+    windy: newWindy(),        // Lost on Windy Peak: how far along, the slope and where the little WIT is (js/windy.js)
+    falconryDone: [],         // owls that have had a falconry lesson, so they can fly at Windy Peak (js/bonding.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }

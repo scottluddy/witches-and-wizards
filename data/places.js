@@ -218,7 +218,8 @@ GAME_DATA.places = [
   // where your snowy owl flies for Bonding Points; ski down goes to the Snowy Hut for now.
   { "id": "peak_look_down", "name": "Look down", "type": "look", "in": "peak", "x": 69, "y": 40, "picture": "extra_binocular_view",
     "says": "Through the binoculars you can see a green meadow far below." },
-  { "id": "peak_ski_down", "name": "Ski down", "type": "travel", "in": "peak", "x": 45, "y": 45, "to": "hut" },
+  // Ski down: the slope map during Lost on Windy Peak (js/windy.js), otherwise straight to the Snowy Hut.
+  { "id": "peak_ski_down", "name": "Ski down", "type": "ski_down", "in": "peak", "x": 45, "y": 45, "to": "hut" },
   { "id": "peak_owl_dropoff", "name": "Snowy Owl Dropoff", "type": "owl_dropoff", "in": "peak", "x": 9, "y": 52 },
   { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40,
     "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
@@ -265,8 +266,10 @@ GAME_DATA.places = [
     "description": "A shy blind unicorn hides behind these trees. Watch for it, then hold an apple from your basket and click it." },
 
   // The Farm's three sections (Scott, 2026-10-15). Nothing to do here yet.
-  { "id": "farm_house", "name": "Farm House", "type": "place", "in": "farm", "x": 50, "y": 28,
+  { "id": "farm_house", "name": "Farm House", "type": "place", "in": "farm", "x": 40, "y": 28,
     "description": "The farmer's house (not drawn yet). Nothing to do here yet." },
+  { "id": "barn", "name": "Barn", "type": "place", "in": "farm", "x": 62, "y": 28,
+    "description": "The barn next to the Farm House, full of farming tools (not drawn yet). Nothing to do here yet." },
   { "id": "animal_farm", "name": "Animal Farm", "type": "place", "in": "farm", "x": 25, "y": 70,
     "description": "Barns and pens for raising farm animals (not drawn yet). Nothing to do here yet." },
   { "id": "crop_fields", "name": "Crop Fields", "type": "place", "in": "farm", "x": 75, "y": 70,

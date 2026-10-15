@@ -357,40 +357,40 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "73"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=73"></script>
-  <script src="data/places.js?v=73"></script>
-  <script src="data/items.js?v=73"></script>
-  <script src="data/ideas.js?v=73"></script>
-  <script src="data/fish.js?v=73"></script>
-  <script src="data/digging.js?v=73"></script>
-  <script src="data/mining.js?v=73"></script>
-  <script src="data/troll.js?v=73"></script>
-  <script src="data/levels.js?v=73"></script>
-  <script src="data/luck.js?v=73"></script>
-  <script src="data/bonding.js?v=73"></script>
-  <script src="data/pearls.js?v=73"></script>
-  <script src="data/skills.js?v=73"></script>
-  <script src="data/sports.js?v=73"></script>
-  <script src="data/pixie.js?v=73"></script>
-  <script src="data/supplies.js?v=73"></script>
-  <script src="data/honey.js?v=73"></script>
-  <script src="data/gameplay.js?v=73"></script>
-  <script src="data/extras.js?v=73"></script>
-  <script src="data/hunger.js?v=73"></script>
-  <script src="data/orchard.js?v=73"></script>
-  <script src="data/dance.js?v=73"></script>
-  <script src="data/trading.js?v=73"></script>
-  <script src="data/unicorns.js?v=73"></script>
-  <script src="data/adventures.js?v=73"></script>
-  <script src="data/spells.js?v=73"></script>
-  <script src="data/furniture.js?v=73"></script>
-  <script src="data/next_steps.js?v=73"></script>
-  <script src="data/adventure_ideas.js?v=73"></script>
-  <script src="data/logic.js?v=73"></script>
-  <script src="data/chores.js?v=73"></script>
-  <script src="data/music.js?v=73"></script>
-  <script src="data/drawn.js?v=73"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "74"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=74"></script>
+  <script src="data/places.js?v=74"></script>
+  <script src="data/items.js?v=74"></script>
+  <script src="data/ideas.js?v=74"></script>
+  <script src="data/fish.js?v=74"></script>
+  <script src="data/digging.js?v=74"></script>
+  <script src="data/mining.js?v=74"></script>
+  <script src="data/troll.js?v=74"></script>
+  <script src="data/levels.js?v=74"></script>
+  <script src="data/luck.js?v=74"></script>
+  <script src="data/bonding.js?v=74"></script>
+  <script src="data/pearls.js?v=74"></script>
+  <script src="data/skills.js?v=74"></script>
+  <script src="data/sports.js?v=74"></script>
+  <script src="data/pixie.js?v=74"></script>
+  <script src="data/supplies.js?v=74"></script>
+  <script src="data/honey.js?v=74"></script>
+  <script src="data/gameplay.js?v=74"></script>
+  <script src="data/extras.js?v=74"></script>
+  <script src="data/hunger.js?v=74"></script>
+  <script src="data/orchard.js?v=74"></script>
+  <script src="data/dance.js?v=74"></script>
+  <script src="data/trading.js?v=74"></script>
+  <script src="data/unicorns.js?v=74"></script>
+  <script src="data/adventures.js?v=74"></script>
+  <script src="data/spells.js?v=74"></script>
+  <script src="data/furniture.js?v=74"></script>
+  <script src="data/next_steps.js?v=74"></script>
+  <script src="data/adventure_ideas.js?v=74"></script>
+  <script src="data/logic.js?v=74"></script>
+  <script src="data/chores.js?v=74"></script>
+  <script src="data/music.js?v=74"></script>
+  <script src="data/drawn.js?v=74"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -777,6 +777,7 @@
           if (guide) result.push(line("🧙 Getting adventures", "anywhere", [
             line("Unlock", "every " + guide.unlockEverySkills + " Skills earns room for a new adventure; carry its item to unlock it (" +
               GAME_DATA.adventureList.map(function (a) { 
+                if (!a.unlockItem) return a.name + ": " + a.unlockBy; // unlocked by something you do, not Skills
                 const all = GAME_DATA.items.concat(GAME_DATA.fish || [], GAME_DATA.fruits || []);
                 const thing = all.find(function (t) { return t.id === a.unlockItem.item; });
                 return a.name + ": " + a.unlockItem.count + " × " + (thing ? thing.name : a.unlockItem.item); }).join(", ") + ")"),
@@ -965,7 +966,9 @@
         list.appendChild(el("li", "", c.emoji + " " + c.name + ": " + c.about + (c.inGame ? " (In the game: " + c.inGame + ".)" : "")));
       });
       document.getElementById("adventure-ideas").appendChild(list);
-      ideas.ideas.forEach(function (idea) {
+      // active ones first, then favourites
+      const order = function (idea) { return (idea.status === "active" ? 0 : 2) + (idea.favorite ? 0 : 1); };
+      ideas.ideas.slice().sort(function (a, b) { return order(a) - order(b); }).forEach(function (idea) {
         const kind = kindOf(idea.category);
         const c = el("div", "card adventure-idea");
         const art = el("div", "art");
@@ -975,7 +978,9 @@
           img.alt = "";
           art.appendChild(img);
         } else art.textContent = idea.emoji;
-        c.append(art, el("span", "name", idea.emoji + " " + idea.name), el("span", "kind", kind.emoji + " " + kind.name));
+        const status = idea.status === "active" ? "✅ Active (in the game)" : "💤 Inactive (not in the game yet)";
+        c.append(art, el("span", "name", (idea.favorite ? "⭐ " : "") + idea.emoji + " " + idea.name),
+          el("span", "kind", kind.emoji + " " + kind.name + " · " + status + (idea.favorite ? " · ⭐ Scott's favourite" : "")));
         [["🔓 Unlock: ", idea.unlock], ["✨ ", idea.idea], ["🖍️ Needs: ", idea.needs]].forEach(function (line) {
           const p = el("p");
           p.append(el("b", "", line[0]), document.createTextNode(line[1]));

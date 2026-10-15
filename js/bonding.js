@@ -54,8 +54,13 @@ function openCare(kind, pets, care, message) {
   row.className = "item-row";
   pets.forEach(function (pet) {
     const wait = minutesUntilCare(kind, pet);
-    const card = itemCard(pet, wait ? null : care.button, function () { carePet(kind, pet, care); });
-    if (wait) {
+    const blocked = care.blocked ? care.blocked(pet) : ""; // a reason it can't do this yet
+    const card = itemCard(pet, wait || blocked ? null : care.button, function () { carePet(kind, pet, care); });
+    if (blocked) {
+      const note = document.createElement("small");
+      note.textContent = blocked;
+      card.appendChild(note);
+    } else if (wait) {
       const note = document.createElement("small");
       note.textContent = care.done + wait + " min";
       card.appendChild(note);
@@ -76,8 +81,11 @@ function carePet(kind, pet, care) {
   }
   player.bondingPoints += points;
   player.lastCare[kind][pet.id] = Date.now();
+  if (kind === "falconry" && player.falconryDone.indexOf(pet.id) === -1) player.falconryDone.push(pet.id); // now it can fly at Windy Peak
   writeSave(player);
-  care.open(thanks + " +" + points + " Bonding Point" + (points === 1 ? "" : "s") + "!");
+  const said = thanks + " +" + points + " Bonding Point" + (points === 1 ? "" : "s") + "!";
+  if (care.after && care.after(pet, said)) return; // something happens next, like the Windy Peak rescue
+  care.open(said);
 }
 
 // A way to bond whose words are all in data/bonding.js (falconry, yarn,
@@ -114,7 +122,11 @@ function openOwlDropoff(message) {
     art: "🦉", title: "Snowy Owl Dropoff", button: "🦉 Let it fly", done: "🪶 Resting. Ready to fly again in ",
     ask: "Let your snowy owl stretch its wings over the mountains. Flying together earns Bonding Points.",
     noPets: "This is where snowy owls fly! Bring a Snowy Owl in your backpack (the Campus Store's Pet shelf has one).",
-    thanks: "🦉 Your PET swoops and soars over Windy Peak, then flies back to you!", open: openOwlDropoff
+    thanks: "🦉 Your PET swoops and soars over Windy Peak, then flies back to you!", open: openOwlDropoff,
+    // Scott, 2026-10-15: an owl flies here only after a falconry lesson,
+    // and with a Night Vision Potion it spots a lost little WIT (js/windy.js).
+    blocked: function (pet) { return hadFalconry(pet) ? "" : "🦉 " + GAME_DATA.windyRescue.words.needLesson; },
+    after: owlFlewOverSlope
   }, message);
 }
 

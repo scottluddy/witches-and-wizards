@@ -6,7 +6,8 @@
 GAME_DATA.celebrations = {
   "reuniting": { "picture": "celebrate_birds",   "name": "Love birds" },  // bringing families back together
   "aquatic":   { "picture": "celebrate_narwhal", "name": "Narwhal" },     // any water adventure (none yet)
-  "quest":     { "picture": "celebrate_narwhal", "name": "Narwhal" }      // finding something lost, like the Pixie's acorn (Scott: the narwhal for now, until a quest picture is drawn)
+  "quest":     { "picture": "celebrate_narwhal", "name": "Narwhal" },     // finding something lost, like the Pixie's acorn (Scott: the narwhal for now, until a quest picture is drawn)
+  "rescue":    { "picture": "", "name": "" }                              // helping someone lost, like on Windy Peak (no picture picked yet)
 };
 
 // Getting adventures (Scott, 2026-10-14). You start with none: every
@@ -52,5 +53,16 @@ GAME_DATA.adventureList = [
       "Hold an apple and click it so it trusts you",
       "Cast the Seeing Spell on it",
       "Feed it more apples, one at a time"
+    ] },
+  // Lost on Windy Peak (Scott, 2026-10-15; data/windy.js). Unlocked by letting your
+  // Snowy Owl fly at Windy Peak while you own a Night Vision Potion, not by Skills.
+  { "id": "windy", "name": "Lost on Windy Peak", "emoji": "🏔️",
+    "unlockBy": "Let your Snowy Owl fly at the Windy Peak dropoff while you own a Night Vision Potion",
+    "hint": "Your Snowy Owl spotted a little future WIT lost on the slope at Windy Peak! Drink a sip of Night Vision Potion and look through the binoculars.",
+    "steps": [
+      "Sip the Night Vision Potion and look through the binoculars for a clue",
+      "Ski down and look in the section of the slope the clue tells you (each look is a sip, 3 tries)",
+      "Ski down to the Snowy Hut together",
+      "Warm up with hot chocolate"
     ] }
 ];

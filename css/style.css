@@ -1051,6 +1051,21 @@ body.holding-apple, body.holding-apple * {
 }
 .binocular-view img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); } /* hides the card's edge */
 
+/* Lost on Windy Peak (js/windy.js): too dark to see, then green night vision
+   with the landmark and the little WIT's lantern. */
+.binocular-view { position: relative; margin: 8px auto; }
+.binocular-view.night img { filter: brightness(0.15) saturate(0.3); }
+.binocular-view.night-vision img { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(0.7); }
+.night-clue { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 4rem; text-shadow: 0 0 18px #ffe066, 0 0 6px #fff; }
+.slope-map { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 420px; margin: 10px auto;
+  padding: 12px; border-radius: 18px; background: linear-gradient(#0b1a3a, #2c3e66); }
+.slope-map b { color: #dfe8ff; text-align: center; text-transform: capitalize; }
+.slope-section { font-size: 2rem; padding: 10px 0; border-radius: 12px; border: 2px solid #8fa3d6;
+  background: rgba(255, 255, 255, 0.15); cursor: pointer; }
+.slope-section:hover:not(:disabled) { background: rgba(255, 255, 255, 0.35); }
+.slope-section:disabled { opacity: 0.45; cursor: default; }
+
 /* ---- Archery and soccer at the Stadium (js/sports.js) ---- */
 .archery-range, .soccer-field {
   position: relative;

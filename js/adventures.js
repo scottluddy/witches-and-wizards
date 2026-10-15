@@ -30,6 +30,7 @@ function revealAdventure(id) {
 function timesDone(id) {
   if (id === "pixie") return player.pixieQuest.done;
   if (id === "unicorn") return player.unicornsHelped;
+  if (id === "windy") return player.windy.done;
   return 0;
 }
 
@@ -48,12 +49,23 @@ function carryingKey(adventure) {
   return countOf(carried, key.item) >= key.count; // js/storage.js
 }
 
+// Adventures unlocked by Skills and an item. Some (like Lost on Windy Peak)
+// unlock by doing something instead ("unlockBy"), so they don't use up a
+// Skills-earned place.
+function skillAdventures() {
+  return GAME_DATA.adventureList.filter(function (a) { return a.unlockItem; });
+}
+
+function skillAdventuresUnlocked() {
+  return skillAdventures().filter(function (a) { return adventureUnlocked(a.id); }).length;
+}
+
 // If your Skills have earned another adventure and you carry its item,
 // unlock it (picked at random if you carry the items for more than one).
 function unlockAdventures() {
   const state = player.adventures;
-  while (state.unlocked.length < adventuresEarned()) {
-    const ready = GAME_DATA.adventureList.filter(function (a) { return !adventureUnlocked(a.id) && carryingKey(a); });
+  while (skillAdventuresUnlocked() < adventuresEarned()) {
+    const ready = skillAdventures().filter(function (a) { return !adventureUnlocked(a.id) && carryingKey(a); });
     if (ready.length === 0) return;
     const next = ready[Math.floor(Math.random() * ready.length)];
     state.unlocked.push(next.id);
@@ -65,9 +77,9 @@ function unlockAdventures() {
 // What the Adventures pop-up says about getting the next one.
 function nextAdventureNote() {
   const state = player.adventures;
-  const locked = GAME_DATA.adventureList.filter(function (a) { return !adventureUnlocked(a.id); });
+  const locked = skillAdventures().filter(function (a) { return !adventureUnlocked(a.id); });
   if (locked.length === 0) return "";
-  if (state.unlocked.length < adventuresEarned()) {
+  if (skillAdventuresUnlocked() < adventuresEarned()) {
     return " You've earned a new adventure! Carry the right thing to unlock it: " +
       locked.map(function (a) { return keyName(a); }).join(", or ") + ".";
   }
