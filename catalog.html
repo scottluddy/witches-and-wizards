@@ -163,6 +163,7 @@
 
     .topics-title { margin-top: 28px; }
     .topic-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 20px; }
+    .draw-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
     .topic-button { padding: 10px 18px; border-radius: 999px; border: 3px solid var(--line); background: var(--panel);
       font-family: var(--display); font-size: 1.15rem; color: inherit; text-decoration: none; }
     .topic-button:hover, .topic-button.chosen { border-color: #7b4bb5; background: #efe3ff; }
@@ -185,6 +186,9 @@
     <div class="jump-row">
       <a class="big-box" href="#next-steps">
         <b>🧭 Next Steps</b><span>What to draw, answer and think about next.</span>
+      </a>
+      <a class="big-box" href="#to-draw">
+        <b>🖍️ Still to Draw</b><span>Every picture still waiting for a drawing, sorted by kind.</span>
       </a>
       <a class="big-box" href="#gameplay">
         <b>⚙️ Game Play</b><span>Good things to do, the counters, and how the game works: rules, money, bags, food and Levels.</span>
@@ -214,8 +218,7 @@
     <h1>🧭 Next Steps</h1>
     <section id="next-steps" class="steps">
       <h2>🖍️ Draw next</h2>
-      <p class="lede">Pictures that are still placeholders, places first. Save each drawing with the file name shown.</p>
-      <div id="steps-draw"></div>
+      <p class="lede">The full list, sorted by kind, is on its own page: <a href="#to-draw">🖍️ Still to Draw</a>.</p>
       <h2>❓ Questions to answer</h2>
       <p class="lede">Decisions the game is waiting on (from <code>data/next_steps.js</code>).</p>
       <ol id="steps-answer" class="todo-list"></ol>
@@ -223,6 +226,16 @@
       <p class="lede">Places where the game might be too easy, too hard or a bit unfair.</p>
       <ol id="steps-consider" class="todo-list"></ol>
     </section>
+  </div>
+
+  <!-- Page: Still to Draw (Scott, 2026-10-15): one list of every placeholder, by kind -->
+  <div class="subpage" data-page="to-draw" hidden>
+    <a class="back-link" href="#">⬅ Back to the catalog</a>
+    <h1>🖍️ Still to Draw</h1>
+    <p class="lede">Every picture still shown as a placeholder or an emoji. Places are sorted by territory, items by where they're sold.
+      Save each drawing with the file name shown, then run the art script.</p>
+    <div id="draw-jump" class="draw-jump"></div>
+    <div id="steps-draw"></div>
   </div>
 
   <!-- Page: World Outline -->
@@ -339,39 +352,39 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "67"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=67"></script>
-  <script src="data/places.js?v=67"></script>
-  <script src="data/items.js?v=67"></script>
-  <script src="data/ideas.js?v=67"></script>
-  <script src="data/fish.js?v=67"></script>
-  <script src="data/digging.js?v=67"></script>
-  <script src="data/mining.js?v=67"></script>
-  <script src="data/troll.js?v=67"></script>
-  <script src="data/levels.js?v=67"></script>
-  <script src="data/luck.js?v=67"></script>
-  <script src="data/bonding.js?v=67"></script>
-  <script src="data/pearls.js?v=67"></script>
-  <script src="data/skills.js?v=67"></script>
-  <script src="data/sports.js?v=67"></script>
-  <script src="data/pixie.js?v=67"></script>
-  <script src="data/supplies.js?v=67"></script>
-  <script src="data/honey.js?v=67"></script>
-  <script src="data/gameplay.js?v=67"></script>
-  <script src="data/extras.js?v=67"></script>
-  <script src="data/hunger.js?v=67"></script>
-  <script src="data/orchard.js?v=67"></script>
-  <script src="data/dance.js?v=67"></script>
-  <script src="data/trading.js?v=67"></script>
-  <script src="data/unicorns.js?v=67"></script>
-  <script src="data/adventures.js?v=67"></script>
-  <script src="data/spells.js?v=67"></script>
-  <script src="data/furniture.js?v=67"></script>
-  <script src="data/next_steps.js?v=67"></script>
-  <script src="data/logic.js?v=67"></script>
-  <script src="data/chores.js?v=67"></script>
-  <script src="data/music.js?v=67"></script>
-  <script src="data/drawn.js?v=67"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "68"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=68"></script>
+  <script src="data/places.js?v=68"></script>
+  <script src="data/items.js?v=68"></script>
+  <script src="data/ideas.js?v=68"></script>
+  <script src="data/fish.js?v=68"></script>
+  <script src="data/digging.js?v=68"></script>
+  <script src="data/mining.js?v=68"></script>
+  <script src="data/troll.js?v=68"></script>
+  <script src="data/levels.js?v=68"></script>
+  <script src="data/luck.js?v=68"></script>
+  <script src="data/bonding.js?v=68"></script>
+  <script src="data/pearls.js?v=68"></script>
+  <script src="data/skills.js?v=68"></script>
+  <script src="data/sports.js?v=68"></script>
+  <script src="data/pixie.js?v=68"></script>
+  <script src="data/supplies.js?v=68"></script>
+  <script src="data/honey.js?v=68"></script>
+  <script src="data/gameplay.js?v=68"></script>
+  <script src="data/extras.js?v=68"></script>
+  <script src="data/hunger.js?v=68"></script>
+  <script src="data/orchard.js?v=68"></script>
+  <script src="data/dance.js?v=68"></script>
+  <script src="data/trading.js?v=68"></script>
+  <script src="data/unicorns.js?v=68"></script>
+  <script src="data/adventures.js?v=68"></script>
+  <script src="data/spells.js?v=68"></script>
+  <script src="data/furniture.js?v=68"></script>
+  <script src="data/next_steps.js?v=68"></script>
+  <script src="data/logic.js?v=68"></script>
+  <script src="data/chores.js?v=68"></script>
+  <script src="data/music.js?v=68"></script>
+  <script src="data/drawn.js?v=68"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -400,6 +413,7 @@
     }
 
     function kindOf(place) {
+      if (place.opens) return "second door into " + ((places.find(function (p) { return p.id === place.opens; }) || {}).name || place.opens) + ", same shelf";
       if (place.type === "person") return "person: says \u201c" + (place.says || "") + "\u201d";
       if (place.type === "fishing") return "fishing spot";
       if (place.type === "digging") return "dig spot: finds " + (place.finds === "crystals" ? "Crystals" : "beach finds");
@@ -421,7 +435,9 @@
     function placeRow(place) {
       const li = el("li");
       const row = el("div", "row");
-      const isPerson = place.type !== "map" && place.type !== "place"; // people and spots are part of the picture
+      // people and spots are part of the picture; a second door into another
+      // place (like the Trading Post's right-hand shelves) has no picture of its own
+      const isPerson = (place.type !== "map" && place.type !== "place") || !!place.opens;
       const picName = (place.type === "map" ? "map_" : "place_") + place.id;
       const img = el(isPerson ? "span" : "img");
       if (!isPerson) {
@@ -864,27 +880,59 @@
       return li;
     }
 
-    // Draw next: places still on a placeholder first (they're the biggest
-    // pictures), then characters and items still shown as an emoji.
+    // Still to Draw: every placeholder, in groups. Places by territory (the
+    // map they're on, under the World map), then characters and the Head Witch
+    // and Wizard, then items by category (which is mostly the shelf they're on).
     (function () {
       const box = document.getElementById("steps-draw");
       const groups = [];
+      const fileOf = function (p) { return (p.type === "map" ? "map_" : "place_") + p.id; };
+      // the territory a place is in: climb "in" until the map just under the World
+      const territoryOf = function (p) {
+        while (p.in && p.in !== "world") p = findPlace(p.in) || {};
+        return p;
+      };
       const placesToDraw = places.filter(function (p) {
         if (p.type !== "map" && p.type !== "place") return false;
         if (p.opens) return false;                       // just a second door into another place
-        return !isDrawn((p.type === "map" ? "map_" : "place_") + p.id);
+        return !isDrawn(fileOf(p));
       });
-      groups.push(["Places and maps", placesToDraw.map(function (p) {
-        const where = findPlace(p.in);
-        return [p.name + (where ? " (in " + where.name + ")" : ""), (p.type === "map" ? "map_" : "place_") + p.id];
-      })]);
-      groups.push(["Characters", (GAME_DATA.characters || []).filter(function (c) { return !isDrawn(c.id); })
-        .map(function (c) { return [c.name, c.id]; })]);
-      groups.push(["Items", (GAME_DATA.items || []).filter(function (i) { return !isDrawn(i.id); })
-        .map(function (i) { return [i.name + " (" + i.category + ")", i.id]; })]);
-      groups.forEach(function (group) {
+      const territories = [];
+      placesToDraw.forEach(function (p) {
+        const t = territoryOf(p);
+        if (territories.indexOf(t) === -1) territories.push(t);
+      });
+      territories.forEach(function (t) {
+        groups.push(["Places: " + (t.name || "World"), placesToDraw.filter(function (p) { return territoryOf(p) === t; }).map(function (p) {
+          const where = findPlace(p.in);
+          if (p === t) return [p.name + " (the territory map)", fileOf(p)];
+          return [p.name + (where && where !== t ? " (in " + where.name + ")" : ""), fileOf(p)];
+        })]);
+      });
+      const people = (GAME_DATA.characters || []).filter(function (c) { return !isDrawn(c.id); })
+        .map(function (c) { return [c.name, c.id]; });
+      ((GAME_DATA.adventureGuide || {}).guides || []).forEach(function (g) {
+        if (!isDrawn(g.picture)) people.push([g.name, g.picture]);
+      });
+      groups.push(["Characters", people]);
+      const categories = [];
+      (GAME_DATA.items || []).forEach(function (i) { if (categories.indexOf(i.category) === -1) categories.push(i.category); });
+      categories.forEach(function (category) {
+        groups.push(["Items: " + category, (GAME_DATA.items || []).filter(function (i) { return i.category === category && !isDrawn(i.id); })
+          .map(function (i) { return [i.name, i.id]; })]);
+      });
+      const jump = document.getElementById("draw-jump");
+      let total = 0;
+      groups.forEach(function (group, n) {
         if (group[1].length === 0) return;
-        box.appendChild(el("h3", "", group[0] + " (" + group[1].length + ")"));
+        total += group[1].length;
+        const heading = el("h3", "", group[0] + " (" + group[1].length + ")");
+        heading.id = "draw-group-" + n;
+        box.appendChild(heading);
+        const link = el("a", "topic-button", group[0] + " (" + group[1].length + ")");
+        link.href = "#to-draw";
+        link.addEventListener("click", function (event) { event.preventDefault(); heading.scrollIntoView(); });
+        jump.appendChild(link);
         const list = el("ul", "todo-list");
         group[1].forEach(function (thing) {
           const li = el("li");
@@ -893,6 +941,7 @@
         });
         box.appendChild(list);
       });
+      document.querySelector('.subpage[data-page="to-draw"] h1').textContent = "🖍️ Still to Draw (" + total + ")";
     })();
 
     const steps = GAME_DATA.nextSteps || { answer: [], consider: [] };

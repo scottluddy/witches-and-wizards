@@ -83,7 +83,7 @@ GAME_DATA.places = [
   { "id": "museum", "name": "Museum", "type": "place", "in": "village", "x": 85, "y": 40, "museumRules": true,
     "description": "Welcome to the Museum! Pay at the desk for a ticket, then click Enter." },
   { "id": "museum_pay", "name": "Pay Here", "type": "museum_pay", "in": "museum", "x": 18, "y": 33 },
-  { "id": "museum_hall", "name": "Enter", "type": "place", "in": "museum", "x": 87, "y": 58, "needsTicket": true,
+  { "id": "museum_hall", "name": "Exhibit Hall", "spotName": "Enter", "type": "place", "in": "museum", "x": 87, "y": 58, "needsTicket": true,
     "description": "The Exhibit Hall (not drawn yet). Visit every room, then the Snack Shop opens." },
   { "id": "museum_room_1", "name": "Exhibit Room 1", "type": "place", "in": "museum_hall", "x": 15, "y": 40, "museumRoom": true },
   { "id": "museum_room_2", "name": "Exhibit Room 2", "type": "place", "in": "museum_hall", "x": 35, "y": 25, "museumRoom": true },
