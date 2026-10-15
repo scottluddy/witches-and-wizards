@@ -1,37 +1,50 @@
-// Test games (Scott, 2026-10-15): type the secret code from data/testing.js
-// as your name and the new game starts with lots of everything, plus a
-// 🧪 Test button in the top bar to get more and skip waiting. It's for
-// trying out new things quickly; turn it off ("on": false) before sharing.
-
-function isTestCode(name) {
-  const testing = GAME_DATA.testing;
-  return testing.on && name.trim().toLowerCase() === testing.code.toLowerCase();
-}
+// Tester Mode (Scott, 2026-10-15): the small 🧪 button at the far top left
+// asks for the PIN, then keeps a copy of this game and fills the bags with
+// lots of everything (data/testing.js). Leaving Tester Mode puts the copy
+// back, so nothing from testing stays. The copy is kept in the save
+// ("testerCopy"), so closing the page while testing loses nothing.
 
 function isTester() {
-  return GAME_DATA.testing.on && !!player && !!player.tester;
+  return GAME_DATA.testing.on && !!player && !!player.testerCopy;
 }
 
-// A new game made with the code: called "Tester" and given everything in "start".
-function makeTester(newPlayer) {
+function enterTesterMode() {
+  const copy = JSON.parse(JSON.stringify(player)); // everything exactly as it is now
   const start = GAME_DATA.testing.start;
-  newPlayer.tester = true;
-  newPlayer.playerName = GAME_DATA.testing.name;
-  newPlayer.gems += start.gems;
-  newPlayer.crystals += start.crystals;
-  fillTestBags(newPlayer);
-  return newPlayer;
+  player.testerCopy = copy;
+  player.gems += start.gems;
+  player.crystals += start.crystals;
+  player.hunger = start.hunger;
+  fillTestBags(player);
+  if (start.everySpell) GAME_DATA.spells.forEach(function (spell) {
+    if (player.spells.indexOf(spell.id) === -1) player.spells.push(spell.id);
+  });
+  writeSave(player);
+  openTestPanel("🧪 You're in Tester Mode! Your bags are full of test things. Click 🧪 again to leave: everything goes back to how it was.");
 }
 
-// Put the "start" things in each bag again (fresh fish for a Crystal Fish, etc.).
+// Put the copy back: the game is exactly as it was before Tester Mode.
+function leaveTesterMode() {
+  player = fillIn(player.testerCopy) || player.testerCopy; // fillIn: in case the save changed shape since
+  writeSave(player);
+  document.getElementById("info-panel").hidden = true;
+  goTo(player.at);
+}
+
+// Put the "start" things in each bag (every potion and pet too, if asked).
 function fillTestBags(who) {
   const start = GAME_DATA.testing.start;
-  ["backpack", "cooler", "basket", "satchel", "bucket"].forEach(function (bag) {
-    (start[bag] || []).forEach(function (id) {
-      // things that aren't supplies are one of each, so don't add a second
-      if (bag === "backpack" && who.backpack.indexOf(id) !== -1) return;
-      who[bag].push(id);
-    });
+  const backpack = (start.backpack || []).slice();
+  GAME_DATA.items.forEach(function (item) {
+    if (start.everyPotion && item.id.indexOf("potion_") === 0) backpack.push(item.id);
+    if (start.everyPet && (item.id.indexOf("pet_") === 0 || item.pet)) backpack.push(item.id);
+  });
+  backpack.forEach(function (id) {
+    // things that aren't supplies are one of each, so don't add a second
+    if (who.backpack.indexOf(id) === -1) who.backpack.push(id);
+  });
+  ["cooler", "basket", "satchel", "bucket"].forEach(function (bag) {
+    (start[bag] || []).forEach(function (id) { who[bag].push(id); });
   });
 }
 
@@ -47,7 +60,7 @@ function pinHash(pin) {
 
 // Ask for the PIN; "onRight" runs once it's typed right (Scott, 2026-10-15).
 function askTestPin(onRight, message) {
-  const body = openInfoPanel("🔒", "Tester Game", message || "This game is locked. Type the secret code to open it.");
+  const body = openInfoPanel("🔒", "Tester Mode", message || "Type the secret code to start Tester Mode.");
   const box = document.createElement("input");
   box.type = "password";
   box.inputMode = "numeric";
@@ -69,20 +82,32 @@ function askTestPin(onRight, message) {
 
 // ---------------------------------------------------------------- the Test button
 
-// The 🧪 Test button only shows in a test game.
+// The small 🧪 button: hidden when Tester Mode is turned off, and lit up
+// while you're testing.
 function showTestButton() {
-  document.getElementById("btn-test").hidden = !isTester();
+  const button = document.getElementById("btn-test");
+  button.hidden = !GAME_DATA.testing.on;
+  button.classList.toggle("testing", isTester());
+  button.title = isTester() ? "Tester Mode: Test Tools, or leave Tester Mode" : "Tester Mode";
 }
 
 function openTestPanel(message) {
-  const topUp = GAME_DATA.testing.topUp;
-  const body = openInfoPanel("🧪", "Test Tools", message || "Only test games have these.");
+  const start = GAME_DATA.testing.start;
+  const body = openInfoPanel("🧪", "Tester Mode", message || "Everything from testing goes away when you leave Tester Mode.");
+  const leave = document.createElement("button");
+  leave.className = "big-button";
+  leave.textContent = "🚪 Leave Tester Mode (put everything back)";
+  leave.addEventListener("click", leaveTesterMode);
+  body.appendChild(leave);
   const row = document.createElement("div");
   row.className = "button-row test-tools";
-  testButton(row, "💰 +" + topUp.gems + " Gems", function () { player.gems += topUp.gems; return "Gems: " + player.gems; });
-  testButton(row, "💎 +" + topUp.crystals + " Crystals", function () { player.crystals += topUp.crystals; return "Crystals: " + player.crystals; });
-  testButton(row, "🎓 +" + topUp.skills + " Skills", addTestSkills);
+  testButton(row, "💰 Refill Gems and Crystals", function () {
+    player.gems = Math.max(player.gems, start.gems); player.crystals = Math.max(player.crystals, start.crystals);
+    return "Gems: " + player.gems + ", Crystals: " + player.crystals;
+  });
+  testButton(row, "🎓 +" + GAME_DATA.testing.topUp.skills + " Skills", addTestSkills);
   testButton(row, "🎒 Refill the bags", function () { fillTestBags(player); return "The bags have their test things again."; });
+  testButton(row, "📖 Empty the spell book", function () { player.spells = []; return "No spells now, so you can try brewing one."; });
   testButton(row, "🗺️ Unlock every adventure", unlockEveryAdventure);
   testButton(row, "⏩ Skip the waiting", skipWaiting);
   testButton(row, "🍽️ Not hungry", function () { player.hunger = 0; return "Hunger: 0"; });
@@ -153,4 +178,7 @@ function goAnywhere() {
   return box;
 }
 
-document.getElementById("btn-test").addEventListener("click", function () { openTestPanel(); });
+document.getElementById("btn-test").addEventListener("click", function () {
+  if (isTester()) openTestPanel();
+  else askTestPin(enterTesterMode);
+});

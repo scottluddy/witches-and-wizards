@@ -6,7 +6,7 @@
   <title>Witches and Wizards</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=69">
+  <link rel="stylesheet" href="css/style.css?v=70">
 </head>
 <body>
 
@@ -68,11 +68,12 @@
 
   <!-- Status bar: shown while playing -->
   <header id="status-bar" class="status-bar" hidden>
+    <button id="btn-test" class="tester-button" title="Tester Mode" hidden>🧪</button> <!-- Tester Mode, far top left (js/testing.js) -->
     <span class="status-name"><b id="status-character"></b> <small id="status-player"></small></span>
     <button id="btn-level" class="status-item level-button" title="Click to see what you need for the next Level"><b id="status-level"></b></button>
     <button id="btn-adventures" class="status-item level-button" title="Adventure Points: click to see your adventures">Adventure <span id="status-points" class="stars"></span></button>
     <span class="status-item" title="Crystals">💎 <b id="status-crystals"></b></span>
-    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=69" alt="Gems"> <b id="status-gems"></b></span>
+    <span class="status-item" title="Gems"><img class="gem-icon" src="art/processed/extra_gem.png?v=70" alt="Gems"> <b id="status-gems"></b></span>
     <button id="btn-skills" class="status-item level-button" title="Skills: click to see your skills and their Levels">🎓 Skills <b id="status-skills"></b></button>
     <span class="status-item" title="Chore Points">🧹 <b id="status-chores"></b></span>
     <span class="status-item" title="Bonding Points: take care of your pet">🐾 <b id="status-bonding"></b></span>
@@ -84,7 +85,6 @@
     <button id="btn-satchel" class="small-button" title="Satchel">👜 <span class="bag-word">Satchel</span> <span id="count-satchel" class="count"></span></button>
     <button id="btn-basket" class="small-button" title="Basket">🧺 <span class="bag-word">Basket</span> <span id="count-basket" class="count"></span></button>
     <button id="btn-holding" class="small-button" hidden></button> <!-- the fruit in your hand (js/unicorns.js) -->
-    <button id="btn-test" class="small-button" title="Test tools (test games only)" hidden>🧪 <span class="bag-word">Test</span></button> <!-- js/testing.js -->
     <button id="btn-switch-game" class="small-button" title="Save this game and go back to the title screen">💾 <span class="bag-word">Switch Game</span></button>
   </header>
 
@@ -264,73 +264,73 @@
   <p id="placement-info" class="placement-info" hidden></p>
 
   <!-- Game content. Every data file adds to GAME_DATA. -->
-  <script>var GAME_DATA = {}; var GAME_VERSION = "69"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=69"></script>
-  <script src="data/places.js?v=69"></script>
-  <script src="data/paths.js?v=69"></script>
-  <script src="data/items.js?v=69"></script>
-  <script src="data/fish.js?v=69"></script>
-  <script src="data/digging.js?v=69"></script>
-  <script src="data/chores.js?v=69"></script>
-  <script src="data/mining.js?v=69"></script>
-<script src="data/hunger.js?v=69"></script>
-  <script src="data/dance.js?v=69"></script>
-  <script src="data/orchard.js?v=69"></script>
-  <script src="data/spells.js?v=69"></script>
-  <script src="data/unicorns.js?v=69"></script>
-  <script src="data/trading.js?v=69"></script>
-    <script src="data/troll.js?v=69"></script>
-  <script src="data/levels.js?v=69"></script>
-  <script src="data/luck.js?v=69"></script>
-  <script src="data/bonding.js?v=69"></script>
-  <script src="data/pearls.js?v=69"></script>
-  <script src="data/skills.js?v=69"></script>
-  <script src="data/sports.js?v=69"></script>
-  <script src="data/pixie.js?v=69"></script>
-  <script src="data/coaster.js?v=69"></script>
-  <script src="data/supplies.js?v=69"></script>
-  <script src="data/honey.js?v=69"></script>
-  <script src="data/adventures.js?v=69"></script>
-  <script src="data/story.js?v=69"></script>
-  <script src="data/museum.js?v=69"></script>
-  <script src="data/testing.js?v=69"></script>
-  <script src="data/music.js?v=69"></script>
-  <script src="data/furniture.js?v=69"></script>
-  <script src="data/furniture_art.js?v=69"></script>
-  <script src="data/drawn.js?v=69"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "70"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=70"></script>
+  <script src="data/places.js?v=70"></script>
+  <script src="data/paths.js?v=70"></script>
+  <script src="data/items.js?v=70"></script>
+  <script src="data/fish.js?v=70"></script>
+  <script src="data/digging.js?v=70"></script>
+  <script src="data/chores.js?v=70"></script>
+  <script src="data/mining.js?v=70"></script>
+<script src="data/hunger.js?v=70"></script>
+  <script src="data/dance.js?v=70"></script>
+  <script src="data/orchard.js?v=70"></script>
+  <script src="data/spells.js?v=70"></script>
+  <script src="data/unicorns.js?v=70"></script>
+  <script src="data/trading.js?v=70"></script>
+    <script src="data/troll.js?v=70"></script>
+  <script src="data/levels.js?v=70"></script>
+  <script src="data/luck.js?v=70"></script>
+  <script src="data/bonding.js?v=70"></script>
+  <script src="data/pearls.js?v=70"></script>
+  <script src="data/skills.js?v=70"></script>
+  <script src="data/sports.js?v=70"></script>
+  <script src="data/pixie.js?v=70"></script>
+  <script src="data/coaster.js?v=70"></script>
+  <script src="data/supplies.js?v=70"></script>
+  <script src="data/honey.js?v=70"></script>
+  <script src="data/adventures.js?v=70"></script>
+  <script src="data/story.js?v=70"></script>
+  <script src="data/museum.js?v=70"></script>
+  <script src="data/testing.js?v=70"></script>
+  <script src="data/music.js?v=70"></script>
+  <script src="data/furniture.js?v=70"></script>
+  <script src="data/furniture_art.js?v=70"></script>
+  <script src="data/drawn.js?v=70"></script>
 
   <!-- Game code -->
-  <script src="js/save.js?v=69"></script>
-  <script src="js/world.js?v=69"></script>
-  <script src="js/items.js?v=69"></script>
-  <script src="js/fishing.js?v=69"></script>
-  <script src="js/digging.js?v=69"></script>
-  <script src="js/chores.js?v=69"></script>
-  <script src="js/mining.js?v=69"></script>
-  <script src="js/troll.js?v=69"></script>
-<script src="js/hunger.js?v=69"></script>
-  <script src="js/luck.js?v=69"></script>
-  <script src="js/levels.js?v=69"></script>
-  <script src="js/bonding.js?v=69"></script>
-  <script src="js/cafe.js?v=69"></script>
-  <script src="js/pearls.js?v=69"></script>
-  <script src="js/skills.js?v=69"></script>
-  <script src="js/sports.js?v=69"></script>
-  <script src="js/pixie.js?v=69"></script>
-  <script src="js/coaster.js?v=69"></script>
-  <script src="js/adventures.js?v=69"></script>
-  <script src="js/honey.js?v=69"></script>
-  <script src="js/music.js?v=69"></script>
-  <script src="js/dance.js?v=69"></script>
-  <script src="js/orchard.js?v=69"></script>
-  <script src="js/spells.js?v=69"></script>
-  <script src="js/unicorns.js?v=69"></script>
-  <script src="js/trading.js?v=69"></script>
-    <script src="js/storage.js?v=69"></script>
-  <script src="js/furniture.js?v=69"></script>
-  <script src="js/story.js?v=69"></script>
-  <script src="js/museum.js?v=69"></script>
-  <script src="js/testing.js?v=69"></script>
-  <script src="js/game.js?v=69"></script>
+  <script src="js/save.js?v=70"></script>
+  <script src="js/world.js?v=70"></script>
+  <script src="js/items.js?v=70"></script>
+  <script src="js/fishing.js?v=70"></script>
+  <script src="js/digging.js?v=70"></script>
+  <script src="js/chores.js?v=70"></script>
+  <script src="js/mining.js?v=70"></script>
+  <script src="js/troll.js?v=70"></script>
+<script src="js/hunger.js?v=70"></script>
+  <script src="js/luck.js?v=70"></script>
+  <script src="js/levels.js?v=70"></script>
+  <script src="js/bonding.js?v=70"></script>
+  <script src="js/cafe.js?v=70"></script>
+  <script src="js/pearls.js?v=70"></script>
+  <script src="js/skills.js?v=70"></script>
+  <script src="js/sports.js?v=70"></script>
+  <script src="js/pixie.js?v=70"></script>
+  <script src="js/coaster.js?v=70"></script>
+  <script src="js/adventures.js?v=70"></script>
+  <script src="js/honey.js?v=70"></script>
+  <script src="js/music.js?v=70"></script>
+  <script src="js/dance.js?v=70"></script>
+  <script src="js/orchard.js?v=70"></script>
+  <script src="js/spells.js?v=70"></script>
+  <script src="js/unicorns.js?v=70"></script>
+  <script src="js/trading.js?v=70"></script>
+    <script src="js/storage.js?v=70"></script>
+  <script src="js/furniture.js?v=70"></script>
+  <script src="js/story.js?v=70"></script>
+  <script src="js/museum.js?v=70"></script>
+  <script src="js/testing.js?v=70"></script>
+  <script src="js/game.js?v=70"></script>
 </body>
 </html>
