@@ -1012,5 +1012,14 @@
   },
   "extra_tiny_hole_notes": {
     "whole": true
+  },
+  "map_village": {
+    "rotate": 90,
+    "crop": [
+      4,
+      5,
+      95,
+      95
+    ]
   }
 }

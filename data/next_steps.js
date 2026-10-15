@@ -47,7 +47,7 @@ GAME_DATA.nextSteps = {
     { "text": "Which things should stack?", "who": "Scott",
       "note": "Food, drinks and bait: you can have up to 3 of each, and a shop has 3 and puts one back every 3 minutes (data/supplies.js). Everything else, potions too, is one of each until it's used up or sold." },
     { "text": "What's on Floors 3, 4 and 6 of the Multi-House?", "who": "Girls",
-      "note": "Floor 1 is the dance floor, Floor 2 the roller coaster and Floor 5 the Jewelry Shop. The elevator already lists Floors 3, 4 and 6, and says they're still being built. The Multi-House sits in the Village for now, next to the Campus Store." },
+      "note": "Floor 1 is the dance floor, Floor 2 the roller coaster and Floor 5 the Jewelry Shop. The elevator already lists Floors 3, 4 and 6, and says they're still being built. The Multi-House is the tall house on the Village map." },
     { "text": "Jewelry Shop prices", "who": "Scott",
       "note": "Claude guessed them in gems: copper and brass 2, silver 3, gold 4, plus 1 for a second stone. Jewelry can't be worn yet." },
     { "text": "What do the beluga, jellyfish and capybara cost?", "who": "Girls",

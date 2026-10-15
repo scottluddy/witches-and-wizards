@@ -36,18 +36,18 @@ GAME_DATA.places = [
   { "id": "lake",     "name": "Lake",     "type": "map", "in": "world", "x": 91, "y": 66 },
   { "id": "meadows",  "name": "Meadows",  "type": "map", "in": "world", "x": 66, "y": 80 },
 
-  { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 22, "y": 72, "start": true,
+  { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 17, "y": 80, "start": true,
     "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up, or the bath tub to wash your pet." },
   // The bath tub is computer-drawn for now ("picture", made by tools/process_art.py)
   // until the girls draw one. "size" is its width, in percent of the room picture.
   { "id": "home_yarn", "name": "Ball of Yarn", "type": "care", "care": "yarn", "in": "home", "x": 20, "y": 28 },
   { "id": "bath_tub", "name": "Bath Tub", "type": "bath", "in": "home", "x": 53, "y": 84, "picture": "bath_tub", "size": 15 },
-  { "id": "store",  "name": "Campus Store",  "type": "place", "in": "village", "x": 50, "y": 42,
+  { "id": "store",  "name": "Campus Store",  "type": "place", "in": "village", "x": 14, "y": 33,
     "description": "The clerk waves hello. Click a shelf to see what's for sale." },
-  { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 24, "y": 34, "shelf": "Dresses",
+  { "id": "dress_shop", "name": "Fine Dressmaking", "type": "place", "in": "village", "x": 30, "y": 65, "shelf": "Dresses",
     "rows": [[6, 28], [58, 76]],
     "description": "Dresses for every season hang on the walls, priced in Crystals. The dressmaker waves from the counter." },
-  { "id": "disco_hall", "name": "Disco Dance Hall", "type": "place", "in": "village", "x": 58, "y": 80,
+  { "id": "disco_hall", "name": "Disco Dance Hall", "type": "place", "in": "village", "x": 76, "y": 29,
     "description": "A dance floor under a big disco ball, and a piano. If you can play the piano, play a song and everyone dances!" },
   { "id": "hall_piano", "name": "Piano", "type": "piano", "in": "disco_hall", "x": 27, "y": 62 },
   // The Multi-House (Scott, 2026-10-14): six floors, reached by an elevator that
@@ -55,7 +55,7 @@ GAME_DATA.places = [
   // "floors" lists them from Floor 1 up; null is a floor not drawn yet. Each
   // floor's drawn floor list is the elevator back (type "elevator"). Where it
   // lives isn't decided: the Village for now.
-  { "id": "multi_house", "name": "Multi-House", "type": "place", "in": "village", "x": 66, "y": 22,
+  { "id": "multi_house", "name": "Multi-House", "type": "place", "in": "village", "x": 66, "y": 57,
     "floors": ["multi_dance", "multi_coaster", null, null, "multi_jewelry", null] },
   { "id": "multi_dance", "name": "Dance Floor", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
     "danceFloor": { "ball": [48, 15], "dancers": [
@@ -73,14 +73,14 @@ GAME_DATA.places = [
   { "id": "jeweler", "name": "Jeweler", "type": "person", "in": "multi_jewelry", "x": 46, "y": 60,
     "says": "Welcome to the Jewelry Shop! Every piece is made with a real gemstone. Have a look!" },
   { "id": "multi_jewelry_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_jewelry", "x": 84, "y": 82 },
-  { "id": "cafe", "name": "Cafe", "type": "place", "in": "village", "x": 40, "y": 70,
+  { "id": "cafe", "name": "Cafe", "type": "place", "in": "village", "x": 81, "y": 76,
     "description": "Sit down for a proper meal. Click the menu to order; you eat it right here." },
   { "id": "cafe_menu", "name": "Menu", "type": "cafe", "in": "cafe", "x": 20, "y": 22, "menu": "Cafe Menu" },
   // The Museum (Scott, 2026-10-15, the girls' drawings; placed by Claude until a Village map is drawn).
   // Pay 5 gems at Pay Here for a ticket, then Enter the Exhibit Hall and visit
   // every room before the Snack Shop opens. Museum rules: you can only eat
   // sitting down ("museumRules", js/museum.js). The numbers are in data/museum.js.
-  { "id": "museum", "name": "Museum", "type": "place", "in": "village", "x": 85, "y": 40, "museumRules": true,
+  { "id": "museum", "name": "Museum", "type": "place", "in": "village", "x": 44, "y": 72, "museumRules": true,
     "description": "Welcome to the Museum! Pay at the desk for a ticket, then click Enter." },
   { "id": "museum_pay", "name": "Pay Here", "type": "museum_pay", "in": "museum", "x": 18, "y": 33 },
   { "id": "museum_hall", "name": "Exhibit Hall", "spotName": "Enter", "type": "place", "in": "museum", "x": 87, "y": 58, "needsTicket": true,
@@ -112,7 +112,7 @@ GAME_DATA.places = [
   { "id": "tiny_brewing_stand", "name": "Brewing Stand", "type": "person", "in": "tiny_hole", "x": 18, "y": 70,
     "says": "Brew a potion here! (Which potion, and what it needs, isn't decided yet.)" },
   { "id": "tiny_pet_food", "name": "Pet Food", "type": "care", "care": "pet_food", "in": "tiny_hole", "x": 75, "y": 86 },
-  { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 79, "y": 62,
+  { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 36, "y": 40,
     "description": "Nine classrooms, one for each thing you can learn. Only the Music Classroom has a teacher so far." },
   // The Wizard School's 9 classrooms, one per box on the girls' drawing (Scott, 2026-10-13).
   // The others are "classroom" spots with no teacher yet: placeholders (Scott: Magic, Sports,
