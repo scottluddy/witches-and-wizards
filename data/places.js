@@ -35,6 +35,10 @@ GAME_DATA.places = [
   { "id": "mountain", "name": "Mountain", "type": "map", "in": "world", "x": 77, "y": 27 },
   { "id": "lake",     "name": "Lake",     "type": "map", "in": "world", "x": 91, "y": 66 },
   { "id": "meadows",  "name": "Meadows",  "type": "map", "in": "world", "x": 66, "y": 80 },
+  // The Farm (Scott, 2026-10-15): a new territory, just laid out for now with
+  // its three sections. Placed by Claude in the empty space west of the
+  // Village and the Forest until it's drawn on the World map.
+  { "id": "farm",     "name": "Farm",     "type": "map", "in": "world", "x": 9, "y": 62 },
 
   { "id": "home",   "name": "Home",          "type": "place", "in": "village", "x": 17, "y": 80, "start": true,
     "description": "Your cosy dorm room. Click the cooler or the chest to put away what you caught and dug up, or the bath tub to wash your pet." },
@@ -260,6 +264,13 @@ GAME_DATA.places = [
   { "id": "unicorn_meadow", "name": "Unicorn Meadow", "type": "place", "in": "meadows", "x": 72, "y": 48, "start": true,
     "description": "A shy blind unicorn hides behind these trees. Watch for it, then hold an apple from your basket and click it." },
 
+  // The Farm's three sections (Scott, 2026-10-15). Nothing to do here yet.
+  { "id": "farm_house", "name": "Farm House", "type": "place", "in": "farm", "x": 50, "y": 28,
+    "description": "The farmer's house (not drawn yet). Nothing to do here yet." },
+  { "id": "animal_farm", "name": "Animal Farm", "type": "place", "in": "farm", "x": 25, "y": 70,
+    "description": "Barns and pens for raising farm animals (not drawn yet). Nothing to do here yet." },
+  { "id": "crop_fields", "name": "Crop Fields", "type": "place", "in": "farm", "x": 75, "y": 70,
+    "description": "Fields for growing crops (not drawn yet). Nothing to do here yet." },
   { "id": "cozy_lounge", "name": "Cozy Lounge", "type": "place", "in": "meadows", "x": 20, "y": 38,
     "description": "Comfy sofas and armchairs. Sit on the big sofa with your pet to bond." },
   { "id": "lounge_sofa", "name": "Big Sofa", "type": "cuddle", "in": "cozy_lounge", "x": 68, "y": 72 },

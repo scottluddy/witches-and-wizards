@@ -10,6 +10,10 @@
 // in CLAUDE.md, so the game remembers).
 GAME_DATA.nextSteps = {
   "answer": [
+    { "text": "Draw the Farm: where it goes on the World map, its own map, and the Farm House, Animal Farm and Crop Fields", "who": "Girls",
+      "note": "Laid out in the game with placeholders (Scott, 2026-10-15), for now west of the Village and the Forest. Ideas to tie it in: the Animal Farm could bond and earn Chore Points (feeding, brushing, collecting eggs), crops could be food for hunger or ingredients for potions and spells, and the Farm House could hold a Cooking classroom or the Farmer who gives the Giant Pumpkin adventure." },
+    { "text": "Which adventure ideas should we build next?", "who": "Girls",
+      "note": "Five ideas are on this page under Adventure ideas, each with how it unlocks and a saved celebration picture." },
     { "text": "What do potions, wands and pets actually do once you have them?", "who": "Girls",
       "note": "Right now they just sit in the backpack. Even one thing each (a Speed Potion makes you walk faster for a minute) would make buying them matter." },
     { "text": "What powers should each new Level give?", "who": "Girls",

@@ -163,6 +163,8 @@
 
     .topics-title { margin-top: 28px; }
     .topic-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 20px; }
+    .adventure-idea { max-width: 760px; margin: 14px 0; text-align: left; }
+    .adventure-idea .art img { max-height: 140px; }
     .draw-jump { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 20px; }
     .topic-button { padding: 10px 18px; border-radius: 999px; border: 3px solid var(--line); background: var(--panel);
       font-family: var(--display); font-size: 1.15rem; color: inherit; text-decoration: none; }
@@ -225,6 +227,9 @@
       <h2>🤔 Things to think about</h2>
       <p class="lede">Places where the game might be too easy, too hard or a bit unfair.</p>
       <ol id="steps-consider" class="todo-list"></ol>
+      <h2>💡 Adventure ideas</h2>
+      <p class="lede">Claude's suggestions, not in the game yet (from <code>data/adventure_ideas.js</code>). Every adventure stays G rated: bad guys are cheeky, never scary, and are won over with riddles, games or kindness.</p>
+      <div id="adventure-ideas"></div>
     </section>
   </div>
 
@@ -352,39 +357,40 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "72"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=72"></script>
-  <script src="data/places.js?v=72"></script>
-  <script src="data/items.js?v=72"></script>
-  <script src="data/ideas.js?v=72"></script>
-  <script src="data/fish.js?v=72"></script>
-  <script src="data/digging.js?v=72"></script>
-  <script src="data/mining.js?v=72"></script>
-  <script src="data/troll.js?v=72"></script>
-  <script src="data/levels.js?v=72"></script>
-  <script src="data/luck.js?v=72"></script>
-  <script src="data/bonding.js?v=72"></script>
-  <script src="data/pearls.js?v=72"></script>
-  <script src="data/skills.js?v=72"></script>
-  <script src="data/sports.js?v=72"></script>
-  <script src="data/pixie.js?v=72"></script>
-  <script src="data/supplies.js?v=72"></script>
-  <script src="data/honey.js?v=72"></script>
-  <script src="data/gameplay.js?v=72"></script>
-  <script src="data/extras.js?v=72"></script>
-  <script src="data/hunger.js?v=72"></script>
-  <script src="data/orchard.js?v=72"></script>
-  <script src="data/dance.js?v=72"></script>
-  <script src="data/trading.js?v=72"></script>
-  <script src="data/unicorns.js?v=72"></script>
-  <script src="data/adventures.js?v=72"></script>
-  <script src="data/spells.js?v=72"></script>
-  <script src="data/furniture.js?v=72"></script>
-  <script src="data/next_steps.js?v=72"></script>
-  <script src="data/logic.js?v=72"></script>
-  <script src="data/chores.js?v=72"></script>
-  <script src="data/music.js?v=72"></script>
-  <script src="data/drawn.js?v=72"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "73"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=73"></script>
+  <script src="data/places.js?v=73"></script>
+  <script src="data/items.js?v=73"></script>
+  <script src="data/ideas.js?v=73"></script>
+  <script src="data/fish.js?v=73"></script>
+  <script src="data/digging.js?v=73"></script>
+  <script src="data/mining.js?v=73"></script>
+  <script src="data/troll.js?v=73"></script>
+  <script src="data/levels.js?v=73"></script>
+  <script src="data/luck.js?v=73"></script>
+  <script src="data/bonding.js?v=73"></script>
+  <script src="data/pearls.js?v=73"></script>
+  <script src="data/skills.js?v=73"></script>
+  <script src="data/sports.js?v=73"></script>
+  <script src="data/pixie.js?v=73"></script>
+  <script src="data/supplies.js?v=73"></script>
+  <script src="data/honey.js?v=73"></script>
+  <script src="data/gameplay.js?v=73"></script>
+  <script src="data/extras.js?v=73"></script>
+  <script src="data/hunger.js?v=73"></script>
+  <script src="data/orchard.js?v=73"></script>
+  <script src="data/dance.js?v=73"></script>
+  <script src="data/trading.js?v=73"></script>
+  <script src="data/unicorns.js?v=73"></script>
+  <script src="data/adventures.js?v=73"></script>
+  <script src="data/spells.js?v=73"></script>
+  <script src="data/furniture.js?v=73"></script>
+  <script src="data/next_steps.js?v=73"></script>
+  <script src="data/adventure_ideas.js?v=73"></script>
+  <script src="data/logic.js?v=73"></script>
+  <script src="data/chores.js?v=73"></script>
+  <script src="data/music.js?v=73"></script>
+  <script src="data/drawn.js?v=73"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -947,6 +953,37 @@
     const steps = GAME_DATA.nextSteps || { answer: [], consider: [] };
     steps.answer.forEach(function (s) { document.getElementById("steps-answer").appendChild(todoItem(s)); });
     steps.consider.forEach(function (s) { document.getElementById("steps-consider").appendChild(todoItem(s)); });
+
+    // Adventure ideas: the kinds of adventure, then each idea with how it
+    // unlocks, what happens and which saved celebration picture could go with it.
+    (function () {
+      const ideas = GAME_DATA.adventureIdeas;
+      if (!ideas) return;
+      const kindOf = function (id) { return ideas.categories.find(function (c) { return c.id === id; }) || {}; };
+      const list = el("ul", "todo-list");
+      ideas.categories.forEach(function (c) {
+        list.appendChild(el("li", "", c.emoji + " " + c.name + ": " + c.about + (c.inGame ? " (In the game: " + c.inGame + ".)" : "")));
+      });
+      document.getElementById("adventure-ideas").appendChild(list);
+      ideas.ideas.forEach(function (idea) {
+        const kind = kindOf(idea.category);
+        const c = el("div", "card adventure-idea");
+        const art = el("div", "art");
+        if (isDrawn(idea.celebrate)) {
+          const img = el("img");
+          img.src = "art/processed/" + idea.celebrate + ".png?v=" + GAME_VERSION;
+          img.alt = "";
+          art.appendChild(img);
+        } else art.textContent = idea.emoji;
+        c.append(art, el("span", "name", idea.emoji + " " + idea.name), el("span", "kind", kind.emoji + " " + kind.name));
+        [["🔓 Unlock: ", idea.unlock], ["✨ ", idea.idea], ["🖍️ Needs: ", idea.needs]].forEach(function (line) {
+          const p = el("p");
+          p.append(el("b", "", line[0]), document.createTextNode(line[1]));
+          c.appendChild(p);
+        });
+        document.getElementById("adventure-ideas").appendChild(c);
+      });
+    })();
 
     // ---------------------------------------------------------------- Game Play Logic
 
