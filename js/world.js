@@ -84,7 +84,8 @@ function drawSpots(box, places, onClick) {
     button.style.top = place.y + "%";
     button.innerHTML = '<span class="dot"></span><span class="label"></span>';
     // A bonding spot shows its own picture from data/bonding.js (🦉 falconry, 🐢 swimming...).
-    const icon = place.type === "care" ? GAME_DATA.bonding[place.care].emoji : SPOT_ICONS[place.type];
+    // "icon" on a spot picks its own, like ⬅️ for going back a room.
+    const icon = place.icon || (place.type === "care" ? GAME_DATA.bonding[place.care].emoji : SPOT_ICONS[place.type]);
     button.querySelector(".label").textContent = (icon ? icon + " " : "") + (place.spotName || place.name); // "spotName": a different name on the spot, like "Go inside"
     // A spot can have its own picture, like the bath tub at Home ("size" is
     // its width in percent of the picture it's in).
