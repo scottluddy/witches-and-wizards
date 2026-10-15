@@ -45,6 +45,7 @@ function fillIn(save) {
   // Older saves only had the cooler, which held nothing but fish.
   if (save.fishCount === undefined) save.fishCount = save.cooler.length;
   if (!save.bucket) save.bucket = [];
+  if (!save.museum) save.museum = { visited: [] }; // the Museum (js/museum.js)
   if (!save.homeCooler) save.homeCooler = [];
   if (!save.homeChest) save.homeChest = [];
   if (!save.satchel) save.satchel = [];
@@ -206,6 +207,7 @@ function newPlayer(playerName, characterId, kind) {
     secrets: [], // secret places and roads found, like "pixie_path" (js/world.js secretFound)
     pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, where the acorn hides, clues (js/pixie.js)
     riddlesHeard: [], // the troll's riddles you've heard, so they don't repeat (js/pixie.js)
+    museum: { visited: [] },  // Exhibit Rooms visited since the last ticket (js/museum.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen
     freePicks: {},            // the free item chosen in each category: { "Pet": "pet_owl" }

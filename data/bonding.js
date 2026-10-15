@@ -7,7 +7,7 @@
 //   turtles     swimming at any water, with bonus points if a (very rare) turtle run happens
 //   belugas     swim in the lake from the Dock or Pebble Beach
 //   jellyfish   clean their tanks at the Fish Hut
-//   any pet     rides the roller coaster in the Multi-House with you
+//   any pet     rides the roller coaster in the Multi-House with you, and eats at the Museum's Tiny Hole
 //   dogs and wolves         walks, runs and tricks at the Pet Training Field (no dogs yet!)
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
@@ -67,6 +67,12 @@ GAME_DATA.bonding = {
     "ask": "Your jellyfish needs a clean tank. Scrub, scrub!",
     "noPets": "These tanks are for jellyfish. Bring one in your backpack (the Lakeside Store has them).",
     "thanks": "🧽 The tank is sparkling clean and your PET swims happy circles." },
+  // The Pet Food bowl in the Museum's Tiny Hole (Scott, 2026-10-15): any pet can eat.
+  "pet_food": { "points": 1, "everyMinutes": 5, "from": "backpack",
+    "title": "Pet Food", "emoji": "🥣", "button": "🥣 Feed", "done": "😋 Full. Hungry again in ",
+    "ask": "A bowl of pet food! Feed your pet a snack.",
+    "noPets": "Bring a pet in your backpack to feed it.",
+    "thanks": "🥣 Your PET gobbles up the food. Yum!" },
   "dog_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf"], "from": "backpack",
     "title": "Walks and Tricks", "emoji": "🐕", "button": "🐕 Go for a walk", "done": "💤 Resting. Ready again in ",
     "ask": "Walk, run and learn tricks with your dog or wolf.",

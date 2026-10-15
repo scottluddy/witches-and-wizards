@@ -76,6 +76,33 @@ GAME_DATA.places = [
   { "id": "cafe", "name": "Cafe", "type": "place", "in": "village", "x": 40, "y": 70,
     "description": "Sit down for a proper meal. Click the menu to order; you eat it right here." },
   { "id": "cafe_menu", "name": "Menu", "type": "cafe", "in": "cafe", "x": 20, "y": 22, "menu": "Cafe Menu" },
+  // The Museum (Scott, 2026-10-15, the girls' drawings; placed by Claude until a Village map is drawn).
+  // Pay 5 gems at Pay Here for a ticket, then Enter the Exhibit Hall and visit
+  // every room before the Snack Shop opens. Museum rules: you can only eat
+  // sitting down ("museumRules", js/museum.js). The numbers are in data/museum.js.
+  { "id": "museum", "name": "Museum", "type": "place", "in": "village", "x": 85, "y": 40, "museumRules": true,
+    "description": "Welcome to the Museum! Pay at the desk for a ticket, then click Enter." },
+  { "id": "museum_pay", "name": "Pay Here", "type": "museum_pay", "in": "museum", "x": 18, "y": 33 },
+  { "id": "museum_hall", "name": "Enter", "type": "place", "in": "museum", "x": 87, "y": 58, "needsTicket": true,
+    "description": "The Exhibit Hall (not drawn yet). Visit every room, then the Snack Shop opens." },
+  { "id": "museum_room_1", "name": "Exhibit Room 1", "type": "place", "in": "museum_hall", "x": 15, "y": 40, "museumRoom": true },
+  { "id": "museum_room_2", "name": "Exhibit Room 2", "type": "place", "in": "museum_hall", "x": 35, "y": 25, "museumRoom": true },
+  { "id": "museum_room_3", "name": "Exhibit Room 3", "type": "place", "in": "museum_hall", "x": 55, "y": 40, "museumRoom": true },
+  { "id": "museum_room_4", "name": "Exhibit Room 4", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true },
+  { "id": "museum_room_5", "name": "Exhibit Room 5", "type": "place", "in": "museum_hall", "x": 85, "y": 60, "museumRoom": true },
+  { "id": "museum_hall_snacks", "name": "Snack Shop", "type": "travel", "in": "museum_hall", "x": 45, "y": 75, "to": "museum_snack_shop" },
+  { "id": "museum_snack_shop", "name": "Snack Shop", "type": "place", "in": "museum", "x": 89, "y": 12, "needsRound": true,
+    "description": "Click the menu to buy something. Museum rules: sit on the chair to eat or drink!" },
+  { "id": "museum_chef", "name": "Chef", "type": "person", "in": "museum_snack_shop", "x": 17, "y": 50,
+    "says": "Welcome!" },
+  { "id": "museum_menu", "name": "Menu", "type": "menu_shop", "in": "museum_snack_shop", "x": 15, "y": 14, "menu": "Museum Snack Shop" },
+  { "id": "museum_sit", "name": "Sit", "type": "seat", "in": "museum_snack_shop", "x": 78, "y": 66 },
+  { "id": "museum_tiny_hole", "name": "Tiny Hole", "type": "tiny_hole", "in": "museum_snack_shop", "x": 45, "y": 90, "to": "tiny_hole" },
+  { "id": "tiny_hole", "name": "Tiny Hole", "type": "place", "in": "museum_snack_shop", "hidden": true,
+    "description": "You're tiny! Everything is huge in here. Go back to grow big again." },
+  { "id": "tiny_brewing_stand", "name": "Brewing Stand", "type": "person", "in": "tiny_hole", "x": 18, "y": 70,
+    "says": "Brew a potion here! (Which potion, and what it needs, isn't decided yet.)" },
+  { "id": "tiny_pet_food", "name": "Pet Food", "type": "care", "care": "pet_food", "in": "tiny_hole", "x": 75, "y": 86 },
   { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 79, "y": 62,
     "description": "Nine classrooms, one for each thing you can learn. Only the Music Classroom has a teacher so far." },
   // The Wizard School's 9 classrooms, one per box on the girls' drawing (Scott, 2026-10-13).

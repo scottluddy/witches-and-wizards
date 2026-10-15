@@ -39,6 +39,7 @@ GAME_DATA.items = [
   {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
   {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},
+  {"id": "potion_shrink", "name": "Shrink Potion", "category": "Potion", "gems": 8, "emoji": "🤏", "description": "A square green bottle. One sip and you're tiny! Gets you into the Tiny Hole in the Museum's Snack Shop (Scott, 2026-10-15)."},
   {"id": "potion_sense", "name": "Sense Potion", "category": "Potion", "gems": 3, "emoji": "🧪", "description": "A potion for the senses. Needed for the Seeing Spell."},
   {"id": "special_book", "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know."}
 ,
@@ -160,5 +161,8 @@ GAME_DATA.items = [
   {"id": "cafe_soup", "name": "Soup", "category": "Cafe Menu", "gems": 6, "emoji": "🍲", "inPicture": true, "description": "Menu number 5.", "food": "healthy"},
   {"id": "cafe_salmon", "name": "Salmon", "category": "Cafe Menu", "gems": 7, "emoji": "🍣", "inPicture": true, "description": "Menu number 6.", "food": "healthy"},
   {"id": "cafe_fish", "name": "Fish", "category": "Cafe Menu", "gems": 5, "emoji": "🐟", "inPicture": true, "description": "Menu number 7.", "food": "healthy"},
+  {"id": "museum_ticket", "name": "Admission Ticket", "category": "Museum", "emoji": "🎟️", "quest": true, "description": "Your ticket into the Museum's Exhibit Hall. It's used up when you go in."},
+  {"id": "museum_coffee", "name": "Coffee", "category": "Museum Snack Shop", "gems": 3, "emoji": "☕", "description": "From the Museum Snack Shop menu.", "food": "snack"},
+  {"id": "museum_muffin", "name": "Muffin", "category": "Museum Snack Shop", "gems": 5, "emoji": "🧁", "description": "A chocolate chip muffin, from the Museum Snack Shop menu.", "food": "snack"},
   {"id": "cafe_princess_cake", "name": "Raspberry Princess Cake", "category": "Cafe Menu", "gems": 6, "emoji": "🍰", "description": "Menu number 8: raspberry and custard between two layers of sponge cake, wrapped in marzipan (Scott, 2026-10-15; the price is Claude's guess). A treat, so it's a snack.", "food": "snack"}
 ];

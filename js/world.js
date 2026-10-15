@@ -32,7 +32,8 @@ const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
-  pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕"
+  pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
+  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑"
 };
 
 function isDrawn(name) {
@@ -54,6 +55,7 @@ function goTo(id) {
   if (!place) return showMap("world");
   if (place.opens) return goTo(place.opens); // skip straight into the place it opens
   if (place.floors) return openElevator(place); // a building's door opens on its elevator
+  if (museumStops(place)) return; // the Museum needs a ticket, and a round before the Snack Shop (js/museum.js)
   if (place.type === "map") showMap(id);
   else showPlace(id);
 }
@@ -349,6 +351,10 @@ function showPlace(id) {
     if (child.type === "smores") return grabSmore();             // js/pixie.js
     if (child.type === "fireplace") return roastSmore();         // js/pixie.js
     if (child.type === "hot_chocolate") return drinkHotChocolate(); // js/pixie.js
+    if (child.type === "tiny_hole") return openTinyHole(child);  // js/museum.js
+    if (child.type === "museum_pay") return openMuseumPay();     // js/museum.js
+    if (child.type === "menu_shop") return openMenuShop(child);  // js/museum.js
+    if (child.type === "seat") return sitDown();                 // js/museum.js
     if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
       document.getElementById("place-description").textContent =
         "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
@@ -357,6 +363,7 @@ function showPlace(id) {
     goTo(childId);
   });
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
+  noteMuseumVisit(place); // the Exhibit Rooms seen so far (js/museum.js)
   showFurniture(place);  // movable furniture (js/furniture.js)
   showChore(place);      // dust and the Clean Room button (js/chores.js)
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)

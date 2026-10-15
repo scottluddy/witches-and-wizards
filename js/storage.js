@@ -71,6 +71,8 @@ function eatFromBasket(fruit) {
   button.className = "small-button";
   button.textContent = "😋 Eat one " + foodLabel(fruit);
   button.addEventListener("click", function () {
+    const rule = cantEatHere(); // Museum rules (js/museum.js)
+    if (rule) return (document.getElementById("storage-title").textContent = rule);
     const less = eat(fruit, "basket");
     openStorage("basket");
     document.getElementById("storage-title").textContent = "🧺 " + yumText(fruit, less);
@@ -177,6 +179,8 @@ function fishCard(fish, storeName, count, sashimi) {
 }
 
 function eatFish(fish, storeName, sashimi) {
+  const rule = cantEatHere(); // Museum rules (js/museum.js)
+  if (rule) return (document.getElementById("storage-title").textContent = rule);
   const before = player.hunger;
   player.hunger = Math.max(0, player.hunger - fishFood(fish, sashimi));
   const list = player[storeName];

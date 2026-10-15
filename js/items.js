@@ -404,6 +404,8 @@ function eatButton(item) {
   button.className = "small-button";
   button.textContent = "😋 Eat " + foodLabel(item);
   button.addEventListener("click", function () {
+    const rule = cantEatHere(); // Museum rules (js/museum.js)
+    if (rule) return (document.getElementById("backpack-free").textContent = rule);
     const less = eat(item);
     openBackpack();
     document.getElementById("backpack-free").textContent = yumText(item, less);
