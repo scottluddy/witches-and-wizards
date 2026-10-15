@@ -159,5 +159,6 @@ GAME_DATA.items = [
   {"id": "cafe_pie", "name": "Pie", "category": "Cafe Menu", "gems": 5, "emoji": "🥧", "inPicture": true, "description": "Menu number 4.", "food": "healthy"},
   {"id": "cafe_soup", "name": "Soup", "category": "Cafe Menu", "gems": 6, "emoji": "🍲", "inPicture": true, "description": "Menu number 5.", "food": "healthy"},
   {"id": "cafe_salmon", "name": "Salmon", "category": "Cafe Menu", "gems": 7, "emoji": "🍣", "inPicture": true, "description": "Menu number 6.", "food": "healthy"},
-  {"id": "cafe_fish", "name": "Fish", "category": "Cafe Menu", "gems": 5, "emoji": "🐟", "inPicture": true, "description": "Menu number 7.", "food": "healthy"}
+  {"id": "cafe_fish", "name": "Fish", "category": "Cafe Menu", "gems": 5, "emoji": "🐟", "inPicture": true, "description": "Menu number 7.", "food": "healthy"},
+  {"id": "cafe_princess_cake", "name": "Raspberry Princess Cake", "category": "Cafe Menu", "gems": 6, "emoji": "🍰", "description": "Menu number 8: raspberry and custard between two layers of sponge cake, wrapped in marzipan (Scott, 2026-10-15; the price is Claude's guess). A treat, so it's a snack.", "food": "snack"}
 ];
