@@ -44,6 +44,9 @@ function fillTestBags(who) {
     // things that aren't supplies are one of each, so don't add a second
     if (who.backpack.indexOf(id) === -1) who.backpack.push(id);
   });
+  // potions with sips start full again
+  if (who.pixieQuest) who.pixieQuest.sips = potionSips(); // js/pixie.js
+  if (who.windy) who.windy.sips = 0;                      // 0 = a new Night Vision Potion (js/windy.js)
   ["cooler", "basket", "satchel", "bucket"].forEach(function (bag) {
     (start[bag] || []).forEach(function (id) { who[bag].push(id); });
   });
