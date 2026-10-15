@@ -1377,3 +1377,6 @@ body.holding-apple, body.holding-apple * {
 /* The 🧪 Test Tools pop-up (js/testing.js): buttons wrap onto several rows. */
 .test-tools { flex-wrap: wrap; justify-content: center; }
 .test-tools .big-button { font-size: 1rem; padding: 8px 14px; }
+
+/* The Tester game's PIN box (js/testing.js). */
+.pin-box { font-size: 1.6rem; width: 8em; text-align: center; padding: 6px; border-radius: 10px; border: 3px solid #6b3fa0; letter-spacing: 0.3em; }

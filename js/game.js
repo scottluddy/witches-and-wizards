@@ -134,11 +134,18 @@ document.getElementById("btn-confirm-no").addEventListener("click", function () 
 
 document.getElementById("btn-continue").addEventListener("click", function () {
   const id = document.getElementById("saved-games").value;
-  player = loadSaves().find(function (save) { return save.id === id; });
-  if (!player) return;
+  const save = loadSaves().find(function (s) { return s.id === id; });
+  if (!save) return;
+  // A test game is locked with a PIN (js/testing.js).
+  if (save.tester) return askTestPin(function () { continueGame(save); });
+  continueGame(save);
+});
+
+function continueGame(save) {
+  player = save;
   writeSave(player); // moves it to the top of the list
   goTo(player.at);
-});
+}
 
 // ---------------------------------------------------------------- character select
 
@@ -213,12 +220,17 @@ document.getElementById("player-name").addEventListener("keydown", function (eve
 document.getElementById("btn-start").addEventListener("click", function () {
   const name = document.getElementById("player-name").value.trim();
   if (!chosenCharacterId || !chosenKind || !name) return;
-  player = newPlayer(name, chosenCharacterId, chosenKind);
-  if (isTestCode(name)) makeTester(player); // the secret code makes a test game (js/testing.js)
+  // The secret code makes a test game, but only with the PIN too (js/testing.js).
+  if (isTestCode(name)) return askTestPin(function () { startGame(makeTester(newPlayer(name, chosenCharacterId, chosenKind))); });
+  startGame(newPlayer(name, chosenCharacterId, chosenKind));
+});
+
+function startGame(newGame) {
+  player = newGame;
   writeSave(player);
   goTo(player.at);
   if (!player.tester) tellWelcome(0); // the Head Witch or Wizard gets you started (js/story.js)
-});
+}
 
 document.getElementById("btn-select-back").addEventListener("click", showTitle);
 

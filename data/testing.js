@@ -13,6 +13,11 @@ GAME_DATA.testing = {
   "on": true,
   "code": "wit-master",
   "name": "Tester",
+  // Opening a test game (Scott, 2026-10-15) also asks for a secret PIN.
+  // Only a scramble of the PIN is kept here, so reading this public file
+  // doesn't give it away. To change the PIN, open the game, press F12 and
+  // type pinHash("1234") in the Console, then put the number it shows here.
+  "pinHash": 125994,
   "start": {
     "gems": 500,
     "crystals": 20,

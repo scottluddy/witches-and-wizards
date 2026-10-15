@@ -35,6 +35,40 @@ function fillTestBags(who) {
   });
 }
 
+// ---------------------------------------------------------------- the PIN
+
+// A scramble of a PIN: the same PIN always gives the same number, but the
+// number doesn't show what the PIN is.
+function pinHash(pin) {
+  let number = 7;
+  for (const digit of String(pin)) number = (number * 31 + digit.charCodeAt(0)) % 1000003;
+  return number;
+}
+
+// Ask for the PIN; "onRight" runs once it's typed right (Scott, 2026-10-15).
+function askTestPin(onRight, message) {
+  const body = openInfoPanel("🔒", "Tester Game", message || "This game is locked. Type the secret code to open it.");
+  const box = document.createElement("input");
+  box.type = "password";
+  box.inputMode = "numeric";
+  box.maxLength = 8;
+  box.className = "pin-box";
+  const open = document.createElement("button");
+  open.className = "big-button";
+  open.textContent = "🔓 Open";
+  const check = function () {
+    if (pinHash(box.value.trim()) !== GAME_DATA.testing.pinHash) return askTestPin(onRight, "❌ That's not the code. Try again.");
+    document.getElementById("info-panel").hidden = true;
+    onRight();
+  };
+  open.addEventListener("click", check);
+  box.addEventListener("keydown", function (event) { if (event.key === "Enter") check(); });
+  body.append(box, " ", open);
+  box.focus();
+}
+
+// ---------------------------------------------------------------- the Test button
+
 // The 🧪 Test button only shows in a test game.
 function showTestButton() {
   document.getElementById("btn-test").hidden = !isTester();
