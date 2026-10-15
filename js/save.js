@@ -161,7 +161,7 @@ function levelLabel(player) {
 
 // Lost on Windy Peak, not started yet (js/windy.js).
 function newWindy() {
-  return { stage: "", slope: [], spot: 0, tries: 0, looked: [], sips: 0, done: 0 };
+  return { stage: "", spot: 0, tries: 0, looked: [], sips: 0, seeing: false, done: 0 };
 }
 
 // A brand-new player, as made on the character select screen.

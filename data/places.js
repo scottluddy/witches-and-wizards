@@ -221,6 +221,9 @@ GAME_DATA.places = [
   // Ski down: the slope map during Lost on Windy Peak (js/windy.js), otherwise straight to the Snowy Hut.
   { "id": "peak_ski_down", "name": "Ski down", "type": "ski_down", "in": "peak", "x": 45, "y": 45, "to": "hut" },
   { "id": "peak_owl_dropoff", "name": "Snowy Owl Dropoff", "type": "owl_dropoff", "in": "peak", "x": 9, "y": 52 },
+  // The ski slope (Scott, 2026-10-15): only reached by skiing down during Lost on Windy Peak (js/windy.js).
+  { "id": "ski_slope", "name": "Ski Slope", "type": "place", "in": "peak", "hidden": true,
+    "description": "The ski slope at night. Somewhere out here is a little lost WIT." },
   { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40,
     "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59, "shelf": "Snack Shack Floor 1",

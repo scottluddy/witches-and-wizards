@@ -369,7 +369,7 @@ function showPlace(id) {
   showFurniture(place);  // movable furniture (js/furniture.js)
   showChore(place);      // dust and the Clean Room button (js/chores.js)
   showMine(place);       // the Crystal Cave's pickaxes and hidden finds (js/mining.js)
-  windyArrive(place);    // bringing the little WIT to the Snowy Hut (js/windy.js)
+  showWindy(place);      // the dark ski slope, and the little WIT in the Snowy Hut (js/windy.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)

@@ -21,7 +21,7 @@ GAME_DATA.celebrations = {
 // every "reminderMinutes". They stay out for "staySeconds".
 GAME_DATA.adventureGuide = {
   "unlockEverySkills": 2,
-  "reminderMinutes": 5,
+  "reminderMinutes": 30,
   "staySeconds": 20,
   "guides": [
     { "name": "Head Witch",  "kind": "witch",  "picture": "head_witch",  "emoji": "🧙‍♀️" },
@@ -58,11 +58,10 @@ GAME_DATA.adventureList = [
   // Snowy Owl fly at Windy Peak while you own a Night Vision Potion, not by Skills.
   { "id": "windy", "name": "Lost on Windy Peak", "emoji": "🏔️",
     "unlockBy": "Let your Snowy Owl fly at the Windy Peak dropoff while you own a Night Vision Potion",
-    "hint": "Your Snowy Owl spotted a little future WIT lost on the slope at Windy Peak! Drink a sip of Night Vision Potion and look through the binoculars.",
+    "hint": "Your Snowy Owl spotted a little future WIT lost on the ski slope at Windy Peak, and it's dark!",
     "steps": [
-      "Sip the Night Vision Potion and look through the binoculars for a clue",
-      "Ski down and look in the section of the slope the clue tells you (each look is a sip, 3 tries)",
-      "Ski down to the Snowy Hut together",
-      "Warm up with hot chocolate"
+      "Find where they are",
+      "Bring them somewhere warm",
+      "Warm them up"
     ] }
 ];

@@ -10,8 +10,8 @@
 // in CLAUDE.md, so the game remembers).
 GAME_DATA.nextSteps = {
   "answer": [
-    { "text": "Draw the little lost WIT for Lost on Windy Peak, and pick a celebration picture for rescues", "who": "Girls",
-      "note": "Save the little WIT as art/raw/extra_little_wit.jpg (it's 🧒 for now). The bunny, witch in a pumpkin and unicorn donut are saved and free." },
+    { "text": "Draw the little lost WIT and the ski slope for Lost on Windy Peak, and pick a celebration picture for rescues", "who": "Girls",
+      "note": "Save the little WIT as art/raw/extra_little_wit.jpg (it's 🧒 for now) and the slope, seen from the top, as art/raw/place_ski_slope.jpg; it gets cut into 12 pieces (4 across, 3 down), so a few landmarks help. The bunny, witch in a pumpkin and unicorn donut are saved and free." },
     { "text": "Draw the Farm: where it goes on the World map, its own map, and the Farm House, Animal Farm and Crop Fields", "who": "Girls",
       "note": "Laid out in the game with placeholders (Scott, 2026-10-15), for now west of the Village and the Forest. Ideas to tie it in: the Animal Farm could bond and earn Chore Points (feeding, brushing, collecting eggs), crops could be food for hunger or ingredients for potions and spells, and the Farm House could hold a Cooking classroom or the Farmer who gives the Giant Pumpkin adventure." },
     { "text": "Which adventure ideas should we build next?", "who": "Girls",
@@ -71,7 +71,7 @@ GAME_DATA.nextSteps = {
     { "text": "What happens with the Turtle Egg? Does it hatch?", "who": "Girls" },
     { "text": "What other fruit grows in the Fruit Orchard, and what does the Treehouse's fruit cooler do?", "who": "Girls" },
     { "text": "Where should Ski down on Windy Peak take you?", "who": "Scott",
-      "note": "For now it goes to the Snowy Hut. Maybe a ski run that ends at the Ski Reserve?" },
+      "note": "During the rescue it goes to the dark Ski Slope; otherwise to the Snowy Hut. Maybe a ski run that ends at the Ski Reserve?" },
     { "text": "Which spells use pearls?", "who": "Girls",
       "note": "Pearls from the Pearl Cave go in the bucket and are spell ingredients, but no spell needs them yet." },
     { "text": "What can you do at the Fish Hut and with the Crafting Cabin's supplies?", "who": "Girls",
