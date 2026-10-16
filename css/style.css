@@ -631,6 +631,35 @@ h2 {
 .picture:has(#place-mine:not([hidden])) { cursor: crosshair; } /* the cave wall can be clicked anywhere */
 
 #screen-place { position: relative; } /* so the pickaxe rack can stand beside the cave */
+
+/* Previous / next buttons just outside the picture (js/world.js), so they never
+   cover the drawing. A picture with them is a little narrower to leave room. */
+.picture.has-sides {
+  width: min(100% - 2 * var(--side-room), calc((100vh - var(--room-above-below)) * var(--shape, 1.4)));
+}
+#screen-place { --side-room: 150px; }
+.side-button {
+  position: absolute;
+  z-index: 3;
+  width: calc(var(--side-room) - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px;
+  font-family: inherit;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--magic-dark);
+  background: rgba(255, 250, 240, 0.95);
+  border: 4px solid var(--magic);
+  border-radius: 18px;
+  cursor: pointer;
+  box-shadow: 0 4px 0 var(--magic-dark);
+}
+.side-button:hover { background: var(--gold); }
+.side-button:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--magic-dark); }
+.side-arrow { font-size: 2rem; }
 .mine-rack {
   position: absolute;
   z-index: 3;

@@ -11,6 +11,8 @@
 //   in          the place it sits inside (left out for the world)
 //   x, y        where it sits on that picture, as percentages across and down
 //               (press P in the game and click to find numbers)
+//   side        "left" or "right" instead of x, y: a previous / next button just
+//               outside the picture, so it never covers the drawing (Scott, 2026-10-16)
 //   start       true for the spot the character arrives at on a map
 //   description shown under the picture
 //   shelf       shops and store shelves: which item category it sells
@@ -96,17 +98,17 @@ GAME_DATA.places = [
   { "id": "museum_room_3", "name": "Exhibit Room 3", "type": "place", "in": "museum_hall", "x": 55, "y": 40, "museumRoom": true },
   { "id": "museum_room_4", "name": "Exhibit Room 4", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true },
   { "id": "museum_room_5", "name": "Exhibit Room 5", "type": "place", "in": "museum_hall", "x": 85, "y": 60, "museumRoom": true },
-  // Previous / next room buttons in each Exhibit Room (Scott, 2026-10-15).
-  { "id": "museum_room_1_back", "name": "Exhibit Hall", "type": "travel", "icon": "⬅️", "in": "museum_room_1", "x": 14, "y": 49, "to": "museum_hall" },
-  { "id": "museum_room_1_next", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_1", "x": 74, "y": 49, "to": "museum_room_2" },
-  { "id": "museum_room_2_back", "name": "Art Exhibit", "type": "travel", "icon": "⬅️", "in": "museum_room_2", "x": 9, "y": 95, "to": "museum_room_1" },
-  { "id": "museum_room_2_next", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_2", "x": 91, "y": 95, "to": "museum_room_3" },
-  { "id": "museum_room_3_back", "name": "Gem Stone Exhibit", "type": "travel", "icon": "⬅️", "in": "museum_room_3", "x": 10, "y": 88, "to": "museum_room_2" },
-  { "id": "museum_room_3_next", "name": "Exhibit Room 4", "type": "travel", "in": "museum_room_3", "x": 88, "y": 88, "to": "museum_room_4" },
-  { "id": "museum_room_4_back", "name": "Exhibit Room 3", "type": "travel", "icon": "⬅️", "in": "museum_room_4", "x": 10, "y": 88, "to": "museum_room_3" },
-  { "id": "museum_room_4_next", "name": "Exhibit Room 5", "type": "travel", "in": "museum_room_4", "x": 88, "y": 88, "to": "museum_room_5" },
-  { "id": "museum_room_5_back", "name": "Exhibit Room 4", "type": "travel", "icon": "⬅️", "in": "museum_room_5", "x": 10, "y": 88, "to": "museum_room_4" },
-  { "id": "museum_room_5_next", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_5", "x": 88, "y": 88, "to": "museum_hall" },
+  // Previous / next room buttons in each Exhibit Room (Scott, 2026-10-15), beside the picture.
+  { "id": "museum_room_1_back", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_1", "side": "left", "to": "museum_hall" },
+  { "id": "museum_room_1_next", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_1", "side": "right", "to": "museum_room_2" },
+  { "id": "museum_room_2_back", "name": "Art Exhibit", "type": "travel", "in": "museum_room_2", "side": "left", "to": "museum_room_1" },
+  { "id": "museum_room_2_next", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_2", "side": "right", "to": "museum_room_3" },
+  { "id": "museum_room_3_back", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_3", "side": "left", "to": "museum_room_2" },
+  { "id": "museum_room_3_next", "name": "Exhibit Room 4", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
+  { "id": "museum_room_4_back", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_4", "side": "left", "to": "museum_room_3" },
+  { "id": "museum_room_4_next", "name": "Exhibit Room 5", "type": "travel", "in": "museum_room_4", "side": "right", "to": "museum_room_5" },
+  { "id": "museum_room_5_back", "name": "Exhibit Room 4", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
+  { "id": "museum_room_5_next", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_5", "side": "right", "to": "museum_hall" },
   { "id": "museum_hall_snacks", "name": "Snack Shop", "type": "travel", "in": "museum_hall", "x": 45, "y": 75, "to": "museum_snack_shop" },
   { "id": "museum_snack_shop", "name": "Snack Shop", "type": "place", "in": "museum_hall", "hidden": true, "needsRound": true,
     "description": "Click the menu to buy something. Museum rules: sit on the chair to eat or drink!" },

@@ -315,55 +315,9 @@ function showPlace(id) {
   document.getElementById("place-image").alt = place.name;
   document.getElementById("place-description").textContent = place.description || "";
   setBackButton(document.getElementById("btn-place-back"), place);
-  drawSpots(document.getElementById("place-spots"), placesIn(id), function (childId) {
-    if (placementMode) return;
-    const child = findPlace(childId);
-    if (skillSpotLocked(child)) return; // waiting for the next skill test, or needs a skill Level (js/skills.js)
-    if (child.type === "person") {
-      // People talk instead of opening a new picture.
-      document.getElementById("place-description").textContent =
-        "💬 " + child.name + ': "' + (child.says || "Hello!") + '"';
-      return;
-    }
-    if (child.type === "fishing") return startFishing(child); // js/fishing.js
-    if (child.type === "digging") return startDigging(child); // js/digging.js
-    if (child.type === "marshmallows") return openMarshmallows(); // js/hunger.js
-    if (child.type === "picking") return pickFruit(child);        // js/orchard.js
-    if (child.type === "crafting") return openCrafting();         // js/spells.js
-    if (child.type === "selling") return openGemsShelf();          // js/trading.js
-    if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
-    if (child.type === "bath") return openBath();                // js/bonding.js
-    if (child.type === "cuddle") return openCuddle(acornClue(child.id).trim() || undefined); // js/bonding.js (the Pond House couch may hide a clue, js/pixie.js)
-    if (child.type === "cafe") return openCafe(child);           // js/cafe.js
-    if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
-    if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
-    if (child.type === "look") return windyLook(child) || lookThrough(child); // binoculars, below (or the Windy Peak rescue, js/windy.js)
-    if (child.type === "ski_down") return windySkiDown(child);   // the slope, or straight to the hut (js/windy.js)
-    if (child.type === "elevator") return openElevator(child);   // a building with floors, below
-    if (child.type === "coaster") return openCoaster();          // js/coaster.js
-    if (child.type === "piano") return openPiano();              // js/music.js
-    if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
-    if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
-    if (child.type === "honey") return openBeehive();            // js/honey.js
-    if (child.type === "archery") return openArchery();          // js/sports.js
-    if (child.type === "soccer") return openSoccer();            // js/sports.js
-    if (child.type === "riddle") return askRiddle();             // js/pixie.js
-    if (child.type === "turtle_sniff") return turtleSniff();     // js/pixie.js
-    if (child.type === "pond") return openPond();                // js/pixie.js
-    if (child.type === "smores") return grabSmore();             // js/pixie.js
-    if (child.type === "fireplace") return roastSmore();         // js/pixie.js
-    if (child.type === "hot_chocolate") return drinkHotChocolate(); // js/pixie.js
-    if (child.type === "tiny_hole") return openTinyHole(child);  // js/museum.js
-    if (child.type === "museum_pay") return openMuseumPay();     // js/museum.js
-    if (child.type === "menu_shop") return openMenuShop(child);  // js/museum.js
-    if (child.type === "seat") return sitDown();                 // js/museum.js
-    if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
-      document.getElementById("place-description").textContent =
-        "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
-      return;
-    }
-    goTo(childId);
-  });
+  const spots = placesIn(id);
+  drawSpots(document.getElementById("place-spots"), spots.filter(function (s) { return !s.side; }), openSpot);
+  drawSideButtons(spots.filter(function (s) { return s.side; }));
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
   noteMuseumVisit(place); // the Exhibit Rooms seen so far (js/museum.js)
   showFurniture(place);  // movable furniture (js/furniture.js)
@@ -378,6 +332,91 @@ function showPlace(id) {
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showScreen("screen-place");
 }
+
+// What happens when you click a spot in a place.
+function openSpot(childId) {
+  if (placementMode) return;
+  const child = findPlace(childId);
+  if (skillSpotLocked(child)) return; // waiting for the next skill test, or needs a skill Level (js/skills.js)
+  if (child.type === "person") {
+    // People talk instead of opening a new picture.
+    document.getElementById("place-description").textContent =
+      "💬 " + child.name + ': "' + (child.says || "Hello!") + '"';
+    return;
+  }
+  if (child.type === "fishing") return startFishing(child); // js/fishing.js
+  if (child.type === "digging") return startDigging(child); // js/digging.js
+  if (child.type === "marshmallows") return openMarshmallows(); // js/hunger.js
+  if (child.type === "picking") return pickFruit(child);        // js/orchard.js
+  if (child.type === "crafting") return openCrafting();         // js/spells.js
+  if (child.type === "selling") return openGemsShelf();          // js/trading.js
+  if (child.type === "dance_puzzle") return openDancePuzzle(); // js/dance.js
+  if (child.type === "bath") return openBath();                // js/bonding.js
+  if (child.type === "cuddle") return openCuddle(acornClue(child.id).trim() || undefined); // js/bonding.js (the Pond House couch may hide a clue, js/pixie.js)
+  if (child.type === "cafe") return openCafe(child);           // js/cafe.js
+  if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
+  if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
+  if (child.type === "look") return windyLook(child) || lookThrough(child); // binoculars, below (or the Windy Peak rescue, js/windy.js)
+  if (child.type === "ski_down") return windySkiDown(child);   // the slope, or straight to the hut (js/windy.js)
+  if (child.type === "elevator") return openElevator(child);   // a building with floors, below
+  if (child.type === "coaster") return openCoaster();          // js/coaster.js
+  if (child.type === "piano") return openPiano();              // js/music.js
+  if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+  if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
+  if (child.type === "honey") return openBeehive();            // js/honey.js
+  if (child.type === "archery") return openArchery();          // js/sports.js
+  if (child.type === "soccer") return openSoccer();            // js/sports.js
+  if (child.type === "riddle") return askRiddle();             // js/pixie.js
+  if (child.type === "turtle_sniff") return turtleSniff();     // js/pixie.js
+  if (child.type === "pond") return openPond();                // js/pixie.js
+  if (child.type === "smores") return grabSmore();             // js/pixie.js
+  if (child.type === "fireplace") return roastSmore();         // js/pixie.js
+  if (child.type === "hot_chocolate") return drinkHotChocolate(); // js/pixie.js
+  if (child.type === "tiny_hole") return openTinyHole(child);  // js/museum.js
+  if (child.type === "museum_pay") return openMuseumPay();     // js/museum.js
+  if (child.type === "menu_shop") return openMenuShop(child);  // js/museum.js
+  if (child.type === "seat") return sitDown();                 // js/museum.js
+  if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
+    document.getElementById("place-description").textContent =
+      "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
+    return;
+  }
+  goTo(childId);
+}
+
+// Previous / next buttons ("side": "left" or "right") stand just outside the
+// picture, so they never cover the girls' drawing (Scott, 2026-10-16).
+function drawSideButtons(spots) {
+  const box = document.getElementById("place-sides");
+  box.innerHTML = "";
+  document.getElementById("place-picture").classList.toggle("has-sides", spots.length > 0);
+  spots.forEach(function (spot) {
+    const button = document.createElement("button");
+    button.className = "side-button side-" + spot.side;
+    button.innerHTML = '<span class="side-arrow"></span><span class="side-name"></span>';
+    button.querySelector(".side-arrow").textContent = spot.side === "left" ? "⬅️" : "➡️";
+    button.querySelector(".side-name").textContent = spot.name;
+    button.addEventListener("click", function () { openSpot(spot.id); });
+    box.appendChild(button);
+  });
+  requestAnimationFrame(placeSideButtons); // once the place screen is showing
+}
+
+// Halfway down the picture, one each side of it.
+function placeSideButtons() {
+  const pic = document.getElementById("place-picture");
+  document.querySelectorAll("#place-sides .side-button").forEach(function (button) {
+    const gap = 12;
+    const left = button.classList.contains("side-left")
+      ? Math.max(4, pic.offsetLeft - button.offsetWidth - gap)
+      : pic.offsetLeft + pic.offsetWidth + gap;
+    button.style.left = left + "px";
+    button.style.top = (pic.offsetTop + pic.offsetHeight / 2 - button.offsetHeight / 2) + "px";
+  });
+}
+
+window.addEventListener("resize", placeSideButtons);
+document.getElementById("place-image").addEventListener("load", placeSideButtons);
 
 // The elevator in a building with floors (the Multi-House, Scott 2026-10-14).
 // The building lists its floors in "floors", Floor 1 first; null is a floor
