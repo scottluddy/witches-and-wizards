@@ -82,7 +82,8 @@ GAME_DATA.adventureList = [
       "Warm them up"
     ],
     "drawings": [
-      { "what": "The ski slope seen from the top (it gets cut into 48 pieces, so a few landmarks help)", "file": "place_ski_slope" },
+      { "what": "The ski slope seen from the top (it gets cut into 12 big sections, 4 across and 3 down, and each one is shown big, so draw lots of little things all over)", "file": "place_ski_slope" },
+      { "what": "The blanket hanging over the couch in the Snowy Hut", "file": "hut_blanket" },
       { "what": "The little lost WIT", "file": "extra_little_wit" },
       { "what": "Snowy Owl", "file": "pet_owl" },
       { "what": "Night Vision Potion", "file": "potion_night_vision" },

@@ -11,7 +11,7 @@
 GAME_DATA.nextSteps = {
   "answer": [
     { "text": "Draw the little lost WIT and the ski slope for Lost on Windy Peak, and pick a celebration picture for rescues", "who": "Girls",
-      "note": "Save the little WIT as art/raw/extra_little_wit.jpg (it's 🧒 for now) and the slope, seen from the top, as art/raw/place_ski_slope.jpg; it gets cut into 48 pieces (8 across, 6 down), so a few landmarks help. The catalog's Still to Draw page lists every adventure's missing pictures. The bunny, witch in a pumpkin and unicorn donut are saved and free." },
+      "note": "Save the little WIT as art/raw/extra_little_wit.jpg (it's 🧒 for now) and the slope, seen from the top, as art/raw/place_ski_slope.jpg; it gets cut into 12 sections (4 across, 3 down) and each section is shown big, so lots of little details help. Also the blanket over the Snowy Hut's couch (art/raw/hut_blanket.jpg). The catalog's Still to Draw page lists every adventure's missing pictures. The bunny, witch in a pumpkin and unicorn donut are saved and free." },
     { "text": "Draw the Farm: where it goes on the World map, its own map, and the Farm House, Animal Farm and Crop Fields", "who": "Girls",
       "note": "Laid out in the game with placeholders (Scott, 2026-10-15), for now west of the Village and the Forest. Ideas to tie it in: the Animal Farm could bond and earn Chore Points (feeding, brushing, collecting eggs), crops could be food for hunger or ingredients for potions and spells, and the Farm House could hold a Cooking classroom or the Farmer who gives the Giant Pumpkin adventure." },
     { "text": "Which adventure ideas should we build next?", "who": "Girls",

@@ -1,50 +1,68 @@
-// Lost on Windy Peak (Scott, 2026-10-15, reworked the same day: less
-// telling, more figuring out). Code in js/windy.js.
+// Lost on Windy Peak (Scott, 2026-10-15, reworked on 2026-10-16: fewer
+// instructions, more figuring out). Code in js/windy.js.
 //
 // 1. Your Snowy Owl needs a falconry lesson (Pet Training Field) before it
 //    can fly at the Windy Peak dropoff.
 // 2. Letting it fly while you own a Night Vision Potion starts the adventure:
 //    the owl spots a little future WIT lost on the ski slope.
 // 3. Sip the potion (backpack) and look through the binoculars: a blown-up,
-//    glowing green view of the slope with a faint glow from the little
-//    WIT's lantern, somewhere near them.
-// 4. Ski down onto the dark slope. It's in 48 puzzle-piece areas. After a
-//    sip you can see your Snowy Owl: it flies down the slope and circles over
-//    the little WIT. Click an area to look there; each look needs a sip, and
-//    after 3 misses they wander somewhere new.
-// 5. Click the little WIT, ski down together, and in the Snowy Hut drag a
-//    hot chocolate over to them to warm them up.
+//    green view of the slope with a glow from the little WIT's lantern.
+//    That's the first clue.
+// 4. Ski down onto the dark slope, cut into 12 big sections, and choose the
+//    section to search (3 chances, then they wander somewhere new).
+// 5. The right section grows to fill the picture. Each sip, your Snowy Owl
+//    flies across it, and as it passes over the little WIT a spot lights up
+//    for a moment. The spot is bigger than the little WIT, so there's still
+//    some luck: 3 searches, then they wander off again.
+// 6. Click the little WIT and ski down together to the Snowy Hut. There
+//    they're cold: sit them on the couch, cover them with the blanket, then
+//    give them the hot chocolate. Nothing says so: you figure it out.
 GAME_DATA.windyRescue = {
   "potion": "potion_night_vision",
-  "sips": 4,              // sips in one Night Vision Potion; each sip is one look
-  "tries": 3,             // looks on the slope before the little WIT wanders off
+  "sips": 4,              // sips in one Night Vision Potion: one for the binoculars, three for the owl
+  "tries": 3,             // sections you can choose before the little WIT wanders off
+  "searches": 3,          // clicks in the magnified section before they wander off
   "adventurePoints": 1,
   "slope": "ski_slope",   // the slope place (data/places.js); its picture is the binocular view too
   "hut": "hut",           // where you warm up together
-  "columns": 8,           // the slope's 48 puzzle-piece areas: 8 across, 6 down (was 12, Scott: too easy)
-  "rows": 6,
-  "glowSize": 3,          // the binoculars' lantern glow is this many pieces wide...
-  "glowNear": 1,          // ...and its middle is up to this many pieces from the little WIT
+  "columns": 4,           // the slope's 12 big sections: 4 across, 3 down
+  "rows": 3,
+  "glowSize": 0.6,        // the binoculars' lantern glow, as a share of one section's width
+  "zoomSeconds": 1.5,     // how long the chosen section takes to grow
   "owl": "pet_owl",       // the Snowy Owl's picture (🦉 until drawn)
-  "owlCircle": 0.8,       // the owl circles this many pieces wide...
-  "owlNear": 0.5,         // ...around a point up to this many pieces from the little WIT
+  "flySeconds": 3,        // one flight across the magnified section
+  "lightSize": 30,        // the lit spot's width, in percent of the magnified section...
+  "witSize": 8,           // ...the little WIT's, which is somewhere inside the lit spot...
+  "findDistance": 6,      // ...and how close a click must be to find them
+  "lightSeconds": 1.2,    // how long the spot stays lit
   "lostWit": "🧒",        // until the girls draw the little WIT (art/raw/extra_little_wit.jpg)
   "picture": "extra_little_wit",
-  "hutSpot": { "x": 58, "y": 62 },   // where the little WIT stands in the Snowy Hut
-  // The girls' hot chocolate mug, cut out of the Snowy Hut drawing (art/raw/hut_mug.jpg)
-  // and erased from it, so it can be dragged. x, y, width: where it was drawn, in percent
-  // of the hut picture. It sits on the Snack Table and moves with it.
-  "mug": { "picture": "hut_mug", "table": "snack_table", "x": 18.9, "y": 18.8, "width": 5.2 },
+  "hutSpot": { "x": 50, "y": 62 },   // where the little WIT stands when you come in
+  // In the Snowy Hut, things sit on the furniture they belong to and move with it.
+  // x, y, width: percent of the hut picture, where they are when the furniture hasn't been moved.
+  // The girls' hot chocolate mug, cut out of the hut drawing (art/raw/hut_mug.jpg) and erased from it:
+  "mug": { "picture": "hut_mug", "on": "snack_table", "x": 18.9, "y": 18.8, "width": 5.2 },
+  // The blanket hanging over the couch (art/raw/hut_blanket.jpg when drawn):
+  "blanket": { "picture": "hut_blanket", "on": "armchair", "x": 76, "y": 30, "width": 9 },
+  // Where the little WIT sits on the couch:
+  "seat": { "on": "armchair", "x": 80, "y": 38 },
   "words": {
     "needLesson": "needs a falconry lesson at the Pet Training Field before it can fly here",
     "owlSpotted": "🦉 Your PET flies back hooting and flapping (BONDING)! It spotted a little future WIT lost on the ski slope, and it's getting dark...",
-    "sipped": "🌙 Everything glows green! You can see in the dark, just long enough for one look.",
+    "sipped": "🌙 Everything glows green! You can see in the dark.",
     "tooDark": "🌑 It's too dark to see.",
+    "choose": "Choose a section to search.",
     "missed": "Not here...",
+    "searchHere": "Somewhere in here...",
+    "notThere": "Just snow...",
     "wandered": "The little WIT wandered off somewhere else on the slope!",
     "hello": "\"You found me! I got lost when it got dark.\"",
     "skiTogether": "⛷️ Ski down together",
     "cold": "Brrr! I'm so cold...",
+    "sitting": "Still sooo chilly...",
+    "covered": "Ahh, cozy!",
+    "slips": "It keeps slipping off!",
+    "shaky": "My hands are too cold to hold it!",
     "done": "Warm and cozy! The little WIT says thank you and promises to stay with a grown-up next time. You finished an adventure: +POINTS Adventure Point!"
   }
 };

@@ -1035,44 +1035,56 @@ body.holding-apple, body.holding-apple * {
 .binocular-view img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.15); } /* hides the card's edge */
 
 /* Lost on Windy Peak (js/windy.js): the ski slope is dark until you sip the
-   Night Vision Potion, then it looks green and the little WIT's lantern shows. */
+   Night Vision Potion, then it looks green and the little WIT's lantern glows. */
 .binocular-view { position: relative; margin: 8px auto; }
 .binocular-view.slope-view { width: min(720px, 85vw); aspect-ratio: auto; border-radius: 30px; }
-.slope-view img { height: auto; display: block; object-fit: fill; transform: none; } /* whole slope, so the lantern lines up with the pieces */
-.slope-view.night img, #place-image.night { filter: brightness(0.15) saturate(0.3); }
-.slope-view.night-vision img, #place-image.night-vision { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(0.7); }
+.slope-view img { height: auto; display: block; object-fit: fill; transform: none; } /* whole slope, so the glow lines up with the sections */
+.slope-view.night img, #place-image.night, .slope-zoom.night > img { filter: brightness(0.15) saturate(0.3); }
+.slope-view.night-vision img, #place-image.night-vision, .slope-zoom.night-vision > img { filter: grayscale(1) sepia(1) hue-rotate(60deg) saturate(4) brightness(0.7); }
 .slope-glow { position: absolute; transform: translate(-50%, -50%); aspect-ratio: 1; border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 240, 150, 0.7), rgba(255, 240, 150, 0.25) 45%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 240, 150, 0.8), rgba(255, 240, 150, 0.3) 45%, transparent 70%);
   animation: lantern-glow 1.2s ease-in-out infinite alternate; }
 @keyframes lantern-glow { from { opacity: 0.55; } to { opacity: 1; } }
 #place-windy { position: absolute; inset: 0; pointer-events: none; } /* furniture underneath can still be moved */
-.slope-pieces, .hut-mug.draggable, .little-wit { pointer-events: auto; }
-/* The Snowy Owl glides down the slope, then circles: the circle turns and the owl turns back so it stays upright. */
-.slope-owl-circle { position: absolute; aspect-ratio: 1; transform: translate(-50%, -50%);
-  transition: left 2.5s ease-in-out, top 2.5s ease-in-out; animation: owl-circle 3s linear infinite; }
-.slope-owl { position: absolute; right: 0; top: 50%; font-size: 2.6rem; transform: translate(50%, -50%);
-  animation: owl-upright 3s linear infinite; filter: drop-shadow(0 0 8px #fff); }
-.slope-owl img { width: 3.5rem; height: auto; display: block; }
-@keyframes owl-circle { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-@keyframes owl-upright { from { transform: translate(50%, -50%) rotate(0deg); } to { transform: translate(50%, -50%) rotate(-360deg); } }
 #place-windy[hidden] { display: none; }
-.slope-pieces { position: absolute; inset: 0; display: grid; grid-template-rows: repeat(3, 1fr); }
-.slope-piece { background: transparent; border: 1px dashed rgba(200, 220, 255, 0.4); border-radius: 10px;
-  font-size: 1.4rem; padding: 0; cursor: pointer; color: #fff; }
+.slope-pieces, .slope-zoom, .draggable, .little-wit { pointer-events: auto; }
+.slope-pieces { position: absolute; inset: 0; display: grid; }
+.slope-piece { background: transparent; border: 2px dashed rgba(200, 220, 255, 0.45); border-radius: 14px;
+  font-size: 2.4rem; padding: 0; cursor: pointer; color: #fff; }
 .slope-piece:hover { background: rgba(255, 255, 255, 0.12); }
+/* The chosen section, magnified: it grows from its own place to fill the picture. */
+.slope-zoom { position: absolute; overflow: hidden; border-radius: 12px; cursor: crosshair; background: #000;
+  transition-property: left, top, width, height; transition-timing-function: ease-in-out; }
+.slope-zoom img { position: absolute; max-width: none; }
+.search-mark { position: absolute; transform: translate(-50%, -50%); font-size: 1.6rem; pointer-events: none; }
+.flying-owl { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; pointer-events: none;
+  transition-property: left, top; transition-timing-function: linear; filter: drop-shadow(0 0 10px #fff); }
+.flying-owl.facing-left { transform: translate(-50%, -50%) scaleX(-1); }
+.flying-owl img { width: 4rem; height: auto; display: block; }
+.owl-light { position: absolute; transform: translate(-50%, -50%); aspect-ratio: 1; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 245, 170, 0.85), rgba(255, 245, 170, 0.5) 55%, transparent 72%);
+  animation: owl-light ease-out forwards; }
+@keyframes owl-light { 0% { opacity: 0; } 15% { opacity: 1; } 70% { opacity: 1; } 100% { opacity: 0; } }
+.little-wit { position: absolute; transform: translate(-50%, -50%); font-size: 3.5rem; text-align: center; cursor: pointer;
+  filter: drop-shadow(0 0 12px #ffe066); }
+.little-wit img { width: 100%; height: auto; }
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } }
-.little-wit { font-size: 3.5rem; cursor: pointer; filter: drop-shadow(0 0 12px #ffe066); }
-.little-wit img { width: 4.5rem; height: auto; }
+/* The Snowy Hut: the little WIT, the mug and the blanket can be dragged. */
 .hut-wit { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
-.hut-wit-bubble { background: #fff; border: 2px solid #557; border-radius: 16px; padding: 6px 12px; font-size: 1.1rem; margin-bottom: 6px; }
-.hut-wit-face { font-size: 4rem; animation: shake 0.6s infinite; } /* shivering */
+.hut-wit-bubble { background: #fff; border: 2px solid #557; border-radius: 16px; padding: 6px 12px; font-size: 1.1rem; margin-bottom: 6px; white-space: nowrap; }
+.hut-wit-face { font-size: 4rem; }
+.hut-wit.shivering .hut-wit-face { animation: shake 0.6s infinite; }
 .hut-wit-face img { width: 6rem; height: auto; }
-.hut-mug { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; touch-action: none; user-select: none; }
-.hut-mug img { width: 100%; height: auto; display: block; }
-.hut-mug.draggable { cursor: grab; }
-.hut-mug.draggable:hover { filter: drop-shadow(0 0 6px var(--gold)); }
-.hut-mug.dragging { cursor: grabbing; transform: translate(-50%, -50%) scale(1.15); }
+.hut-mug, .hut-blanket { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; touch-action: none; user-select: none; }
+.hut-mug img, .hut-blanket img { width: 100%; height: auto; display: block; }
+.hut-blanket.placeholder { aspect-ratio: 1.3; border-radius: 6px 6px 14px 14px; border: 2px solid #8a3b3b;
+  background: repeating-linear-gradient(0deg, transparent 0 8px, rgba(255, 255, 255, 0.35) 8px 11px),
+              repeating-linear-gradient(90deg, #c94f4f 0 8px, #e9c46a 8px 11px); }
+.hut-blanket.covering { width: 8% !important; z-index: 1; }
+.draggable { cursor: grab; touch-action: none; }
+.draggable:hover { filter: drop-shadow(0 0 6px var(--gold)); }
+.draggable.dragging { cursor: grabbing; z-index: 2; }
 
 /* ---- Archery and soccer at the Stadium (js/sports.js) ---- */
 .archery-range, .soccer-field {
