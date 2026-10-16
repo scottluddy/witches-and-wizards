@@ -333,12 +333,14 @@ function flyOwl(zoom) {
   }, rules.flySeconds * 1000);
 }
 
-// A spot lights up around the little WIT, not centred on them, so there's
-// still some luck in where you click.
+// A spot lights up around the little WIT, never centred on them: they're
+// somewhere near its edge, a different side each flight. So one flight only
+// narrows it down, and where two or three lit spots overlap is the place to look.
 function lightUp(zoom, shape) {
   const rules = windyRules();
   const wit = player.windy.wit;
-  const away = Math.random() * (rules.lightSize - rules.witSize) / 2;
+  const farthest = (rules.lightSize - rules.witSize) / 2;
+  const away = farthest * (rules.offCentre + Math.random() * (1 - rules.offCentre));
   const angle = Math.random() * Math.PI * 2;
   const light = document.createElement("span");
   light.className = "owl-light";

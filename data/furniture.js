@@ -1,4 +1,4 @@
-// Furniture the player can move around (the 🪑 Rearrange button in a room).
+// Furniture the player can move around (drag a piece in its room).
 // Each piece is cut out of the room's drawing by tools/process_art.py, which
 // also makes an empty copy of the room to stand the pieces in.
 //
@@ -11,8 +11,11 @@
 //   holds  optional: click it at Home to open this store ("homeCooler" or
 //          "homeChest", see js/storage.js)
 //   min_part  optional: keep smaller loose bits too (like shadows); default 0.05
+//   keep_out  optional: boxes (same kind of numbers as "box") to leave out of
+//          the piece, for things drawn touching it that should stay in the room
 GAME_DATA.furniture = [
-  { "place": "hut", "id": "snack_table", "name": "Snack Table",  "box": [8, 13, 36, 40] },
+  { "place": "hut", "id": "snack_table", "name": "Snack Table",  "box": [6, 10.8, 36, 41.5],
+    "keep_out": [[19.5, 10, 24, 11.4], [25.5, 10, 30, 12.3]] },
   { "place": "hut", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51] },
   { "place": "hut", "id": "bookshelf",  "name": "Bookshelf",    "box": [79, 50, 97, 86] },
   { "place": "hut", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88] },

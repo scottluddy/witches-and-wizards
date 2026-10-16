@@ -295,6 +295,11 @@ def cut_out_furniture(place_id, drawing, paper, pieces):
         part = empty.crop(box)
         mask = find_drawing(part, piece.get("min_part", 0.05), piece.get("gap", GAP_CLOSE),
                             piece.get("ink_level", 190))
+        # keep_out: boxes (percent of the room) that aren't part of this piece,
+        # like hanging stars just above the Snowy Hut's table top.
+        for kl, kt, kr, kb in piece.get("keep_out", []):
+            ImageDraw.Draw(mask).rectangle((round(w * kl / 100) - box[0], round(h * kt / 100) - box[1],
+                                            round(w * kr / 100) - box[0], round(h * kb / 100) - box[1]), fill=0)
         sticker = on_paper(part, paper.crop(box)).convert("RGBA")
         sticker.putalpha(mask)
         inside = mask.getbbox()
