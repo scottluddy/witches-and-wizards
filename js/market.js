@@ -15,12 +15,14 @@ function showMarket(place) {
   if (box.hidden) return;
   market = { placeId: place.id, rented: false, shoppers: [], haggle: null, timer: null };
   drawMarket();
+  addYou();
   nextShopper(1);
 }
 
 function stopMarket() {
   if (!market) return;
   clearTimeout(market.timer);
+  clearTimeout(market.youTimer);
   market.shoppers.forEach(function (s) { clearTimeout(s.timer); });
   market = null;
   document.getElementById("place-market").innerHTML = "";
@@ -69,14 +71,16 @@ function drawMarket() {
   const sellers = marketPeople().sellers;
   let n = 0;
   rules.tables.forEach(function (table) {
-    const who = table.free ? (market.rented ? player.characterId : null) : sellers[n++];
-    if (who) box.appendChild(personAt(who, table.x, table.y, "market-seller"));
+    if (!table.free) box.appendChild(personAt(sellers[n++], table.x, table.y, "market-seller"));
     if (!drawnRoom) {
       const top = document.createElement("div");
       top.className = "market-table";
       top.style.left = table.x + "%";
       top.style.top = table.y + "%";
-      if (table.free && !market.rented) top.textContent = "For rent";
+      if (table.free) {
+        top.id = "market-for-rent";
+        top.textContent = "For rent";
+      }
       box.appendChild(top);
     }
   });
@@ -106,6 +110,12 @@ function marketWitchArt() {
 
 // The head booth: rent the free table from the Market Witch.
 function openMarketBooth() {
+  if (market.rented) return boothPopUp(); // you stay sitting at your table
+  const booth = GAME_DATA.market.booth;
+  walkYou(booth.x, booth.y + 16, boothPopUp);
+}
+
+function boothPopUp() {
   const rules = GAME_DATA.market;
   const art = isDrawn("market_witch") ? marketWitchArt() : rules.witch.emoji;
   const things = marketThings();
@@ -123,10 +133,10 @@ function openMarketBooth() {
     player.gems -= rules.rentGems;
     writeSave(player);
     market.rented = true;
-    drawMarket();
+    const label = document.getElementById("market-for-rent");
+    if (label) label.textContent = "";
     document.getElementById("info-panel").hidden = true;
-    document.getElementById("place-description").textContent =
-      "🪑 You sit down at your table. Shoppers will stop by to buy what you've found. The table is yours until you leave the market.";
+    sitAtTable();
   });
   body.appendChild(rent);
 }
@@ -135,6 +145,8 @@ function openMarketBooth() {
 function openMarketTable() {
   const say = document.getElementById("place-description");
   if (!market.rented) {
+    const table = freeTable();
+    walkYou(table.x + (table.x < 50 ? 12 : -12), table.y + 6);
     say.textContent = "🪑 This table is free. Rent it from the " + GAME_DATA.market.witch.name + " at the booth.";
     return;
   }
@@ -142,6 +154,52 @@ function openMarketTable() {
   say.textContent = things.length
     ? "🪑 You're selling: " + things.map(function (t) { return t.thing.name; }).join(", ") + ". Wait for a shopper to stop by!"
     : "🪑 You've sold everything! Go and find some more.";
+}
+
+// ---------------------------------------------------------------- you, in the market
+
+// Scott, 2026-10-17: show your own character wherever we can. You come in at
+// the door, walk to the booth or your table when you click them, and sit at
+// your table once it's rented.
+function addYou() {
+  const door = GAME_DATA.market.door;
+  market.you = personAt(player.characterId, door.x, door.y, "market-shopper market-you");
+  market.you.style.setProperty("--hop", GAME_DATA.market.youHopSeconds + "s");
+  document.getElementById("place-market").appendChild(market.you);
+  walkYou(door.x, door.y - 12);
+}
+
+// Walk to x, y, then do "then" (if given). Clicking somewhere else on the way
+// just turns you round.
+function walkYou(x, y, then) {
+  const you = market.you;
+  clearTimeout(market.youTimer);
+  you.classList.toggle("facing-left", x < parseFloat(you.style.left));
+  you.classList.add("walking");
+  requestAnimationFrame(function () { // so a brand-new picture walks instead of jumping
+    you.style.left = x + "%";
+    you.style.top = y + "%";
+  });
+  market.youTimer = setTimeout(function () {
+    if (!stillInMarket()) return;
+    you.classList.remove("walking");
+    if (then) then();
+  }, GAME_DATA.market.youHopSeconds * 1000);
+}
+
+function freeTable() {
+  return GAME_DATA.market.tables.find(function (t) { return t.free; });
+}
+
+// Walk to your table and sit behind it, like the other sellers.
+function sitAtTable() {
+  const table = freeTable();
+  walkYou(table.x, table.y, function () {
+    market.you.classList.remove("market-shopper", "facing-left");
+    market.you.classList.add("market-seller");
+    document.getElementById("place-description").textContent =
+      "🪑 You sit down at your table. Shoppers will stop by to buy what you've found. The table is yours until you leave the market.";
+  });
 }
 
 // ---------------------------------------------------------------- what you can sell

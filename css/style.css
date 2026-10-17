@@ -1455,7 +1455,7 @@ body.holding-apple, body.holding-apple * {
 
 /* ---- the Flea Market (js/market.js) ---- */
 
-#place-market { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+#place-market { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 #place-market[hidden] { display: none; }
 /* People stand with their feet at their x, y. */
 .market-person { position: absolute; transform: translate(-50%, -100%); }
@@ -1465,6 +1465,12 @@ body.holding-apple, body.holding-apple * {
   transition: left var(--hop) linear, top var(--hop) linear;
 }
 .market-shopper.facing-left { scale: -1 1; }
+/* You: a gold glow, so you can spot yourself among the shoppers. */
+/* Walkers go in front of the tables, sellers (you too, once sitting) behind them. */
+.market-you { z-index: 2; filter: drop-shadow(0 0 6px var(--gold)); }
+.market-shopper { z-index: 2; }
+.market-table { z-index: 1; }
+.market-you.market-seller { z-index: 0; transition: none; }
 .market-shopper.walking { animation: bob 0.35s ease-in-out infinite alternate; }
 /* Until the girls draw the room: plain tables and a striped booth. */
 .market-table {

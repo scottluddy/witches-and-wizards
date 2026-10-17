@@ -12,6 +12,7 @@
 //   shopperEvery  a new shopper comes in every this many seconds (random in between)
 //   maxShoppers   how many can be walking round at once
 //   hopSeconds    how long a shopper takes to walk from one table to the next
+//   youHopSeconds how long you take to walk to the booth or your table (quicker, so you're not kept waiting)
 //   stopChance    how often a shopper stops at your table (luck makes it more often)
 //
 // Haggling: each shopper picks one thing you have and secretly decides the
@@ -38,6 +39,7 @@ GAME_DATA.market = {
   "shopperEvery": [5, 10],
   "maxShoppers": 2,
   "hopSeconds": 2.5,
+  "youHopSeconds": 1.2,
   "stopChance": 0.7,
   "most": [0.6, 1.15],
   "firstOffer": [0.45, 0.75],
