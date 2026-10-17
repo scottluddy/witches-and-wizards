@@ -33,7 +33,7 @@ const SPOT_ICONS = {
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", ski_down: "⛷️", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
-  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑"
+  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑", artifact_chest: "🧰"
 };
 
 function isDrawn(name) {
@@ -379,6 +379,7 @@ function openSpot(childId) {
   if (child.type === "seat") return sitDown();                 // js/museum.js
   if (child.type === "market_booth") return openMarketBooth();  // js/market.js
   if (child.type === "market_table") return openMarketTable();  // js/market.js
+  if (child.type === "artifact_chest") return openArtifactChest(); // js/museum.js
   if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
     document.getElementById("place-description").textContent =
       "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");

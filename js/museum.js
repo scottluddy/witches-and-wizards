@@ -139,3 +139,23 @@ function openTinyHole(spot) {
   });
   body.appendChild(go);
 }
+
+// ---------------------------------------------------------------- the Artifacts Exhibit
+
+// The Old Chest: locked until you bring the Old Key from the Dig Spot.
+function openArtifactChest() {
+  const chest = GAME_DATA.artifactsChest;
+  if (player.museum.chestOpened) return openInfoPanel("📜", "Old Chest", chest.openAgain);
+  const hasKey = player.backpack.indexOf(chest.key) !== -1;
+  const body = openInfoPanel("🧰", "Old Chest", chest.locked);
+  if (!hasKey) return;
+  const tryKey = document.createElement("button");
+  tryKey.className = "big-button";
+  tryKey.textContent = chest.button;
+  tryKey.addEventListener("click", function () {
+    player.museum.chestOpened = true; // the key stays in your backpack as a keepsake
+    writeSave(player);
+    openInfoPanel("📜", "The chest is open!", chest.opened);
+  });
+  body.appendChild(tryKey);
+}

@@ -161,6 +161,7 @@ GAME_DATA.items = [
   {"id": "cafe_soup", "name": "Soup", "category": "Cafe Menu", "gems": 6, "emoji": "🍲", "inPicture": true, "description": "Menu number 5.", "food": "healthy"},
   {"id": "cafe_salmon", "name": "Salmon", "category": "Cafe Menu", "gems": 7, "emoji": "🍣", "inPicture": true, "description": "Menu number 6.", "food": "healthy"},
   {"id": "cafe_fish", "name": "Fish", "category": "Cafe Menu", "gems": 5, "emoji": "🐟", "inPicture": true, "description": "Menu number 7.", "food": "healthy"},
+  {"id": "quest_old_key", "name": "Old Key", "category": "Quest", "emoji": "🗝️", "quest": true, "description": "A rusty old key dug up at Pebble Beach. It opens something in the Museum's Artifacts Exhibit. There's only one!"},
   {"id": "museum_ticket", "name": "Admission Ticket", "category": "Museum", "emoji": "🎟️", "quest": true, "description": "Your ticket into the Museum's Exhibit Hall. It's used up when you go in."},
   {"id": "museum_coffee", "name": "Coffee", "category": "Museum Snack Shop", "gems": 3, "emoji": "☕", "description": "From the Museum Snack Shop menu.", "food": "snack"},
   {"id": "museum_muffin", "name": "Muffin", "category": "Museum Snack Shop", "gems": 5, "emoji": "🧁", "description": "A chocolate chip muffin, from the Museum Snack Shop menu.", "food": "snack"},

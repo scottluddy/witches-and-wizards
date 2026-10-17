@@ -54,6 +54,7 @@ function dig() {
 }
 
 function foundBeachFind() {
+  if (foundOldKey()) return;
   const find = randomFind();
   player.bucket.push(find.id); // into the bucket you carry (js/storage.js)
   player.gems += find.gems;
@@ -63,6 +64,20 @@ function foundBeachFind() {
     ? ["+", moneyLabel("gems", find.gems), " gems! It went into your bucket."]
     : ["No gems for this one, but it went into your bucket."];
   showDigging(itemArt(find), "You found a " + find.name + "!", message, true);
+}
+
+// Very rarely the Dig Spot turns up the Old Key for the Museum's Artifacts
+// Exhibit chest (data/museum.js). There's only one, so once you have it (or
+// have opened the chest) it never turns up again.
+function foundOldKey() {
+  const chest = GAME_DATA.artifactsChest;
+  if (owns(chest.key) || player.museum.chestOpened) return false;
+  if (Math.random() >= luckyChance(chest.keyChance / 100)) return false; // luck helps (js/luck.js)
+  player.backpack.push(chest.key);
+  writeSave(player);
+  updateStatus();
+  showDigging(itemArt(findItem(chest.key)), "You found an Old Key!", [chest.found], true);
+  return true;
 }
 
 // The Crystal Dig Spot: 1 Crystal, a troll, or too tired to keep digging.

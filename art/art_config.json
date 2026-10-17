@@ -1066,5 +1066,24 @@
   "hut_mug": {
     "ink_level": 205,
     "gap": 9
+  },
+  "museum_elephant_statue": {
+    "crop": [
+      25,
+      1,
+      71,
+      92
+    ],
+    "whole": true,
+    "photo": true
+  },
+  "extra_pond_trees": {
+    "crop": [
+      5,
+      7,
+      98,
+      94
+    ],
+    "whole": true
   }
 }

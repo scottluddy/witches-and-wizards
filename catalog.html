@@ -357,41 +357,41 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "83"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=83"></script>
-  <script src="data/places.js?v=83"></script>
-  <script src="data/items.js?v=83"></script>
-  <script src="data/ideas.js?v=83"></script>
-  <script src="data/fish.js?v=83"></script>
-  <script src="data/digging.js?v=83"></script>
-  <script src="data/mining.js?v=83"></script>
-  <script src="data/troll.js?v=83"></script>
-  <script src="data/levels.js?v=83"></script>
-  <script src="data/luck.js?v=83"></script>
-  <script src="data/bonding.js?v=83"></script>
-  <script src="data/pearls.js?v=83"></script>
-  <script src="data/skills.js?v=83"></script>
-  <script src="data/sports.js?v=83"></script>
-  <script src="data/pixie.js?v=83"></script>
-  <script src="data/supplies.js?v=83"></script>
-  <script src="data/honey.js?v=83"></script>
-  <script src="data/gameplay.js?v=83"></script>
-  <script src="data/extras.js?v=83"></script>
-  <script src="data/hunger.js?v=83"></script>
-  <script src="data/orchard.js?v=83"></script>
-  <script src="data/dance.js?v=83"></script>
-  <script src="data/trading.js?v=83"></script>
-  <script src="data/market.js?v=83"></script>
-  <script src="data/unicorns.js?v=83"></script>
-  <script src="data/adventures.js?v=83"></script>
-  <script src="data/spells.js?v=83"></script>
-  <script src="data/furniture.js?v=83"></script>
-  <script src="data/next_steps.js?v=83"></script>
-  <script src="data/adventure_ideas.js?v=83"></script>
-  <script src="data/logic.js?v=83"></script>
-  <script src="data/chores.js?v=83"></script>
-  <script src="data/music.js?v=83"></script>
-  <script src="data/drawn.js?v=83"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "84"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=84"></script>
+  <script src="data/places.js?v=84"></script>
+  <script src="data/items.js?v=84"></script>
+  <script src="data/ideas.js?v=84"></script>
+  <script src="data/fish.js?v=84"></script>
+  <script src="data/digging.js?v=84"></script>
+  <script src="data/mining.js?v=84"></script>
+  <script src="data/troll.js?v=84"></script>
+  <script src="data/levels.js?v=84"></script>
+  <script src="data/luck.js?v=84"></script>
+  <script src="data/bonding.js?v=84"></script>
+  <script src="data/pearls.js?v=84"></script>
+  <script src="data/skills.js?v=84"></script>
+  <script src="data/sports.js?v=84"></script>
+  <script src="data/pixie.js?v=84"></script>
+  <script src="data/supplies.js?v=84"></script>
+  <script src="data/honey.js?v=84"></script>
+  <script src="data/gameplay.js?v=84"></script>
+  <script src="data/extras.js?v=84"></script>
+  <script src="data/hunger.js?v=84"></script>
+  <script src="data/orchard.js?v=84"></script>
+  <script src="data/dance.js?v=84"></script>
+  <script src="data/trading.js?v=84"></script>
+  <script src="data/market.js?v=84"></script>
+  <script src="data/unicorns.js?v=84"></script>
+  <script src="data/adventures.js?v=84"></script>
+  <script src="data/spells.js?v=84"></script>
+  <script src="data/furniture.js?v=84"></script>
+  <script src="data/next_steps.js?v=84"></script>
+  <script src="data/adventure_ideas.js?v=84"></script>
+  <script src="data/logic.js?v=84"></script>
+  <script src="data/chores.js?v=84"></script>
+  <script src="data/music.js?v=84"></script>
+  <script src="data/drawn.js?v=84"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -978,7 +978,7 @@
       });
       document.getElementById("adventure-ideas").appendChild(list);
       // active ones first, then favourites
-      const order = function (idea) { return (idea.status === "active" ? 0 : 2) + (idea.favorite ? 0 : 1); };
+      const order = function (idea) { return ({ active: 0, started: 2 }[idea.status] || 4) + (idea.favorite ? 0 : 1); };
       ideas.ideas.slice().sort(function (a, b) { return order(a) - order(b); }).forEach(function (idea) {
         const kind = kindOf(idea.category);
         const c = el("div", "card adventure-idea");
@@ -989,7 +989,7 @@
           img.alt = "";
           art.appendChild(img);
         } else art.textContent = idea.emoji;
-        const status = idea.status === "active" ? "✅ Active (in the game)" : "💤 Inactive (not in the game yet)";
+        const status = { active: "✅ Active (in the game)", started: "🚧 Started (partly in the game)" }[idea.status] || "💤 Inactive (not in the game yet)";
         c.append(art, el("span", "name", (idea.favorite ? "⭐ " : "") + idea.emoji + " " + idea.name),
           el("span", "kind", kind.emoji + " " + kind.name + " · " + status + (idea.favorite ? " · ⭐ Scott's favourite" : "")));
         [["🔓 Unlock: ", idea.unlock], ["✨ ", idea.idea], ["🖍️ Needs: ", idea.needs]].forEach(function (line) {
@@ -997,6 +997,13 @@
           p.append(el("b", "", line[0]), document.createTextNode(line[1]));
           c.appendChild(p);
         });
+        // The pictures it needs, ticked once drawn.
+        if (idea.drawings) {
+          c.appendChild(el("p", "", "🖍️ To draw:"));
+          const todo = el("ul", "todo-list");
+          idea.drawings.forEach(function (d) { todo.appendChild(el("li", "", (isDrawn(d.file) ? "✅ " : "⬜ ") + d.what)); });
+          c.appendChild(todo);
+        }
         document.getElementById("adventure-ideas").appendChild(c);
       });
     })();

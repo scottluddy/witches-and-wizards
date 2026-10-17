@@ -103,7 +103,14 @@ GAME_DATA.places = [
   { "id": "museum_room_2", "name": "Gem Stone Exhibit", "type": "place", "in": "museum_hall", "x": 35, "y": 25, "museumRoom": true,
     "description": "Six gem stones on their stands: Amethyst, Diamond, Sapphire, Opal, Ruby and a heart-shaped Emerald. Please don't touch anything!" },
   { "id": "museum_room_3", "name": "Exhibit Room 3", "type": "place", "in": "museum_hall", "x": 55, "y": 40, "museumRoom": true },
-  { "id": "museum_room_4", "name": "Exhibit Room 4", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true },
+  // The Artifacts Exhibit (Scott, 2026-10-17): the stone elephant statue (a photo
+  // for now) and a locked chest that the Old Key from the Dig Spot opens (js/museum.js).
+  { "id": "museum_room_4", "name": "Artifacts Exhibit", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true,
+    "description": "Old things from long ago. Please don't touch anything!" },
+  { "id": "museum_elephant", "name": "Elephant Statue", "type": "person", "in": "museum_room_4", "x": 22, "y": 55,
+    "picture": "museum_elephant_statue", "size": 20, "says": "A stone elephant statue, very old and very calm. Its sign says: please don't touch!" },
+  { "id": "museum_chest", "name": "Old Chest", "type": "artifact_chest", "in": "museum_room_4", "x": 75, "y": 68,
+    "picture": "artifact_chest", "size": 18 },
   { "id": "museum_room_5", "name": "Exhibit Room 5", "type": "place", "in": "museum_hall", "x": 85, "y": 60, "museumRoom": true },
   // Previous / next room buttons in each Exhibit Room (Scott, 2026-10-15), beside the picture.
   { "id": "museum_room_1_back", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_1", "side": "left", "to": "museum_hall" },
@@ -111,10 +118,10 @@ GAME_DATA.places = [
   { "id": "museum_room_2_back", "name": "Art Exhibit", "type": "travel", "in": "museum_room_2", "side": "left", "to": "museum_room_1" },
   { "id": "museum_room_2_next", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_2", "side": "right", "to": "museum_room_3" },
   { "id": "museum_room_3_back", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_3", "side": "left", "to": "museum_room_2" },
-  { "id": "museum_room_3_next", "name": "Exhibit Room 4", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
+  { "id": "museum_room_3_next", "name": "Artifacts Exhibit", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
   { "id": "museum_room_4_back", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_4", "side": "left", "to": "museum_room_3" },
   { "id": "museum_room_4_next", "name": "Exhibit Room 5", "type": "travel", "in": "museum_room_4", "side": "right", "to": "museum_room_5" },
-  { "id": "museum_room_5_back", "name": "Exhibit Room 4", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
+  { "id": "museum_room_5_back", "name": "Artifacts Exhibit", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
   { "id": "museum_room_5_next", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_5", "side": "right", "to": "museum_hall" },
   { "id": "museum_hall_snacks", "name": "Snack Shop", "type": "travel", "in": "museum_hall", "x": 45, "y": 75, "to": "museum_snack_shop" },
   { "id": "museum_snack_shop", "name": "Snack Shop", "type": "place", "in": "museum_hall", "hidden": true, "needsRound": true,

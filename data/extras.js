@@ -12,5 +12,7 @@ GAME_DATA.extras = [
   { "id": "celebrate_bunny", "name": "Bunny lollipop", "note": "A possible adventure congratulations picture (Scott)." },
   { "id": "celebrate_pumpkin_witch", "name": "Witch in a pumpkin", "note": "A possible adventure congratulations picture (Scott)." },
   { "id": "celebrate_unicorn_donut", "name": "Unicorn donut", "note": "A possible adventure congratulations picture (Scott)." },
+  // Scott, 2026-10-17: a pond with a water lily among pine trees (and two cherries in the corner).
+  { "id": "extra_pond_trees", "name": "Pond in the trees", "note": "Saved for a future location (Scott). Could be where the Artifacts treasure map leads." },
   { "id": "extra_snowball_first", "name": "Snowball (first broom)", "note": "The first broomstick. The coloured Snowflake broom replaced it in the store." }
 ];

@@ -152,10 +152,14 @@ def process_drawing(path, settings):
         mask = find_drawing(flat, settings.get("min_part", 0.15), settings.get("gap", GAP_CLOSE),
                             settings.get("ink_level", 190), settings.get("see_through", False))
 
-    # Brighter colours and darker pencil lines.
-    pretty = ImageEnhance.Color(flat).enhance(1.4)
-    pretty = ImageEnhance.Contrast(pretty).enhance(1.3)
-    pretty = pretty.point(lambda v: int(255 * (v / 255) ** 1.4))  # deepen the lines
+    # Brighter colours and darker pencil lines ("photo": a real photo, like the
+    # Museum's elephant statue, is kept as it is).
+    if settings.get("photo"):
+        pretty = img
+    else:
+        pretty = ImageEnhance.Color(flat).enhance(1.4)
+        pretty = ImageEnhance.Contrast(pretty).enhance(1.3)
+        pretty = pretty.point(lambda v: int(255 * (v / 255) ** 1.4))  # deepen the lines
 
     cut = pretty.convert("RGBA")
     cut.putalpha(mask)
@@ -498,7 +502,34 @@ def draw_bath_tub():
     return add_outline(img)
 
 
-COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub}
+def draw_treasure_chest():
+    """A plain wooden chest with a lock, for the Museum's Artifacts Exhibit
+    until the girls draw one (Scott, 2026-10-17)."""
+    k = 4
+    w, h = 520 * k, 420 * k
+    img = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    ink, line = INK + (255,), 7 * k
+    wood, dark = (176, 112, 58, 255), (128, 78, 38, 255)
+    iron = (120, 120, 130, 255)
+    # The box, then the round lid on top.
+    d.rectangle((40 * k, 180 * k, 480 * k, 390 * k), fill=wood, outline=ink, width=line)
+    d.pieslice((40 * k, 40 * k, 480 * k, 320 * k), 180, 360, fill=dark, outline=ink, width=line)
+    d.line((40 * k, 180 * k, 480 * k, 180 * k), fill=ink, width=line)
+    # Planks and iron bands.
+    for y in (250, 320):
+        d.line((44 * k, y * k, 476 * k, y * k), fill=dark, width=4 * k)
+    for x in (110, 410):
+        d.rectangle(((x - 14) * k, 70 * k, (x + 14) * k, 390 * k), fill=iron, outline=ink, width=4 * k)
+    # The lock and its keyhole.
+    d.rounded_rectangle((225 * k, 160 * k, 295 * k, 250 * k), radius=12 * k, fill=(222, 170, 60, 255), outline=ink, width=line)
+    d.ellipse((250 * k, 185 * k, 270 * k, 205 * k), fill=ink)
+    d.polygon([(254 * k, 200 * k), (266 * k, 200 * k), (270 * k, 230 * k), (250 * k, 230 * k)], fill=ink)
+    img = img.resize((w // k, h // k), Image.LANCZOS)
+    return add_outline(img)
+
+
+COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub, "artifact_chest": draw_treasure_chest}
 
 
 # ---------------------------------------------------------------- close-ups
