@@ -1551,6 +1551,17 @@ body.holding-apple, body.holding-apple * {
   filter: drop-shadow(0 0 6px var(--gold));
   animation: sit-down 0.4s ease-out;
 }
+/* You, standing just inside a place when you walk in (js/world.js standYouIn) */
+.standing-you {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  filter: drop-shadow(0 0 6px var(--gold));
+  animation: walk-in 0.6s ease-out;
+}
+@keyframes walk-in {
+  from { opacity: 0; translate: -40% 0; }
+  to   { opacity: 1; translate: 0 0; }
+}
 @keyframes sit-down {
   from { opacity: 0; translate: 0 -12%; }
   to   { opacity: 1; translate: 0 0; }
