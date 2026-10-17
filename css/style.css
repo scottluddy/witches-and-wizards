@@ -1513,3 +1513,16 @@ body.holding-apple, body.holding-apple * {
 @media (prefers-reduced-motion: reduce) {
   .market-shopper.walking { animation: none; }
 }
+
+/* You, sitting on a seat you clicked (js/world.js sitYouAt). Feet at x, y. */
+#place-you { position: absolute; inset: 0; pointer-events: none; }
+.sitting-you {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  filter: drop-shadow(0 0 6px var(--gold));
+  animation: sit-down 0.4s ease-out;
+}
+@keyframes sit-down {
+  from { opacity: 0; translate: 0 -12%; }
+  to   { opacity: 1; translate: 0 0; }
+}

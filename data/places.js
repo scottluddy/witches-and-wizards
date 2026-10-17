@@ -88,7 +88,8 @@ GAME_DATA.places = [
   { "id": "multi_jewelry_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_jewelry", "x": 84, "y": 82 },
   { "id": "cafe", "name": "Cafe", "type": "place", "in": "village", "x": 81, "y": 76,
     "description": "Sit down for a proper meal. Click the menu to order; you eat it right here." },
-  { "id": "cafe_menu", "name": "Menu", "type": "cafe", "in": "cafe", "x": 20, "y": 22, "menu": "Cafe Menu" },
+  { "id": "cafe_menu", "name": "Menu", "type": "cafe", "in": "cafe", "x": 20, "y": 22, "menu": "Cafe Menu",
+    "sitAt": { "x": 67, "y": 80, "size": 32 } },
   // The Museum (Scott, 2026-10-15, the girls' drawings; placed by Claude until a Village map is drawn).
   // Pay 5 gems at Pay Here for a ticket, then Enter the Exhibit Hall and visit
   // every room before the Snack Shop opens. Museum rules: you can only eat
@@ -129,7 +130,8 @@ GAME_DATA.places = [
   { "id": "museum_chef", "name": "Chef", "type": "person", "in": "museum_snack_shop", "x": 17, "y": 50,
     "says": "Welcome!" },
   { "id": "museum_menu", "name": "Menu", "type": "menu_shop", "in": "museum_snack_shop", "x": 15, "y": 14, "menu": "Museum Snack Shop" },
-  { "id": "museum_sit", "name": "Sit", "type": "seat", "in": "museum_snack_shop", "x": 78, "y": 66 },
+  { "id": "museum_sit", "name": "Sit", "type": "seat", "in": "museum_snack_shop", "x": 78, "y": 66,
+    "sitAt": { "x": 69, "y": 88, "size": 40 } },
   { "id": "museum_tiny_hole", "name": "Tiny Hole", "type": "tiny_hole", "in": "museum_snack_shop", "x": 45, "y": 90, "to": "tiny_hole" },
   { "id": "tiny_hole", "name": "Tiny Hole", "type": "place", "in": "museum_snack_shop", "hidden": true,
     "description": "You're tiny! Everything is huge in here. Go back to grow big again." },
@@ -221,7 +223,8 @@ GAME_DATA.places = [
   { "id": "smores_table", "name": "S'mores", "type": "smores", "in": "pond_house_inside", "x": 81, "y": 52 },
   { "id": "fireplace", "name": "Fireplace", "type": "fireplace", "in": "pond_house_inside", "x": 75, "y": 22 },
   { "id": "pond_hot_chocolate", "name": "Hot Chocolate", "type": "hot_chocolate", "in": "pond_house_inside", "x": 17, "y": 78 },
-  { "id": "pond_couch", "name": "Couch", "type": "cuddle", "in": "pond_house_inside", "x": 53, "y": 52 },
+  { "id": "pond_couch", "name": "Couch", "type": "cuddle", "in": "pond_house_inside", "x": 53, "y": 52,
+    "sitAt": { "x": 44, "y": 64, "size": 26 } },
   { "id": "turtle_sniff", "name": "Turtle Sniff", "type": "turtle_sniff", "in": "pond_house_inside", "x": 30, "y": 90 },
   { "id": "orchard",   "name": "Fruit Orchard", "type": "place", "in": "forest", "x": 62, "y": 80,
     "description": "Fruit trees and berry bushes, and a basket for picking." },
@@ -299,7 +302,8 @@ GAME_DATA.places = [
     "description": "Fields for growing crops (not drawn yet). Nothing to do here yet." },
   { "id": "cozy_lounge", "name": "Cozy Lounge", "type": "place", "in": "meadows", "x": 20, "y": 38,
     "description": "Comfy sofas and armchairs. Sit on the big sofa with your pet to bond." },
-  { "id": "lounge_sofa", "name": "Big Sofa", "type": "cuddle", "in": "cozy_lounge", "x": 68, "y": 72 },
+  { "id": "lounge_sofa", "name": "Big Sofa", "type": "cuddle", "in": "cozy_lounge", "x": 68, "y": 72,
+    "sitAt": { "x": 52, "y": 77, "size": 34 } },
 
   { "id": "dock",      "name": "Dock",           "type": "place", "in": "lake", "x": 35, "y": 61, "start": true,
     "description": "Click a Lucky Rod to go fishing. Fish go in your cooler." },
