@@ -384,10 +384,22 @@ h2 {
 /* Zooming in on a place you walk into, and back out (js/zoom.js) */
 .zoom-layer { position: relative; transform-origin: 0 0; }
 .zoom-layer.zooming { pointer-events: none; } /* no clicks while zooming */
-.zoom-layer #map-spots, .zoom-layer .map-paths, .zoom-layer .map-sprite { transition: opacity 0.25s; }
+.zoom-layer #map-spots, .zoom-layer .map-paths, .zoom-layer .map-sprite,
+.zoom-layer #place-spots, .zoom-layer #place-items { transition: opacity 0.25s; }
 .zoom-layer.zooming #map-spots,
 .zoom-layer.zooming .map-paths,
-.zoom-layer.zooming .map-sprite { opacity: 0; } /* the labels and roads would grow huge */
+.zoom-layer.zooming .map-sprite,
+.zoom-layer.zooming #place-spots,
+.zoom-layer.zooming #place-items { opacity: 0; } /* the labels and roads would grow huge */
+.picture.zooming > :not(.zoom-layer) { opacity: 0; } /* things laid on the picture outside the layer, like the coaster train */
+/* The name of the place shows like a caption when you arrive, then fades away */
+.screen-title.caption { animation: caption 4s ease-in-out forwards; }
+@keyframes caption {
+  0%   { opacity: 0; translate: 0 6px; }
+  15%  { opacity: 1; translate: 0 0; }
+  70%  { opacity: 1; }
+  100% { opacity: 0; }
+}
 .picture.arriving { animation: arrive 0.45s ease-out; } /* the new picture fades in, still moving closer */
 @keyframes arrive {
   from { opacity: 0; scale: 1.06; }
@@ -395,6 +407,7 @@ h2 {
 }
 @media (prefers-reduced-motion: reduce) {
   .picture.arriving { animation: none; }
+  .screen-title.caption { animation: none; }
 }
 
 /* Placement mode (press P) */

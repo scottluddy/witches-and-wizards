@@ -60,14 +60,14 @@ function goTo(id) {
   else showPlace(id);
 }
 
-// The "Back to ..." button: go up to the map or place this one sits inside.
+// The "Zoom out to ..." button: go up to the map or place this one sits inside.
 // A place that just "opens" another is skipped, or Back would bounce straight back in.
 function setBackButton(button, place) {
   let parent = place.in ? findPlace(place.in) : null;
   while (parent && parent.opens && parent.in) parent = findPlace(parent.in);
   button.hidden = !parent;
   if (parent) {
-    button.textContent = "⬅ Back to " + parent.name;
+    button.textContent = "🔍 Zoom out to " + parent.name; // it zooms out, too (js/zoom.js)
     button.onclick = function () { goTo(parent.id); };
   }
 }
@@ -123,7 +123,7 @@ function showMap(mapId) {
   }
   writeSave(player);
 
-  document.getElementById("map-title").textContent = map.name;
+  flashTitle("map-title", map.name, cameFrom !== mapId); // js/zoom.js
   document.getElementById("map-image").src = picture("map_" + mapId);
   document.getElementById("map-image").alt = "Map of " + map.name;
   setBackButton(document.getElementById("btn-map-back"), map);
@@ -136,7 +136,7 @@ function showMap(mapId) {
   document.getElementById("map-sprite").hidden = !herePlace;
   if (herePlace) moveSprite(herePlace.x, herePlace.y);
   showScreen("screen-map");
-  zoomOutFrom(cameFrom, mapId);
+  zoomOutFrom(cameFrom, mapId, "map-zoom");
 }
 
 function markHere() {
@@ -311,10 +311,11 @@ function walkAlong(points, done) {
 
 function showPlace(id) {
   const place = findPlace(id);
+  const cameFrom = player.at; // to zoom back out from the spot you just left (js/zoom.js)
   player.at = id;
   writeSave(player);
 
-  document.getElementById("place-title").textContent = place.name;
+  flashTitle("place-title", place.name, cameFrom !== id); // js/zoom.js
   document.getElementById("place-image").src = picture(roomPicture(id)); // js/furniture.js
   document.getElementById("place-image").alt = place.name;
   document.getElementById("place-description").textContent = place.description || "";
@@ -337,6 +338,7 @@ function showPlace(id) {
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showScreen("screen-place");
+  zoomOutFrom(cameFrom, id, "place-zoom");
 }
 
 // What happens when you click a spot in a place.
@@ -391,7 +393,7 @@ function openSpot(childId) {
       "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");
     return;
   }
-  goTo(childId);
+  zoomInto(child, function () { goTo(childId); }); // zoom in on it, then open it (js/zoom.js)
 }
 
 // Scott, 2026-10-17: show your own character wherever we can. A spot with
