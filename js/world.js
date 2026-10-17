@@ -111,6 +111,7 @@ function showMap(mapId) {
   leaveBeehive(map); // honey still in your pot goes in the basket (js/honey.js)
   returnPickaxe(); // out of the Crystal Cave, the pickaxe goes back on its rack (js/mining.js)
   const spots = placesIn(mapId);
+  const cameFrom = player.at; // to zoom back out from the place you just left (js/zoom.js)
   player.at = mapId;
 
   // Where the character stands: where they were last time, or the start spot.
@@ -135,6 +136,7 @@ function showMap(mapId) {
   document.getElementById("map-sprite").hidden = !herePlace;
   if (herePlace) moveSprite(herePlace.x, herePlace.y);
   showScreen("screen-map");
+  zoomOutFrom(cameFrom, mapId);
 }
 
 function markHere() {
@@ -232,7 +234,7 @@ function travelTo(id) {
   const here = player.spots[mapId];
   if (!here || id === here) {
     player.spots[mapId] = id;
-    goTo(id);
+    zoomInto(findPlace(id), function () { goTo(id); }); // zoom in on it, then open it (js/zoom.js)
     return;
   }
 
@@ -247,7 +249,9 @@ function travelTo(id) {
     player.spots[mapId] = id;
     writeSave(player);
     markHere();
-    setTimeout(function () { goTo(id); }, 400);
+    setTimeout(function () {
+      zoomInto(findPlace(id), function () { goTo(id); }); // zoom in on it, then open it (js/zoom.js)
+    }, 200);
   });
 }
 
@@ -540,6 +544,6 @@ document.querySelectorAll(".picture").forEach(function (pic) {
 // that still fits both the window's width and its height (see .picture).
 document.querySelectorAll(".picture-image").forEach(function (img) {
   img.addEventListener("load", function () {
-    img.parentElement.style.setProperty("--shape", img.naturalWidth / img.naturalHeight);
+    img.closest(".picture").style.setProperty("--shape", img.naturalWidth / img.naturalHeight);
   });
 });

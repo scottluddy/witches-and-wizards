@@ -381,6 +381,22 @@ h2 {
   .map-sprite.walking img { animation: none; }
 }
 
+/* Zooming in on a place you walk into, and back out (js/zoom.js) */
+.zoom-layer { position: relative; transform-origin: 0 0; }
+.zoom-layer.zooming { pointer-events: none; } /* no clicks while zooming */
+.zoom-layer #map-spots, .zoom-layer .map-paths, .zoom-layer .map-sprite { transition: opacity 0.25s; }
+.zoom-layer.zooming #map-spots,
+.zoom-layer.zooming .map-paths,
+.zoom-layer.zooming .map-sprite { opacity: 0; } /* the labels and roads would grow huge */
+.picture.arriving { animation: arrive 0.45s ease-out; } /* the new picture fades in, still moving closer */
+@keyframes arrive {
+  from { opacity: 0; scale: 1.06; }
+  to   { opacity: 1; scale: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .picture.arriving { animation: none; }
+}
+
 /* Placement mode (press P) */
 .placement-marker {
   position: absolute;
