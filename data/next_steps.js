@@ -21,7 +21,7 @@ GAME_DATA.nextSteps = {
     { "text": "What's in the Artifacts Exhibit chest, and where does the treasure map lead?", "who": "Girls",
       "note": "The Old Key (1 dig in 20 at the Dig Spot) opens the chest in the Artifacts Exhibit and for now it just holds a map. Claude's ideas are under Adventure ideas (The Artifacts Treasure Hunt), with the list of what to draw: the key, the chest, the room, the map and the treasure." },
     { "text": "Draw a potion shelf for the Tiny Hole's Brewing Stand", "who": "Girls",
-      "note": "Scott's idea (2026-10-17): a shelf of potion bottles and bags under the Brewing Stand, used anywhere a generic potion shelf or aisle is needed. Claude's note: the photo of the POTION bags has a real company's label, so it's better as a model for the girls to draw from than as a picture in the game." },
+      "note": "Scott's idea (2026-10-17): a shelf of potion bottles and bags under the Brewing Stand, used anywhere a generic potion shelf or aisle is needed. The photo of the POTION bags is saved for later with its small print and logos painted out; a drawing of their own would still fit the game best." },
     { "text": "Which adventure ideas should we build next?", "who": "Girls",
       "note": "Six ideas are on this page under Adventure ideas, each with how it unlocks and a saved celebration picture." },
     { "text": "What do potions, wands and pets actually do once you have them?", "who": "Girls",

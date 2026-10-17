@@ -1085,5 +1085,9 @@
       94
     ],
     "whole": true
+  },
+  "extra_potion_bags": {
+    "whole": true,
+    "photo": true
   }
 }
