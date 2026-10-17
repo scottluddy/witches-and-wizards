@@ -33,7 +33,7 @@ const SPOT_ICONS = {
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", ski_down: "⛷️", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
-  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑"
+  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑"
 };
 
 function isDrawn(name) {
@@ -326,6 +326,7 @@ function showPlace(id) {
   showWindy(place);      // the dark ski slope, and the little WIT in the Snowy Hut (js/windy.js)
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
+  showMarket(place);       // the Flea Market's tables and shoppers (js/market.js)
   showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
@@ -376,6 +377,8 @@ function openSpot(childId) {
   if (child.type === "museum_pay") return openMuseumPay();     // js/museum.js
   if (child.type === "menu_shop") return openMenuShop(child);  // js/museum.js
   if (child.type === "seat") return sitDown();                 // js/museum.js
+  if (child.type === "market_booth") return openMarketBooth();  // js/market.js
+  if (child.type === "market_table") return openMarketTable();  // js/market.js
   if (child.type === "classroom") {                             // a Wizard School classroom with no teacher yet
     document.getElementById("place-description").textContent =
       "🚪 The " + child.name + " has no teacher yet. One day you'll learn: " + (child.teaches || "something new!");

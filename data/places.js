@@ -62,7 +62,7 @@ GAME_DATA.places = [
   // floor's drawn floor list is the elevator back (type "elevator"). Where it
   // lives isn't decided: the Village for now.
   { "id": "multi_house", "name": "Multi-House", "type": "place", "in": "village", "x": 66, "y": 57,
-    "floors": ["multi_dance", "multi_coaster", null, null, "multi_jewelry", null] },
+    "floors": ["multi_dance", "multi_coaster", "multi_flea", null, "multi_jewelry", null] },
   { "id": "multi_dance", "name": "Dance Floor", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
     "danceFloor": { "ball": [48, 15], "dancers": [
       { "emoji": "💃", "x": 42, "y": 50 }, { "emoji": "🕺", "x": 54, "y": 44 }, { "emoji": "💃", "x": 64, "y": 52 },
@@ -74,6 +74,13 @@ GAME_DATA.places = [
     "description": "Floor 2: a twisty roller coaster! Hop in the car at the start. Bring a pet in your backpack to ride together." },
   { "id": "coaster_ride", "name": "Ride", "type": "coaster", "in": "multi_coaster", "x": 49, "y": 86 },
   { "id": "multi_coaster_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_coaster", "x": 87, "y": 86 },
+  // The Flea Market (Scott, 2026-10-17): rent the free table from the Market Witch and
+  // haggle with shoppers over things you've found. Tables and numbers in data/market.js.
+  { "id": "multi_flea", "name": "Flea Market", "type": "place", "in": "village", "hidden": true, "building": "multi_house", "market": true,
+    "description": "Floor 3: the Flea Market! Rent the free table from the Market Witch, then sell the things you've found to the witches and wizards walking by." },
+  { "id": "market_booth", "name": "Market Witch", "type": "market_booth", "in": "multi_flea", "x": 50, "y": 30 },
+  { "id": "market_table", "name": "Your Table", "type": "market_table", "in": "multi_flea", "x": 78, "y": 84 },
+  { "id": "multi_flea_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_flea", "x": 9, "y": 93 },
   { "id": "multi_jewelry", "name": "Jewelry Shop", "type": "place", "in": "village", "hidden": true, "building": "multi_house", "shelf": "Jewelry",
     "description": "Floor 5: necklaces and bracelets with sparkly stones. The jeweler smiles from the counter." },
   { "id": "jeweler", "name": "Jeweler", "type": "person", "in": "multi_jewelry", "x": 46, "y": 60,

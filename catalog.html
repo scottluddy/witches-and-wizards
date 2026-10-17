@@ -357,40 +357,41 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "82"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=82"></script>
-  <script src="data/places.js?v=82"></script>
-  <script src="data/items.js?v=82"></script>
-  <script src="data/ideas.js?v=82"></script>
-  <script src="data/fish.js?v=82"></script>
-  <script src="data/digging.js?v=82"></script>
-  <script src="data/mining.js?v=82"></script>
-  <script src="data/troll.js?v=82"></script>
-  <script src="data/levels.js?v=82"></script>
-  <script src="data/luck.js?v=82"></script>
-  <script src="data/bonding.js?v=82"></script>
-  <script src="data/pearls.js?v=82"></script>
-  <script src="data/skills.js?v=82"></script>
-  <script src="data/sports.js?v=82"></script>
-  <script src="data/pixie.js?v=82"></script>
-  <script src="data/supplies.js?v=82"></script>
-  <script src="data/honey.js?v=82"></script>
-  <script src="data/gameplay.js?v=82"></script>
-  <script src="data/extras.js?v=82"></script>
-  <script src="data/hunger.js?v=82"></script>
-  <script src="data/orchard.js?v=82"></script>
-  <script src="data/dance.js?v=82"></script>
-  <script src="data/trading.js?v=82"></script>
-  <script src="data/unicorns.js?v=82"></script>
-  <script src="data/adventures.js?v=82"></script>
-  <script src="data/spells.js?v=82"></script>
-  <script src="data/furniture.js?v=82"></script>
-  <script src="data/next_steps.js?v=82"></script>
-  <script src="data/adventure_ideas.js?v=82"></script>
-  <script src="data/logic.js?v=82"></script>
-  <script src="data/chores.js?v=82"></script>
-  <script src="data/music.js?v=82"></script>
-  <script src="data/drawn.js?v=82"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "83"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=83"></script>
+  <script src="data/places.js?v=83"></script>
+  <script src="data/items.js?v=83"></script>
+  <script src="data/ideas.js?v=83"></script>
+  <script src="data/fish.js?v=83"></script>
+  <script src="data/digging.js?v=83"></script>
+  <script src="data/mining.js?v=83"></script>
+  <script src="data/troll.js?v=83"></script>
+  <script src="data/levels.js?v=83"></script>
+  <script src="data/luck.js?v=83"></script>
+  <script src="data/bonding.js?v=83"></script>
+  <script src="data/pearls.js?v=83"></script>
+  <script src="data/skills.js?v=83"></script>
+  <script src="data/sports.js?v=83"></script>
+  <script src="data/pixie.js?v=83"></script>
+  <script src="data/supplies.js?v=83"></script>
+  <script src="data/honey.js?v=83"></script>
+  <script src="data/gameplay.js?v=83"></script>
+  <script src="data/extras.js?v=83"></script>
+  <script src="data/hunger.js?v=83"></script>
+  <script src="data/orchard.js?v=83"></script>
+  <script src="data/dance.js?v=83"></script>
+  <script src="data/trading.js?v=83"></script>
+  <script src="data/market.js?v=83"></script>
+  <script src="data/unicorns.js?v=83"></script>
+  <script src="data/adventures.js?v=83"></script>
+  <script src="data/spells.js?v=83"></script>
+  <script src="data/furniture.js?v=83"></script>
+  <script src="data/next_steps.js?v=83"></script>
+  <script src="data/adventure_ideas.js?v=83"></script>
+  <script src="data/logic.js?v=83"></script>
+  <script src="data/chores.js?v=83"></script>
+  <script src="data/music.js?v=83"></script>
+  <script src="data/drawn.js?v=83"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -739,6 +740,8 @@
           if (GAME_DATA.dance) result.push(line("Solve to Dance", whereAll(function (p) { return p.type === "dance_puzzle"; }).join(", "),
             [line("Maths problems", "every " + GAME_DATA.dance.pointsPerGem + " dance points makes 1 gem")]));
           result.push(line("Selling", whereAll(function (p) { return p.type === "selling"; }).join(", "), [line("Sell your things", "for gems")]));
+          if (GAME_DATA.market) result.push(line("Flea Market", pathTo("multi_flea"),
+            [line("Rent a table", GAME_DATA.market.rentGems + " gems, then haggle with shoppers over things you found")]));
           return result;
         } },
 
@@ -928,6 +931,9 @@
         groups.push(["Items: " + category, (GAME_DATA.items || []).filter(function (i) { return i.category === category && !isDrawn(i.id); })
           .map(function (i) { return [i.name, i.id]; })]);
       });
+      // The Flea Market's own pictures still to draw (data/market.js).
+      if (GAME_DATA.market) groups.unshift(["Flea Market", (GAME_DATA.market.drawings || []).filter(function (d) { return !isDrawn(d.file); })
+        .map(function (d) { return [d.what, d.file, true]; })]);
       // Each adventure's own pictures still to draw (they're in the lists below too).
       (GAME_DATA.adventureList || []).forEach(function (a) {
         groups.unshift(["Adventure: " + a.emoji + " " + a.name, (a.drawings || []).filter(function (d) { return !isDrawn(d.file); })
@@ -1124,6 +1130,13 @@
         addRow("logic-earn", ["Trading Post (Forest)", "Selling on the Gems shelf",
           "Shop items about " + Math.round(GAME_DATA.trading.sellShare * 100) + "% of their price; catches and finds " + Math.round(GAME_DATA.trading.catchShare * 100) + "% of their gems; bones and apples 1; Scholarship gifts can't be sold",
           "depends on what you bring"], []);
+      }
+      const market = GAME_DATA.market;
+      if (market) {
+        const pct = function (range) { return Math.round(range[0] * 100) + "% to " + Math.round(range[1] * 100) + "%"; };
+        addRow("logic-earn", ["Flea Market (Multi-House, Floor 3)", "Haggling with shoppers over things you found",
+          "Rent the table for " + market.rentGems + " gems; each shopper secretly pays at most " + pct(market.most) + " of what a thing is worth and first offers " + pct(market.firstOffer) + " of that; 2 offers each side",
+          "depends on what you bring; good haggling gets close to full worth (the Gems shelf pays half)"], []);
       }
       if (GAME_DATA.unicorns) {
         addRow("logic-earn", ["Unicorn Meadow (Meadows)", "Reuniting a blind unicorn", GAME_DATA.unicorns.adventurePoints + " Adventure Point",
