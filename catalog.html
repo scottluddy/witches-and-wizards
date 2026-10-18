@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Witches and Wizards Catalog</title>
+  <!-- The logo, for now the girls' Head Witch drawing (art/logo, see tools/make_logo.py) -->
+  <link rel="icon" type="image/png" href="art/logo/favicon.png?v=96">
+  <link rel="apple-touch-icon" href="art/logo/apple-touch-icon.png?v=96">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -173,13 +176,15 @@
     .topic-outline li li { font-family: inherit; font-size: 1rem; }
     .topic-outline .outline-kind { font-family: inherit; }
     .howto { background: var(--panel); border: 2px solid var(--line); border-radius: 14px; padding: 4px 20px 12px; }
+    .logo-title { display: flex; align-items: center; gap: 14px; }
+    .logo-title .game-logo { height: 90px; }
     .howto li { margin-block: 6px; }
   </style>
 </head>
 <body>
   <main class="page">
   <div class="subpage" data-page="home">
-    <h1>Witches &amp; Wizards Catalog</h1>
+    <h1 class="logo-title"><img class="game-logo" src="art/logo/logo.png?v=96" alt="">Witches &amp; Wizards Catalog</h1>
     <p class="lede">Everything in the game: the world and its places, the characters and the store's items, plus ideas for later.
       Orange tags show pictures still waiting for a drawing, with the file name to save it as.</p>
     <div id="tally" class="tally"></div>
@@ -357,42 +362,42 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "95"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=95"></script>
-  <script src="data/places.js?v=95"></script>
-  <script src="data/items.js?v=95"></script>
-  <script src="data/ideas.js?v=95"></script>
-  <script src="data/fish.js?v=95"></script>
-  <script src="data/digging.js?v=95"></script>
-  <script src="data/mining.js?v=95"></script>
-  <script src="data/troll.js?v=95"></script>
-  <script src="data/levels.js?v=95"></script>
-  <script src="data/luck.js?v=95"></script>
-  <script src="data/bonding.js?v=95"></script>
-  <script src="data/agility.js?v=95"></script>
-  <script src="data/pearls.js?v=95"></script>
-  <script src="data/skills.js?v=95"></script>
-  <script src="data/sports.js?v=95"></script>
-  <script src="data/pixie.js?v=95"></script>
-  <script src="data/supplies.js?v=95"></script>
-  <script src="data/honey.js?v=95"></script>
-  <script src="data/gameplay.js?v=95"></script>
-  <script src="data/extras.js?v=95"></script>
-  <script src="data/hunger.js?v=95"></script>
-  <script src="data/orchard.js?v=95"></script>
-  <script src="data/dance.js?v=95"></script>
-  <script src="data/trading.js?v=95"></script>
-  <script src="data/market.js?v=95"></script>
-  <script src="data/unicorns.js?v=95"></script>
-  <script src="data/adventures.js?v=95"></script>
-  <script src="data/spells.js?v=95"></script>
-  <script src="data/furniture.js?v=95"></script>
-  <script src="data/next_steps.js?v=95"></script>
-  <script src="data/adventure_ideas.js?v=95"></script>
-  <script src="data/logic.js?v=95"></script>
-  <script src="data/chores.js?v=95"></script>
-  <script src="data/music.js?v=95"></script>
-  <script src="data/drawn.js?v=95"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "96"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=96"></script>
+  <script src="data/places.js?v=96"></script>
+  <script src="data/items.js?v=96"></script>
+  <script src="data/ideas.js?v=96"></script>
+  <script src="data/fish.js?v=96"></script>
+  <script src="data/digging.js?v=96"></script>
+  <script src="data/mining.js?v=96"></script>
+  <script src="data/troll.js?v=96"></script>
+  <script src="data/levels.js?v=96"></script>
+  <script src="data/luck.js?v=96"></script>
+  <script src="data/bonding.js?v=96"></script>
+  <script src="data/agility.js?v=96"></script>
+  <script src="data/pearls.js?v=96"></script>
+  <script src="data/skills.js?v=96"></script>
+  <script src="data/sports.js?v=96"></script>
+  <script src="data/pixie.js?v=96"></script>
+  <script src="data/supplies.js?v=96"></script>
+  <script src="data/honey.js?v=96"></script>
+  <script src="data/gameplay.js?v=96"></script>
+  <script src="data/extras.js?v=96"></script>
+  <script src="data/hunger.js?v=96"></script>
+  <script src="data/orchard.js?v=96"></script>
+  <script src="data/dance.js?v=96"></script>
+  <script src="data/trading.js?v=96"></script>
+  <script src="data/market.js?v=96"></script>
+  <script src="data/unicorns.js?v=96"></script>
+  <script src="data/adventures.js?v=96"></script>
+  <script src="data/spells.js?v=96"></script>
+  <script src="data/furniture.js?v=96"></script>
+  <script src="data/next_steps.js?v=96"></script>
+  <script src="data/adventure_ideas.js?v=96"></script>
+  <script src="data/logic.js?v=96"></script>
+  <script src="data/chores.js?v=96"></script>
+  <script src="data/music.js?v=96"></script>
+  <script src="data/drawn.js?v=96"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];

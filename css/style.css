@@ -46,6 +46,8 @@ h2 {
 
 .subtitle { font-size: 1.5rem; margin-top: 0; }
 .sparkles { font-size: 2.5rem; margin-top: 24px; }
+/* The game's logo on the title screen (for now the Head Witch drawing) */
+.game-logo { height: min(200px, 24vh); vertical-align: middle; }
 .note { font-size: 1.25rem; }
 
 /* ---- buttons ---- */

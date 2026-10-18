@@ -87,6 +87,7 @@ A family project: Scott drives, his two 9-year-old daughters make the art and de
 
 ## Art
 
+- Logo (Scott, 2026-10-18, for now the Head Witch drawing until the family makes a real logo): `art/logo/logo.png`, shown on the title screen and the catalog's front page. `python3 tools/make_logo.py` makes the browser-tab icon and home-screen icon (`favicon.png`, `apple-touch-icon.png`, the hat and face on parchment) from it. To change the logo, replace that one file and rerun the script. It's a copy, so the Head Witch in the game is unchanged.
 - Kids' drawings go in `art/raw`. Photos often arrive sideways or upside down; fix with `rotate` in art_config.json (pages) or when cutting a sticker out.
 - A photo with several drawings on it is kept whole in `art/raw/sheets` (not processed); each drawing is cut out, turned upright and saved in `art/raw` under its own name.
 - Run `python3 tools/process_art.py` (needs `pip install pillow numpy`) to make `art/processed` and `data/drawn.js`.
