@@ -48,10 +48,13 @@
     </p>
   </section>
 
-  <!-- Character select screen -->
-  <section id="screen-select" class="screen" hidden>
-    <h2>Choose Your Character</h2>
-    <div id="character-list" class="character-list"></div>
+  <!-- New game, step 1: your name and Witch or Wizard (js/game.js) -->
+  <section id="screen-select" class="screen story-screen" hidden>
+    <h2>Welcome to WIT School!</h2>
+    <div class="name-row">
+      <label for="player-name">Your name</label>
+      <input id="player-name" type="text" maxlength="16" placeholder="Type a name" autocomplete="off">
+    </div>
     <div class="kind-row">
       <p>Are you a Witch or a Wizard?</p>
       <div class="button-row">
@@ -59,13 +62,19 @@
         <button class="kind-button" data-kind="wizard">🧙‍♂️ Wizard</button>
       </div>
     </div>
-    <div class="name-row">
-      <label for="player-name">And what's <em>your</em> name?</label>
-      <input id="player-name" type="text" maxlength="16" placeholder="Type a name" autocomplete="off">
-    </div>
     <div class="button-row">
       <button id="btn-select-back" class="big-button secondary">Back</button>
-      <button id="btn-start" class="big-button" disabled>Start Adventure!</button>
+      <button id="btn-next" class="big-button" disabled>Next ➜</button>
+    </div>
+  </section>
+
+  <!-- New game, step 2: pick your Witch (the girls) or Wizard (the boys) -->
+  <section id="screen-character" class="screen story-screen" hidden>
+    <h2 id="character-title">Choose your Witch</h2>
+    <div id="character-list" class="character-list"></div>
+    <div class="button-row">
+      <button id="btn-character-back" class="big-button secondary">Back</button>
+      <button id="btn-start" class="big-button" disabled>Start ✨</button>
     </div>
   </section>
 

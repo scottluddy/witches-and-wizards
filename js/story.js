@@ -8,21 +8,23 @@ function storyGuide() {
   return guides.find(function (g) { return g.kind === player.kind; }) || guides[0];
 }
 
-// Fill in the player's name and whether they're a witch or a wizard.
+// Fill in the player's name.
 function storyWords(text) {
-  return text.replace(/NAME/g, player.playerName).replace(/KIND/g, player.kind || "witch");
+  return text.replace(/NAME/g, player.playerName);
 }
 
-// Page "page" of the welcome (0 is the first), with a Next button.
+// Page "page" of the welcome (0 is the first), with a Next button. It's
+// shown in big story letters (the "story" class in css/style.css).
 function tellWelcome(page) {
   const welcome = GAME_DATA.story.welcome;
-  const guide = storyGuide();
+  const words = welcome.pages[page];
   const last = page === welcome.pages.length - 1;
-  const body = openInfoPanel(guideArt(guide), welcome.title, // js/adventures.js
-    guide.name + ": \"" + storyWords(welcome.pages[page]) + "\"");
+  const body = openInfoPanel(guideArt(storyGuide()), words.title, storyWords(words.words)); // js/adventures.js
+  document.getElementById("info-panel").classList.add("story");
+  document.getElementById("btn-info-close").textContent = "Skip"; // for players who've heard it before
   const next = document.createElement("button");
   next.className = "big-button";
-  next.textContent = last ? welcome.done : "Next ➜ (" + (page + 1) + " of " + welcome.pages.length + ")";
+  next.textContent = last ? storyWords(welcome.done) : "Next ➜";
   next.addEventListener("click", function () {
     if (last) document.getElementById("info-panel").hidden = true;
     else tellWelcome(page + 1);

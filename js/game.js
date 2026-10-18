@@ -2,7 +2,7 @@
 
 let player = null;             // the game being played
 let chosenCharacterId = null;  // picked on the character select screen
-let chosenKind = null;         // "witch" or "wizard", picked on the same screen
+let chosenKind = null;         // "witch" or "wizard", picked before the character
 
 // Show one screen and hide all the others.
 function showScreen(id) {
@@ -54,6 +54,8 @@ function openInfoPanel(art, title, message) {
   document.getElementById("info-message").textContent = message || "";
   const body = document.getElementById("info-body");
   body.innerHTML = "";
+  document.getElementById("info-panel").classList.remove("story"); // only the welcome adds it (js/story.js)
+  document.getElementById("btn-info-close").textContent = "Close";
   document.getElementById("info-panel").hidden = false;
   return body;
 }
@@ -145,21 +147,76 @@ function continueGame(save) {
   goTo(player.at);
 }
 
-// ---------------------------------------------------------------- character select
+// ---------------------------------------------------------------- new game
+// Part of the story (Scott, 2026-10-18): first your name and Witch or Wizard,
+// then pick your character, then the Head Witch or Wizard says hello.
 
+// Step 1: your name, and Witch or Wizard.
 function showSelect() {
   chosenCharacterId = null;
   chooseKind(null);
   document.getElementById("player-name").value = "";
-  buildCharacterCards();
-  updateStartButton();
+  updateNextButton();
   showScreen("screen-select");
+  document.getElementById("player-name").focus();
+}
+
+// Witch or Wizard.
+function chooseKind(kind) {
+  chosenKind = kind;
+  document.querySelectorAll(".kind-button").forEach(function (button) {
+    button.classList.toggle("chosen", button.dataset.kind === kind);
+  });
+  updateNextButton();
+}
+
+document.querySelectorAll(".kind-button").forEach(function (button) {
+  button.addEventListener("click", function () { chooseKind(button.dataset.kind); });
+});
+
+function typedName() {
+  return document.getElementById("player-name").value.trim();
+}
+
+function updateNextButton() {
+  document.getElementById("btn-next").disabled = !(chosenKind && typedName());
+}
+
+document.getElementById("player-name").addEventListener("input", updateNextButton);
+
+document.getElementById("player-name").addEventListener("keydown", function (event) {
+  if (event.key === "Enter") document.getElementById("btn-next").click();
+});
+
+document.getElementById("btn-next").addEventListener("click", function () {
+  if (!chosenKind || !typedName()) return;
+  showCharacters();
+});
+
+document.getElementById("btn-select-back").addEventListener("click", showTitle);
+
+// Step 2: the girls for a Witch, the boys for a Wizard ("kind" in
+// data/characters.js).
+function showCharacters() {
+  chosenCharacterId = null;
+  document.getElementById("character-title").textContent =
+    chosenKind === "wizard" ? "Choose your Wizard" : "Choose your Witch";
+  buildCharacterCards();
+  document.getElementById("btn-start").disabled = true;
+  showScreen("screen-character");
+}
+
+// The characters of the chosen kind. No boys are drawn yet, so until they
+// are a Wizard can pick from everyone rather than finding an empty page.
+function charactersToChoose() {
+  const ofKind = GAME_DATA.characters.filter(function (c) { return c.kind === chosenKind; });
+  return ofKind.length ? ofKind : GAME_DATA.characters;
 }
 
 function buildCharacterCards() {
   const list = document.getElementById("character-list");
   list.innerHTML = "";
-  GAME_DATA.characters.forEach(function (character) {
+  charactersToChoose().forEach(function (character) {
     const card = document.createElement("button");
     card.className = "character-card";
     card.dataset.id = character.id;
@@ -172,11 +229,7 @@ function buildCharacterCards() {
     name.className = "character-name";
     name.textContent = character.name;
 
-    const about = document.createElement("span");
-    about.className = "character-about";
-    about.textContent = character.description;
-
-    card.append(img, name, about);
+    card.append(img, name);
     card.addEventListener("click", function () { chooseCharacter(character.id); });
     list.appendChild(card);
   });
@@ -187,38 +240,16 @@ function chooseCharacter(id) {
   document.querySelectorAll(".character-card").forEach(function (card) {
     card.classList.toggle("chosen", card.dataset.id === id);
   });
-  updateStartButton();
-  document.getElementById("player-name").focus();
+  document.getElementById("btn-start").disabled = false;
 }
 
-// Witch or Wizard.
-function chooseKind(kind) {
-  chosenKind = kind;
-  document.querySelectorAll(".kind-button").forEach(function (button) {
-    button.classList.toggle("chosen", button.dataset.kind === kind);
-  });
-  updateStartButton();
-}
-
-document.querySelectorAll(".kind-button").forEach(function (button) {
-  button.addEventListener("click", function () { chooseKind(button.dataset.kind); });
-});
-
-function updateStartButton() {
-  const name = document.getElementById("player-name").value.trim();
-  document.getElementById("btn-start").disabled = !(chosenCharacterId && chosenKind && name);
-}
-
-document.getElementById("player-name").addEventListener("input", updateStartButton);
-
-document.getElementById("player-name").addEventListener("keydown", function (event) {
-  if (event.key === "Enter") document.getElementById("btn-start").click();
+document.getElementById("btn-character-back").addEventListener("click", function () {
+  showScreen("screen-select");
 });
 
 document.getElementById("btn-start").addEventListener("click", function () {
-  const name = document.getElementById("player-name").value.trim();
-  if (!chosenCharacterId || !chosenKind || !name) return;
-  startGame(newPlayer(name, chosenCharacterId, chosenKind));
+  if (!chosenCharacterId || !chosenKind || !typedName()) return;
+  startGame(newPlayer(typedName(), chosenCharacterId, chosenKind));
 });
 
 function startGame(newGame) {
@@ -227,8 +258,6 @@ function startGame(newGame) {
   goTo(player.at);
   tellWelcome(0); // the Head Witch or Wizard gets you started (js/story.js)
 }
-
-document.getElementById("btn-select-back").addEventListener("click", showTitle);
 
 // Save this game and go back to the title screen, to pick another one.
 document.getElementById("btn-switch-game").addEventListener("click", function () {

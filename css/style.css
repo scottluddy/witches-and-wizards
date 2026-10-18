@@ -1606,3 +1606,22 @@ body.holding-apple, body.holding-apple * {
 @media (prefers-reduced-motion: reduce) {
   .agility-pet.jumping { animation: none; }
 }
+
+/* ---- the new-game story (Scott, 2026-10-18): everything in the same big
+   purple letters as "Welcome to WIT School!" ---- */
+.story-screen label, .story-screen .kind-row p {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--magic-dark);
+}
+.story-screen .kind-row, .story-screen .name-row { margin-top: 20px; }
+.story-screen > .button-row { margin-top: 32px; }
+#info-panel.story .panel-message {
+  font-size: clamp(1.4rem, 3.5vw, 1.9rem);
+  font-weight: 700;
+  color: var(--magic-dark);
+  line-height: 1.35;
+}
+/* Smaller cards so every character and the Start button fit on one screen */
+#screen-character .character-card { width: 180px; padding: 10px; }
+#screen-character .character-card img { height: 150px; }
