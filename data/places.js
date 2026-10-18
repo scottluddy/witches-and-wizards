@@ -154,7 +154,7 @@ GAME_DATA.places = [
     "says": "Brew a potion here! (Which potion, and what it needs, isn't decided yet.)" },
   { "id": "tiny_pet_food", "name": "Pet Food", "type": "care", "care": "pet_food", "in": "tiny_hole", "x": 75, "y": 86 },
   { "id": "school", "name": "Wizard School", "type": "place", "in": "village", "x": 36, "y": 40,
-    "description": "Nine classrooms, one for each thing you can learn. Only the Music Classroom has a teacher so far." },
+    "description": "Nine classrooms, one for each thing you can learn. The Music, Sports and Art Classrooms are open so far." },
   // The Wizard School's 9 classrooms, one per box on the girls' drawing (Scott, 2026-10-13).
   // The others are "classroom" spots with no teacher yet: placeholders (Scott: Magic, Sports,
   // Aquatic, and Claude's other ideas). "teaches" says what you'll learn there one day.
@@ -175,7 +175,13 @@ GAME_DATA.places = [
   { "id": "soccer", "name": "Soccer", "type": "soccer", "skill": "soccer", "in": "stadium", "x": 72, "y": 40 },
   { "id": "aquatic_classroom", "name": "Aquatic Classroom", "type": "classroom", "teaches": "Swimming and diving, and the animals of the lake.", "in": "school", "x": 84, "y": 50 },
   { "id": "animals_classroom", "name": "Animal Care Classroom", "type": "classroom", "teaches": "Looking after your pet: walking, training and grooming.", "in": "school", "x": 17, "y": 87 },
-  { "id": "art_classroom", "name": "Art Classroom", "type": "classroom", "teaches": "Drawing and painting, like the girls do for this game!", "in": "school", "x": 52, "y": 86 },
+  // The Art Classroom (Scott, 2026-10-18, the girls' drawing): copy the easel's drawing onto the
+  // drawing board with the paintbrushes, one Level per drawing (data/art.js, js/art.js).
+  { "id": "art_classroom", "name": "Art Classroom", "type": "place", "in": "school", "x": 52, "y": 86,
+    "skill": "art", "practice": true,
+    "description": "Copy the drawing on the easel onto the drawing board. Each drawing you copy is one Art Level." },
+  { "id": "art_done", "name": "I'm done!", "type": "art_check", "in": "art_classroom", "side": "right", "icon": "✅" },
+  { "id": "art_clear", "name": "Start over", "type": "art_clear", "in": "art_classroom", "side": "left", "icon": "🧽" },
   { "id": "cooking_classroom", "name": "Cooking Classroom", "type": "classroom", "teaches": "Cooking meals that fill you up.", "in": "school", "x": 83, "y": 84 },
 
   { "id": "shelf_brooms",  "name": "Broomsticks",   "type": "place", "in": "store", "x": 13, "y": 35, "shelf": "Broomstick",

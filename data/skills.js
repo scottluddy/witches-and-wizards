@@ -23,6 +23,7 @@ GAME_DATA.skills = {
   "list": [
     { "id": "archery", "name": "Archery", "emoji": "🏹", "levels": 10 },
     { "id": "soccer",  "name": "Soccer",  "emoji": "⚽", "levels": 10 },
-    { "id": "piano",   "name": "Piano",   "emoji": "🎹", "levels": 5 }
+    { "id": "piano",   "name": "Piano",   "emoji": "🎹", "levels": 5 },
+    { "id": "art",     "name": "Art",     "emoji": "🎨", "levels": 5 }  // one Level per easel drawing (data/art.js)
   ]
 };

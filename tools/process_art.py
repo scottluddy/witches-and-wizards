@@ -40,7 +40,7 @@ CONFIG_FILE = GAME_DIR / "art" / "art_config.json"
 
 CHARACTER_HEIGHT = 400     # every character ends up this tall (pixels)
 ITEM_SIZE = 300            # items fit inside a square this big
-ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_", "lake_", "cafe_", "tree_", "fruit_", "sport_")
+ITEM_PREFIXES = ("broom_", "pet_", "potion_", "hat_", "wand_", "special_", "fish_", "extra_", "ski_", "treasure_", "beach_", "mine_", "tool_", "snack_", "lake_", "cafe_", "tree_", "fruit_", "sport_", "art_")
 PICTURE_TYPES = (".jpg", ".jpeg", ".png", ".webp")
 GAP_CLOSE = 6              # how big a gap in the pencil lines still counts as closed
 
@@ -172,6 +172,70 @@ def process_drawing(path, settings):
         cut = cut.resize((width, CHARACTER_HEIGHT), Image.LANCZOS)
 
     add_outline(cut).save(OUT_DIR / f"{path.stem}.png")
+
+
+# ---------------------------------------------------------------- Art Classroom grids
+
+# The same as colourFamily and paintGrid in js/art.js, worked out here because
+# a browser won't let the game read a picture's colours when index.html is
+# opened by double-clicking.
+ART_GRID = 20
+
+
+def colour_family(r, g, b, a):
+    if a < 200:
+        return None
+    hi, lo = max(r, g, b), min(r, g, b)
+    value = hi / 255
+    sat = (hi - lo) / hi if hi else 0
+    if value > 0.84 and sat < 0.16:
+        return None
+    if value < 0.3 or (sat < 0.25 and value < 0.67):
+        return "black"
+    if sat < 0.25:
+        return None
+    if hi == r:
+        hue = 60 * (((g - b) / (hi - lo) + 6) % 6)
+    elif hi == g:
+        hue = 60 * ((b - r) / (hi - lo) + 2)
+    else:
+        hue = 60 * ((r - g) / (hi - lo) + 4)
+    if hue < 15 or hue >= 338:
+        return "red"
+    if hue < 40:
+        return "orange"
+    if hue < 75:
+        return "green" if hue >= 55 and value < 0.5 else "yellow"
+    for name, below in (("green", 185), ("blue", 228), ("purple", 290)):
+        if hue < below:
+            return name
+    return "pink"
+
+
+def art_grid(path):
+    img = Image.open(path).convert("RGBA")
+    img = img.resize((200, round(200 * img.height / img.width)), Image.BILINEAR)
+    dots = np.asarray(img).astype(int)
+    painted = [(x, y, f) for y in range(img.height) for x in range(img.width)
+               if (f := colour_family(*dots[y, x]))]
+    xs = [p[0] for p in painted]
+    ys = [p[1] for p in painted]
+    left, right, top, bottom = min(xs), max(xs), min(ys), max(ys)
+    size = max(right - left, bottom - top) + 1
+    scale = ART_GRID / size
+    shift_x = (ART_GRID - (right - left + 1) * scale) / 2
+    shift_y = (ART_GRID - (bottom - top + 1) * scale) / 2
+    squares = [{} for _ in range(ART_GRID * ART_GRID)]
+    for x, y, f in painted:
+        col = min(ART_GRID - 1, math.floor((x - left) * scale + shift_x))
+        row = min(ART_GRID - 1, math.floor((y - top) * scale + shift_y))
+        squares[row * ART_GRID + col][f] = squares[row * ART_GRID + col].get(f, 0) + 1
+    full = (size / ART_GRID) ** 2
+    grid = []
+    for families in squares:
+        count = sum(families.values())
+        grid.append(None if count < max(1, full / 8) else [f for f, n in families.items() if n >= count / 5])
+    return grid
 
 
 # ---------------------------------------------------------------- reading the game data
@@ -644,6 +708,11 @@ def main():
         "// Made by tools/process_art.py: where each cut-out piece of furniture sits\n"
         "// in its room's drawing, as [left, top, right, bottom] percentages.\n"
         "GAME_DATA.furnitureBoxes = " + json.dumps(FURNITURE_BOXES) + ";\n", encoding="utf-8")
+    grids = {name: art_grid(OUT_DIR / f"{name}.png") for name in sorted(drawn) if name.startswith("art_drawing_")}
+    (DATA_DIR / "art_grids.js").write_text(
+        "// Made by tools/process_art.py: each Art Classroom drawing as a 20 x 20 grid of\n"
+        "// its main colours (null = paper), to check copies against (js/art.js).\n"
+        "GAME_DATA.artGrids = " + json.dumps(grids) + ";\n", encoding="utf-8")
     print(f"Done! Pictures are in {OUT_DIR}")
 
 

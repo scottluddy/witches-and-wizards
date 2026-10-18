@@ -335,6 +335,7 @@ function showPlace(id) {
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showMarket(place);       // the Flea Market's tables and shoppers (js/market.js)
   showInvisibleRoom(place); // the Invisibility Room's wall and Blacklight (js/invisible.js)
+  showArtClass(place);     // the Art Classroom's easel, drawing board and brushes (js/art.js)
   showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
@@ -386,6 +387,8 @@ function openSpot(childId) {
   if (child.type === "honey") return openBeehive();            // js/honey.js
   if (child.type === "archery") return openArchery();          // js/sports.js
   if (child.type === "soccer") return openSoccer();            // js/sports.js
+  if (child.type === "art_check") return checkArtDrawing();    // js/art.js
+  if (child.type === "art_clear") return clearArtBoard();      // js/art.js
   if (child.type === "riddle") return askRiddle();             // js/pixie.js
   if (child.type === "turtle_sniff") return turtleSniff();     // js/pixie.js
   if (child.type === "pond") return openPond();                // js/pixie.js

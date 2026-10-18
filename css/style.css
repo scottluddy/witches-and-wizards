@@ -1774,3 +1774,55 @@ body.you-invisible #map-sprite-img {
 @media (prefers-reduced-motion: reduce) {
   .visiting-animal { animation: none; }
 }
+
+/* ---- The Art Classroom's easel, drawing board and brushes (js/art.js) ---- */
+#place-art { position: absolute; inset: 0; pointer-events: none; container-type: size; }
+#place-art[hidden] { display: none; }
+/* The drawing to copy sits on the easel's paper. */
+#art-easel { position: absolute; object-fit: contain; }
+/* You paint on the board; the paint brush cursor shows it's for drawing. */
+#art-board {
+  position: absolute;
+  pointer-events: auto;
+  touch-action: none;
+  cursor: crosshair;
+  border-radius: 8px;
+  outline: 3px dashed rgba(138, 63, 192, 0.35);
+}
+#art-board.erasing { cursor: cell; }
+/* An invisible button over each drawn paintbrush; the chosen one lifts up and glows. */
+.art-brush {
+  position: absolute;
+  width: 4.2cqw;
+  height: 22cqh;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 12px;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.art-brush:hover { box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.6); }
+.art-brush.chosen {
+  transform: translate(-50%, -62%);
+  box-shadow: 0 0 0 4px var(--paint), 0 0 14px 4px var(--paint);
+}
+/* The chosen brush's name, under it. */
+.art-brush-name {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--paint);
+  color: #fff;
+  font-size: 2.6cqh;
+  font-weight: 700;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+.art-brush.chosen .art-brush-name { display: block; }
