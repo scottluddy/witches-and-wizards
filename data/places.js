@@ -111,14 +111,22 @@ GAME_DATA.places = [
   { "id": "museum_room_2", "name": "Gem Stone Exhibit", "type": "place", "in": "museum_hall", "x": 35, "y": 25, "museumRoom": true,
     "description": "Six gem stones on their stands: Amethyst, Diamond, Sapphire, Opal, Ruby and a heart-shaped Emerald. Please don't touch anything!" },
   { "id": "museum_room_3", "name": "Exhibit Room 3", "type": "place", "in": "museum_hall", "x": 55, "y": 40, "museumRoom": true },
-  // The Ancient Kitty Pirate Room (Scott, 2026-10-17): the stone elephant statue (a photo
-  // for now) and a locked chest that the Old Key from the Dig Spot opens (js/museum.js).
-  { "id": "museum_room_4", "name": "Ancient Kitty Pirate Room", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true,
-    "description": "Old things from long ago. Please don't touch anything!" },
-  { "id": "museum_elephant", "name": "Elephant Statue", "type": "person", "in": "museum_room_4", "x": 22, "y": 55,
-    "picture": "museum_elephant_statue", "size": 20, "says": "A stone elephant statue, very old and very calm. Its sign says: please don't touch!" },
-  { "id": "museum_chest", "name": "Old Chest", "type": "artifact_chest", "in": "museum_room_4", "x": 75, "y": 68,
-    "picture": "artifact_chest", "size": 18 },
+  // The Ancient Cat Pirate Room (Scott, 2026-10-17; the girls' drawing 2026-10-18, photo
+  // art/raw/sheets/ancient_cat_pirate_room.jpeg): a treasure map on the wall, the cat pirate, the
+  // ship model, the cat pirate's hook in a case, and a locked chest that the Old Key from the
+  // Dig Spot opens. With a Shrink Potion you can go on the ship model (js/museum.js).
+  { "id": "museum_room_4", "name": "Ancient Cat Pirate Room", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true,
+    "description": "Treasures from the ancient cat pirates. Please don't touch anything!" },
+  { "id": "museum_pirate_map", "name": "Map", "type": "person", "in": "museum_room_4", "x": 30, "y": 53,
+    "says": "An old pirate map with a big X on it. Where could it lead?" },
+  { "id": "museum_cat_pirate", "name": "Cat Pirate", "type": "person", "in": "museum_room_4", "x": 66, "y": 82,
+    "says": "\"Arrr! Meow! Welcome aboard, matey! Did ye find the key to me old chest?\"" },
+  { "id": "museum_ship", "name": "Ship Model", "type": "ship_model", "in": "museum_room_4", "x": 82, "y": 58 },
+  { "id": "museum_hook", "name": "Cat Pirate's Hook", "type": "person", "in": "museum_room_4", "x": 86, "y": 72,
+    "says": "The cat pirate's very own hook, safe in a glass case." },
+  { "id": "museum_elephant", "name": "Elephant Statue", "type": "person", "in": "museum_room_4", "x": 13, "y": 45,
+    "picture": "museum_elephant_statue", "size": 9, "says": "A stone elephant statue, very old and very calm. Its sign says: please don't touch!" },
+  { "id": "museum_chest", "name": "Old Chest", "type": "artifact_chest", "in": "museum_room_4", "x": 24, "y": 88 },
   { "id": "museum_room_5", "name": "Exhibit Room 5", "type": "place", "in": "museum_hall", "x": 85, "y": 60, "museumRoom": true },
   // Previous / next room buttons in each Exhibit Room (Scott, 2026-10-15), beside the picture.
   { "id": "museum_room_1_back", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_1", "side": "left", "to": "museum_hall" },
@@ -126,10 +134,10 @@ GAME_DATA.places = [
   { "id": "museum_room_2_back", "name": "Art Exhibit", "type": "travel", "in": "museum_room_2", "side": "left", "to": "museum_room_1" },
   { "id": "museum_room_2_next", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_2", "side": "right", "to": "museum_room_3" },
   { "id": "museum_room_3_back", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_3", "side": "left", "to": "museum_room_2" },
-  { "id": "museum_room_3_next", "name": "Ancient Kitty Pirate Room", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
+  { "id": "museum_room_3_next", "name": "Ancient Cat Pirate Room", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
   { "id": "museum_room_4_back", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_4", "side": "left", "to": "museum_room_3" },
   { "id": "museum_room_4_next", "name": "Exhibit Room 5", "type": "travel", "in": "museum_room_4", "side": "right", "to": "museum_room_5" },
-  { "id": "museum_room_5_back", "name": "Ancient Kitty Pirate Room", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
+  { "id": "museum_room_5_back", "name": "Ancient Cat Pirate Room", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
   { "id": "museum_room_5_next", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_5", "side": "right", "to": "museum_hall" },
   { "id": "museum_hall_snacks", "name": "Snack Shop", "type": "travel", "in": "museum_hall", "x": 45, "y": 75, "to": "museum_snack_shop" },
   { "id": "museum_snack_shop", "name": "Snack Shop", "type": "place", "in": "museum_hall", "hidden": true, "needsRound": true,
@@ -239,16 +247,18 @@ GAME_DATA.places = [
   { "id": "cave",      "name": "Crystal Cave",   "type": "place", "in": "mountain", "x": 23, "y": 19, "start": true,
     "description": "The walls sparkle with crystals. Take a pickaxe and mine for crystals and bones." },
   { "id": "peak",      "name": "Windy Peak",     "type": "place", "in": "mountain", "x": 49, "y": 10,
-    "description": "You can see the whole world from up here! Look down through the binoculars, ski down to the Snowy Hut, let your snowy owl fly, or follow an arrow to the Lake, the Forest or the Village." },
+    "description": "You can see the whole world from up here! Look through the binoculars, ski down to the Snowy Hut, let your snowy owl fly, or follow an arrow to the Lake, the Forest or the Village." },
   // The arrows drawn on Windy Peak: click one to go straight to that territory.
   { "id": "peak_to_lake",    "name": "Lake",    "type": "travel", "in": "peak", "x": 16, "y": 14, "to": "lake" },
   { "id": "peak_to_forest",  "name": "Forest",  "type": "travel", "in": "peak", "x": 60, "y": 15, "to": "forest" },
   { "id": "peak_to_village", "name": "Village", "type": "travel", "in": "peak", "x": 88, "y": 19, "to": "village" },
-  // Scott, 2026-10-13: "look down" shows the girls' Binocular view; the snowy owl dropoff is
-  // where your snowy owl flies for Bonding Points; ski down goes to the Snowy Hut for now.
-  { "id": "peak_look_down", "name": "Look down", "type": "look", "in": "peak", "x": 69, "y": 40, "picture": "extra_binocular_view",
+  // Scott, 2026-10-13: the Binocular View shows the girls' green meadow drawing (during Lost on
+  // Windy Peak, the dark ski slope instead, js/windy.js); the snowy owl dropoff is
+  // where your snowy owl flies for Bonding Points.
+  { "id": "peak_look_down", "name": "Binocular View", "type": "look", "in": "peak", "x": 69, "y": 40, "picture": "extra_binocular_view",
     "says": "Through the binoculars you can see a green meadow far below." },
-  // Ski down: the slope map during Lost on Windy Peak (js/windy.js), otherwise straight to the Snowy Hut.
+  // Ski down: the slope map during Lost on Windy Peak (js/windy.js), otherwise a ride down the
+  // Ski Slope (you on skis, dodging the trees, Scott 2026-10-18) to the Snowy Hut.
   // Scott, 2026-10-18: you need skis in your backpack, rented from the Ski Reserve ("needsItem");
   // they go back to the Ski Reserve when you get to the Snowy Hut.
   { "id": "peak_ski_down", "name": "Ski down", "type": "ski_down", "in": "peak", "x": 45, "y": 45, "to": "hut",
@@ -256,9 +266,10 @@ GAME_DATA.places = [
     "withoutIt": "⛷️ You need skis to ski down! Rent some at the Ski Reserve.",
     "afterwards": "🎿 You gave the skis back. They go home to the Ski Reserve." },
   { "id": "peak_owl_dropoff", "name": "Snowy Owl Dropoff", "type": "owl_dropoff", "in": "peak", "x": 9, "y": 52 },
-  // The ski slope (Scott, 2026-10-15): only reached by skiing down during Lost on Windy Peak (js/windy.js).
+  // The ski slope (Scott, 2026-10-15; the girls' drawing 2026-10-18): you ride down it on the way
+  // to the Snowy Hut, and search it at night during Lost on Windy Peak (js/windy.js).
   { "id": "ski_slope", "name": "Ski Slope", "type": "place", "in": "peak", "hidden": true,
-    "description": "The ski slope at night. Somewhere out here is a little lost WIT." },
+    "description": "Wheee! Down the ski slope you go." },
   { "id": "hut",       "name": "Snowy Hut",      "type": "place", "in": "mountain", "x": 47, "y": 40,
     "description": "Comfy chairs, a big bookshelf, snacks and cocoa on the table, and twinkly lights." },
   { "id": "snack_shack", "name": "Snack Shack",  "type": "place", "in": "mountain", "x": 20, "y": 59, "shelf": "Snack Shack Floor 1",

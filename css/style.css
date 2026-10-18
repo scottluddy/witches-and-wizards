@@ -1128,6 +1128,18 @@ body.holding-apple, body.holding-apple * {
 .little-wit { position: absolute; transform: translate(-50%, -50%); font-size: 3.5rem; text-align: center; cursor: pointer;
   filter: drop-shadow(0 0 12px #ffe066); }
 .little-wit img { width: 100%; height: auto; }
+/* The little WIT, tiny in the Binocular View (js/windy.js binocularWit). */
+.slope-view .binocular-wit { position: absolute; transform: translate(-50%, -60%); font-size: 1.4rem; line-height: 1;
+  filter: drop-shadow(0 0 6px #ffe066); }
+.slope-view .binocular-wit img { width: auto; height: 100%; transform: none; }
+/* The ride down the Ski Slope (js/windy.js startSkiRide): feet at left, top; height set in JS. */
+.skier { position: absolute; font-size: 3rem; line-height: 1; filter: drop-shadow(0 0 6px var(--gold)); }
+.skier img { height: 100%; width: auto; display: block; }
+.skis { position: absolute; left: 0; right: 0; bottom: -2%; height: 4%; min-height: 4px;
+  background: #d62828; border-radius: 3px 50% 50% 3px; box-shadow: 0 5px 0 #1d4e89; }
+.slope-gem-pop { position: absolute; transform: translate(-50%, -50%); font-size: 1.6rem; font-weight: bold; color: #6a2c91;
+  text-shadow: 0 0 6px #fff, 0 0 10px #fff; animation: gem-pop 1.5s ease-out forwards; }
+@keyframes gem-pop { from { opacity: 1; margin-top: 0; } to { opacity: 0; margin-top: -60px; } }
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } }
 /* The Snowy Hut: the little WIT, the mug and the blanket can be dragged. */

@@ -1101,5 +1101,41 @@
       91,
       92
     ]
+  },
+  "place_ski_slope": {
+    "rotate": 90,
+    "crop": [
+      6,
+      7,
+      95,
+      92
+    ]
+  },
+  "place_museum_room_4": {
+    "rotate": 90,
+    "crop": [
+      3,
+      26,
+      96,
+      85
+    ]
+  },
+  "extra_chest_note": {
+    "whole": true,
+    "crop": [
+      9,
+      15,
+      88,
+      87
+    ]
+  },
+  "extra_ship_note": {
+    "whole": true,
+    "crop": [
+      16,
+      29,
+      77,
+      87
+    ]
   }
 }

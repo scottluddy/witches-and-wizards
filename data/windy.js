@@ -37,6 +37,7 @@ GAME_DATA.windyRescue = {
   "findDistance": 5,      // ...and how close a click must be to find them
   "lightSeconds": 1.2,    // how long the spot stays lit
   "lostWit": "🧒",        // if no little WIT is drawn (they're in data/characters.js, one is picked at random)
+  "binocularWit": 4,      // the little WIT's height in the Binocular View, percent of the slope picture
   "hutSpot": { "x": 50, "y": 72 },   // where the little WIT's feet are when you come in
   // In the Snowy Hut, things sit on the furniture they belong to and move with it.
   // x, y, width: percent of the hut picture, where they are when the furniture hasn't been moved.
@@ -47,6 +48,25 @@ GAME_DATA.windyRescue = {
   // The couch the little WIT sits on (the furniture piece; where on it comes from
   // its "seat" in data/furniture.js). x, y: where their feet go if it isn't cut out.
   "seat": { "on": "armchair", "x": 79, "y": 47 },
+  // The ride down the Ski Slope (Scott, 2026-10-18): you on skis, weaving between
+  // the girls' trees and the "area closed" sign. "path" is where your feet go, in
+  // order (x, y in percent of the slope picture); "gems" are the girls' drawn
+  // gems, worth 1 each if you ski past them (within "reach"). Size is your height
+  // at the top and the bottom (you look bigger as you come closer).
+  "ride": {
+    "seconds": 7,
+    "path": [[50, 3], [58, 10], [63, 18], [65.5, 28], [63, 38], [51, 45], [48, 52], [46, 60],
+             [40.5, 71], [31, 78], [29, 88], [31, 104]],
+    "gems": [[65.5, 26], [40.5, 69]],
+    "reach": 5,
+    "sizeTop": 9,
+    "sizeBottom": 24,
+    "words": {
+      "start": "⛷️ Wheee! Down the ski slope you go!",
+      "together": "⛷️ You and the little WIT ski down together!",
+      "gem": "+1 gem!"
+    }
+  },
   "words": {
     "needLesson": "needs a falconry lesson at the Pet Training Field before it can fly here",
     "owlSpotted": "🦉 Your PET flies back hooting and flapping (BONDING)! It spotted a little future WIT lost on the ski slope, and it's getting dark...",

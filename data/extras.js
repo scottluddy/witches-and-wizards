@@ -13,7 +13,7 @@ GAME_DATA.extras = [
   { "id": "celebrate_pumpkin_witch", "name": "Witch in a pumpkin", "note": "A possible adventure congratulations picture (Scott)." },
   { "id": "celebrate_unicorn_donut", "name": "Unicorn donut", "note": "A possible adventure congratulations picture (Scott)." },
   // Scott, 2026-10-17: a pond with a water lily among pine trees (and two cherries in the corner).
-  { "id": "extra_pond_trees", "name": "Pond in the trees", "note": "Saved for a future location (Scott). Could be where the Kitty Pirate treasure map leads." },
+  { "id": "extra_pond_trees", "name": "Pond in the trees", "note": "Saved for a future location (Scott). Could be where the Cat Pirate treasure map leads." },
   // Scott, 2026-10-17: a photo of potion bags, the small print and logos painted out so they only say POTION.
   { "id": "extra_potion_bags", "name": "Potion bags", "note": "A generic picture for a potion shelf, aisle or shop, maybe in the Tiny Hole under the Brewing Stand (Scott)." },
   { "id": "extra_snowball_first", "name": "Snowball (first broom)", "note": "The first broomstick. The coloured Snowflake broom replaced it in the store." }

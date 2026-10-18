@@ -23,17 +23,38 @@ GAME_DATA.museum = {
   "sitting": "🪑 You sit down at the table. Now you can eat and drink what's in your backpack."
 };
 
-// The Ancient Kitty Pirate Room's chest (Scott, 2026-10-17, the girls' idea). The
-// start of a treasure hunt: the rest of it isn't decided yet.
+// The Ancient Cat Pirate Room's chest (Scott, 2026-10-17, the girls' idea; their
+// drawing and notes 2026-10-18). The start of a treasure hunt: the rest of it
+// isn't decided yet.
 //   keyChance  percent chance of digging up the Old Key at the Dig Spot (5 =
 //              1 in 20). There's only one: once you have it (or have opened
 //              the chest) it never turns up again.
+//   gems       the surprise inside (the girls' note: "you opened the chest! +20 gems"), once only
+//   note       the girls' note that pops up when you click the chest without the key
 GAME_DATA.artifactsChest = {
   "key": "quest_old_key",
   "keyChance": 5,
+  "gems": 20,
+  "note": "extra_chest_note",
   "found": "Something rusty clinks against your shovel... an Old Key! It went into your backpack. What could it open?",
-  "locked": "A big old chest with a rusty lock. It's locked tight. Maybe someone dug up its key somewhere...",
+  "locked": "Dig up the key at the Dig Spot, then open the chest for a surprise!",
+  "hasKey": "A big old chest with a rusty lock. Your Old Key might fit!",
   "button": "🗝️ Try the Old Key",
-  "opened": "Click! The key turns and the lid creaks open. Inside is an old rolled-up treasure map! (The rest of this adventure is still being planned.)",
-  "openAgain": "The chest is open. The treasure map inside shows the way to... (still being planned!)"
+  "opened": "Click! The key turns and the lid creaks open. You opened the chest! +GEMS gems! Under the gems is an old rolled-up treasure map. (The rest of this adventure is still being planned.)",
+  "openAgain": "The chest is open and empty now, except for the treasure map. It shows the way to... (still being planned!)"
+};
+
+// The Ancient Cat Pirate Room's ship model (Scott, 2026-10-18): with a Shrink
+// Potion in your backpack (one of GAME_DATA.museum.potions) you can go on it.
+// The potion isn't used up, because there's nothing to do on the ship yet.
+//   note   the girls' note that pops up when you click the ship without the potion
+//   deck   where you stand on the ship (x, y = your feet, size = your height before
+//          it's halved, all percent of the room picture; js/you.js sitYouAt)
+GAME_DATA.shipModel = {
+  "note": "extra_ship_note",
+  "noPotion": "Get the Shrink Potion to be on the ship! 💚",
+  "hasPotion": "A little model of the cat pirates' ship. You have a Shrink Potion: you could be tiny enough to stand on it!",
+  "button": "🤏 Shrink and climb aboard",
+  "aboard": "🏴‍☠️ You're tiny, standing on the deck of the ship model! Ahoy! Drag yourself off to climb down.",
+  "deck": { "x": 68, "y": 58, "size": 22 }
 };

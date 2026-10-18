@@ -140,22 +140,54 @@ function openTinyHole(spot) {
   body.appendChild(go);
 }
 
-// ---------------------------------------------------------------- the Ancient Kitty Pirate Room
+// ---------------------------------------------------------------- the Ancient Cat Pirate Room
 
-// The Old Chest: locked until you bring the Old Key from the Dig Spot.
+// A note the girls drew, as a pop-up picture (or the emoji until it's drawn).
+function noteArt(name, emoji) {
+  if (!isDrawn(name)) return emoji;
+  const img = document.createElement("img");
+  img.src = picture(name);
+  img.alt = "A note";
+  img.className = "info-picture";
+  return img;
+}
+
+// The Old Chest: locked until you bring the Old Key from the Dig Spot (it's in
+// your backpack; Scott said bucket, so that counts too). Opening it gives the
+// surprise: gems, once.
 function openArtifactChest() {
   const chest = GAME_DATA.artifactsChest;
   if (player.museum.chestOpened) return openInfoPanel("📜", "Old Chest", chest.openAgain);
-  const hasKey = player.backpack.indexOf(chest.key) !== -1;
-  const body = openInfoPanel("🧰", "Old Chest", chest.locked);
-  if (!hasKey) return;
+  const hasKey = player.backpack.indexOf(chest.key) !== -1 || player.bucket.indexOf(chest.key) !== -1;
+  if (!hasKey) return openInfoPanel(noteArt(chest.note, "🧰"), "Old Chest", chest.locked);
+  const body = openInfoPanel("🧰", "Old Chest", chest.hasKey);
   const tryKey = document.createElement("button");
   tryKey.className = "big-button";
   tryKey.textContent = chest.button;
   tryKey.addEventListener("click", function () {
     player.museum.chestOpened = true; // the key stays in your backpack as a keepsake
+    player.gems += chest.gems;
     writeSave(player);
-    openInfoPanel("📜", "The chest is open!", chest.opened);
+    updateStatus();
+    openInfoPanel("💎", "You opened the chest!", chest.opened.replace("GEMS", chest.gems));
   });
   body.appendChild(tryKey);
+}
+
+// The Ship Model: with a Shrink Potion in your backpack you can stand on it,
+// tiny (until you drag yourself off or leave the room).
+function openShipModel(spot) {
+  const ship = GAME_DATA.shipModel;
+  const potion = GAME_DATA.museum.potions.find(function (id) { return player.backpack.indexOf(id) !== -1; });
+  if (!potion) return openInfoPanel(noteArt(ship.note, "⛵"), spot.name, ship.noPotion);
+  const body = openInfoPanel("⛵", spot.name, ship.hasPotion);
+  const go = document.createElement("button");
+  go.className = "big-button";
+  go.textContent = ship.button;
+  go.addEventListener("click", function () {
+    document.getElementById("info-panel").hidden = true;
+    sitYouAt(ship.deck, { spot: spot.id }); // js/you.js
+    document.getElementById("place-description").textContent = ship.aboard;
+  });
+  body.appendChild(go);
 }

@@ -109,7 +109,7 @@ function useSip() {
 
 // ---------------------------------------------------------------- the binoculars
 
-// Windy Peak's "Look down" spot. During the rescue it shows a blown-up view
+// Windy Peak's "Binocular View" spot. During the rescue it shows a blown-up view
 // of the ski slope: too dark to see, unless you've had a sip. Then the little
 // WIT's lantern glows somewhere in their section: the first clue.
 function windyLook(spot) {
@@ -131,9 +131,23 @@ function windyLook(spot) {
     glow.style.top = player.windy.glow.y + "%";
     glow.style.width = rules.glowSize * 100 / rules.columns + "%";
     lens.appendChild(glow);
+    lens.appendChild(binocularWit(player.windy.glow)); // Scott, 2026-10-18: you can see the little WIT on the slope
   }
   document.getElementById("info-body").appendChild(lens);
   return true;
+}
+
+// The little WIT, tiny in the middle of their lantern's glow.
+function binocularWit(at) {
+  const wit = document.createElement("span");
+  wit.className = "binocular-wit";
+  wit.style.left = at.x + "%";
+  wit.style.top = at.y + "%";
+  wit.style.height = windyRules().binocularWit + "%";
+  const art = windyArt();
+  if (typeof art === "string") wit.textContent = art;
+  else wit.appendChild(art);
+  return wit;
 }
 
 // A point somewhere inside a section (not too near its edges), in percent of the slope.
@@ -150,14 +164,17 @@ function glowSpot(section) {
 // ---------------------------------------------------------------- the slope
 
 // Windy Peak's "Ski down" spot: onto the dark slope during the rescue,
-// otherwise straight to the Snowy Hut.
+// otherwise a ride down the slope to the Snowy Hut (showWindy starts it).
 function windySkiDown(spot) {
   // No skis, no skiing (Scott, 2026-10-18): rent them at the Ski Reserve.
   if (spot.needsItem && player.backpack.indexOf(spot.needsItem) === -1) return sayWindy(spot.withoutIt);
+  goTo(windyRules().slope);
+}
+
+// Searching the slope for the little WIT (the rest of the time the slope is a ride).
+function searchingSlope() {
   const stage = player.windy.stage;
-  if (stage === "lost" || stage === "search" || stage === "found") return goTo(windyRules().slope);
-  goTo(spot.to);
-  giveSkisBack();
+  return stage === "lost" || stage === "search" || stage === "found";
 }
 
 // At the bottom (the Snowy Hut) the rented skis go back to the Ski Reserve.
@@ -180,8 +197,9 @@ function showWindy(place) {
   const rules = windyRules();
   box.hidden = !place || (place.id !== rules.slope && place.id !== rules.hut);
   if (box.hidden) return;
-  if (place.id === rules.slope) showSlope(false);
-  else showHut();
+  if (place.id !== rules.slope) showHut();
+  else if (searchingSlope()) showSlope(false);
+  else startSkiRide(player.windy.stage === "cold"); // "cold": the little WIT skis with you
 }
 
 function sayWindy(text) {
@@ -416,7 +434,120 @@ function skiDownTogether() {
   player.windy.stage = "cold";
   writeSave(player);
   document.getElementById("info-panel").hidden = true;
+  showWindy(findPlace(windyRules().slope)); // the ride down, together
+}
+
+// ---------------------------------------------------------------- the ride down
+
+// Scott, 2026-10-18: skiing down shows you on skis gliding down the girls'
+// Ski Slope drawing, weaving between the trees, then you're at the Snowy Hut.
+// The way down is "path" in data/windy.js; ski past a drawn gem to pick it up.
+
+let skiRide = 0; // counts rides, so an old ride stops if a new one starts
+
+function startSkiRide(together) {
+  const ride = windyRules().ride;
+  const box = document.getElementById("place-windy");
+  const thisRide = ++skiRide;
+  const you = makeSkier(characterPicture(findCharacter(player.characterId)), "You");
+  box.appendChild(you);
+  const friend = together ? makeSkier(littleWitPicture(), "Little WIT") : null;
+  if (friend) box.appendChild(friend);
+  sayWindy(together ? ride.words.together : ride.words.start);
+  const gemsLeft = ride.gems.slice();
+  let found = 0;
+  const start = performance.now();
+  function glide(now) {
+    if (thisRide !== skiRide || player.at !== windyRules().slope) return; // you left the slope
+    const done = Math.min((now - start) / (ride.seconds * 1000), 1);
+    const at = placeSkier(you, done, 1);
+    if (friend) placeSkier(friend, Math.max(done - 0.07, 0), 0.5); // just behind you, half your size
+    gemsLeft.slice().forEach(function (gem) {
+      if (Math.hypot(gem[0] - at.x, gem[1] - at.y) > ride.reach) return;
+      gemsLeft.splice(gemsLeft.indexOf(gem), 1);
+      found++;
+      pickUpSlopeGem(box, gem);
+    });
+    if (done < 1) return requestAnimationFrame(glide);
+    endSkiRide(found);
+  }
+  requestAnimationFrame(glide);
+}
+
+// You (or the little WIT) on a pair of skis. An empty picture is the 🧒 emoji.
+function makeSkier(src, name) {
+  const skier = document.createElement("div");
+  skier.className = "skier";
+  if (src) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = name;
+    skier.appendChild(img);
+  } else skier.textContent = windyRules().lostWit;
+  const skis = document.createElement("span");
+  skis.className = "skis";
+  skier.appendChild(skis);
+  return skier;
+}
+
+// Put a skier where they are "done" of the way down (0 = top, 1 = bottom):
+// bigger as they come closer, leaning into each turn. Returns where their feet are.
+function placeSkier(skier, done, scale) {
+  const ride = windyRules().ride;
+  const at = pointOnPath(done);
+  const ahead = pointOnPath(Math.min(done + 0.01, 1));
+  const lean = Math.max(-20, Math.min(20, (ahead.x - at.x) * 15));
+  const size = ride.sizeTop + (ride.sizeBottom - ride.sizeTop) * Math.min(at.y, 100) / 100;
+  skier.style.left = at.x + "%";
+  skier.style.top = at.y + "%";
+  skier.style.height = size * scale + "%";
+  skier.style.fontSize = size * scale * 0.8 + "cqh"; // the 🧒 emoji, until a little WIT is drawn
+  skier.style.transform = "translate(-50%, -100%) rotate(" + lean + "deg)";
+  return at;
+}
+
+// The point "done" of the way along the path (measured along its length, so the speed stays even).
+function pointOnPath(done) {
+  const path = windyRules().ride.path;
+  const lengths = [];
+  let total = 0;
+  for (let i = 1; i < path.length; i++) {
+    lengths.push(Math.hypot(path[i][0] - path[i - 1][0], path[i][1] - path[i - 1][1]));
+    total += lengths[i - 1];
+  }
+  let left = done * total;
+  for (let i = 0; i < lengths.length; i++) {
+    if (left <= lengths[i] || i === lengths.length - 1) {
+      const part = lengths[i] ? Math.min(left / lengths[i], 1) : 0;
+      return { x: path[i][0] + (path[i + 1][0] - path[i][0]) * part,
+               y: path[i][1] + (path[i + 1][1] - path[i][1]) * part };
+    }
+    left -= lengths[i];
+  }
+}
+
+// Skiing past one of the drawn gems: +1 gem, with a little "+1 gem!" floating up.
+function pickUpSlopeGem(box, gem) {
+  player.gems += 1;
+  writeSave(player);
+  updateStatus();
+  const pop = document.createElement("span");
+  pop.className = "slope-gem-pop";
+  pop.textContent = windyRules().ride.words.gem;
+  pop.style.left = gem[0] + "%";
+  pop.style.top = gem[1] + "%";
+  box.appendChild(pop);
+  setTimeout(function () { pop.remove(); }, 1500);
+}
+
+// At the bottom: the Snowy Hut, and the skis go back.
+function endSkiRide(found) {
   goTo(windyRules().hut);
+  if (found) {
+    const words = document.getElementById("place-description");
+    words.textContent = (words.textContent ? words.textContent + " " : "") +
+      "💎 You picked up " + found + " gem" + (found === 1 ? "" : "s") + " on the way down!";
+  }
   giveSkisBack();
 }
 
@@ -649,13 +780,18 @@ function warmUpTogether() {
     rules.words.done.replace("POINTS", rules.adventurePoints));
 }
 
-// The lost little WIT's drawing (the same one all through a rescue), or an
-// emoji if none is drawn. Older saves didn't keep one, so they pick one now.
+// The lost little WIT's picture ("" if none is drawn), the same one all
+// through a rescue. Older saves didn't keep one, so they pick one now.
+function littleWitPicture() {
+  if (!isDrawn(player.windy.who)) player.windy.who = randomLittleWit(); // js/game.js
+  return player.windy.who ? picture(player.windy.who) : "";
+}
+
+// The lost little WIT's drawing, or an emoji if none is drawn.
 function windyArt() {
-  if (!isDrawn(player.windy.who)) player.windy.who = randomLittleWit();
-  if (!player.windy.who) return windyRules().lostWit;
+  if (!littleWitPicture()) return windyRules().lostWit;
   const img = document.createElement("img");
-  img.src = picture(player.windy.who);
+  img.src = littleWitPicture();
   img.alt = "Little WIT";
   img.className = "info-picture";
   return img;
