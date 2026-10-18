@@ -76,8 +76,8 @@ GAME_DATA.bonding = {
     "thanks": "🥣 Your PET gobbles up the food. Yum!" },
   // Walks and Tricks at the Pet Training Field (Scott, 2026-10-18; js/agility.js, data/agility.js):
   // finish the agility course, or walk a lap of the track, with any pet that walks.
-  "pet_tricks": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle"],
+  "pet_tricks": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
     "title": "Agility Tricks", "emoji": "⭕" },
-  "pet_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle"],
+  "pet_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
     "title": "Walk the Track", "emoji": "🐾" }
 };
