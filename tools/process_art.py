@@ -529,7 +529,28 @@ def draw_treasure_chest():
     return add_outline(img)
 
 
-COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub, "artifact_chest": draw_treasure_chest}
+def draw_white_room():
+    """The Multi-House's Invisibility Room (Scott, 2026-10-18): a plain white
+    room, so writing on its wall can only be seen with a Blacklight."""
+    w, h = PICTURE_SIZE
+    img = Image.new("RGB", (w, h), (252, 252, 250))
+    d = ImageDraw.Draw(img)
+    floor_y = int(h * 0.8)
+    # The floor, a little greyer, with the two back corners of the room.
+    d.polygon([(0, h), (w, h), (w - 120, floor_y), (120, floor_y)], fill=(236, 236, 234))
+    d.line((120, floor_y, w - 120, floor_y), fill=(205, 205, 205), width=4)
+    d.line((120, 0, 120, floor_y), fill=(225, 225, 225), width=3)
+    d.line((w - 120, 0, w - 120, floor_y), fill=(225, 225, 225), width=3)
+    d.line((0, h, 120, floor_y), fill=(215, 215, 215), width=3)
+    d.line((w, h, w - 120, floor_y), fill=(215, 215, 215), width=3)
+    # A soft grey edge (not the brown storybook one), so it still looks plain white.
+    fade = Image.new("L", img.size, 0)
+    ImageDraw.Draw(fade).rectangle((30, 30, w - 30, h - 30), fill=255)
+    return Image.composite(img, Image.new("RGB", img.size, (200, 200, 205)), fade.filter(ImageFilter.GaussianBlur(40)))
+
+
+COMPUTER_DRAWINGS = {"bath_tub": draw_bath_tub, "artifact_chest": draw_treasure_chest,
+                     "place_multi_invisible": draw_white_room}
 
 
 # ---------------------------------------------------------------- close-ups

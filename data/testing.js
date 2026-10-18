@@ -23,7 +23,7 @@ GAME_DATA.testing = {
     "everyPotion": true,
     "everyPet": true,
     "everySpell": true,
-    "backpack": ["special_book", "broom_no1", "quest_old_key", "skis_rental"],
+    "backpack": ["special_book", "broom_no1", "quest_old_key", "skis_rental", "tool_blacklight", "tool_invisible_ink"],
     "cooler": ["fish_crystal", "fish_crystal", "fish_crystal", "treasure_shell", "treasure_shell"],
     "basket": ["fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple", "fruit_apple"],
     "satchel": ["mine_bone", "mine_bone", "mine_bone", "mine_bone", "mine_bone", "mine_bone"],

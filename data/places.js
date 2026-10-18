@@ -62,7 +62,7 @@ GAME_DATA.places = [
   // floor's drawn floor list is the elevator back (type "elevator"). Where it
   // lives isn't decided: the Village for now.
   { "id": "multi_house", "name": "Multi-House", "type": "place", "in": "village", "x": 66, "y": 57,
-    "floors": ["multi_dance", "multi_coaster", "multi_flea", null, "multi_jewelry", null] },
+    "floors": ["multi_dance", "multi_coaster", "multi_flea", "multi_invisible", "multi_jewelry", null] },
   { "id": "multi_dance", "name": "Dance Floor", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
     "danceFloor": { "ball": [48, 15], "dancers": [
       { "emoji": "💃", "x": 42, "y": 50 }, { "emoji": "🕺", "x": 54, "y": 44 }, { "emoji": "💃", "x": 64, "y": 52 },
@@ -81,6 +81,13 @@ GAME_DATA.places = [
   { "id": "market_booth", "name": "Market Witch", "type": "market_booth", "in": "multi_flea", "x": 50, "y": 30 },
   { "id": "market_table", "name": "Your Table", "type": "market_table", "in": "multi_flea", "x": 78, "y": 84 },
   { "id": "multi_flea_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_flea", "x": 9, "y": 93 },
+  // The Invisibility Room (Scott, 2026-10-18): a plain white room whose wall shows
+  // writing only under a Blacklight; write on it with Invisible Ink (data/invisible.js).
+  { "id": "multi_invisible", "name": "Invisibility Room", "type": "place", "in": "village", "hidden": true, "building": "multi_house",
+    "description": "Floor 4: a plain white room. It's very quiet in here..." },
+  { "id": "invisible_light", "name": "Blacklight", "type": "blacklight", "in": "multi_invisible", "side": "left", "icon": "🔦" },
+  { "id": "invisible_write", "name": "Invisible Ink", "type": "invisible_ink", "in": "multi_invisible", "side": "right", "icon": "🖋️" },
+  { "id": "multi_invisible_elevator", "name": "Elevator", "type": "elevator", "building": "multi_house", "in": "multi_invisible", "x": 90, "y": 12 },
   { "id": "multi_jewelry", "name": "Jewelry Shop", "type": "place", "in": "village", "hidden": true, "building": "multi_house", "shelf": "Jewelry",
     "description": "Floor 5: necklaces and bracelets with sparkly stones. The jeweler smiles from the counter." },
   { "id": "jeweler", "name": "Jeweler", "type": "person", "in": "multi_jewelry", "x": 46, "y": 60,

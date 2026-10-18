@@ -184,6 +184,9 @@ function findIn(i) {
   } else if (what === "troll") {
     mineSay("Oh no, a troll!");
     wakeTroll("deep in the Crystal Cave"); // js/troll.js
+  } else if (foundBlacklight()) { // very rarely, the Invisibility Room's light (js/invisible.js)
+    showFound(middle, "🔦 Blacklight!");
+    mineSay(GAME_DATA.invisibleRoom.words.foundLight);
   } else {
     showFound(middle, "Rock");
     mineSay("Just rock. Keep picking!");

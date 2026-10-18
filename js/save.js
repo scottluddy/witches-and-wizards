@@ -46,6 +46,7 @@ function fillIn(save) {
   if (save.fishCount === undefined) save.fishCount = save.cooler.length;
   if (!save.bucket) save.bucket = [];
   if (!save.museum) save.museum = { visited: [] }; // the Museum (js/museum.js)
+  if (!save.invisibleWall) save.invisibleWall = []; // writing on the Invisibility Room's wall (js/invisible.js)
   if (!save.windy) save.windy = newWindy(); // Lost on Windy Peak (js/windy.js)
   // Owls that had a falconry lesson before this list existed still count.
   if (!save.tricks) save.tricks = {}; // Walks and Tricks (js/agility.js)
@@ -217,6 +218,8 @@ function newPlayer(playerName, characterId, kind) {
     pixieQuest: { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0, sips: 0 }, // the Pixie Quest: map pieces, where the acorn hides, clues (js/pixie.js)
     riddlesHeard: [], // the troll's riddles you've heard, so they don't repeat (js/pixie.js)
     museum: { visited: [] },  // Exhibit Rooms visited since the last ticket (js/museum.js)
+    invisibleWall: [],        // what you wrote on the Invisibility Room's wall: [{ text, x, y }] (js/invisible.js)
+    inkLeft: 0,               // how many more things your bottle of Invisible Ink can write (js/invisible.js)
     windy: newWindy(),        // Lost on Windy Peak: how far along, the slope and where the little WIT is (js/windy.js)
     tricks: {},               // how many times each pet did each trick: { "pet_cat": { "hoops": 2 } } (js/agility.js)
     falconryDone: [],         // owls that have had a falconry lesson, so they can fly at Windy Peak (js/bonding.js)

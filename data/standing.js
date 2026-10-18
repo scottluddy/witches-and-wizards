@@ -28,6 +28,10 @@ GAME_DATA.standing = {
   "skip": ["multi_flea", "multi_coaster", "ski_slope", "multi_house", "school",
            "trade_wands_right", "trade_potions_right", "trade_pets_right", "trade_brooms_right"],
 
+  // Places where you can't be dragged: you stay where you stand (the Invisibility
+  // Room: Scott, 2026-10-18, you stay in the bottom middle and shine the light).
+  "fixed": ["multi_invisible"],
+
   // Places where the corner isn't a good spot.
   "places": {
     "beach":             { "x": 45, "y": 99 },
@@ -36,6 +40,7 @@ GAME_DATA.standing = {
     "fish_hut":          { "x": 44, "y": 99, "size": 20 },
     "museum":            { "x": 55, "y": 97 },
     "museum_snack_shop": { "x": 88, "y": 98 },
+    "multi_invisible":   { "x": 50, "y": 99 },
     "mushrooms":         { "x": 50, "y": 98 },
     "old_oak":           { "x": 92, "y": 98 },
     "agility_park":      { "x": 16, "y": 86 },

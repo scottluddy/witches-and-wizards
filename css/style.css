@@ -1625,3 +1625,31 @@ body.holding-apple, body.holding-apple * {
 /* Smaller cards so every character and the Start button fit on one screen */
 #screen-character .character-card { width: 180px; padding: 10px; }
 #screen-character .character-card img { height: 150px; }
+/* ---- The Invisibility Room's wall and Blacklight (js/invisible.js) ---- */
+#place-ink { position: absolute; inset: 0; pointer-events: none; container-type: size; overflow: hidden; }
+#place-ink[hidden] { display: none; }
+#place-ink.aiming { pointer-events: auto; cursor: crosshair; } /* click the wall where the words go */
+/* The writing: only the slice inside the beam shows (clip-path set in js). */
+#ink-words { position: absolute; inset: 0; }
+.ink-writing {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  white-space: nowrap;
+  font-size: 5cqh;
+  font-weight: 700;
+  color: #e9b8ff;
+  text-shadow: 0 0 6px #c56bff, 0 0 14px #8a2be2;
+}
+/* The purple glow, dragged left and right. */
+#ink-beam {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  pointer-events: auto;
+  cursor: ew-resize;
+  touch-action: none;
+  background: linear-gradient(90deg, rgba(110, 40, 200, 0), rgba(110, 40, 200, 0.28) 25%, rgba(110, 40, 200, 0.28) 75%, rgba(110, 40, 200, 0));
+  mix-blend-mode: multiply;
+}
+#ink-beam[hidden] { display: none; }
+.ink-input { font-size: 1.4rem; padding: 8px 12px; width: min(420px, 90%); border-radius: 12px; border: 3px solid #8a2be2; }

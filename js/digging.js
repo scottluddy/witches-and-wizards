@@ -55,6 +55,10 @@ function dig() {
 
 function foundBeachFind() {
   if (foundOldKey()) return;
+  if (foundInvisibleInk()) { // very rarely, ink for the Invisibility Room (js/invisible.js)
+    const ink = GAME_DATA.invisibleRoom.ink;
+    return showDigging(itemArt(findItem(ink)), "You found Invisible Ink!", [GAME_DATA.invisibleRoom.words.foundInk], true);
+  }
   const find = randomFind();
   player.bucket.push(find.id); // into the bucket you carry (js/storage.js)
   player.gems += find.gems;

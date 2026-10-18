@@ -334,6 +334,7 @@ function showPlace(id) {
   showUnicornWoods(place); // the shy unicorn behind the meadow's trees (js/unicorns.js)
   showDanceFloor(place);   // the Disco Dance Hall's dancers and piano keys (js/music.js)
   showMarket(place);       // the Flea Market's tables and shoppers (js/market.js)
+  showInvisibleRoom(place); // the Invisibility Room's wall and Blacklight (js/invisible.js)
   showCoasterCar(place);   // the roller coaster car waiting at the start (js/coaster.js)
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
@@ -371,6 +372,8 @@ function openSpot(childId) {
   if (child.type === "ski_down") return windySkiDown(child);   // the slope, or straight to the hut (js/windy.js)
   if (child.type === "elevator") return openElevator(child);   // a building with floors, below
   if (child.type === "coaster") return openCoaster();          // js/coaster.js
+  if (child.type === "blacklight") return toggleBlacklight();  // js/invisible.js
+  if (child.type === "invisible_ink") return openInvisibleInk(); // js/invisible.js
   if (child.type === "piano") return openPiano();              // js/music.js
   if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
   if (child.type === "pet_tricks") return openPetTricks(child);  // js/agility.js
@@ -411,7 +414,7 @@ function drawSideButtons(spots) {
     const button = document.createElement("button");
     button.className = "side-button side-" + spot.side;
     button.innerHTML = '<span class="side-arrow"></span><span class="side-name"></span>';
-    button.querySelector(".side-arrow").textContent = spot.side === "left" ? "⬅️" : "➡️";
+    button.querySelector(".side-arrow").textContent = spot.icon || (spot.side === "left" ? "⬅️" : "➡️"); // "icon": a button that isn't previous / next
     button.querySelector(".side-name").textContent = spot.name;
     button.addEventListener("click", function () { openSpot(spot.id); });
     box.appendChild(button);

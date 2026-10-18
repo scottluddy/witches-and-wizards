@@ -128,6 +128,7 @@ function pointInPicture(event) {
 function startDragYou(event) {
   event.preventDefault();
   event.stopPropagation();
+  if (GAME_DATA.standing.fixed.includes(player.at)) return; // you stay put here (data/standing.js)
   youDrag = { startX: event.clientX, startY: event.clientY, moved: false };
   youNow.el.setPointerCapture(event.pointerId);
 }
