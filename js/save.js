@@ -223,7 +223,7 @@ function newPlayer(playerName, characterId, kind) {
     riddlesHeard: [], // the troll's riddles you've heard, so they don't repeat (js/pixie.js)
     museum: { visited: [] },  // Exhibit Rooms visited since the last ticket (js/museum.js)
     invisibleWall: [],        // what you wrote on the Invisibility Room's wall: [{ text, x, y }] (js/invisible.js)
-    inkLeft: 0,               // how many more things your bottle of Invisible Ink can write (js/invisible.js)
+    inkLetters: 0,            // how many more letters your bottle of Invisible Ink can write (js/invisible.js)
     windy: newWindy(),        // Lost on Windy Peak: how far along, the slope and where the little WIT is (js/windy.js)
     tricks: {},               // how many times each pet did each trick: { "pet_cat": { "hoops": 2 } } (js/agility.js)
     falconryDone: [],         // owls that have had a falconry lesson, so they can fly at Windy Peak (js/bonding.js)

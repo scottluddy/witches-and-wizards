@@ -9,7 +9,7 @@
 //   in the same money they cost (Crystals or Gems);
 //   fish, treasures and beach finds already earned their gems when caught,
 //   so the trader pays half of that ("catchShare", at least 1; Scott 2026-10-11);
-//   bones and apples get the hand-set "worth" below (Claude's guesses).
+//   bones, apples, the Blacklight and Invisible Ink get the hand-set "worth" below (Claude's guesses).
 //   Things worth nothing (like the Bottle Cap) can't be sold.
 //   Scholarship gifts were free, so they can't be sold (Scott, 2026-10-11).
 GAME_DATA.trading = {
@@ -20,6 +20,8 @@ GAME_DATA.trading = {
   "worth": {
     "mine_bone": 1,
     "fruit_apple": 1,
-    "tool_pickaxe": 0
+    "tool_pickaxe": 0,
+    "tool_blacklight": 5,
+    "tool_invisible_ink": 3
   }
 };

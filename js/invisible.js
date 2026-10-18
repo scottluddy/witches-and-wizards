@@ -107,10 +107,10 @@ function openInvisibleInk() {
   if (!inkRoom) return;
   if (!carrying(rules.ink)) return inkSay(rules.words.noInk);
   const body = openInfoPanel("🖋️", "Invisible Ink",
-    rules.words.write.replace("MAX", rules.maxLetters).replace("LEFT", inkLeft() === 1 ? "1 thing" : inkLeft() + " things"));
+    rules.words.write.replace("LEFT", inkLeft()));
   const box = document.createElement("input");
   box.type = "text";
-  box.maxLength = rules.maxLetters;
+  box.maxLength = inkLeft(); // you can't write more letters than the bottle has left
   box.className = "ink-input";
   const write = document.createElement("button");
   write.className = "big-button";
@@ -129,11 +129,11 @@ function openInvisibleInk() {
   box.focus();
 }
 
-// How many more things the bottle you have can write. A bottle you've just
+// How many more letters the bottle you have can write. A bottle you've just
 // found (or got some other way) is full.
 function inkLeft() {
-  if (!player.inkLeft) player.inkLeft = GAME_DATA.invisibleRoom.writesPerBottle;
-  return player.inkLeft;
+  if (!player.inkLetters) player.inkLetters = GAME_DATA.invisibleRoom.lettersPerBottle;
+  return player.inkLetters;
 }
 
 // Clicking the wall while aiming: the words go there, and use up some ink.
@@ -143,13 +143,13 @@ function writeOnWall(event) {
   const at = pointInPicture(event); // js/you.js
   player.invisibleWall.push({ text: inkRoom.writing, x: Math.round(at.x * 10) / 10, y: Math.round(at.y * 10) / 10 });
   while (player.invisibleWall.length > rules.maxWritings) player.invisibleWall.shift(); // the oldest fades away
-  inkRoom.writing = null;
   document.getElementById("place-ink").classList.remove("aiming");
-  player.inkLeft = inkLeft() - 1;
+  player.inkLetters = inkLeft() - inkRoom.writing.length; // each letter uses a bit of ink
+  inkRoom.writing = null;
   let message = rules.words.wrote;
-  if (player.inkLeft <= 0) {
+  if (player.inkLetters <= 0) {
     removeOne(player.backpack, rules.ink); // js/items.js
-    player.inkLeft = 0;
+    player.inkLetters = 0;
     message += " " + rules.words.lastInk;
   }
   writeSave(player);
@@ -181,7 +181,7 @@ function foundInvisibleInk() {
   if (owns(rules.ink)) return false;
   if (Math.random() >= luckyChance(rules.inkChance / 100)) return false; // luck helps (js/luck.js)
   player.backpack.push(rules.ink);
-  player.inkLeft = rules.writesPerBottle;
+  player.inkLetters = rules.lettersPerBottle;
   writeSave(player);
   updateStatus();
   return true;

@@ -9,19 +9,19 @@
 //   blacklightChance percent chance a cave square of plain rock hides the Blacklight (5 = 1 in 20, Scott)
 //   ink              the item you write with
 //   inkChance        percent chance a dig at the Dig Spot turns up Invisible Ink (5 = 1 in 20, Scott)
-//   writesPerBottle  how many things one bottle of ink can write (Claude's guess)
-//   maxLetters       the longest thing you can write at once (Claude's guess)
+//   lettersPerBottle how many letters one bottle of ink can write, in one go or a few
+//                    shorter messages (Scott, 2026-10-18: 50)
 //   maxWritings      how many writings the wall holds; past that the oldest fades away (Claude's guess)
 //   beamWidth        how wide the light's glow is, in percent of the picture (Scott: about a tenth)
 // Finding them: you only find one of each while you don't already have one.
+// Both can be sold at the Gems shelf or traded (Scott, 2026-10-18; prices in data/trading.js).
 GAME_DATA.invisibleRoom = {
   "place": "multi_invisible",
   "blacklight": "tool_blacklight",
   "blacklightChance": 5,
   "ink": "tool_invisible_ink",
   "inkChance": 5,
-  "writesPerBottle": 3,
-  "maxLetters": 30,
+  "lettersPerBottle": 50,
   "maxWritings": 20,
   "beamWidth": 10,
   "words": {
@@ -30,7 +30,7 @@ GAME_DATA.invisibleRoom = {
     "lightOn": "🔦 Drag the purple glow left and right across the wall.",
     "lightOff": "You switch the Blacklight off. The wall is plain white again.",
     "noInk": "You need Invisible Ink to write on the wall. Maybe some is buried at the beach...",
-    "write": "What do you want to write? (Up to MAX letters. The bottle has LEFT more to write.)",
+    "write": "What do you want to write? (The bottle has LEFT letters of ink left.)",
     "aim": "✍️ Now click the wall where you want to write it.",
     "wrote": "You wrote it! But it's invisible... shine the Blacklight to see it.",
     "lastInk": "That was the last of the ink. The empty bottle is gone.",

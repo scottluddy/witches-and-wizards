@@ -24,6 +24,7 @@ function openTradePicker(item, message) {
 function trade(give, get) {
   player.backpack.splice(player.backpack.indexOf(give.id), 1);
   removeOne(player.marshmallows, give.id); // js/items.js
+  if (give.id === GAME_DATA.invisibleRoom.ink) player.inkLetters = 0; // the next bottle you get is full (js/invisible.js)
   player.backpack.push(get.id);
   writeSave(player);
   openInfoPanel("🤝", "It's a Trade!", "You gave the " + give.name + " and got the " + get.name +
@@ -108,6 +109,7 @@ function sell(thing, from, value) {
   list.splice(list.indexOf(thing.id), 1);
   if (from === "cooler") forgetCatch(thing.id); // js/storage.js
   removeOne(player.marshmallows, thing.id); // js/items.js
+  if (thing.id === GAME_DATA.invisibleRoom.ink) player.inkLetters = 0; // the next bottle you get is full (js/invisible.js)
   player[value.money] += value.amount;
   writeSave(player);
   openGemsShelf("Sold the " + thing.name + " for " + value.amount + " " + moneyName(value) + "!");
