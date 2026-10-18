@@ -62,8 +62,33 @@ function spellName(id) {
   return spell ? spell.name : id;
 }
 
+// Everything is there, or the Healing Wand can fill in for the missing materials
+// (never the Crystal or the potion).
 function hasEverything(spell) {
-  return spell.needs.every(function (need) { return haveOf(need) >= need.count; });
+  const sparkAndPotion = spell.needs.every(function (need) { return need.step === "toss" || haveOf(need) >= need.count; });
+  const short = materialsShort(spell);
+  return sparkAndPotion && (short === 0 || (short <= GAME_DATA.wands.healing.covers && wandReady("healing")));
+}
+
+// How many materials (the things tossed in) you don't have.
+function materialsShort(spell) {
+  return spell.needs.reduce(function (short, need) {
+    return need.step === "toss" ? short + Math.max(0, need.count - haveOf(need)) : short;
+  }, 0);
+}
+
+// A line about the Healing Wand (js/wands.js), when it could help with this spell.
+function healingWandLine(spell) {
+  const short = materialsShort(spell);
+  if (short === 0 || !carriesWand("healing")) return null;
+  const covers = GAME_DATA.wands.healing.covers;
+  const resting = wandRestLeft("healing");
+  const line = document.createElement("li");
+  const helps = short <= covers && !resting;
+  line.className = helps ? "enough" : "missing";
+  line.textContent = (helps ? "✓ " : "✗ ") + "💖 Healing Wand fills in for " + short + " missing material" + (short === 1 ? "" : "s") +
+    (short > covers ? " (it can only do " + covers + ")" : resting ? " (resting, ready in " + minutesAndSeconds(resting) + ")" : "");
+  return line;
 }
 
 // One spell: what it needs (✓ when you have enough), and a button to rent
@@ -82,6 +107,8 @@ function spellCard(spell) {
   spell.needs.forEach(function (need) {
     list.appendChild(needLine(needName(need), haveOf(need), need.count));
   });
+  const wandLine = healingWandLine(spell);
+  if (wandLine) list.appendChild(wandLine);
   list.appendChild(needLine("Gems to rent the cauldron", player.gems, rent));
   const button = document.createElement("button");
   button.className = "big-button";
@@ -127,8 +154,14 @@ function startBrewing(spell) {
     orders: tossOrders(spell), // the materials the table will call for, in order
     nextOrderAt: 0,            // when the table calls for the next one
     tossed: 0,
+    real: new Map(),           // for each material: how many of your own are left to toss in
+    used: new Map(),           // for each material: how many of your own went in
+    wandFilled: 0,             // materials the Healing Wand filled in for
     timer: null
   };
+  spell.needs.forEach(function (need) {
+    if (need.step === "toss") brew.real.set(need, Math.min(need.count, haveOf(need)));
+  });
   const body = openInfoPanel("⚗️", "Brewing the " + spell.name, "");
   body.appendChild(brewingScreen());
   brewSays("🛠️ The crafting table rumbles: \"First, drop the Crystal into the cauldron!\"");
@@ -196,7 +229,8 @@ function showBrewButtons() {
     if (need.step !== "toss") return;
     const left = brew.orders.slice(brew.tossed).filter(function (o) { return o === need; }).length;
     const button = brewButton(need, function () { tossIn(need); });
-    button.querySelector(".brew-count").textContent = left ? " × " + left : " ✓";
+    const byWand = left > brew.real.get(need) ? " 💖" : ""; // the Healing Wand fills in for the ones you don't have
+    button.querySelector(".brew-count").textContent = left ? " × " + left + byWand : " ✓";
     button.disabled = left === 0;
     box.appendChild(button);
   });
@@ -269,6 +303,13 @@ function tossIn(need) {
   if (!inTheGreen()) return brewSays("🌡️ It isn't bubbling right! Get the heat back in the green, then toss in the " + order.name + ".");
   brew.tossed++;
   brew.heat -= GAME_DATA.cauldron.itemCools; // cold things cool the brew
+  if (brew.real.get(need) > 0) {
+    brew.real.set(need, brew.real.get(need) - 1);
+    brew.used.set(need, (brew.used.get(need) || 0) + 1);
+  } else {
+    brew.wandFilled++; // you don't have one: the Healing Wand's magic goes in instead (js/wands.js)
+    waveWand("healing", document.querySelector(".cauldron-pot"));
+  }
   const splash = document.querySelector(".cauldron-pot");
   splash.classList.remove("splash");
   void splash.offsetWidth;
@@ -332,11 +373,13 @@ function boilOver() {
 // things are used up.
 function spellDone() {
   const spell = brew.spell;
+  const done = brew; // what went in (stopBrewing forgets the brew)
   stopBrewing();
   spell.needs.forEach(function (need) {
     if (need.money) player[need.money] -= need.count;
-    else useThings(need.things, need.count);
+    else useThings(need.things, need.step === "toss" ? done.used.get(need) || 0 : need.count);
   });
+  if (done.wandFilled) player.wandRest.healing = Date.now() + GAME_DATA.wands.healing.restMinutes * 60000; // the wand rests now
   player.spells.push(spell.id);
   writeSave(player);
   const cauldron = document.querySelector(".cauldron");

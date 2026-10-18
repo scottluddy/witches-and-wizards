@@ -39,9 +39,11 @@ function skillWaitMinutes(skill, level) {
 }
 
 // Pass a test: one more Level, then the wait before the next test starts.
+// The Wisdom Potion (js/potions.js) makes that wait shorter.
 function gainSkillLevel(skill) {
   player.skills.push(skill);
-  player.skillWait[skill] = Date.now() + skillWaitMinutes(skill, skillLevel(skill)) * 60000;
+  const wise = isWise() ? GAME_DATA.timedPotions.wisdom.waitShare : 1;
+  player.skillWait[skill] = Date.now() + skillWaitMinutes(skill, skillLevel(skill)) * wise * 60000;
   writeSave(player);
   return skillLevel(skill);
 }

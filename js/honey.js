@@ -81,12 +81,14 @@ function scoopHoney() {
 function beesComeOut() {
   const spilled = honeyPot;
   honeyPot = 0;
-  const stung = Math.random() < GAME_DATA.honey.stingChance;
+  const hidden = isInvisible(); // bees can't find you while you're invisible (js/potions.js)
+  const stung = !hidden && Math.random() < GAME_DATA.honey.stingChance;
   if (stung) player.stungAt = Date.now();
   writeSave(player);
   const body = openInfoPanel("🐝🐝🐝", "The Bees Came Out!",
     "Bzzzz! The bees swarm out of the hive" + (spilled ? " and you spill your honey (" + spilled + " lost)" : "") + ". " +
     (stung ? "OUCH! A bee stung you. You can't collect honey until you're healed: drink a Healing Potion, or wait " + GAME_DATA.honey.healMinutes + " minutes."
+           : hidden ? "They buzz all around, but you're invisible and they can't find you to sting! 🫥"
            : "Phew, no stings! Wait for the bees to go back inside, then try again."));
   const swarm = document.createElement("div");
   swarm.className = "bee-swarm";

@@ -111,6 +111,7 @@ function startLesson(number) {
   const keys = GAME_DATA.music.keys.length;
   const tune = [];
   for (let n = 0; n < level.tunes[number]; n++) tune.push(randomBetween(0, keys - 1)); // js/digging.js
+  if (number === 0) musicWandHelps = 0; // a new test: the Music Wand hasn't been used yet
   lesson = { level: level, number: number, tune: tune, played: [] };
   showLesson("Tune " + (number + 1) + " of " + level.tunes.length +
     ": listen to the teacher's tune, then play it back.");
@@ -125,7 +126,39 @@ function showLesson(message) {
   again.textContent = "👂 Listen again";
   again.addEventListener("click", function () { lesson.played = []; listen(row); });
   body.appendChild(again);
+  body.appendChild(musicWandButton());
   listen(row);
+}
+
+// ---------------------------------------------------------------- the Music Wand (Scott, 2026-10-18)
+
+let musicWandHelps = 0; // wrong notes the Music Wand can still fix in this test
+
+// Before the wand is used: a button to use it. After: how many notes it can still fix.
+function musicWandButton() {
+  const box = document.createElement("div");
+  box.id = "music-wand-note";
+  if (!carriesWand("music")) return box; // js/wands.js
+  if (musicWandHelps > 0) {
+    box.className = "note";
+    box.textContent = "🎶 Your Music Wand will fix " + musicWandHelps + " more wrong note" + (musicWandHelps === 1 ? "" : "s") + ".";
+    return box;
+  }
+  const button = document.createElement("button");
+  button.className = "big-button secondary";
+  const resting = wandRestLeft("music");
+  button.disabled = resting > 0;
+  button.textContent = resting ? "🎸 Music Wand resting (" + minutesAndSeconds(resting) + ")"
+    : "🎸 Use the Music Wand (fixes " + GAME_DATA.wands.music.forgives + " wrong notes)";
+  button.addEventListener("click", function () {
+    const row = document.querySelector("#info-panel .piano-keys");
+    useWand("music", row, function () {
+      musicWandHelps = GAME_DATA.wands.music.forgives;
+      button.replaceWith(musicWandButton());
+    });
+  });
+  box.appendChild(button);
+  return box;
 }
 
 // The teacher plays the tune; you can't press keys until it's done.
@@ -140,6 +173,15 @@ function playedKey(i) {
   if (!lesson || document.querySelector(".piano-keys.listening")) return;
   lesson.played.push(i);
   const n = lesson.played.length - 1;
+  if (lesson.played[n] !== lesson.tune[n] && musicWandHelps > 0) {
+    // The Music Wand plays the right note for you instead.
+    musicWandHelps--;
+    lesson.played[n] = lesson.tune[n];
+    const row = document.querySelector("#info-panel .piano-keys");
+    setTimeout(function () { pressKey(row, lesson.tune[n]); }, 200);
+    const note = document.getElementById("music-wand-note");
+    if (note) note.textContent = "🎶 Oops! The Music Wand fixed that note." + (musicWandHelps ? " It can fix " + musicWandHelps + " more." : " That was its last fix for this test.");
+  }
   if (lesson.played[n] !== lesson.tune[n]) {
     lesson.played = [];
     return setTimeout(function () { showLesson("Oops, not quite! Listen again and try once more."); }, 500);

@@ -90,6 +90,8 @@ function fillIn(save) {
   if (save.sashimi === undefined) save.sashimi = [];
   if (save.caughtAt === undefined) save.caughtAt = [];
   if (save.luckSeconds === undefined) save.luckSeconds = 0;
+  if (!save.potionSeconds) save.potionSeconds = {}; // Invisibility and Wisdom Potions (js/potions.js)
+  if (!save.wandRest) save.wandRest = {}; // when each wand works again (js/wands.js)
   if (save.levelStart === undefined) save.levelStart = {};
   if (save.unicornsHelped === undefined) save.unicornsHelped = 0;
   if (save.pixieQuest === undefined) save.pixieQuest = { pieces: 0, asked: [], acornAt: null, hasAcorn: false, clues: [], done: 0 };
@@ -207,6 +209,8 @@ function newPlayer(playerName, characterId, kind) {
     caughtAt: [],             // when each fish in the cooler you carry was caught: [{ id, at }]
     sashimi: [],              // fish in the cooler at Home that are Sashimi Grade (one id each)
     luckSeconds: 0,           // seconds of Luck Potion left (js/luck.js)
+    potionSeconds: {},        // seconds left of each potion that lasts a while: { invisible: 45, wisdom: 200 } (js/potions.js)
+    wandRest: {},             // when each wand works again after a use: { healing: time } (js/wands.js)
     levelStart: {},           // the counters when you last went up a Level (js/levels.js)
     holding: null,            // a fruit taken out of the basket and held in your hand (js/unicorns.js)
     unicornsHelped: 0,        // unicorns that found their families (js/unicorns.js)

@@ -30,6 +30,7 @@ function updateStatus() {
   document.getElementById("status-points").textContent =
     "★".repeat(earned) + "☆".repeat(Math.max(0, needed - earned));
   showLuck(); // the Luck Potion's time left (js/luck.js)
+  showTimedPotions(); // Invisibility and Wisdom Potions (js/potions.js)
   document.getElementById("status-crystals").textContent = player.crystals;
   document.getElementById("status-gems").textContent = player.gems;
   document.getElementById("status-chores").textContent = player.chorePoints;

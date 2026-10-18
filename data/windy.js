@@ -42,7 +42,7 @@ GAME_DATA.windyRescue = {
   // x, y, width: percent of the hut picture, where they are when the furniture hasn't been moved.
   // The girls' hot chocolate mug, cut out of the hut drawing (art/raw/hut_mug.jpg) and erased from it:
   "mug": { "picture": "hut_mug", "on": "snack_table", "x": 18.9, "y": 18.8, "width": 5.2 },
-  // The blanket hanging over the couch (art/raw/hut_blanket.jpg when drawn):
+  // The blanket hanging over the couch (the girls' purple and yellow zigzag blanket, 2026-10-18, turned on its side):
   "blanket": { "picture": "hut_blanket", "on": "armchair", "x": 76, "y": 30, "width": 9 },
   // The couch the little WIT sits on (the furniture piece; where on it comes from
   // its "seat" in data/furniture.js). x, y: where their feet go if it isn't cut out.

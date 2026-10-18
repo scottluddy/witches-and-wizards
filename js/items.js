@@ -373,6 +373,8 @@ function openBackpack() {
     if (isFindingPotion(item)) card.appendChild(findingDrinkButton(item)); // js/pixie.js
     if (isNightVisionPotion(item)) card.appendChild(nightVisionButton(item)); // Lost on Windy Peak (js/windy.js)
     if (isHealingPotion(item)) card.appendChild(healDrinkButton(item)); // heals bee stings (js/honey.js)
+    if (timedPotionKind(item)) card.appendChild(timedDrinkButton(item)); // Invisibility and Wisdom (js/potions.js)
+    if (wandKindOf(item)) card.appendChild(wandNote(item)); // ready or resting (js/wands.js)
     list.appendChild(card);
   });
 

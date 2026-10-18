@@ -175,7 +175,7 @@ GAME_DATA.places = [
   { "id": "shelf_pets",    "name": "Pets",          "type": "place", "in": "store", "x": 40, "y": 51, "shelf": "Pet",
     "rows": [[63, 78], [47, 60]] },
   { "id": "shelf_potions", "name": "Potions",       "type": "place", "in": "store", "x": 44, "y": 22, "shelf": "Potion",
-    "rows": [[64, 78]] },
+    "rows": [[64, 78], [47, 60]] },
   { "id": "shelf_hats",    "name": "Hats",          "type": "place", "in": "store", "x": 78, "y": 33, "shelf": "Hat",
     "rows": [[64, 78]] },
   { "id": "shelf_wands",   "name": "Wands",         "type": "place", "in": "store", "x": 10, "y": 86, "shelf": "Wand",

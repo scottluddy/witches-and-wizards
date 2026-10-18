@@ -42,6 +42,11 @@ GAME_DATA.items = [
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},
   {"id": "potion_shrink", "name": "Shrink Potion", "category": "Potion", "gems": 8, "emoji": "🤏", "description": "A square green bottle. One sip and you're tiny! Gets you into the Tiny Hole in the Museum's Snack Shop (Scott, 2026-10-15)."},
   {"id": "potion_sense", "name": "Sense Potion", "category": "Potion", "gems": 3, "emoji": "🧪", "description": "A potion for the senses. Needed for the Seeing Spell."},
+  {"id": "potion_invisible", "name": "Invisibility Potion", "category": "Potion", "gems": 5, "emoji": "🫥", "description": "A round bottle full of bubbles. Drink it and you're invisible for 1 minute: trolls can't see you and bees can't find you (Scott, 2026-10-18)."},
+  {"id": "potion_wisdom", "name": "Wisdom Potion", "category": "Potion", "gems": 6, "emoji": "🦉", "description": "A tall blue bottle with a gold cork. Drink it and you're smarter at the Wizard School for 5 minutes: the rest after passing a test is half as long (Scott, 2026-10-18)."},
+  {"id": "wand_healing", "name": "Healing Wand", "category": "Wand", "gems": 13, "emoji": "💖", "description": "A wand with a pink heart. At the Crafting Table it fills in for up to 3 spell materials you don't have, then rests for 30 minutes (Scott, 2026-10-18)."},
+  {"id": "wand_lightning", "name": "Lightning Wand", "category": "Wand", "gems": 15, "emoji": "⚡", "description": "A stripy yellow and blue wand. If a troll steals your Crystals, zap it: it drops them and runs away! Then it rests for 10 minutes (Scott, 2026-10-18)."},
+  {"id": "wand_music", "name": "Music Wand", "category": "Wand", "gems": 8, "emoji": "🎸", "description": "A wand shaped like a guitar. In a Piano test it fixes up to 3 wrong notes for you, then rests for 5 minutes (Scott, 2026-10-18)."},
   {"id": "special_book", "name": "Wizard Essentials Spellbook", "category": "Special Item", "gems": 5, "emoji": "📖", "description": "Every spell a young witch or wizard needs to know."}
 ,
   {"id": "ski_size1", "name": "Ski Outfit (Size 1)", "category": "Ski Gear", "gems": 3, "emoji": "⛷️", "inPicture": true, "shelfX": 21, "shelfY": 76, "description": "A green ski outfit from the Ski Reserve."},

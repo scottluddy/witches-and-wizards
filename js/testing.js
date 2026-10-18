@@ -152,12 +152,13 @@ function unlockEveryAdventure() {
   return "Every adventure is unlocked. The Head Witch or Wizard will pop out to tell you.";
 }
 
-// No more waiting for skill tests, pet care, fruit, bee stings or the Head Witch.
+// No more waiting for skill tests, pet care, fruit, bee stings, wands or the Head Witch.
 function skipWaiting() {
   player.skillWait = {};
   Object.keys(player.lastCare).forEach(function (kind) { player.lastCare[kind] = {}; });
   player.trees = {};
   player.stungAt = 0;
+  player.wandRest = {}; // wands ready again (js/wands.js)
   player.adventures.lastGuideAt = 0;
   return "No more waiting.";
 }
