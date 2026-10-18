@@ -33,7 +33,8 @@ const SPOT_ICONS = {
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", ski_down: "⛷️", owl_dropoff: "🦉",
   honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
-  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑", artifact_chest: "🧰"
+  museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑", artifact_chest: "🧰",
+  pet_tricks: "⭕", pet_walk: "🐾", pet_sign: "🪧"
 };
 
 function isDrawn(name) {
@@ -337,6 +338,7 @@ function showPlace(id) {
   showPearlCave(place);    // Find the Pearls! in the Pearl Cave (js/pearls.js)
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
+  showAgility(place);      // your pet in the Agility Park (js/agility.js)
   showScreen("screen-place");
   zoomOutFrom(cameFrom, id, "place-zoom");
 }
@@ -371,6 +373,9 @@ function openSpot(childId) {
   if (child.type === "coaster") return openCoaster();          // js/coaster.js
   if (child.type === "piano") return openPiano();              // js/music.js
   if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
+  if (child.type === "pet_tricks") return openPetTricks(child);  // js/agility.js
+  if (child.type === "pet_walk") return openPetWalk();         // js/agility.js
+  if (child.type === "pet_sign") return openPetSign();         // js/agility.js
   if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
   if (child.type === "honey") return openBeehive();            // js/honey.js
   if (child.type === "archery") return openArchery();          // js/sports.js

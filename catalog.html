@@ -357,41 +357,42 @@
   </div>
   </main>
 
-  <script>var GAME_DATA = {}; var GAME_VERSION = "92"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
-  <script src="data/characters.js?v=92"></script>
-  <script src="data/places.js?v=92"></script>
-  <script src="data/items.js?v=92"></script>
-  <script src="data/ideas.js?v=92"></script>
-  <script src="data/fish.js?v=92"></script>
-  <script src="data/digging.js?v=92"></script>
-  <script src="data/mining.js?v=92"></script>
-  <script src="data/troll.js?v=92"></script>
-  <script src="data/levels.js?v=92"></script>
-  <script src="data/luck.js?v=92"></script>
-  <script src="data/bonding.js?v=92"></script>
-  <script src="data/pearls.js?v=92"></script>
-  <script src="data/skills.js?v=92"></script>
-  <script src="data/sports.js?v=92"></script>
-  <script src="data/pixie.js?v=92"></script>
-  <script src="data/supplies.js?v=92"></script>
-  <script src="data/honey.js?v=92"></script>
-  <script src="data/gameplay.js?v=92"></script>
-  <script src="data/extras.js?v=92"></script>
-  <script src="data/hunger.js?v=92"></script>
-  <script src="data/orchard.js?v=92"></script>
-  <script src="data/dance.js?v=92"></script>
-  <script src="data/trading.js?v=92"></script>
-  <script src="data/market.js?v=92"></script>
-  <script src="data/unicorns.js?v=92"></script>
-  <script src="data/adventures.js?v=92"></script>
-  <script src="data/spells.js?v=92"></script>
-  <script src="data/furniture.js?v=92"></script>
-  <script src="data/next_steps.js?v=92"></script>
-  <script src="data/adventure_ideas.js?v=92"></script>
-  <script src="data/logic.js?v=92"></script>
-  <script src="data/chores.js?v=92"></script>
-  <script src="data/music.js?v=92"></script>
-  <script src="data/drawn.js?v=92"></script>
+  <script>var GAME_DATA = {}; var GAME_VERSION = "93"; // tools/bump_version.py changes this and every ?v= so browsers load fresh files</script>
+  <script src="data/characters.js?v=93"></script>
+  <script src="data/places.js?v=93"></script>
+  <script src="data/items.js?v=93"></script>
+  <script src="data/ideas.js?v=93"></script>
+  <script src="data/fish.js?v=93"></script>
+  <script src="data/digging.js?v=93"></script>
+  <script src="data/mining.js?v=93"></script>
+  <script src="data/troll.js?v=93"></script>
+  <script src="data/levels.js?v=93"></script>
+  <script src="data/luck.js?v=93"></script>
+  <script src="data/bonding.js?v=93"></script>
+  <script src="data/agility.js?v=93"></script>
+  <script src="data/pearls.js?v=93"></script>
+  <script src="data/skills.js?v=93"></script>
+  <script src="data/sports.js?v=93"></script>
+  <script src="data/pixie.js?v=93"></script>
+  <script src="data/supplies.js?v=93"></script>
+  <script src="data/honey.js?v=93"></script>
+  <script src="data/gameplay.js?v=93"></script>
+  <script src="data/extras.js?v=93"></script>
+  <script src="data/hunger.js?v=93"></script>
+  <script src="data/orchard.js?v=93"></script>
+  <script src="data/dance.js?v=93"></script>
+  <script src="data/trading.js?v=93"></script>
+  <script src="data/market.js?v=93"></script>
+  <script src="data/unicorns.js?v=93"></script>
+  <script src="data/adventures.js?v=93"></script>
+  <script src="data/spells.js?v=93"></script>
+  <script src="data/furniture.js?v=93"></script>
+  <script src="data/next_steps.js?v=93"></script>
+  <script src="data/adventure_ideas.js?v=93"></script>
+  <script src="data/logic.js?v=93"></script>
+  <script src="data/chores.js?v=93"></script>
+  <script src="data/music.js?v=93"></script>
+  <script src="data/drawn.js?v=93"></script>
   <script>
     // Builds the catalog straight from the game's data files, so it never goes out of date.
     const drawn = GAME_DATA.drawn || [];
@@ -431,7 +432,8 @@
         archery: "archery: shoot at the moving target", soccer: "soccer: kick past the goalie", riddle: "troll: answer its riddle",
         bridge: "bridge: cross once the troll lets you", pond: "pond: a turtle pops out", smores: "s'mores: grab one to roast",
         fireplace: "fireplace: roast your s'more and eat it", hot_chocolate: "hot chocolate: drink it here",
-        honey: "beehive: scoop honey, watch out for bees" };
+        honey: "beehive: scoop honey, watch out for bees",
+        pet_tricks: "agility: your pet does a trick", pet_walk: "walk a lap with your pet", pet_sign: "training sign: pick a pet, see its tricks" };
       if (spots[place.type]) return spots[place.type];
       if (!place.in) return "whole world map";
       if (place.type === "map") return "territory map";

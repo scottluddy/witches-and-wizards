@@ -8,7 +8,7 @@
 //   belugas     swim in the lake from the Dock or Pebble Beach
 //   jellyfish   clean their tanks at the Fish Hut
 //   any pet     rides the roller coaster in the Multi-House with you, and eats at the Museum's Tiny Hole
-//   dogs and wolves         walks, runs and tricks at the Pet Training Field (no dogs yet!)
+//   pets that walk          walks and agility tricks at the Pet Training Field (cats, capybaras, turtles; dogs and wolves once drawn)
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
 //               in items.js, like the Lakeside Store's beluga)
@@ -73,9 +73,10 @@ GAME_DATA.bonding = {
     "ask": "A bowl of pet food! Feed your pet a snack.",
     "noPets": "Bring a pet in your backpack to feed it.",
     "thanks": "🥣 Your PET gobbles up the food. Yum!" },
-  "dog_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf"], "from": "backpack",
-    "title": "Walks and Tricks", "emoji": "🐕", "button": "🐕 Go for a walk", "done": "💤 Resting. Ready again in ",
-    "ask": "Walk, run and learn tricks with your dog or wolf.",
-    "noPets": "Coming soon: dogs and wolves who need walks, runs and to learn tricks! (No dogs or wolves in the game yet. Draw one!)",
-    "thanks": "🐕 You and your PET go for a lovely walk." }
+  // Walks and Tricks at the Pet Training Field (Scott, 2026-10-18; js/agility.js, data/agility.js):
+  // finish the agility course, or walk a lap of the track, with any pet that walks.
+  "pet_tricks": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle"],
+    "title": "Agility Tricks", "emoji": "⭕" },
+  "pet_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle"],
+    "title": "Walk the Track", "emoji": "🐾" }
 };

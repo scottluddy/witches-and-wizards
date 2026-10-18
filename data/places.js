@@ -271,13 +271,24 @@ GAME_DATA.places = [
     "says": "Have a nice day! Crystals here, please." },
 
   // The girls' Meadows map (Scott, 2026-10-13, art/raw/sheets/meadows_map.jpeg). The Poppy Patch,
-  // Pet Training Field, Rosy Hills, Stream, Beehive and Butterfly Garden have no pictures or things to do yet.
+  // Rosy Hills, Stream, Beehive and Butterfly Garden have no pictures or things to do yet (the Pet Training Field's Agility Park is drawn, 2026-10-18).
   { "id": "poppy_patch", "name": "Poppy Patch", "type": "place", "in": "meadows", "x": 43, "y": 43,
     "description": "A little house in a field of poppies." },
   { "id": "pet_training_field", "name": "Pet Training Field", "type": "place", "in": "meadows", "x": 29, "y": 71,
-    "description": "Grass and pine trees: room to train your pet. Owls have falconry lessons here." },
+    "description": "Grass and pine trees: room to train your pet. Owls have falconry lessons here, and the Agility Park is for walks and tricks." },
   { "id": "falconry", "name": "Falconry Lessons", "type": "care", "care": "falconry", "in": "pet_training_field", "x": 35, "y": 45 },
-  { "id": "dog_walks", "name": "Walks and Tricks", "type": "care", "care": "dog_walk", "in": "pet_training_field", "x": 68, "y": 65 },
+  // The Agility Park, part of the Pet Training Field (Scott, 2026-10-18, the girls' drawing
+  // art/raw/sheets/agility_park.jpeg): walks and tricks with your pet (js/agility.js).
+  // Labels sit just below each thing so they don't cover it.
+  { "id": "agility_park", "name": "Agility Park", "type": "place", "in": "pet_training_field", "x": 68, "y": 65,
+    "description": "Tunnels, hoops, weave posts and a ramp, with a path all around. Walk your pet and teach it tricks." },
+  { "id": "agility_sign", "name": "Training Sign", "type": "pet_sign", "in": "agility_park", "x": 28, "y": 72 },
+  { "id": "agility_tunnel", "name": "Tunnel", "type": "pet_tricks", "in": "agility_park", "x": 54, "y": 78 },
+  { "id": "agility_tunnel_bend", "name": "Bendy Tunnel", "type": "pet_tricks", "in": "agility_park", "x": 86, "y": 52 },
+  { "id": "agility_hoops", "name": "Hoops", "type": "pet_tricks", "in": "agility_park", "x": 52, "y": 62 },
+  { "id": "agility_weave", "name": "Weave Posts", "type": "pet_tricks", "in": "agility_park", "x": 84, "y": 31 },
+  { "id": "agility_ramp", "name": "Ramp", "type": "pet_tricks", "in": "agility_park", "x": 31, "y": 49 },
+  { "id": "agility_walk", "name": "Walk the Track", "type": "pet_walk", "in": "agility_park", "x": 50, "y": 93 },
   { "id": "rosy_hills", "name": "Rosy Hills", "type": "place", "in": "meadows", "x": 62, "y": 87,
     "description": "Rolling hills covered in flowers, with a tiny house." },
   { "id": "stream", "name": "Stream", "type": "place", "in": "meadows", "x": 81, "y": 63,

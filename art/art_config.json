@@ -1089,5 +1089,14 @@
   "extra_potion_bags": {
     "whole": true,
     "photo": true
+  },
+  "place_agility_park": {
+    "rotate": 90,
+    "crop": [
+      3,
+      4,
+      91,
+      92
+    ]
   }
 }

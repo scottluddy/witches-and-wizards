@@ -38,6 +38,7 @@ GAME_DATA.standing = {
     "museum_snack_shop": { "x": 88, "y": 98 },
     "mushrooms":         { "x": 50, "y": 98 },
     "old_oak":           { "x": 92, "y": 98 },
+    "agility_park":      { "x": 16, "y": 86 },
     "pearl_cave":        { "x": 90, "y": 98 },
     "pond_house_inside": { "x": 85, "y": 98 },
     "store":             { "x": 90, "y": 98 },

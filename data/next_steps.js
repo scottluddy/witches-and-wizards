@@ -29,7 +29,7 @@ GAME_DATA.nextSteps = {
     { "text": "What powers should each new Level give?", "who": "Girls",
       "note": "A sample plan is built: 3 Adventure Points, Chore Points and Bonding Points, 1 Skill, plus some gems. For now each Level only makes you 5% luckier. Ideas: walk farther before getting hungry, a cheaper pickaxe, a new place that opens at Level 3." },
     { "text": "Draw a dog and a wolf", "who": "Girls",
-      "note": "The Pet Training Field has a Walks and Tricks spot waiting for dogs and wolves (Scott, 2026-10-13)." },
+      "note": "Walks and Tricks at the Pet Training Field works for cats, capybaras and turtles now; dogs and wolves join in as soon as they're drawn (add them to animals in data/bonding.js)." },
     { "text": "What does the Turtle Egg do?", "who": "Girls",
       "note": "It isn't a pet yet, so it can't bond. One idea: keep it warm until it hatches into a turtle." },
     { "text": "What do you learn in each Wizard School classroom?", "who": "Girls",
