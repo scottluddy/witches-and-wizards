@@ -66,8 +66,8 @@ function foundBeachFind() {
   showDigging(itemArt(find), "You found a " + find.name + "!", message, true);
 }
 
-// Very rarely the Dig Spot turns up the Old Key for the Museum's Artifacts
-// Exhibit chest (data/museum.js). There's only one, so once you have it (or
+// Very rarely the Dig Spot turns up the Old Key for the chest in the Museum's
+// Ancient Kitty Pirate Room (data/museum.js). There's only one, so once you have it (or
 // have opened the chest) it never turns up again.
 function foundOldKey() {
   const chest = GAME_DATA.artifactsChest;

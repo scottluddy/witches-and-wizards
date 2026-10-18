@@ -23,7 +23,7 @@ GAME_DATA.museum = {
   "sitting": "🪑 You sit down at the table. Now you can eat and drink what's in your backpack."
 };
 
-// The Artifacts Exhibit's chest (Scott, 2026-10-17, the girls' idea). The
+// The Ancient Kitty Pirate Room's chest (Scott, 2026-10-17, the girls' idea). The
 // start of a treasure hunt: the rest of it isn't decided yet.
 //   keyChance  percent chance of digging up the Old Key at the Dig Spot (5 =
 //              1 in 20). There's only one: once you have it (or have opened

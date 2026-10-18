@@ -151,8 +151,22 @@ function glowSpot(section) {
 // Windy Peak's "Ski down" spot: onto the dark slope during the rescue,
 // otherwise straight to the Snowy Hut.
 function windySkiDown(spot) {
+  // No skis, no skiing (Scott, 2026-10-18): rent them at the Ski Reserve.
+  if (spot.needsItem && player.backpack.indexOf(spot.needsItem) === -1) return sayWindy(spot.withoutIt);
   const stage = player.windy.stage;
-  goTo(stage === "lost" || stage === "search" || stage === "found" ? windyRules().slope : spot.to);
+  if (stage === "lost" || stage === "search" || stage === "found") return goTo(windyRules().slope);
+  goTo(spot.to);
+  giveSkisBack();
+}
+
+// At the bottom (the Snowy Hut) the rented skis go back to the Ski Reserve.
+function giveSkisBack() {
+  const spot = GAME_DATA.places.find(function (p) { return p.type === "ski_down" && p.needsItem; });
+  if (!spot || player.backpack.indexOf(spot.needsItem) === -1) return;
+  removeOne(player.backpack, spot.needsItem); // js/items.js
+  writeSave(player);
+  const words = document.getElementById("place-description");
+  words.textContent = (words.textContent ? words.textContent + " " : "") + spot.afterwards;
 }
 
 // Called by showPlace (and after furniture moves): the dark slope, or the
@@ -402,6 +416,7 @@ function skiDownTogether() {
   writeSave(player);
   document.getElementById("info-panel").hidden = true;
   goTo(windyRules().hut);
+  giveSkisBack();
 }
 
 // ---------------------------------------------------------------- the Snowy Hut

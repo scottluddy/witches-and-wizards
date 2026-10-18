@@ -104,9 +104,9 @@ GAME_DATA.places = [
   { "id": "museum_room_2", "name": "Gem Stone Exhibit", "type": "place", "in": "museum_hall", "x": 35, "y": 25, "museumRoom": true,
     "description": "Six gem stones on their stands: Amethyst, Diamond, Sapphire, Opal, Ruby and a heart-shaped Emerald. Please don't touch anything!" },
   { "id": "museum_room_3", "name": "Exhibit Room 3", "type": "place", "in": "museum_hall", "x": 55, "y": 40, "museumRoom": true },
-  // The Artifacts Exhibit (Scott, 2026-10-17): the stone elephant statue (a photo
+  // The Ancient Kitty Pirate Room (Scott, 2026-10-17): the stone elephant statue (a photo
   // for now) and a locked chest that the Old Key from the Dig Spot opens (js/museum.js).
-  { "id": "museum_room_4", "name": "Artifacts Exhibit", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true,
+  { "id": "museum_room_4", "name": "Ancient Kitty Pirate Room", "type": "place", "in": "museum_hall", "x": 75, "y": 25, "museumRoom": true,
     "description": "Old things from long ago. Please don't touch anything!" },
   { "id": "museum_elephant", "name": "Elephant Statue", "type": "person", "in": "museum_room_4", "x": 22, "y": 55,
     "picture": "museum_elephant_statue", "size": 20, "says": "A stone elephant statue, very old and very calm. Its sign says: please don't touch!" },
@@ -119,10 +119,10 @@ GAME_DATA.places = [
   { "id": "museum_room_2_back", "name": "Art Exhibit", "type": "travel", "in": "museum_room_2", "side": "left", "to": "museum_room_1" },
   { "id": "museum_room_2_next", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_2", "side": "right", "to": "museum_room_3" },
   { "id": "museum_room_3_back", "name": "Gem Stone Exhibit", "type": "travel", "in": "museum_room_3", "side": "left", "to": "museum_room_2" },
-  { "id": "museum_room_3_next", "name": "Artifacts Exhibit", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
+  { "id": "museum_room_3_next", "name": "Ancient Kitty Pirate Room", "type": "travel", "in": "museum_room_3", "side": "right", "to": "museum_room_4" },
   { "id": "museum_room_4_back", "name": "Exhibit Room 3", "type": "travel", "in": "museum_room_4", "side": "left", "to": "museum_room_3" },
   { "id": "museum_room_4_next", "name": "Exhibit Room 5", "type": "travel", "in": "museum_room_4", "side": "right", "to": "museum_room_5" },
-  { "id": "museum_room_5_back", "name": "Artifacts Exhibit", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
+  { "id": "museum_room_5_back", "name": "Ancient Kitty Pirate Room", "type": "travel", "in": "museum_room_5", "side": "left", "to": "museum_room_4" },
   { "id": "museum_room_5_next", "name": "Exhibit Hall", "type": "travel", "in": "museum_room_5", "side": "right", "to": "museum_hall" },
   { "id": "museum_hall_snacks", "name": "Snack Shop", "type": "travel", "in": "museum_hall", "x": 45, "y": 75, "to": "museum_snack_shop" },
   { "id": "museum_snack_shop", "name": "Snack Shop", "type": "place", "in": "museum_hall", "hidden": true, "needsRound": true,
@@ -242,7 +242,12 @@ GAME_DATA.places = [
   { "id": "peak_look_down", "name": "Look down", "type": "look", "in": "peak", "x": 69, "y": 40, "picture": "extra_binocular_view",
     "says": "Through the binoculars you can see a green meadow far below." },
   // Ski down: the slope map during Lost on Windy Peak (js/windy.js), otherwise straight to the Snowy Hut.
-  { "id": "peak_ski_down", "name": "Ski down", "type": "ski_down", "in": "peak", "x": 45, "y": 45, "to": "hut" },
+  // Scott, 2026-10-18: you need skis in your backpack, rented from the Ski Reserve ("needsItem");
+  // they go back to the Ski Reserve when you get to the Snowy Hut.
+  { "id": "peak_ski_down", "name": "Ski down", "type": "ski_down", "in": "peak", "x": 45, "y": 45, "to": "hut",
+    "needsItem": "skis_rental",
+    "withoutIt": "⛷️ You need skis to ski down! Rent some at the Ski Reserve.",
+    "afterwards": "🎿 You gave the skis back. They go home to the Ski Reserve." },
   { "id": "peak_owl_dropoff", "name": "Snowy Owl Dropoff", "type": "owl_dropoff", "in": "peak", "x": 9, "y": 52 },
   // The ski slope (Scott, 2026-10-15): only reached by skiing down during Lost on Windy Peak (js/windy.js).
   { "id": "ski_slope", "name": "Ski Slope", "type": "place", "in": "peak", "hidden": true,
@@ -254,7 +259,7 @@ GAME_DATA.places = [
     "description": "Floor 1, everything 1 gem: the hot chocolate station, self-serve marshmallows, and shelves of water, icees and tea, with straws on top." },
   { "id": "ski_reserve", "name": "Ski Reserve",  "type": "place", "in": "mountain", "x": 82, "y": 16, "shelf": "Ski Gear",
     "rows": [[34, 76]],
-    "description": "Ski outfits in size 1 and size 2. Pay the fox at the check-out counter." },
+    "description": "Ski outfits in size 1 and size 2, and skis to rent for skiing down Windy Peak. Pay the fox at the check-out counter." },
   { "id": "mountain_house", "name": "Mountain House", "type": "place", "in": "mountain", "x": 80, "y": 62,
     "description": "Three little magic shops inside: the Wand Set, the Mini Potion Shack and the Broom Cabin. Prices are in gems." },
   { "id": "wand_set",    "name": "Wand Set",          "type": "place", "in": "mountain_house", "x": 21.4, "y": 56, "shelf": "Wand Set",

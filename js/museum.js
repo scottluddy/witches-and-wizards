@@ -140,7 +140,7 @@ function openTinyHole(spot) {
   body.appendChild(go);
 }
 
-// ---------------------------------------------------------------- the Artifacts Exhibit
+// ---------------------------------------------------------------- the Ancient Kitty Pirate Room
 
 // The Old Chest: locked until you bring the Old Key from the Dig Spot.
 function openArtifactChest() {
