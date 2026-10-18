@@ -1139,8 +1139,9 @@ body.holding-apple, body.holding-apple * {
 .hut-blanket.placeholder { aspect-ratio: 1.3; border-radius: 6px 6px 14px 14px; border: 2px solid #8a3b3b;
   background: repeating-linear-gradient(0deg, transparent 0 8px, rgba(255, 255, 255, 0.35) 8px 11px),
               repeating-linear-gradient(90deg, #c94f4f 0 8px, #e9c46a 8px 11px); }
-.hut-blanket.covering { width: 8% !important; z-index: 1; }
-.draggable { cursor: grab; touch-action: none; }
+.hut-blanket.covering, .hut-blanket.draggable { z-index: 2; } /* over you or the little WIT, even when they sit in front */
+.hut-blanket.covering:not(.on-you) { width: 8% !important; } /* on you, it's sized to fit you (js/windy.js blanketForYou) */
+.draggable { cursor: grab; touch-action: none; z-index: 2; } /* grabbable even when you sit in front */
 .draggable:hover { filter: drop-shadow(0 0 6px var(--gold)); }
 .draggable.dragging { cursor: grabbing; z-index: 2; }
 
@@ -1543,7 +1544,7 @@ body.holding-apple, body.holding-apple * {
   .market-shopper.walking { animation: none; }
 }
 
-/* You, sitting on a seat you clicked (js/world.js sitYouAt). Feet at x, y. */
+/* You, sitting on a seat you clicked or dragged yourself onto (js/you.js sitYouAt). Feet at x, y. */
 #place-you { position: absolute; inset: 0; pointer-events: none; }
 .sitting-you {
   position: absolute;
@@ -1551,13 +1552,19 @@ body.holding-apple, body.holding-apple * {
   filter: drop-shadow(0 0 6px var(--gold));
   animation: sit-down 0.4s ease-out;
 }
-/* You, standing just inside a place when you walk in (js/world.js standYouIn) */
+/* You, standing just inside a place when you walk in (js/you.js standYouIn) */
 .standing-you {
   position: absolute;
   transform: translate(-50%, -100%);
   filter: drop-shadow(0 0 6px var(--gold));
   animation: walk-in 0.6s ease-out;
 }
+/* Drag yourself around the room, or onto a couch (js/you.js) */
+.standing-you, .sitting-you { pointer-events: auto; cursor: grab; touch-action: none; user-select: none; }
+.standing-you.moved { animation: none; }
+.sitting-you { z-index: 1; } /* in front of things hanging on the seat, like the Snowy Hut's blanket */
+.standing-you.dragging { cursor: grabbing; z-index: 2; filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 14px var(--gold)); }
+.furniture.seat { cursor: pointer; }
 @keyframes walk-in {
   from { opacity: 0; translate: -40% 0; }
   to   { opacity: 1; translate: 0 0; }

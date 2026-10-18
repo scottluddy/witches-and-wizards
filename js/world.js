@@ -323,7 +323,7 @@ function showPlace(id) {
   const spots = placesIn(id);
   drawSpots(document.getElementById("place-spots"), spots.filter(function (s) { return !s.side; }), openSpot);
   drawSideButtons(spots.filter(function (s) { return s.side; }));
-  standYouIn(place); // you, standing just inside (you stand up when you leave a seat)
+  standYouIn(place); // you, standing just inside (js/you.js)
   showPlaceItems(place); // shelf items, or things left here (js/items.js)
   noteMuseumVisit(place); // the Exhibit Rooms seen so far (js/museum.js)
   showFurniture(place);  // movable furniture (js/furniture.js)
@@ -346,7 +346,7 @@ function openSpot(childId) {
   if (placementMode) return;
   const child = findPlace(childId);
   if (skillSpotLocked(child)) return; // waiting for the next skill test, or needs a skill Level (js/skills.js)
-  if (child.sitAt) sitYouAt(child.sitAt); // a seat: you sit down on it first, below
+  if (child.sitAt) sitYouAt(child.sitAt, { spot: child.id }); // a seat: you sit down on it first (js/you.js)
   if (child.type === "person") {
     // People talk instead of opening a new picture.
     document.getElementById("place-description").textContent =
@@ -394,41 +394,6 @@ function openSpot(childId) {
     return;
   }
   zoomInto(child, function () { goTo(childId); }); // zoom in on it, then open it (js/zoom.js)
-}
-
-// Scott, 2026-10-17: show your own character wherever we can. A spot with
-// "sitAt" (a sofa, a chair, the Cafe's armchair) sits you down there when you
-// click it: your feet at x, y (percent of the picture), "size" your height in
-// percent of the picture. You stay sitting until you leave the place.
-// Scott, 2026-10-17: you stand in every place you walk into, in the corner
-// unless data/standing.js says somewhere else, except where you'd be in the way
-// (shelves and the places listed in "skip").
-function standYouIn(place) {
-  const box = document.getElementById("place-you");
-  box.innerHTML = "";
-  const standing = GAME_DATA.standing;
-  if (place.shelf || standing.skip.includes(place.id)) return;
-  const spot = standing.places[place.id] || standing.where;
-  const you = document.createElement("img");
-  you.className = "standing-you";
-  you.src = characterPicture(findCharacter(player.characterId));
-  you.alt = "You";
-  you.style.left = spot.x + "%";
-  you.style.top = spot.y + "%";
-  you.style.height = (spot.size || standing.where.size) + "%";
-  box.appendChild(you);
-}
-
-function sitYouAt(seat) {
-  const box = document.getElementById("place-you");
-  const you = document.createElement("img");
-  you.className = "sitting-you";
-  you.src = characterPicture(findCharacter(player.characterId));
-  you.alt = "You";
-  you.style.left = seat.x + "%";
-  you.style.top = seat.y + "%";
-  you.style.height = (seat.size || 30) + "%";
-  box.replaceChildren(you);
 }
 
 // Previous / next buttons ("side": "left" or "right") stand just outside the

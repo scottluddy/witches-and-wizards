@@ -50,6 +50,11 @@ function showFurniture(place) {
       img.classList.add("holds");
       img.addEventListener("click", function () { if (!justDragged) openStorage(piece.holds); });
     }
+    if (piece.seat) {
+      // Couches and chairs: click one to sit on it (js/you.js).
+      img.classList.add("seat");
+      img.addEventListener("click", function () { if (!justDragged && youNow.el) sitOnPiece(piece); });
+    }
     box.appendChild(img);
   });
 }
@@ -113,6 +118,7 @@ document.addEventListener("pointerup", function () {
   if (!player.furniture[piece.place]) player.furniture[piece.place] = {};
   player.furniture[piece.place][piece.id] = [round1(spot[0]), round1(spot[1])];
   writeSave(player);
+  youFollowFurniture(piece); // if you're sitting on it, you move with it (js/you.js)
   showWindy(findPlace(player.at)); // the Snowy Hut's mug moves with its table (js/windy.js)
 });
 

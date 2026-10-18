@@ -13,29 +13,33 @@
 //   min_part  optional: keep smaller loose bits too (like shadows); default 0.05
 //   keep_out  optional: boxes (same kind of numbers as "box") to leave out of
 //          the piece, for things drawn touching it that should stay in the room
+//   seat   optional: a couch or chair you can sit on (click it, or drag yourself
+//          onto it; js/you.js). x, y: where your feet go, in percent across and
+//          down the piece; size: how tall you are sitting there, in percent of
+//          the room picture, so you fit the seat
 GAME_DATA.furniture = [
   { "place": "hut", "id": "snack_table", "name": "Snack Table",  "box": [6, 10.8, 36, 41.5],
     "keep_out": [[19.5, 10, 24, 11.4], [25.5, 10, 30, 12.3]] },
-  { "place": "hut", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51] },
+  { "place": "hut", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51], "seat": { "x": 82, "y": 85, "size": 29 } },
   { "place": "hut", "id": "bookshelf",  "name": "Bookshelf",    "box": [79, 50, 97, 86] },
-  { "place": "hut", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88] },
+  { "place": "hut", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88], "seat": { "x": 50, "y": 80, "size": 22 } },
 
   { "place": "cabin", "id": "table",    "name": "Little Table", "box": [7, 63, 22, 78] },
-  { "place": "cabin", "id": "stool",    "name": "Stool",       "box": [22, 69, 30, 78] },
-  { "place": "cabin", "id": "sofa",     "name": "Blue Sofa",   "box": [37, 55, 66, 75] },
+  { "place": "cabin", "id": "stool",    "name": "Stool",       "box": [22, 69, 30, 78], "seat": { "x": 50, "y": 70, "size": 16 } },
+  { "place": "cabin", "id": "sofa",     "name": "Blue Sofa",   "box": [37, 55, 66, 75], "seat": { "x": 50, "y": 80, "size": 26 } },
   { "place": "cabin", "id": "bookshelf", "name": "Bookshelf",   "box": [84, 57, 100, 76] },
 
   { "place": "home", "id": "bird_cage", "name": "Bird Cage", "box": [36.5, 23.6, 56.5, 65.0], "min_part": 0.002 },
   { "place": "home", "id": "pet_cage", "name": "Pet Cage", "box": [1.0, 37.1, 35.0, 70.0], "min_part": 0.002 },
   { "place": "home", "id": "chest", "name": "Treasure Chest", "holds": "homeChest", "box": [78.0, 43.8, 100.0, 64.6], "min_part": 0.002 },
-  { "place": "home", "id": "armchair", "name": "Pink Armchair", "box": [64.0, 60.5, 84.5, 95.0], "min_part": 0.002 },
+  { "place": "home", "id": "armchair", "name": "Pink Armchair", "box": [64.0, 60.5, 84.5, 95.0], "min_part": 0.002, "seat": { "x": 50, "y": 75, "size": 34 } },
   { "place": "home", "id": "cooler", "name": "Cooler and Pet Food", "holds": "homeCooler", "box": [2.0, 74.5, 19.8, 90.0], "min_part": 0.002 },
   { "place": "home", "id": "spellbook_table", "name": "Spell Book Table", "holds": "homeMaterials", "box": [19.6, 73.6, 42.0, 96.0], "min_part": 0.002 },
-  { "place": "old_oak", "id": "sofa",     "name": "Teal Sofa",  "box": [4, 54, 48, 84.5] },
-  { "place": "old_oak", "id": "pouf",     "name": "Round Stool", "box": [52, 67, 61, 78.5] },
+  { "place": "old_oak", "id": "sofa",     "name": "Teal Sofa",  "box": [4, 54, 48, 84.5], "seat": { "x": 50, "y": 75, "size": 34 } },
+  { "place": "old_oak", "id": "pouf",     "name": "Round Stool", "box": [52, 67, 61, 78.5], "seat": { "x": 50, "y": 70, "size": 22 } },
   { "place": "mountain_house", "id": "table",  "name": "Table and Mug", "box": [7, 66, 29, 83], "min_part": 0.01 },
-  { "place": "mountain_house", "id": "pink_chair",  "name": "Pink Armchair",  "box": [36, 68, 64, 85] },
-  { "place": "mountain_house", "id": "green_chair", "name": "Green Armchair", "box": [63, 68, 90, 82] },
+  { "place": "mountain_house", "id": "pink_chair",  "name": "Pink Armchair",  "box": [36, 68, 64, 85], "seat": { "x": 50, "y": 75, "size": 16 } },
+  { "place": "mountain_house", "id": "green_chair", "name": "Green Armchair", "box": [63, 68, 90, 82], "seat": { "x": 50, "y": 75, "size": 14 } },
   { "place": "mountain_house", "id": "pencil", "name": "Pencil", "box": [11, 84.5, 25, 93], "min_part": 0.01 },
   { "place": "old_oak", "id": "cushions", "name": "Cushions",   "box": [20, 82, 72, 97.2], "ink_level": 235, "min_part": 0.01 }
 ];

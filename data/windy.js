@@ -64,6 +64,8 @@ GAME_DATA.windyRescue = {
     "covered": "Ahh, cozy!",
     "slips": "It keeps slipping off!",
     "shaky": "My hands are too cold to hold it!",
+    "youSitFirst": "Sit down on the couch first, then snuggle under the blanket.",
+    "youCovered": "🧣 You snuggle under the blanket. So cozy!",
     "done": "Warm and cozy! The little WIT says thank you and promises to stay with a grown-up next time. You finished an adventure: +POINTS Adventure Point!"
   }
 };

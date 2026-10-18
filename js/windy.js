@@ -416,7 +416,7 @@ function showHut() {
   const mug = hutThing(rules.mug, "hut-mug", "☕");
   const blanket = hutThing(rules.blanket, "hut-blanket", "");
   box.append(mug, blanket);
-  if (stage !== "cold" && stage !== "sitting" && stage !== "covered") return;
+  if (stage !== "cold" && stage !== "sitting" && stage !== "covered") return blanketForYou(blanket, box);
 
   const wit = showColdWit(box);
   if (stage === "cold") {
@@ -447,6 +447,34 @@ function showHut() {
     if (!overThing(wit, event)) return false;
     if (player.windy.stage !== "covered") { witSays(wit, rules.words.shaky); return false; }
     warmUpTogether();
+    return true;
+  });
+}
+
+// When there's no little WIT to warm up, the blanket is yours (Scott,
+// 2026-10-18): sit down on the couch or a chair, then drag the blanket onto you.
+function blanketForYou(blanket, box) {
+  const you = youNow.el; // js/you.js
+  if (!you) return;
+  if (youNow.covered) {
+    // Over your lap, wherever you're sitting.
+    // Your height is in percent of the picture's height, the blanket's width in
+    // percent of its width, so "shape" turns one into the other.
+    const size = parseFloat(you.style.height);
+    const pic = box.getBoundingClientRect();
+    const shape = pic.width ? pic.height / pic.width : 0.66;
+    blanket.classList.add("covering", "on-you");
+    blanket.style.left = you.style.left;
+    blanket.style.top = parseFloat(you.style.top) - size * 0.22 + "%";
+    blanket.style.width = size * 0.42 * shape + "%";
+    return;
+  }
+  dragThing(blanket, box, function (event) {
+    if (!overThing(you, event)) return false;
+    if (!youSitting()) { sayWindy(windyRules().words.youSitFirst); return false; }
+    youNow.covered = true;
+    sayWindy(windyRules().words.youCovered);
+    showWindy(findPlace(windyRules().hut));
     return true;
   });
 }
