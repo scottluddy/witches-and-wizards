@@ -41,7 +41,7 @@ GAME_DATA.nextSteps = {
     { "text": "What should need a skill Level?", "who": "Girls",
       "note": "Any action can now need a skill Level, like Piano Level 3 to play at a concert or Soccer Level 5 to join a team. Nothing uses it yet: we'll decide as we go." },
     { "text": "What do you do at each new Meadows place?", "who": "Girls",
-      "note": "The Meadows map has the Poppy Patch, Pet Training Field, Rosy Hills, Stream, Beehive and Butterfly Garden. They're spots on the map with placeholder pictures. The Beehive works (honey and bees). Ideas for the others: train or walk your pet (Pet Training Field), pick poppies (Poppy Patch), spot butterflies (Butterfly Garden). Draw the inside of each one too." },
+      "note": "The Meadows map has the Poppy Patch, Pet Training Field, Rosy Hills, Stream, Beehive and Butterfly Garden. Rosy Hills and the Agility Park are drawn; the others have placeholder pictures. The Beehive works (honey and bees). The animals that visit Rosy Hills' Meeting Place are pet drawings plus a bunny, fox, deer, hedgehog and squirrel that are still emoji: draw them! Ideas for the others: train or walk your pet (Pet Training Field), pick poppies (Poppy Patch), spot butterflies (Butterfly Garden). Draw the inside of each one too." },
     { "text": "Draw the Beehive", "who": "Girls",
       "note": "The inside of the Beehive is a placeholder. Draw the hive and the bees! Honey and a honey pot drawing would be nice too." },
     { "text": "Should honey sell for gems, or be used for something?", "who": "Scott",

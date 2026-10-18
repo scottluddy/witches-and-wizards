@@ -31,7 +31,7 @@ function secretFound(secret) {
 const SPOT_ICONS = {
   fishing: "🎣", digging: "⛏️", picking: "🍎", selling: "💎", bath: "🛁", cuddle: "🛋️",
   cafe: "🍽️", travel: "➡️", classroom: "🚪", look: "🔭", ski_down: "⛷️", owl_dropoff: "🦉",
-  honey: "🍯", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
+  honey: "🍯", picnic: "🧺", meeting_place: "🐾", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
   museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑", artifact_chest: "🧰", ship_model: "⛵",
   pet_tricks: "⭕", pet_walk: "🐾", pet_sign: "🪧"
@@ -340,6 +340,7 @@ function showPlace(id) {
   leaveBeehive(place);     // honey still in your pot goes in the basket (js/honey.js)
   showPixie(place);        // the Pixie, if she's hiding here today (js/pixie.js)
   showAgility(place);      // your pet in the Agility Park (js/agility.js)
+  showRosyHills(place);    // friendly animals at the Meeting Place (js/picnic.js)
   showScreen("screen-place");
   zoomOutFrom(cameFrom, id, "place-zoom");
 }
@@ -366,6 +367,8 @@ function openSpot(childId) {
   if (child.type === "bath") return openBath();                // js/bonding.js
   if (child.type === "cuddle") return openCuddle(acornClue(child.id).trim() || undefined); // js/bonding.js (the Pond House couch may hide a clue, js/pixie.js)
   if (child.type === "cafe") return openCafe(child);           // js/cafe.js
+  if (child.type === "picnic") return openPicnic();            // Rosy Hills (js/picnic.js)
+  if (child.type === "meeting_place") return goToMeetingPlace(); // Rosy Hills (js/picnic.js)
   if (child.type === "travel") return goTo(child.to);          // a shortcut, like Windy Peak's arrows
   if (child.type === "owl_dropoff") return openOwlDropoff();   // js/bonding.js
   if (child.type === "look") return windyLook(child) || lookThrough(child); // binoculars, below (or the Windy Peak rescue, js/windy.js)

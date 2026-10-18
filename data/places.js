@@ -294,7 +294,8 @@ GAME_DATA.places = [
     "says": "Have a nice day! Crystals here, please." },
 
   // The girls' Meadows map (Scott, 2026-10-13, art/raw/sheets/meadows_map.jpeg). The Poppy Patch,
-  // Rosy Hills, Stream, Beehive and Butterfly Garden have no pictures or things to do yet (the Pet Training Field's Agility Park is drawn, 2026-10-18).
+  // Stream and Butterfly Garden have no pictures or things to do yet (the Pet Training Field's Agility Park
+  // and Rosy Hills are drawn, 2026-10-18; the Beehive has honey).
   { "id": "poppy_patch", "name": "Poppy Patch", "type": "place", "in": "meadows", "x": 43, "y": 43,
     "description": "A little house in a field of poppies." },
   { "id": "pet_training_field", "name": "Pet Training Field", "type": "place", "in": "meadows", "x": 29, "y": 71,
@@ -312,8 +313,14 @@ GAME_DATA.places = [
   { "id": "agility_weave", "name": "Weave Posts", "type": "pet_tricks", "in": "agility_park", "x": 84, "y": 31 },
   { "id": "agility_ramp", "name": "Ramp", "type": "pet_tricks", "in": "agility_park", "x": 31, "y": 49 },
   { "id": "agility_walk", "name": "Walk the Track", "type": "pet_walk", "in": "agility_park", "x": 50, "y": 93 },
+  // Rosy Hills (Scott, 2026-10-18, the girls' drawing art/raw/sheets/rosy_hills.jpeg, upside down in
+  // the photo): a picnic blanket between the hills, and a Meeting Place where friendly wild animals
+  // come to visit (js/picnic.js). The blanket is a seat, so you sit on it before eating.
   { "id": "rosy_hills", "name": "Rosy Hills", "type": "place", "in": "meadows", "x": 62, "y": 87,
-    "description": "Rolling hills covered in flowers, with a tiny house." },
+    "description": "Two hills covered in roses. Sit on the picnic blanket between them to eat, or wait at the Meeting Place for friendly animals." },
+  { "id": "rosy_picnic", "name": "Picnic Blanket", "type": "picnic", "in": "rosy_hills", "x": 58, "y": 91,
+    "sitAt": { "x": 46, "y": 77, "size": 28 } },
+  { "id": "rosy_meeting", "name": "Meeting Place", "type": "meeting_place", "in": "rosy_hills", "x": 84, "y": 40 },
   { "id": "stream", "name": "Stream", "type": "place", "in": "meadows", "x": 81, "y": 63,
     "description": "A little stream winding through the Meadows." },
   { "id": "stream_swim", "name": "Swim", "type": "care", "care": "swim", "in": "stream", "x": 50, "y": 60 },
