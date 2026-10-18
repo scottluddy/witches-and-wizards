@@ -9,6 +9,9 @@ GAME_DATA.standing = {
   // Dragged to the very top of a picture you're this much of your full size,
   // so you look further away (Scott, 2026-10-18: "the size should reduce to fit").
   "smallest": 0.55,
+  // Once you've been dragged or sit down, you're this much of the size you walk
+  // in at (Scott, 2026-10-18: "about half as big once they are moved around").
+  "movedSize": 0.5,
   // Dropping yourself this close (percent of the picture) to a seat spot sits you on it.
   "seatReach": 10,
   "words": {

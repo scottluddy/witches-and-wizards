@@ -11,7 +11,7 @@
 // over you (js/windy.js).
 
 let youNow = { el: null, on: null, covered: false }; // on: { piece } or { spot } while sitting
-let youDrag = null; // while you're being dragged: { dx, dy, startX, startY, moved }
+let youDrag = null; // while you're being dragged: { startX, startY, moved }
 
 // You, standing just inside the place, in the corner unless data/standing.js
 // says somewhere else. Nobody stands on shelves or in the places listed in "skip".
@@ -35,7 +35,7 @@ function sitYouAt(seat, on) {
   you.className = "sitting-you";
   if (!you.isConnected) box.appendChild(you);
   youNow.on = on || {};
-  placeYou(seat.x, seat.y, seat.size || 30);
+  placeYou(seat.x, seat.y, (seat.size || 30) * GAME_DATA.standing.movedSize); // smaller once you've moved, below
 }
 
 // Sit on a piece of furniture, wherever it stands now (js/furniture.js).
@@ -105,17 +105,8 @@ function pointInPicture(event) {
 function startDragYou(event) {
   event.preventDefault();
   event.stopPropagation();
-  const at = pointInPicture(event);
-  const you = youNow.el;
-  youDrag = {
-    // Where on you it was grabbed, so you don't jump under the mouse.
-    dx: parseFloat(you.style.left) - at.x,
-    dy: parseFloat(you.style.top) - at.y,
-    startX: event.clientX,
-    startY: event.clientY,
-    moved: false
-  };
-  you.setPointerCapture(event.pointerId);
+  youDrag = { startX: event.clientX, startY: event.clientY, moved: false };
+  youNow.el.setPointerCapture(event.pointerId);
 }
 
 function dragYou(event) {
@@ -126,8 +117,10 @@ function dragYou(event) {
     standYouUp();
     youNow.el.classList.add("dragging", "moved"); // "moved": no walking-in animation again
   }
+  // You hang from the mouse by your middle (you shrink as you're picked up,
+  // so holding on where you were grabbed would leave you far from the mouse).
   const at = pointInPicture(event);
-  standAt(at.x + youDrag.dx, at.y + youDrag.dy);
+  standAt(at.x, at.y + movedHeight(at.y) / 2);
 }
 
 function dropYou(event) {
@@ -147,14 +140,18 @@ function dropYou(event) {
 
 // Stand with your feet at x, y. Further back (higher up the picture) you're
 // smaller, down to about half size at the very top. You always stay inside the picture.
+// Scott, 2026-10-18: once you're moved around (or sit down) you're about half
+// the size you walk in at, so you don't cover up the girls' drawings.
 function standAt(x, y) {
-  const place = findPlace(player.at);
+  y = Math.min(Math.max(y, movedHeight(y) + 1), 99);
+  placeYou(Math.min(Math.max(x, 4), 96), y, movedHeight(y));
+}
+
+// How tall you are, once moved, with your feet at y.
+function movedHeight(y) {
   const standing = GAME_DATA.standing;
-  const full = (standing.places[place.id] || {}).size || standing.where.size;
-  let size = full * youDepth(y);
-  y = Math.min(Math.max(y, size + 1), 99);
-  size = full * youDepth(y);
-  placeYou(Math.min(Math.max(x, 4), 96), y, size);
+  const full = (standing.places[player.at] || {}).size || standing.where.size;
+  return full * standing.movedSize * youDepth(y);
 }
 
 function youDepth(y) {
