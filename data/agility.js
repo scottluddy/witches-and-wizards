@@ -18,8 +18,9 @@
 //             "jump" the steps where it's in the air.
 //   track     points around the path for a walk
 GAME_DATA.agility = {
-  "animals": ["dog", "wolf", "cat", "capybara", "turtle"],
-  "seconds": { "default": 0.7, "turtle": 1.6, "capybara": 1 },
+  "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
+  // Mice are small and quick (Claude's choice, 2026-10-18).
+  "seconds": { "default": 0.7, "turtle": 1.6, "capybara": 1, "mouse": 0.5 },
   "learnAfter": 3,
   // A pet is this much of your height (Claude's guess: little WITs are half, a pet a bit more so you can see it).
   "petSize": 0.7,
@@ -42,7 +43,7 @@ GAME_DATA.agility = {
             [93, 40], [93, 58], [88, 74], [76, 85], [58, 90], [40, 90], [26, 87], [16, 82]],
   "words": {
     "choose": "Who's coming to train? Pick a pet from your backpack.",
-    "noPets": "Bring a pet that walks (a cat, a capybara or a turtle) in your backpack to walk and learn tricks here. Owls have Falconry Lessons instead.",
+    "noPets": "Bring a pet that walks (a cat, a capybara, a turtle or a mouse) in your backpack to walk and learn tricks here. Owls have Falconry Lessons instead.",
     "pick": "🐾 Let's go!",
     "busy": "Wait for PET to finish!",
     "ready": "🐾 PET is ready! Click a tunnel, the hoops, the weave posts or the ramp, or Walk the Track.",

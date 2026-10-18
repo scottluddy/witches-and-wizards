@@ -628,6 +628,9 @@
   "pet_capybara": {
     "ink_level": 215
   },
+  "pet_mouse": {
+    "ink_level": 215
+  },
   "lake_muffins": {
     "whole": true
   },

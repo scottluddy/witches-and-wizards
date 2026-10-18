@@ -26,7 +26,7 @@ GAME_DATA.activities = [
   { "name": "Take your beluga for a swim", "kind": "Bonding", "where": "Dock and Pebble Beach (Lake)", "inGame": true,
     "note": "Belugas: +1 Bonding Point every 5 minutes." },
   { "name": "Walk and teach tricks", "kind": "Bonding", "where": "Pet Training Field (Meadows)", "inGame": true,
-    "note": "The girls' agility park (2026-10-18): cats, capybaras and turtles (dogs and wolves once drawn) run the tunnels, hoops, weave posts and ramp. All four tricks in one visit, or a lap of the track: +1 Bonding Point each, every 5 minutes. A trick done 3 times is learned." },
+    "note": "The girls' agility park (2026-10-18): cats, capybaras, turtles and mice (dogs and wolves once drawn) run the tunnels, hoops, weave posts and ramp. All four tricks in one visit, or a lap of the track: +1 Bonding Point each, every 5 minutes. A trick done 3 times is learned." },
   { "name": "Clean Room", "kind": "Chores", "where": "Home", "inGame": true,
     "note": "The room gets dustier the longer you stay. Sweep it with a broomstick from your backpack for Chore Points (data/chores.js)." },
   { "name": "Pick up trash on the beach", "kind": "Chores", "where": "Pebble Beach", "inGame": false,

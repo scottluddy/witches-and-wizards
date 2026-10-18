@@ -38,6 +38,7 @@ GAME_DATA.items = [
   {"id": "pet_pond_turtle", "name": "Pond Turtle", "category": "Pond House", "pet": true, "emoji": "🐢", "description": "A turtle that popped out of the pond by the Pond House."},
   {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
   {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},
+  {"id": "pet_mouse", "name": "Little Mouse", "category": "Pet", "gems": 5, "emoji": "🐭", "description": "A tiny mouse with big round ears and a long curly tail."},
   {"id": "potion_float", "name": "Levitating Potion", "category": "Potion", "gems": 1, "emoji": "🫧", "description": "A star-shaped bottle. One sip and you float up off the ground."},
   {"id": "potion_shrink", "name": "Shrink Potion", "category": "Potion", "gems": 8, "emoji": "🤏", "description": "A square green bottle. One sip and you're tiny! Gets you into the Tiny Hole in the Museum's Snack Shop (Scott, 2026-10-15)."},
   {"id": "potion_sense", "name": "Sense Potion", "category": "Potion", "gems": 3, "emoji": "🧪", "description": "A potion for the senses. Needed for the Seeing Spell."},

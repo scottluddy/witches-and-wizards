@@ -8,7 +8,7 @@
 //   belugas     swim in the lake from the Dock or Pebble Beach
 //   jellyfish   clean their tanks at the Fish Hut
 //   any pet     rides the roller coaster in the Multi-House with you, and eats at the Museum's Tiny Hole
-//   pets that walk          walks and agility tricks at the Pet Training Field (cats, capybaras, turtles; dogs and wolves once drawn)
+//   pets that walk          walks and agility tricks at the Pet Training Field (cats, capybaras, turtles, mice; dogs and wolves once drawn)
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
 //               in items.js, like the Lakeside Store's beluga)
@@ -30,6 +30,7 @@ GAME_DATA.bonding = {
     "turtle": ["pet_turtle", "pet_pond_turtle", "pet_turtle_trade", "pet_turtle_little"],
     "beluga": ["pet_beluga"],
     "jellyfish": ["pet_jellyfish"],
+    "mouse": ["pet_mouse"],
     "dog": [],
     "wolf": []
   },
