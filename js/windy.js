@@ -44,6 +44,7 @@ function owlFlewOverSlope(pet, said) {
 function startWindyRescue() {
   const rules = windyRules();
   player.windy.stage = "lost";
+  player.windy.who = randomLittleWit(); // which little WIT is lost (js/game.js)
   player.windy.spot = Math.floor(Math.random() * rules.columns * rules.rows);
   player.windy.tries = 0;
   player.windy.looked = [];
@@ -648,12 +649,13 @@ function warmUpTogether() {
     rules.words.done.replace("POINTS", rules.adventurePoints));
 }
 
-// The little WIT: the girls' drawing once there is one, an emoji until then.
+// The lost little WIT's drawing (the same one all through a rescue), or an
+// emoji if none is drawn. Older saves didn't keep one, so they pick one now.
 function windyArt() {
-  const rules = windyRules();
-  if (!isDrawn(rules.picture)) return rules.lostWit;
+  if (!isDrawn(player.windy.who)) player.windy.who = randomLittleWit();
+  if (!player.windy.who) return windyRules().lostWit;
   const img = document.createElement("img");
-  img.src = picture(rules.picture);
+  img.src = picture(player.windy.who);
   img.alt = "Little WIT";
   img.className = "info-picture";
   return img;

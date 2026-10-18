@@ -10,8 +10,8 @@
 // in CLAUDE.md, so the game remembers).
 GAME_DATA.nextSteps = {
   "answer": [
-    { "text": "Draw the little lost WIT and the ski slope for Lost on Windy Peak, and pick a celebration picture for rescues", "who": "Girls",
-      "note": "Save the little WIT as art/raw/extra_little_wit.jpg (it's 🧒 for now) and the slope, seen from the top, as art/raw/place_ski_slope.jpg; it gets cut into 12 sections (4 across, 3 down) and each section is shown big, so lots of little details help. Also the blanket over the Snowy Hut's couch (art/raw/hut_blanket.jpg). The catalog's Still to Draw page lists every adventure's missing pictures. The bunny, witch in a pumpkin and unicorn donut are saved and free." },
+    { "text": "Draw the ski slope for Lost on Windy Peak, and pick a celebration picture for rescues", "who": "Girls",
+      "note": "The first little WIT is drawn (2026-10-18); more little WITs can go in as art/raw/little_wit_2.jpg and so on (listed in data/characters.js), and each rescue picks one at random. Save the slope, seen from the top, as art/raw/place_ski_slope.jpg; it gets cut into 12 sections (4 across, 3 down) and each section is shown big, so lots of little details help. Also the blanket over the Snowy Hut's couch (art/raw/hut_blanket.jpg). The catalog's Still to Draw page lists every adventure's missing pictures. The bunny, witch in a pumpkin and unicorn donut are saved and free." },
     { "text": "Draw the Farm: where it goes on the World map, its own map, and the Farm House, Animal Farm and Crop Fields", "who": "Girls",
       "note": "Laid out in the game with placeholders (Scott, 2026-10-15), for now west of the Village and the Forest. Ideas to tie it in: the Animal Farm could bond and earn Chore Points (feeding, brushing, collecting eggs), crops could be food for hunger or ingredients for potions and spells, and the Farm House could hold a Cooking classroom or the Farmer who gives the Giant Pumpkin adventure." },
     { "text": "Draw the Flea Market (Floor 3 of the Multi-House), the Market Witch and some shoppers", "who": "Girls",
@@ -48,8 +48,6 @@ GAME_DATA.nextSteps = {
       "note": "For now honey is just healthy food (1 hunger point) and can't be sold. The Healing Potion (Trading Post) heals a bee sting; Claude's guess is 10 minutes to heal on its own." },
     { "text": "Draw the Sports Classroom", "who": "Girls",
       "note": "It has a placeholder picture with one spot that leads out to the Stadium." },
-    { "text": "Draw the Head Wizard", "who": "The girls",
-      "note": "The Head Witch is drawn (2026-10-15). They take turns popping out at the corner of the screen to tell you about a new adventure; the Head Wizard shows as 🧙‍♂️ for now (head_wizard)." },
     { "text": "Draw the Pixie Quest things: the 3 map pieces and a Quest picture for when it's done", "who": "The girls",
       "note": "The Golden Acorn is drawn (2026-10-15). The map pieces are strips of the Forest map; the Quest picture is the narwhal for now. The troll's 48 riddles and the couch note are Claude's (data/pixie.js): swap in any riddles you like." },
     { "text": "Draw the Museum's Exhibit Hall and its 5 rooms", "who": "Girls",

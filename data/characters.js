@@ -11,5 +11,13 @@ GAME_DATA.characters = [
   { "kind": "witch", "id": "wanda",   "name": "Wanda",  "description": "Dark pigtails and a twirly blue, pink and red dress." },
   { "kind": "witch", "id": "bany",    "name": "Bany",   "description": "Sunny yellow hair and a cheeky wink." },
   { "kind": "witch", "id": "coachy",  "name": "Coachy", "description": "Round fluffy ears and a pink and purple outfit." },
-  { "kind": "witch", "id": "lisley",  "name": "Lisley", "description": "Cosy in a red sweater with a heart, ready for snow." }
+  { "kind": "witch", "id": "lisley",  "name": "Lisley", "description": "Cosy in a red sweater with a heart, ready for snow." },
+  { "kind": "witch", "id": "everly",  "name": "Everly", "description": "Lisley's twin, with dark brown hair with a purple tint, a purple outfit and brown boots." }
+];
+
+// Little WITs: the young students you help in adventures (Lost on Windy Peak so
+// far). Anything that needs a little WIT picks one of these at random
+// (Scott, 2026-10-18), so add more drawings here as art/raw/little_wit_<n>.jpg.
+GAME_DATA.littleWits = [
+  { "id": "little_wit_1", "name": "Little WIT", "description": "Long floppy ears, freckles and a big pointy hat with a buckle." }
 ];

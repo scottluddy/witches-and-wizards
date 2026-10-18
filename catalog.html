@@ -505,6 +505,10 @@
       document.getElementById("characters").appendChild(
         card(ch.name, ch.id, "🧙", [el("span", "kind", ch.description)]));
     });
+    (GAME_DATA.littleWits || []).forEach(function (w) {
+      document.getElementById("characters").appendChild(
+        card(w.name, w.id, "🧒", [el("span", "kind", w.description)]));
+    });
 
     // Items grouped by category. Ideas have no price and aren't counted as drawings to make.
     function itemGroups(list, boxId, isIdea) {

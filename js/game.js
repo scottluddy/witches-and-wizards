@@ -80,6 +80,14 @@ function findCharacter(id) {
   return GAME_DATA.characters.find(function (c) { return c.id === id; });
 }
 
+// A little WIT for an adventure, picked at random from the drawn ones
+// (Scott, 2026-10-18: always random). "" if none are drawn yet.
+function randomLittleWit() {
+  const drawn = (GAME_DATA.littleWits || []).filter(function (w) { return isDrawn(w.id); });
+  if (!drawn.length) return "";
+  return drawn[Math.floor(Math.random() * drawn.length)].id;
+}
+
 // ---------------------------------------------------------------- title
 
 function showTitle() {

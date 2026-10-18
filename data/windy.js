@@ -36,8 +36,7 @@ GAME_DATA.windyRescue = {
   "offCentre": 0.5,       // ...at least this far out from its middle (0 = middle, 1 = edge; Scott: never the middle)...
   "findDistance": 5,      // ...and how close a click must be to find them
   "lightSeconds": 1.2,    // how long the spot stays lit
-  "lostWit": "🧒",        // until the girls draw the little WIT (art/raw/extra_little_wit.jpg)
-  "picture": "extra_little_wit",
+  "lostWit": "🧒",        // if no little WIT is drawn (they're in data/characters.js, one is picked at random)
   "hutSpot": { "x": 50, "y": 72 },   // where the little WIT's feet are when you come in
   // In the Snowy Hut, things sit on the furniture they belong to and move with it.
   // x, y, width: percent of the hut picture, where they are when the furniture hasn't been moved.
