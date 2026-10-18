@@ -1131,7 +1131,7 @@ body.holding-apple, body.holding-apple * {
 /* The little WIT, tiny in the Binocular View (js/windy.js binocularWit). */
 .slope-view .binocular-wit { position: absolute; transform: translate(-50%, -60%); font-size: 1.4rem; line-height: 1;
   filter: drop-shadow(0 0 6px #ffe066); }
-.slope-view .binocular-wit img { width: auto; height: 100%; transform: none; }
+.slope-view .binocular-wit img { width: auto; height: 100%; transform: none; filter: none; } /* not green: the lantern lights them up */
 /* The ride down the Ski Slope (js/windy.js startSkiRide): feet at left, top; height set in JS. */
 .skier { position: absolute; font-size: 3rem; line-height: 1; filter: drop-shadow(0 0 6px var(--gold)); }
 .skier img { height: 100%; width: auto; display: block; }
