@@ -16,17 +16,18 @@
 //   seat   optional: a couch or chair you can sit on (click it, or drag yourself
 //          onto it; js/you.js). x, y: where your feet go, in percent across and
 //          down the piece; size: how tall you are sitting there, in percent of
-//          the room picture, so you fit the seat
+//          the room picture, so you fit the seat; sitters: how many fit
+//          (2 on a couch, 1 if not given). One sitter sits in the middle.
 GAME_DATA.furniture = [
   { "place": "hut", "id": "snack_table", "name": "Snack Table",  "box": [6, 10.8, 36, 41.5],
     "keep_out": [[19.5, 10, 24, 11.4], [25.5, 10, 30, 12.3]] },
-  { "place": "hut", "id": "armchair",   "name": "Pink Armchair", "box": [67, 24, 92, 51], "seat": { "x": 82, "y": 85, "size": 29 } },
+  { "place": "hut", "id": "armchair",   "name": "Pink Couch", "box": [67, 24, 92, 51], "seat": { "x": 50, "y": 85, "size": 29, "sitters": 2 } },
   { "place": "hut", "id": "bookshelf",  "name": "Bookshelf",    "box": [79, 50, 97, 86] },
   { "place": "hut", "id": "egg_chair",  "name": "Purple Chair", "box": [57, 71, 69, 88], "seat": { "x": 50, "y": 80, "size": 22 } },
 
   { "place": "cabin", "id": "table",    "name": "Little Table", "box": [7, 63, 22, 78] },
   { "place": "cabin", "id": "stool",    "name": "Stool",       "box": [22, 69, 30, 78], "seat": { "x": 50, "y": 70, "size": 16 } },
-  { "place": "cabin", "id": "sofa",     "name": "Blue Sofa",   "box": [37, 55, 66, 75], "seat": { "x": 50, "y": 80, "size": 26 } },
+  { "place": "cabin", "id": "sofa",     "name": "Blue Sofa",   "box": [37, 55, 66, 75], "seat": { "x": 50, "y": 80, "size": 26, "sitters": 2 } },
   { "place": "cabin", "id": "bookshelf", "name": "Bookshelf",   "box": [84, 57, 100, 76] },
 
   { "place": "home", "id": "bird_cage", "name": "Bird Cage", "box": [36.5, 23.6, 56.5, 65.0], "min_part": 0.002 },
@@ -35,7 +36,7 @@ GAME_DATA.furniture = [
   { "place": "home", "id": "armchair", "name": "Pink Armchair", "box": [64.0, 60.5, 84.5, 95.0], "min_part": 0.002, "seat": { "x": 50, "y": 75, "size": 34 } },
   { "place": "home", "id": "cooler", "name": "Cooler and Pet Food", "holds": "homeCooler", "box": [2.0, 74.5, 19.8, 90.0], "min_part": 0.002 },
   { "place": "home", "id": "spellbook_table", "name": "Spell Book Table", "holds": "homeMaterials", "box": [19.6, 73.6, 42.0, 96.0], "min_part": 0.002 },
-  { "place": "old_oak", "id": "sofa",     "name": "Teal Sofa",  "box": [4, 54, 48, 84.5], "seat": { "x": 50, "y": 75, "size": 34 } },
+  { "place": "old_oak", "id": "sofa",     "name": "Teal Sofa",  "box": [4, 54, 48, 84.5], "seat": { "x": 50, "y": 75, "size": 34, "sitters": 2 } },
   { "place": "old_oak", "id": "pouf",     "name": "Round Stool", "box": [52, 67, 61, 78.5], "seat": { "x": 50, "y": 70, "size": 22 } },
   { "place": "mountain_house", "id": "table",  "name": "Table and Mug", "box": [7, 66, 29, 83], "min_part": 0.01 },
   { "place": "mountain_house", "id": "pink_chair",  "name": "Pink Armchair",  "box": [36, 68, 64, 85], "seat": { "x": 50, "y": 75, "size": 16 } },

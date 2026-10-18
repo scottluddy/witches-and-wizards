@@ -39,21 +39,44 @@ function sitYouAt(seat, on) {
 }
 
 // Sit on a piece of furniture, wherever it stands now (js/furniture.js).
-// "seat" in data/furniture.js: x, y are percent across and down the piece,
-// size is your height in percent of the picture.
 function sitOnPiece(piece) {
-  const rect = pieceRect(piece);
-  sitYouAt({ x: rect[0] + rect[2] * piece.seat.x / 100,
-             y: rect[1] + rect[3] * piece.seat.y / 100,
-             size: piece.seat.size }, { piece: piece.id });
+  if (seatTaken(piece)) {
+    document.getElementById("place-description").textContent =
+      GAME_DATA.standing.words.taken.replace("SEAT", piece.name);
+    return;
+  }
+  seatYouOn(piece);
   document.getElementById("place-description").textContent =
     GAME_DATA.standing.words.sat.replace("SEAT", piece.name);
-  showWindy(findPlace(player.at)); // the Snowy Hut's blanket can cover you now (js/windy.js)
+  showWindy(findPlace(player.at)); // the Snowy Hut's blanket can cover you now, the little WIT shuffles over (js/windy.js)
 }
 
-// A piece of furniture was moved: if you were sitting on it, you move too.
+// Put you on the piece: in the middle, or on the left if someone else sits there too.
+function seatYouOn(piece) {
+  sitYouAt(seatPlace(piece, 0, othersSittingOn(piece.id) > 0), { piece: piece.id });
+}
+
+// Where someone sits on a piece of furniture (Scott, 2026-10-18): one sitter
+// sits in the middle; two on a couch sit a little apart, place 0 on the left
+// and place 1 on the right. "seat" in data/furniture.js: x, y are percent
+// across and down the piece, size is a sitter's height in percent of the
+// picture (before it's halved, see sitYouAt), "sitters" how many fit (1 if not given).
+function seatPlace(piece, place, sharing) {
+  const rect = pieceRect(piece);
+  const shift = sharing ? (place === 0 ? -1 : 1) * GAME_DATA.standing.shareShift : 0;
+  return { x: rect[0] + rect[2] * (piece.seat.x + shift) / 100,
+           y: rect[1] + rect[3] * piece.seat.y / 100,
+           size: piece.seat.size };
+}
+
+// Is there no room left for you? (the little WIT in the Snowy Hut, js/windy.js)
+function seatTaken(piece) {
+  return othersSittingOn(piece.id) >= (piece.seat.sitters || 1);
+}
+
+// You or someone else sat down or got up: you shuffle to the middle, or over to make room.
 function youFollowFurniture(piece) {
-  if (youNow.on && youNow.on.piece === piece.id && piece.seat) sitOnPiece(piece);
+  if (youNow.on && youNow.on.piece === piece.id && piece.seat) seatYouOn(piece);
 }
 
 function youSitting() {

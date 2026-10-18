@@ -1103,7 +1103,7 @@ body.holding-apple, body.holding-apple * {
   background: radial-gradient(circle, rgba(255, 240, 150, 0.8), rgba(255, 240, 150, 0.3) 45%, transparent 70%);
   animation: lantern-glow 1.2s ease-in-out infinite alternate; }
 @keyframes lantern-glow { from { opacity: 0.55; } to { opacity: 1; } }
-#place-windy { position: absolute; inset: 0; pointer-events: none; } /* furniture underneath can still be moved */
+#place-windy { position: absolute; inset: 0; pointer-events: none; container-type: size; } /* furniture underneath can still be moved */
 #place-windy[hidden] { display: none; }
 .slope-pieces, .slope-zoom, .draggable, .little-wit { pointer-events: auto; }
 .slope-pieces { position: absolute; inset: 0; display: grid; }
@@ -1129,18 +1129,22 @@ body.holding-apple, body.holding-apple * {
 .shake { animation: shake 0.4s; }
 @keyframes shake { 25% { transform: translateX(-6px); } 50% { transform: translateX(6px); } 75% { transform: translateX(-4px); } }
 /* The Snowy Hut: the little WIT, the mug and the blanket can be dragged. */
-.hut-wit { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; }
-.hut-wit-bubble { background: #fff; border: 2px solid #557; border-radius: 16px; padding: 6px 12px; font-size: 1.1rem; margin-bottom: 6px; white-space: nowrap; }
-.hut-wit-face { font-size: 4rem; }
+/* The little WIT: feet at left, top; its height (half yours) is set in js/windy.js. */
+.hut-wit { position: absolute; transform: translate(-50%, -100%); }
+.hut-wit-bubble { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 6px;
+  background: #fff; border: 2px solid #557; border-radius: 16px; padding: 6px 12px; font-size: 1.1rem; white-space: nowrap; }
+.hut-wit.beside .hut-wit-bubble { left: 0; transform: none; } /* sitting next to you: talk away from your face */
+/* An emoji has no height of its own: "cqh" is a hundredth of the picture's height, so it's as tall as the little WIT should be. */
+.hut-wit-face { display: block; height: 100%; line-height: 1; text-align: center; font-size: calc(var(--height) * 0.85cqh); }
 .hut-wit.shivering .hut-wit-face { animation: shake 0.6s infinite; }
-.hut-wit-face img { width: 6rem; height: auto; }
+.hut-wit-face img { height: 100%; width: auto; display: block; }
 .hut-mug, .hut-blanket { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; touch-action: none; user-select: none; }
 .hut-mug img, .hut-blanket img { width: 100%; height: auto; display: block; }
 .hut-blanket.placeholder { aspect-ratio: 1.3; border-radius: 6px 6px 14px 14px; border: 2px solid #8a3b3b;
   background: repeating-linear-gradient(0deg, transparent 0 8px, rgba(255, 255, 255, 0.35) 8px 11px),
               repeating-linear-gradient(90deg, #c94f4f 0 8px, #e9c46a 8px 11px); }
-.hut-blanket.covering, .hut-blanket.draggable { z-index: 2; } /* over you or the little WIT, even when they sit in front */
-.hut-blanket.covering:not(.on-you) { width: 8% !important; } /* on you, it's sized to fit you (js/windy.js blanketForYou) */
+.hut-blanket.covering { z-index: 2; } /* over your lap or the little WIT's, sized to fit them (js/windy.js coverWith) */
+.hut-blanket.draggable:not(.dragging) { z-index: 0; } /* hanging on the couch, behind anyone sitting there */
 .draggable { cursor: grab; touch-action: none; z-index: 2; } /* grabbable even when you sit in front */
 .draggable:hover { filter: drop-shadow(0 0 6px var(--gold)); }
 .draggable.dragging { cursor: grabbing; z-index: 2; }

@@ -14,9 +14,12 @@ GAME_DATA.standing = {
   "movedSize": 0.5,
   // Dropping yourself this close (percent of the picture) to a seat spot sits you on it.
   "seatReach": 10,
+  // Two on a couch sit this far either side of its middle (percent of the couch's width).
+  "shareShift": 18,
   "words": {
     "title": "You! Drag yourself around, or onto a couch to sit down",
-    "sat": "🛋️ You sit down on the SEAT. Comfy!"
+    "sat": "🛋️ You sit down on the SEAT. Comfy!",
+    "taken": "Someone is already sitting on the SEAT."
   },
 
   // Places where you'd get in the way, or something else already shows you:

@@ -424,15 +424,14 @@ function showHut() {
       if (!overCouch(event)) return false;
       player.windy.stage = "sitting";
       writeSave(player);
+      shuffleOver(); // if you're on the couch, you make room
       showWindy(findPlace(rules.hut));
       return true;
     });
   }
   if (stage === "covered") {
     // The blanket is over them now.
-    blanket.classList.add("covering");
-    blanket.style.left = wit.style.left;
-    blanket.style.top = parseFloat(wit.style.top) + 10 + "%";
+    coverWith(blanket, wit, box);
   } else {
     dragThing(blanket, box, function (event) {
       if (!overThing(wit, event)) return false;
@@ -456,19 +455,7 @@ function showHut() {
 function blanketForYou(blanket, box) {
   const you = youNow.el; // js/you.js
   if (!you) return;
-  if (youNow.covered) {
-    // Over your lap, wherever you're sitting.
-    // Your height is in percent of the picture's height, the blanket's width in
-    // percent of its width, so "shape" turns one into the other.
-    const size = parseFloat(you.style.height);
-    const pic = box.getBoundingClientRect();
-    const shape = pic.width ? pic.height / pic.width : 0.66;
-    blanket.classList.add("covering", "on-you");
-    blanket.style.left = you.style.left;
-    blanket.style.top = parseFloat(you.style.top) - size * 0.22 + "%";
-    blanket.style.width = size * 0.42 * shape + "%";
-    return;
-  }
+  if (youNow.covered) return coverWith(blanket, you, box);
   dragThing(blanket, box, function (event) {
     if (!overThing(you, event)) return false;
     if (!youSitting()) { sayWindy(windyRules().words.youSitFirst); return false; }
@@ -477,6 +464,38 @@ function blanketForYou(blanket, box) {
     showWindy(findPlace(windyRules().hut));
     return true;
   });
+}
+
+// The blanket over someone's lap, sized to fit them. Their height is in percent
+// of the picture's height, the blanket's width in percent of its width, so
+// "shape" turns one into the other.
+function coverWith(blanket, sitter, box) {
+  const size = parseFloat(sitter.style.height);
+  const pic = box.getBoundingClientRect();
+  const shape = pic.width ? pic.height / pic.width : 0.66;
+  blanket.classList.add("covering");
+  blanket.style.left = sitter.style.left;
+  blanket.style.top = parseFloat(sitter.style.top) - size * 0.22 + "%";
+  blanket.style.width = size * 0.42 * shape + "%";
+}
+
+// Is the little WIT sitting on this piece of furniture? (for sharing a couch, js/you.js)
+function othersSittingOn(pieceId) {
+  const stage = player.windy.stage;
+  const sitting = player.at === windyRules().hut && (stage === "sitting" || stage === "covered");
+  return sitting && windyRules().seat.on === pieceId ? 1 : 0;
+}
+
+// The little WIT sat down or got up: if you're on the couch, you move over or back to the middle.
+function shuffleOver() {
+  const couch = witCouch();
+  if (couch) youFollowFurniture(couch); // js/you.js
+}
+
+// The couch the little WIT sits on, if it's cut out as movable furniture.
+function witCouch() {
+  const rules = windyRules();
+  return roomPieces(rules.hut).find(function (p) { return p.id === rules.seat.on && p.seat; }) || null; // js/furniture.js
 }
 
 // The mug or the blanket, standing where its furniture is now.
@@ -516,17 +535,29 @@ function furnitureMoved(pieceId) {
 }
 
 // The little WIT in the hut: standing and shivering, or sitting on the couch.
+// Little WITs are always half the size of your character (Scott, 2026-10-18):
+// half your size standing in the same spot, or sitting on the same couch.
 function showColdWit(box) {
   const rules = windyRules();
   const stage = player.windy.stage;
   const wit = document.createElement("div");
   wit.className = "hut-wit" + (stage === "cold" ? " shivering" : "");
-  if (stage === "cold") {
-    wit.dataset.x = rules.hutSpot.x;
-    wit.dataset.y = rules.hutSpot.y;
-    wit.style.left = wit.dataset.x + "%";
-    wit.style.top = wit.dataset.y + "%";
-  } else placeOnFurniture(wit, rules.seat);
+  let spot;
+  const couch = witCouch();
+  if (stage === "cold") spot = { x: rules.hutSpot.x, y: rules.hutSpot.y, size: movedHeight(rules.hutSpot.y) }; // js/you.js
+  else if (couch) {
+    // On the right if you're sitting there too, in the middle if not.
+    const sharing = !!(youNow.on && youNow.on.piece === couch.id);
+    spot = seatPlace(couch, 1, sharing);
+    if (sharing) wit.classList.add("beside"); // their speech bubble leans away from you
+    spot.size *= GAME_DATA.standing.movedSize; // your size sitting there (js/you.js sitYouAt)
+  } else spot = { x: rules.seat.x, y: rules.seat.y, size: movedHeight(rules.seat.y) };
+  wit.dataset.x = spot.x;
+  wit.dataset.y = spot.y;
+  wit.style.left = spot.x + "%";
+  wit.style.top = spot.y + "%";
+  wit.style.height = spot.size / 2 + "%";
+  wit.style.setProperty("--height", spot.size / 2); // for the emoji's size (css/style.css)
   const bubble = document.createElement("span");
   bubble.className = "hut-wit-bubble";
   bubble.textContent = rules.words[stage];
@@ -596,6 +627,7 @@ function warmUpTogether() {
   player.windy.done++;
   player.windy.stage = ""; // the owl can spot another lost WIT next time
   writeSave(player);
+  shuffleOver(); // you get the couch to yourself again
   showWindy(findPlace(rules.hut)); // the mug and blanket go back
   openInfoPanel(celebrationArt("rescue", "☕🧒☕"), "Rescued!", // js/game.js
     rules.words.done.replace("POINTS", rules.adventurePoints));
