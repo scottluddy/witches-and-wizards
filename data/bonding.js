@@ -8,7 +8,7 @@
 //   belugas     swim in the lake from the Dock or Pebble Beach
 //   jellyfish   clean their tanks at the Fish Hut
 //   any pet     rides the roller coaster in the Multi-House with you, and eats at the Museum's Tiny Hole
-//   pets that walk          walks and agility tricks at the Pet Training Field (cats, capybaras, turtles, mice; dogs and wolves once drawn)
+//   dogs and wolves         laps of the track and the obstacle course at the Pet Training Field
 //
 //   pets        the shop shelves pets come from (a pet elsewhere says "pet": true
 //               in items.js, like the Lakeside Store's beluga)
@@ -31,8 +31,8 @@ GAME_DATA.bonding = {
     "beluga": ["pet_beluga"],
     "jellyfish": ["pet_jellyfish"],
     "mouse": ["pet_mouse"],
-    "dog": [],
-    "wolf": []
+    "dog": ["pet_dog"],
+    "wolf": ["pet_wolf"]
   },
   "bath": { "points": 1, "everyMinutes": 5, "animals": ["capybara"] },
   "cuddle": { "points": 1, "everyMinutes": 5, "animals": ["cat"] },
@@ -74,10 +74,10 @@ GAME_DATA.bonding = {
     "ask": "A bowl of pet food! Feed your pet a snack.",
     "noPets": "Bring a pet in your backpack to feed it.",
     "thanks": "🥣 Your PET gobbles up the food. Yum!" },
-  // Walks and Tricks at the Pet Training Field (Scott, 2026-10-18; js/agility.js, data/agility.js):
-  // finish the agility course, or walk a lap of the track, with any pet that walks.
-  "pet_tricks": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
-    "title": "Agility Tricks", "emoji": "⭕" },
-  "pet_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
-    "title": "Walk the Track", "emoji": "🐾" }
+  // The Pet Training Field's agility park (Scott, 2026-10-19; js/agility.js, data/agility.js):
+  // drop a dog or wolf on the Obstacle Course, or on the Starting Line for laps of the track.
+  "pet_tricks": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf"],
+    "title": "Obstacle Course", "emoji": "⭕" },
+  "pet_walk": { "points": 1, "everyMinutes": 5, "animals": ["dog", "wolf"],
+    "title": "Laps of the track", "emoji": "🏁" }
 };

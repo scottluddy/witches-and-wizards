@@ -49,7 +49,6 @@ function fillIn(save) {
   if (!save.invisibleWall) save.invisibleWall = []; // writing on the Invisibility Room's wall (js/invisible.js)
   if (!save.windy) save.windy = newWindy(); // Lost on Windy Peak (js/windy.js)
   // Owls that had a falconry lesson before this list existed still count.
-  if (!save.tricks) save.tricks = {}; // Walks and Tricks (js/agility.js)
   if (!save.falconryDone) save.falconryDone = Object.keys((save.lastCare || {}).falconry || {});
   if (!save.homeCooler) save.homeCooler = [];
   if (!save.homeChest) save.homeChest = [];
@@ -225,7 +224,6 @@ function newPlayer(playerName, characterId, kind) {
     invisibleWall: [],        // what you wrote on the Invisibility Room's wall: [{ text, x, y }] (js/invisible.js)
     inkLetters: 0,            // how many more letters your bottle of Invisible Ink can write (js/invisible.js)
     windy: newWindy(),        // Lost on Windy Peak: how far along, the slope and where the little WIT is (js/windy.js)
-    tricks: {},               // how many times each pet did each trick: { "pet_cat": { "hoops": 2 } } (js/agility.js)
     falconryDone: [],         // owls that have had a falconry lesson, so they can fly at Windy Peak (js/bonding.js)
     smore: null,              // "raw" while holding a s'more to roast at the Pond House (js/pixie.js)
     scholarship: true,        // one free item per store category, until all are chosen

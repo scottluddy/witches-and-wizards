@@ -35,6 +35,10 @@ GAME_DATA.items = [
   {"id": "broom_no11", "name": "Play-doh", "category": "Broomstick", "gems": 5, "emoji": "🧹", "description": "The Play-doh broomstick."},
   {"id": "pet_turtle", "name": "Healing Turtle", "category": "Pet", "gems": 3, "emoji": "🐢", "description": "A gentle turtle whose shell glows when someone needs healing."},
   {"id": "potion_finding", "name": "Finding Potion", "category": "Pixie Gifts", "emoji": "🧪", "description": "A purple potion from the Pixie. Drink it to find a secret place."},
+  // Dogs and wolves for the Pet Training Field (Scott, 2026-10-19). Emoji until the girls draw them,
+  // and not in any shop yet: for now they come in Tester Mode's bags.
+  {"id": "pet_dog", "name": "Puppy", "category": "Pet Training Field", "pet": true, "emoji": "🐕", "description": "A bouncy puppy who loves to run. (Waiting to be drawn!)"},
+  {"id": "pet_wolf", "name": "Wolf Pup", "category": "Pet Training Field", "pet": true, "emoji": "🐺", "description": "A fast, fluffy wolf pup. (Waiting to be drawn!)"},
   {"id": "pet_pond_turtle", "name": "Pond Turtle", "category": "Pond House", "pet": true, "emoji": "🐢", "description": "A turtle that popped out of the pond by the Pond House."},
   {"id": "pet_owl", "name": "Snowy Owl", "category": "Pet", "gems": 17, "emoji": "🦉", "description": "A fluffy white owl with big round eyes."},
   {"id": "pet_cat", "name": "Midnight Cat", "category": "Pet", "gems": 15, "emoji": "🐈", "description": "A soft brown cat who loves the night."},

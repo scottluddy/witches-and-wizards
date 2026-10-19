@@ -34,7 +34,7 @@ const SPOT_ICONS = {
   honey: "🍯", picnic: "🧺", meeting_place: "🐾", piano: "🎹", piano_lesson: "🎹", archery: "🏹", soccer: "⚽", riddle: "❓", bridge: "🌉",
   pond: "🐢", elevator: "🛗", coaster: "🎢", turtle_sniff: "🐢", smores: "🍫", fireplace: "🔥", hot_chocolate: "☕", tiny_hole: "🕳️",
   museum_pay: "🎟️", menu_shop: "📋", seat: "🪑", market_booth: "🧙‍♀️", market_table: "🪑", artifact_chest: "🧰", ship_model: "⛵",
-  pet_tricks: "⭕", pet_walk: "🐾", pet_sign: "🪧"
+  pet_tricks: "🚩", pet_walk: "🏁"
 };
 
 function isDrawn(name) {
@@ -380,9 +380,8 @@ function openSpot(childId) {
   if (child.type === "invisible_ink") return openInvisibleInk(); // js/invisible.js
   if (child.type === "piano") return openPiano();              // js/music.js
   if (child.type === "piano_lesson") return openPianoLesson(); // js/music.js
-  if (child.type === "pet_tricks") return openPetTricks(child);  // js/agility.js
+  if (child.type === "pet_tricks") return openPetTricks();    // js/agility.js
   if (child.type === "pet_walk") return openPetWalk();         // js/agility.js
-  if (child.type === "pet_sign") return openPetSign();         // js/agility.js
   if (child.type === "care") return openCareSpot(child);       // falconry, yarn, swimming... (js/bonding.js)
   if (child.type === "honey") return openBeehive();            // js/honey.js
   if (child.type === "archery") return openArchery();          // js/sports.js

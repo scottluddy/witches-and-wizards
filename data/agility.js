@@ -1,58 +1,74 @@
-// Walks and Tricks in the Agility Park, part of the Pet Training Field
-// (Scott, 2026-10-18: the girls' drawing, "Walks and tricks"). Code in js/agility.js.
+// The Pet Training Field's agility park (Scott, 2026-10-18: the girls' drawing;
+// 2026-10-19: "there are only 2 activities"). Code in js/agility.js.
 //
-// Bring a pet in your backpack and pick it at the Training Sign (or just click
-// anything). Click a tunnel, the hoops, the weave posts or the ramp and you
-// walk over while your pet does the trick. Do all four in one visit to finish
-// the course: +1 Bonding Point. Walk the Track: a lap of the path around the
-// field together, +1 Bonding Point. Each pet once every 5 minutes (data/bonding.js
-// "pet_tricks" and "pet_walk"). After doing a trick "learnAfter" times, your pet
-// has learned it and does it with sparkles.
+// Your dogs and wolves come out of your backpack and stand next to you. Drag
+// one and drop it:
+//   on the Starting Line    it walks a lap of the track, then runs one
+//   on the Obstacle Course  it goes through every obstacle in order: up and
+//                           over the ramp, in and out of the weave posts,
+//                           through the bendy tunnel, through the three hoops
+//                           and through the long tunnel
+// Each one finished: +1 Bonding Point, once per pet every 5 minutes
+// (data/bonding.js "pet_walk" and "pet_tricks").
 //
-//   animals   which pets can do it (Claude's choice: pets that walk on land;
-//             owls have falconry, water pets swim)
-//   seconds   how long each step of a trick takes, per animal (turtles are slow!)
-//   tricks    the four tricks: name, emoji, what happens
-//   paths     where the pet goes for each obstacle spot: [x, y] of its feet, in
-//             percent of the picture. "hide" lists the steps where it's inside a tunnel,
-//             "jump" the steps where it's in the air.
-//   track     points around the path for a walk
+//   animals        which pets can train here (Scott, 2026-10-19: dogs and wolves for now)
+//   dropReach      how close (percent of the picture) a drop must be to a start to count
+//   petSize        a pet's height compared with yours standing at the same spot
+//   speed          how fast each animal goes, in percent of the picture per second
+//   tunnelSeconds  how long a pet is out of sight inside a tunnel (Scott: "a couple seconds")
+//   track          the oval path: its middle, how wide and tall it is (half), and
+//                  the laps: "walk" or "run", one after the other
+//   course         where it starts, then each step of the way: "to" is where the
+//                  pet's feet go next; "jump" makes it hop up that high on the way
+//                  (hoops, onto and off the ramp); "hidden" means inside a tunnel
 GAME_DATA.agility = {
-  "animals": ["dog", "wolf", "cat", "capybara", "turtle", "mouse"],
-  // Mice are small and quick (Claude's choice, 2026-10-18).
-  "seconds": { "default": 0.7, "turtle": 1.6, "capybara": 1, "mouse": 0.5 },
-  "learnAfter": 3,
-  // A pet is this much of your height (Claude's guess: little WITs are half, a pet a bit more so you can see it).
+  "animals": ["dog", "wolf"],
+  "dropReach": 9,
   "petSize": 0.7,
-  "tricks": {
-    "tunnel": { "name": "Tunnel Dash", "emoji": "🌀", "says": "PET dashes into the tunnel... and pops out the other end!" },
-    "hoops":  { "name": "Hoop Jump", "emoji": "⭕", "says": "PET leaps through all three hoops. Boing, boing, boing!" },
-    "weave":  { "name": "Weave", "emoji": "〰️", "says": "PET weaves in and out of the posts without bumping a single one!" },
-    "ramp":   { "name": "Ramp Walk", "emoji": "🪜", "says": "PET trots up the ramp, balances at the top and hops down." }
+  "speed": {
+    "dog":  { "walk": 12, "run": 22 },
+    "wolf": { "walk": 14, "run": 28 }
   },
-  "paths": {
-    "agility_tunnel": { "trick": "tunnel", "points": [[39, 72], [44, 71], [54, 71], [64, 71], [68, 74]], "hide": [2, 3] },
-    "agility_tunnel_bend": { "trick": "tunnel", "points": [[73, 42], [75, 43], [76, 52], [77, 64], [80, 68]], "hide": [2, 3] },
-    "agility_hoops": { "trick": "hoops",
-      "points": [[38, 59], [44.5, 56], [48.5, 59], [52, 54], [56.5, 59], [61, 55], [66, 59]], "jump": [1, 3, 5] },
-    "agility_weave": { "trick": "weave",
-      "points": [[37, 37], [42, 34], [47, 37], [53, 34], [60, 37], [65, 33], [73, 37], [78, 35]] },
-    "agility_ramp": { "trick": "ramp", "points": [[24, 46], [27, 40], [32, 36], [36, 34], [38, 44]], "jump": [2, 3] }
+  "tunnelSeconds": 2,
+  "track": {
+    "start": [50, 89],
+    "middle": [50.5, 51],
+    "size": [42, 38],
+    "laps": ["walk", "run"]
   },
-  "track": [[16, 82], [10, 66], [9, 48], [13, 32], [24, 19], [40, 13], [58, 12], [75, 15], [87, 24],
-            [93, 40], [93, 58], [88, 74], [76, 85], [58, 90], [40, 90], [26, 87], [16, 82]],
+  "course": {
+    "start": [21, 50],
+    "steps": [
+      { "to": [25, 46] },
+      { "to": [29, 39], "jump": 3, "name": "ramp" },
+      { "to": [35, 37] },
+      { "to": [39, 43], "jump": 3 },
+      { "to": [42, 37], "name": "weave posts" },
+      { "to": [44.5, 41] }, { "to": [47, 35] }, { "to": [50, 40] }, { "to": [53, 33] },
+      { "to": [56.5, 39] }, { "to": [60, 32] }, { "to": [62.5, 38] }, { "to": [65, 31] },
+      { "to": [69, 37] }, { "to": [73, 33] }, { "to": [77, 37] },
+      { "to": [75, 42], "name": "bendy tunnel" },
+      { "to": [75, 66], "hidden": true },
+      { "to": [70, 63] },
+      { "to": [65, 59], "name": "hoops" },
+      { "to": [57, 59], "jump": 5 },
+      { "to": [48.5, 59], "jump": 7 },
+      { "to": [40.5, 59], "jump": 5 },
+      { "to": [43, 72], "name": "long tunnel" },
+      { "to": [64, 72], "hidden": true },
+      { "to": [69, 77] }
+    ]
+  },
   "words": {
-    "choose": "Who's coming to train? Pick a pet from your backpack.",
-    "noPets": "Bring a pet that walks (a cat, a capybara, a turtle or a mouse) in your backpack to walk and learn tricks here. Owls have Falconry Lessons instead.",
-    "pick": "🐾 Let's go!",
-    "busy": "Wait for PET to finish!",
-    "ready": "🐾 PET is ready! Click a tunnel, the hoops, the weave posts or the ramp, or Walk the Track.",
-    "learned": "🎉 PET learned the TRICK trick!",
-    "course": "🏆 Course complete! You and PET did all four tricks.",
+    "noPets": "Bring a dog or a wolf in your backpack to train here.",
+    "ready": "🐾 Drag PET onto the Starting Line to do laps, or onto the Obstacle Course to run it.",
+    "dragHere": "Drag your dog or wolf from beside you and drop it here.",
+    "walking": "🐾 PET is walking a lap of the track...",
+    "running": "💨 Now PET is running a lap!",
+    "laps": "🏁 PET finished the laps!",
+    "obstacle": "PET heads for the OBSTACLE...",
+    "course": "🏆 PET went through every obstacle!",
     "practice": "Great practice! PET can earn another Bonding Point in MIN min.",
-    "walked": "🐾 You and PET walk a whole lap around the field together.",
-    "sign": "Training Sign",
-    "swap": "🔁 Train another pet",
-    "left": "PET isn't in your backpack any more."
+    "stopped": "You picked PET up. Drop it on the Starting Line or the Obstacle Course."
   }
 };

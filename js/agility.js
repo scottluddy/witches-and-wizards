@@ -1,152 +1,43 @@
-// Walks and Tricks in the Agility Park, part of the Pet Training Field
-// (Scott, 2026-10-18): the girls' drawing. Your pet comes out of your backpack and stands next to you;
-// click a tunnel, the hoops, the weave posts or the ramp and you walk over
-// while your pet runs it. All four in one visit finish the course (+1 Bonding
-// Point); a lap of the track together is another. Numbers and paths are in
-// data/agility.js, the Bonding Points in data/bonding.js.
+// The Pet Training Field's agility park (Scott, 2026-10-19: two activities).
+// Your dogs and wolves stand next to you. Drag one onto the Starting Line and
+// it walks a lap of the track, then runs one; drop it on the Obstacle Course
+// and it goes over the ramp, through the weave posts, the bendy tunnel, the
+// hoops and the long tunnel, disappearing inside each tunnel for a moment.
+// Each finished: +1 Bonding Point. Numbers and routes are in data/agility.js.
 
 const FIELD = "agility_park"; // inside the Pet Training Field
-let agility = { pet: null, done: [], busy: false, timer: null };
+let agility = { pets: [], visit: 0 }; // pets: { pet, el, x, y, run } for each dog or wolf on the field
 
 // Called for every place you walk into (js/world.js showPlace).
 function showAgility(place) {
-  clearTimeout(agility.timer);
-  agility = { pet: null, done: [], busy: false, timer: null };
+  agility = { pets: [], visit: agility.visit + 1 }; // a new visit stops any runs from the last one
   const box = document.getElementById("place-agility");
   box.innerHTML = "";
   box.hidden = place.id !== FIELD;
   if (box.hidden) return;
-  // With just one pet that can train, it comes straight out; with more, you pick at the first click.
+  drawStartMarks(box);
   const pets = agilityPets();
-  if (pets.length === 1) bringOut(pets[0]);
+  if (!pets.length) return say(GAME_DATA.agility.words.noPets);
+  // They stand in a row just beside you.
+  const you = whereYouAre();
+  pets.forEach(function (pet, i) { addTrainee(box, pet, you.x + 8 + i * 6, you.y); });
+  say(GAME_DATA.agility.words.ready, pets.length === 1 ? pets[0] : null);
 }
 
-function stillAtField() {
-  return player && player.at === FIELD && !document.getElementById("screen-place").hidden;
+function stillAtField(visit) {
+  return agility.visit === visit && player && player.at === FIELD &&
+    !document.getElementById("screen-place").hidden;
 }
 
-// Pets in your backpack that can walk and do tricks (data/agility.js "animals").
+// Dogs and wolves in your backpack (data/agility.js "animals").
 function agilityPets() {
   const animals = GAME_DATA.agility.animals;
   return petsIn(player.backpack).filter(function (pet) { return animals.indexOf(animalOf(pet)) !== -1; }); // js/bonding.js
 }
 
-function say(text) {
-  document.getElementById("place-description").textContent = text.replace(/PET/g, agility.pet ? agility.pet.name : "your pet");
-}
-
-// ---------------------------------------------------------------- clicking things
-
-// A tunnel, the hoops, the weave posts or the ramp ("type": "pet_tricks" in data/places.js).
-function openPetTricks(spot) {
-  whenPetReady(function () { doTrick(spot); });
-}
-
-// Walk the Track ("type": "pet_walk").
-function openPetWalk() {
-  whenPetReady(walkTrack);
-}
-
-// Your pet needs to be out (and still in your backpack), and not in the middle of something.
-function whenPetReady(then) {
-  if (agility.busy) return say(GAME_DATA.agility.words.busy);
-  if (agility.pet && player.backpack.indexOf(agility.pet.id) === -1) {
-    say(GAME_DATA.agility.words.left);
-    agility.pet = null;
-    document.getElementById("place-agility").innerHTML = "";
-  }
-  if (agility.pet) return then();
-  const pets = agilityPets();
-  if (pets.length === 1) {
-    bringOut(pets[0]);
-    return then();
-  }
-  choosePet(then);
-}
-
-// Pick which pet trains (several in your backpack, or swapping at the sign).
-function choosePet(then) {
-  const words = GAME_DATA.agility.words;
-  const pets = agilityPets();
-  const body = openInfoPanel("🐾", "Walks and Tricks", pets.length ? words.choose : words.noPets);
-  const row = document.createElement("div");
-  row.className = "item-row";
-  pets.forEach(function (pet) {
-    row.appendChild(itemCard(pet, words.pick, function () {
-      document.getElementById("info-panel").hidden = true;
-      bringOut(pet);
-      if (then) then();
-    }));
-  });
-  body.appendChild(row);
-}
-
-// The Training Sign: what your pet has done this visit, and the tricks each pet knows.
-function openPetSign() {
-  const a = GAME_DATA.agility;
-  const pets = agilityPets();
-  let message = pets.length ? "" : a.words.noPets;
-  if (agility.pet) {
-    message = "Today's course with " + agility.pet.name + ": " + Object.keys(a.tricks).map(function (id) {
-      return (agility.done.indexOf(id) !== -1 ? "✅ " : "⬜ ") + a.tricks[id].name;
-    }).join("   ");
-  }
-  const body = openInfoPanel("🪧", a.words.sign, message);
-  const row = document.createElement("div");
-  row.className = "item-row";
-  pets.forEach(function (pet) {
-    const card = itemCard(pet, pet === agility.pet ? null : a.words.swap, function () {
-      document.getElementById("info-panel").hidden = true;
-      if (agility.busy) return say(a.words.busy);
-      bringOut(pet);
-    });
-    const known = document.createElement("small");
-    const learned = learnedTricks(pet);
-    known.textContent = learned.length ? "Knows: " + learned.join(", ") : "No tricks learned yet";
-    card.appendChild(known);
-    row.appendChild(card);
-  });
-  body.appendChild(row);
-}
-
-// ---------------------------------------------------------------- your pet on the field
-
-// Your pet hops out of the backpack and stands next to you.
-function bringOut(pet) {
-  agility.pet = pet;
-  agility.done = [];
-  const box = document.getElementById("place-agility");
-  box.innerHTML = "";
-  const el = document.createElement("div");
-  el.id = "agility-pet";
-  el.className = "agility-pet";
-  el.title = pet.name;
-  el.appendChild(itemArt(pet)); // js/items.js: the girls' drawing, or its emoji
-  box.appendChild(el);
-  const you = whereYouAre();
-  placePet(you.x + 6, you.y);
-  markLearned();
-  say(GAME_DATA.agility.words.ready);
-}
-
-// Feet at x, y, a bit smaller than you would be standing there (smaller further back).
-function placePet(x, y) {
-  const el = document.getElementById("agility-pet");
-  if (!el) return;
-  const old = parseFloat(el.style.left);
-  if (!isNaN(old) && x !== old) el.classList.toggle("facing-left", x < old);
-  el.style.left = x + "%";
-  el.style.top = y + "%";
-  el.style.height = movedHeight(y) * GAME_DATA.agility.petSize + "%"; // js/you.js
-  // An emoji pet (not drawn yet) needs its size in pixels.
-  el.style.fontSize = document.getElementById("place-zoom").getBoundingClientRect().height *
-    parseFloat(el.style.height) / 100 * 0.8 + "px";
-}
-
-// A golden glow once your pet has learned a trick.
-function markLearned() {
-  const el = document.getElementById("agility-pet");
-  if (el) el.classList.toggle("learned", learnedTricks(agility.pet).length > 0);
+// PET in the words becomes the pet's name ("your pet" if there's more than one).
+function say(text, pet) {
+  document.getElementById("place-description").textContent = text.replace(/PET/g, pet ? pet.name : "your pet");
 }
 
 function whereYouAre() {
@@ -154,106 +45,205 @@ function whereYouAre() {
   return { x: parseFloat(youNow.el.style.left), y: parseFloat(youNow.el.style.top) };
 }
 
-// You walk (not jump) to x, y, taking "seconds".
-function walkYouTo(x, y, seconds) {
-  if (!youNow.el) return;
-  youNow.el.classList.add("moved", "strolling");
-  youNow.el.style.setProperty("--step", seconds + "s");
-  standAt(x, y); // js/you.js: smaller further back
-}
-
-// How long one step takes for this pet (turtles are slow!).
-function stepSeconds() {
-  const seconds = GAME_DATA.agility.seconds;
-  return seconds[animalOf(agility.pet)] || seconds.default;
-}
-
-// The pet goes from point to point; "each" is told which step it's on.
-function runAlong(points, seconds, each, done) {
-  const el = document.getElementById("agility-pet");
-  el.style.setProperty("--step", seconds + "s");
-  let i = 0;
-  function next() {
-    if (!stillAtField()) return;
-    if (i >= points.length) return done();
-    placePet(points[i][0], points[i][1]);
-    if (each) each(i);
-    i++;
-    agility.timer = setTimeout(next, seconds * 1000);
-  }
-  next();
-}
-
-// ---------------------------------------------------------------- tricks
-
-function doTrick(spot) {
+// A checkered starting line across the track, and a flag where the course starts.
+function drawStartMarks(box) {
   const a = GAME_DATA.agility;
-  const path = a.paths[spot.id];
-  const el = document.getElementById("agility-pet");
-  const steps = stepSeconds();
-  agility.busy = true;
-  // You both walk over to the start; you wait just beside it and watch.
-  walkYouTo(path.points[0][0] - 5, path.points[0][1] + 3, 1);
-  runAlong([path.points[0]], 1, null, function () {
-    runAlong(path.points, steps, function (i) {
-      el.classList.toggle("hidden", (path.hide || []).indexOf(i) !== -1);  // inside the tunnel
-      el.classList.toggle("jumping", (path.jump || []).indexOf(i) !== -1); // in the air
-    }, function () {
-      el.classList.remove("hidden", "jumping");
-      agility.busy = false;
-      finishTrick(path.trick);
-    });
+  const line = document.createElement("div");
+  line.className = "start-line";
+  line.style.left = a.track.start[0] + "%";
+  line.style.top = a.track.start[1] + "%";
+  const flag = document.createElement("div");
+  flag.className = "course-flag";
+  flag.textContent = "🚩";
+  flag.style.left = a.course.start[0] + "%";
+  flag.style.top = a.course.start[1] + "%";
+  box.append(line, flag);
+}
+
+// Clicking the Starting Line or the Obstacle Course: they work by dropping a pet on them.
+function openPetWalk() { explainDrop(); }
+function openPetTricks() { explainDrop(); }
+function explainDrop() {
+  const words = GAME_DATA.agility.words;
+  say(agilityPets().length ? words.dragHere : words.noPets);
+}
+
+// ---------------------------------------------------------------- pets on the field
+
+function addTrainee(box, pet, x, y) {
+  const el = document.createElement("div");
+  el.className = "agility-pet";
+  el.title = pet.name + ": drag me!";
+  el.appendChild(itemArt(pet)); // js/items.js: the girls' drawing, or its emoji
+  box.appendChild(el);
+  const trainee = { pet: pet, el: el, x: x, y: y, run: null };
+  agility.pets.push(trainee);
+  placePet(trainee, x, y, 0);
+  el.addEventListener("pointerdown", function (event) { grabPet(trainee, event); });
+  el.addEventListener("pointermove", function (event) { dragPet(trainee, event); });
+  el.addEventListener("pointerup", function (event) { dropPet(trainee, event); });
+  el.addEventListener("click", function (event) { event.stopPropagation(); });
+}
+
+// Feet at x, y; "lift" raises it off the ground (a jump) without making it smaller.
+// Further back (higher up the picture) pets are smaller, like you (js/you.js).
+function placePet(trainee, x, y, lift) {
+  trainee.x = x;
+  trainee.y = y;
+  const height = movedHeight(y) * GAME_DATA.agility.petSize;
+  const el = trainee.el;
+  el.style.left = x + "%";
+  el.style.top = (y - lift) + "%";
+  el.style.height = height + "%";
+  // A square box: the picture is 4 wide by 3 tall, so the same size across is 3/4 the percent.
+  el.style.width = height * 3 / 4 + "%";
+}
+
+// ---------------------------------------------------------------- dragging and dropping
+
+function grabPet(trainee, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  trainee.drag = { x: event.clientX, y: event.clientY, moved: false };
+  trainee.el.setPointerCapture(event.pointerId);
+}
+
+function dragPet(trainee, event) {
+  const drag = trainee.drag;
+  if (!drag) return;
+  if (!drag.moved) {
+    if (Math.hypot(event.clientX - drag.x, event.clientY - drag.y) < DRAG_START) return; // js/furniture.js
+    drag.moved = true;
+    stopRun(trainee);
+    trainee.el.classList.add("dragging");
+  }
+  // It hangs from the mouse by its middle, like you do.
+  const at = pointInPicture(event); // js/you.js
+  const y = Math.min(99, at.y + movedHeight(at.y) * GAME_DATA.agility.petSize / 2);
+  placePet(trainee, Math.min(Math.max(at.x, 2), 98), y, 0);
+}
+
+function dropPet(trainee) {
+  const drag = trainee.drag;
+  trainee.drag = null;
+  trainee.el.classList.remove("dragging");
+  if (!drag || !drag.moved) return; // just a click
+  const a = GAME_DATA.agility;
+  if (near(trainee, a.track.start)) return startLaps(trainee);
+  if (near(trainee, a.course.start)) return startCourse(trainee);
+  say(a.words.stopped, trainee.pet);
+}
+
+function near(trainee, spot) {
+  return Math.hypot(trainee.x - spot[0], trainee.y - spot[1]) < GAME_DATA.agility.dropReach;
+}
+
+// ---------------------------------------------------------------- moving along a route
+
+// "legs" is a list of { to, mode ("walk" or "run"), jump, hidden, seconds, then }.
+// The pet moves smoothly along each in turn; "done" runs at the end.
+function runRoute(trainee, legs, done) {
+  const run = { legs: legs, i: 0, start: null, from: null };
+  trainee.run = run;
+  const visit = agility.visit;
+  function frame(now) {
+    if (trainee.run !== run || !stillAtField(visit)) return; // picked up, or you left
+    const leg = run.legs[run.i];
+    if (run.start === null) startLeg(trainee, run, leg, now);
+    const f = Math.min(1, (now - run.start) / (leg.seconds * 1000));
+    const x = run.from[0] + (leg.to[0] - run.from[0]) * f;
+    const y = run.from[1] + (leg.to[1] - run.from[1]) * f;
+    placePet(trainee, x, y, (leg.jump || 0) * Math.sin(Math.PI * f)); // up and down again
+    if (f >= 1) {
+      run.i++;
+      run.start = null;
+      if (run.i >= run.legs.length) {
+        stopRun(trainee);
+        return done();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+
+function startLeg(trainee, run, leg, now) {
+  run.start = now;
+  run.from = [trainee.x, trainee.y];
+  if (!leg.seconds) leg.seconds = legSeconds(trainee, run.from, leg);
+  const el = trainee.el;
+  const dx = leg.to[0] - run.from[0];
+  if (Math.abs(dx) > 0.3) el.classList.toggle("facing-left", dx < 0);
+  el.classList.toggle("in-tunnel", !!leg.hidden); // out of sight inside a tunnel
+  el.classList.toggle("walking", leg.mode === "walk");
+  el.classList.toggle("running", leg.mode !== "walk");
+  if (leg.then) leg.then();
+}
+
+// How long a leg takes: its length at this animal's walking or running speed.
+// Inside a tunnel it's always the same few seconds (Scott: "a couple seconds").
+function legSeconds(trainee, from, leg) {
+  const a = GAME_DATA.agility;
+  if (leg.hidden) return a.tunnelSeconds;
+  const speed = a.speed[animalOf(trainee.pet)][leg.mode || "run"];
+  // The picture is wider than tall (4 by 3), so a step across counts a bit more.
+  const length = Math.hypot((leg.to[0] - from[0]) * 4 / 3, leg.to[1] - from[1]);
+  return Math.max(0.15, length / speed);
+}
+
+function stopRun(trainee) {
+  trainee.run = null;
+  trainee.el.classList.remove("in-tunnel", "walking", "running");
+}
+
+// ---------------------------------------------------------------- the two activities
+
+// Laps of the track: around the oval from the Starting Line, a walk then a run.
+function startLaps(trainee) {
+  const a = GAME_DATA.agility;
+  const words = a.words;
+  const pet = trainee.pet;
+  let legs = [{ to: a.track.start, mode: "walk" }];
+  a.track.laps.forEach(function (mode) {
+    const lap = lapLegs(mode);
+    lap[0].then = function () { say(mode === "walk" ? words.walking : words.running, pet); };
+    legs = legs.concat(lap);
+  });
+  runRoute(trainee, legs, function () {
+    say(words.laps + " " + bondFor("pet_walk", pet), pet);
   });
 }
 
-function finishTrick(trick) {
-  const a = GAME_DATA.agility;
-  const pet = agility.pet;
-  const counts = player.tricks[pet.id] || (player.tricks[pet.id] = {});
-  counts[trick] = (counts[trick] || 0) + 1;
-  let said = a.tricks[trick].emoji + " " + a.tricks[trick].says;
-  if (counts[trick] === a.learnAfter) said += " " + a.words.learned.replace("TRICK", a.tricks[trick].name);
-  if (agility.done.indexOf(trick) === -1) agility.done.push(trick);
-  if (agility.done.length === Object.keys(a.tricks).length) {
-    said += " " + a.words.course + " " + bondFor("pet_tricks");
-    agility.done = []; // start the course again
-  } else {
-    said += " (" + agility.done.length + " of " + Object.keys(a.tricks).length + " tricks on today's course)";
-  }
-  writeSave(player);
-  markLearned();
-  say(said);
-}
-
-// The tricks this pet has learned (done "learnAfter" times), by name.
-function learnedTricks(pet) {
-  const a = GAME_DATA.agility;
-  const counts = player.tricks[pet.id] || {};
-  return Object.keys(a.tricks).filter(function (id) { return (counts[id] || 0) >= a.learnAfter; })
-    .map(function (id) { return a.tricks[id].name; });
-}
-
-// ---------------------------------------------------------------- the walk
-
-// A whole lap of the path around the field, side by side.
-function walkTrack() {
+// One lap: points around the oval, starting at the bottom (the Starting Line)
+// and going right, up, left and back down.
+function lapLegs(mode) {
   const track = GAME_DATA.agility.track;
-  const steps = stepSeconds() * 1.5; // a walk, not a run
-  agility.busy = true;
-  runAlong(track, steps, function (i) {
-    walkYouTo(track[i][0] - 4, track[i][1] + 1, steps); // you walk just beside your pet
-  }, function () {
-    agility.busy = false;
-    writeSave(player);
-    say(GAME_DATA.agility.words.walked + " " + bondFor("pet_walk"));
-  });
+  const steps = 48;
+  const legs = [];
+  for (let i = 1; i <= steps; i++) {
+    const angle = Math.PI / 2 - i / steps * 2 * Math.PI;
+    legs.push({ mode: mode, to: [track.middle[0] + track.size[0] * Math.cos(angle),
+                                 track.middle[1] + track.size[1] * Math.sin(angle)] });
+  }
+  return legs;
 }
 
-// ---------------------------------------------------------------- Bonding Points
+// The obstacle course, every obstacle in order.
+function startCourse(trainee) {
+  const a = GAME_DATA.agility;
+  const pet = trainee.pet;
+  const legs = [{ to: a.course.start, mode: "run" }].concat(a.course.steps.map(function (step) {
+    const leg = { to: step.to, mode: "run", jump: step.jump, hidden: step.hidden };
+    if (step.name) leg.then = function () { say(a.words.obstacle.replace("OBSTACLE", step.name), pet); };
+    return leg;
+  }));
+  runRoute(trainee, legs, function () {
+    say(a.words.course + " " + bondFor("pet_tricks", pet), pet);
+  });
+}
 
 // +1 Bonding Point, unless this pet had one this way in the last few minutes.
-function bondFor(kind) {
-  const pet = agility.pet;
+function bondFor(kind, pet) {
   const wait = minutesUntilCare(kind, pet); // js/bonding.js
   if (wait) return GAME_DATA.agility.words.practice.replace("MIN", wait);
   const points = GAME_DATA.bonding[kind].points;

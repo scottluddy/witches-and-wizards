@@ -308,17 +308,12 @@ GAME_DATA.places = [
     "description": "Grass and pine trees: room to train your pet. Owls have falconry lessons here, and the Agility Park is for walks and tricks." },
   { "id": "falconry", "name": "Falconry Lessons", "type": "care", "care": "falconry", "in": "pet_training_field", "x": 35, "y": 45 },
   // The Agility Park, part of the Pet Training Field (Scott, 2026-10-18, the girls' drawing
-  // art/raw/sheets/agility_park.jpeg): walks and tricks with your pet (js/agility.js).
-  // Labels sit just below each thing so they don't cover it.
+  // art/raw/sheets/agility_park.jpeg). Scott, 2026-10-19: two activities. Drag a dog or wolf onto
+  // the Starting Line for laps, or onto the Obstacle Course to run it (js/agility.js, data/agility.js).
   { "id": "agility_park", "name": "Agility Park", "type": "place", "in": "pet_training_field", "x": 68, "y": 65,
-    "description": "Tunnels, hoops, weave posts and a ramp, with a path all around. Walk your pet and teach it tricks." },
-  { "id": "agility_sign", "name": "Training Sign", "type": "pet_sign", "in": "agility_park", "x": 28, "y": 72 },
-  { "id": "agility_tunnel", "name": "Tunnel", "type": "pet_tricks", "in": "agility_park", "x": 54, "y": 78 },
-  { "id": "agility_tunnel_bend", "name": "Bendy Tunnel", "type": "pet_tricks", "in": "agility_park", "x": 86, "y": 52 },
-  { "id": "agility_hoops", "name": "Hoops", "type": "pet_tricks", "in": "agility_park", "x": 52, "y": 62 },
-  { "id": "agility_weave", "name": "Weave Posts", "type": "pet_tricks", "in": "agility_park", "x": 84, "y": 31 },
-  { "id": "agility_ramp", "name": "Ramp", "type": "pet_tricks", "in": "agility_park", "x": 31, "y": 49 },
-  { "id": "agility_walk", "name": "Walk the Track", "type": "pet_walk", "in": "agility_park", "x": 50, "y": 93 },
+    "description": "Tunnels, hoops, weave posts and a ramp, with a track all around. Drag your dog or wolf onto the Starting Line or the Obstacle Course." },
+  { "id": "agility_walk", "name": "Starting Line", "type": "pet_walk", "in": "agility_park", "x": 50, "y": 95 },
+  { "id": "agility_course", "name": "Obstacle Course", "type": "pet_tricks", "in": "agility_park", "x": 14, "y": 42 },
   // Rosy Hills (Scott, 2026-10-18, the girls' drawing art/raw/sheets/rosy_hills.jpeg, upside down in
   // the photo): a picnic blanket between the hills, and a Meeting Place where friendly wild animals
   // come to visit (js/picnic.js). The blanket is a seat, so you sit on it before eating.

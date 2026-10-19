@@ -1592,31 +1592,51 @@ body.holding-apple, body.holding-apple * {
   to   { opacity: 1; translate: 0 0; }
 }
 
-/* ---- Walks and Tricks in the Agility Park (js/agility.js) ---- */
+/* ---- the agility park in the Pet Training Field (js/agility.js) ---- */
 
 #place-agility { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 #place-agility[hidden] { display: none; }
-/* Your pet: feet at x, y, walking from point to point. */
+/* A dog or wolf: feet at x, y. js/agility.js moves it every frame. Drag it around. */
 .agility-pet {
   position: absolute;
   transform: translate(-50%, -100%);
-  transition: left var(--step, 0.7s) linear, top var(--step, 0.7s) linear, height var(--step, 0.7s) linear, opacity 0.2s;
   line-height: 1;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: opacity 0.25s;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.3));
 }
-.agility-pet img { height: 100%; width: auto; display: block; }
+.agility-pet { container-type: size; } /* so an emoji pet can be as tall as its box */
+.agility-pet img { height: 100%; width: 100%; object-fit: contain; display: block; pointer-events: none; }
+.agility-pet .emoji { display: block; font-size: 80cqh; line-height: 1.2; text-align: center; pointer-events: none; }
 .agility-pet.facing-left { scale: -1 1; }
-.agility-pet.hidden { opacity: 0; } /* inside a tunnel */
-.agility-pet.jumping { animation: pet-hop var(--step, 0.7s) ease-in-out; }
-.agility-pet.learned { filter: drop-shadow(0 0 5px var(--gold)); }
-@keyframes pet-hop {
-  50% { translate: 0 -40%; }
+.agility-pet.dragging { cursor: grabbing; z-index: 2; filter: drop-shadow(0 0 8px var(--gold)); }
+.agility-pet.in-tunnel { opacity: 0; } /* out of sight inside a tunnel */
+.agility-pet.walking > * { animation: pet-trot 0.4s ease-in-out infinite alternate; }
+.agility-pet.running > * { animation: pet-trot 0.18s ease-in-out infinite alternate; }
+@keyframes pet-trot {
+  from { translate: 0 0; rotate: -3deg; }
+  to   { translate: 0 -8%; rotate: 3deg; }
 }
-/* You, walking next to your pet. */
-.standing-you.strolling:not(.dragging) {
-  transition: left var(--step, 1s) linear, top var(--step, 1s) linear, height var(--step, 1s) linear;
+/* The checkered starting line across the bottom of the track, and the course's flag. */
+.start-line {
+  position: absolute;
+  width: 1.6%;
+  height: 9%;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(#222 0 25%, #fff 0 50%) 0 0 / 50% 12.5%;
+  border: 2px solid #222;
+  border-radius: 3px;
+}
+.course-flag {
+  position: absolute;
+  transform: translate(-30%, -100%);
+  font-size: clamp(1.2rem, 3vw, 2.4rem);
 }
 @media (prefers-reduced-motion: reduce) {
-  .agility-pet.jumping { animation: none; }
+  .agility-pet.walking > *, .agility-pet.running > * { animation: none; }
 }
 
 /* ---- the new-game story (Scott, 2026-10-18): everything in the same big
