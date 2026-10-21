@@ -1131,7 +1131,6 @@ body.holding-apple, body.holding-apple * {
   70%  { transform: translate(calc(-50% + var(--to-you)), calc(-100% - var(--up))) rotate(calc(var(--tip) * 70deg)); }
   100% { transform: translate(-50%, -100%); }
 }
-}
 /* The chosen section, magnified: it grows from its own place to fill the picture. */
 .slope-zoom { position: absolute; overflow: hidden; border-radius: 12px; cursor: crosshair; background: #000;
   transition-property: left, top, width, height; transition-timing-function: ease-in-out; }
@@ -1174,6 +1173,13 @@ body.holding-apple, body.holding-apple * {
 .hut-wit-face img { height: 100%; width: auto; display: block; }
 .hut-mug, .hut-blanket { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; touch-action: none; user-select: none; }
 .hut-mug img, .hut-blanket img { width: 100%; height: auto; display: block; }
+/* The little WIT sips the hot chocolate (js/windy.js sipCocoa): tip, sip, back down, twice. */
+.hut-mug.sipping-cocoa { pointer-events: none; transition: left 0.4s, top 0.4s;
+  animation: cocoa-sip var(--sip, 1.1s) ease-in-out var(--sips, 2); }
+@keyframes cocoa-sip {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  45%, 60% { transform: translate(-50%, -60%) rotate(-35deg); }
+}
 .hut-blanket.placeholder { aspect-ratio: 1.3; border-radius: 6px 6px 14px 14px; border: 2px solid #8a3b3b;
   background: repeating-linear-gradient(0deg, transparent 0 8px, rgba(255, 255, 255, 0.35) 8px 11px),
               repeating-linear-gradient(90deg, #c94f4f 0 8px, #e9c46a 8px 11px); }

@@ -413,6 +413,10 @@ function skierInSection() {
   you.classList.add("in-section");
   you.style.left = (player.windy.wit.x < 50 ? 100 - corner.x : corner.x) + "%";
   you.style.top = corner.y + "%";
+  if (player.windy.stage === "found") {
+    you.style.left = besideWit().x + "%";
+    you.style.top = besideWit().y + "%";
+  }
   you.style.height = corner.size + "%";
   you.style.fontSize = corner.size * 0.8 + "cqh";
   return you;
@@ -584,11 +588,12 @@ function searchHere(event, zoom) {
   const state = player.windy;
   const r = zoom.getBoundingClientRect();
   const at = { x: (event.clientX - r.left) / r.width * 100, y: (event.clientY - r.top) / r.height * 100 };
+  if (state.stage !== "search") return; // already found
   const distance = Math.hypot(at.x - state.wit.x, (at.y - state.wit.y) / zoomShape(zoom));
   if (distance <= rules.findDistance) {
     state.stage = "found";
     writeSave(player);
-    return showSlope(false);
+    return skiOverToWit(zoom);
   }
   state.searched.push({ x: Math.round(at.x), y: Math.round(at.y) });
   writeSave(player);
@@ -599,6 +604,41 @@ function searchHere(event, zoom) {
   }
   zoom.appendChild(searchMark(at));
   sayWindy(rules.words.notThere + " " + "🔦".repeat(rules.searches - state.searched.length));
+}
+
+// Found them (Scott, 2026-10-21): the little WIT lights up and you ski over
+// beside them, then they say hello.
+function skiOverToWit(zoom) {
+  const rules = windyRules();
+  const potion = zoom.querySelector(".potion-beside");
+  if (potion) potion.remove(); // no more sips needed
+  zoom.appendChild(littleWitButton());
+  const you = zoom.querySelector(".skier.in-section");
+  const to = besideWit();
+  you.style.transition = "left " + rules.skiOver.seconds + "s ease-in-out, top " + rules.skiOver.seconds + "s ease-in-out";
+  you.style.left = to.x + "%";
+  you.style.top = to.y + "%";
+  sayWindy(rules.words.skiing);
+  setTimeout(function () {
+    if (player.at === rules.slope && player.windy.stage === "found") witSaysHello();
+  }, rules.skiOver.seconds * 1000 + 300);
+}
+
+// Where you stand next to the found little WIT (percent of the zoomed-in view),
+// on the side you came from.
+function besideWit() {
+  const wit = player.windy.wit;
+  const step = windyRules().skiOver;
+  return { x: wit.x + (wit.x >= 50 ? -step.x : step.x), y: wit.y + step.y };
+}
+
+function witSaysHello() {
+  const body = openInfoPanel(windyArt(), "Little WIT", windyRules().words.hello);
+  const ski = document.createElement("button");
+  ski.className = "big-button";
+  ski.textContent = windyRules().words.skiTogether;
+  ski.addEventListener("click", skiDownTogether);
+  body.appendChild(ski);
 }
 
 // The little WIT, found: click them to ski down together.
@@ -613,21 +653,26 @@ function littleWitButton() {
   else wit.appendChild(art);
   wit.addEventListener("click", function (event) {
     event.stopPropagation();
-    const body = openInfoPanel(windyArt(), "Little WIT", windyRules().words.hello);
-    const ski = document.createElement("button");
-    ski.className = "big-button";
-    ski.textContent = windyRules().words.skiTogether;
-    ski.addEventListener("click", skiDownTogether);
-    body.appendChild(ski);
+    witSaysHello();
   });
   return wit;
 }
 
+// Ski down together: first the view zooms all the way back out to the whole
+// slope (Scott, 2026-10-21), then you ride down side by side from where they were.
 function skiDownTogether() {
+  const rules = windyRules();
+  const view = player.windy.view;
   player.windy.stage = "cold";
   writeSave(player);
   document.getElementById("info-panel").hidden = true;
-  showWindy(findPlace(windyRules().slope)); // the ride down, together
+  const zoom = document.querySelector("#place-windy .slope-zoom");
+  if (!zoom || !view) return showWindy(findPlace(rules.slope));
+  zoom.style.transitionDuration = rules.zoomSeconds + "s";
+  setBox(zoom, view.x, view.y, view.size, view.size); // shrinks back to its place on the slope
+  setTimeout(function () {
+    if (player.at === rules.slope) showWindy(findPlace(rules.slope)); // the ride down, together
+  }, rules.zoomSeconds * 1000);
 }
 
 // ---------------------------------------------------------------- the ride down
@@ -647,14 +692,19 @@ function startSkiRide(together) {
   const friend = together ? makeSkier(littleWitPicture(), "Little WIT") : null;
   if (friend) box.appendChild(friend);
   sayWindy(together ? ride.words.together : ride.words.start);
+  // Together, you start from where the little WIT was lost; the drawn gems are
+  // only picked up if your way down goes past them.
+  const from = together && player.windy.at;
+  const path = from ? pathDownFrom(from) : ride.path;
+  const seconds = from ? Math.max(2, ride.seconds * (104 - from.y) / 100) : ride.seconds;
   const gemsLeft = ride.gems.slice();
   let found = 0;
   const start = performance.now();
   function glide(now) {
     if (thisRide !== skiRide || player.at !== windyRules().slope) return; // you left the slope
-    const done = Math.min((now - start) / (ride.seconds * 1000), 1);
-    const at = placeSkier(you, done, 1);
-    if (friend) placeSkier(friend, Math.max(done - 0.07, 0), 0.5); // just behind you, half your size
+    const done = Math.min((now - start) / (seconds * 1000), 1);
+    const at = placeSkier(you, done, 1, path);
+    if (friend) placeSkier(friend, done, 0.5, path, ride.besideYou); // side by side, half your size
     gemsLeft.slice().forEach(function (gem) {
       if (Math.hypot(gem[0] - at.x, gem[1] - at.y) > ride.reach) return;
       gemsLeft.splice(gemsLeft.indexOf(gem), 1);
@@ -686,18 +736,36 @@ function makeSkier(src, name) {
 // Put a skier where they are "done" of the way down (0 = top, 1 = bottom):
 // bigger as they come closer, leaning into each turn. Returns where their feet are.
 // "path" is the way down (the ride's, unless another is given).
-function placeSkier(skier, done, scale, path) {
+// "beside" moves them over to your right by that share of your height.
+function placeSkier(skier, done, scale, path, beside) {
   const ride = windyRules().ride;
   const at = pointOnPath(done, path);
   const ahead = pointOnPath(Math.min(done + 0.01, 1), path);
   const lean = Math.max(-20, Math.min(20, (ahead.x - at.x) * 15));
   const size = ride.sizeTop + (ride.sizeBottom - ride.sizeTop) * Math.min(at.y, 100) / 100;
-  skier.style.left = at.x + "%";
+  skier.style.left = at.x + (beside || 0) * size + "%";
   skier.style.top = at.y + "%";
   skier.style.height = size * scale + "%";
   skier.style.fontSize = size * scale * 0.8 + "cqh"; // the 🧒 emoji, until a little WIT is drawn
   skier.style.transform = "translate(-50%, -100%) rotate(" + lean + "deg)";
   return at;
+}
+
+// The way down from a spot on the slope to the bottom, weaving, kept on the slope.
+function pathDownFrom(from) {
+  const weave = windyRules().skiTo.weave;
+  const end = { x: Math.max(25, Math.min(70, from.x + (Math.random() - 0.5) * 30)), y: 104 };
+  const turns = Math.max(2, Math.round((end.y - from.y) / 12));
+  const path = [[from.x, from.y]];
+  for (let i = 1; i < turns; i++) {
+    const part = i / turns;
+    const point = { x: from.x + (end.x - from.x) * part, y: from.y + (end.y - from.y) * part };
+    const swing = i % 2 ? weave : -weave;
+    if (onSlope({ x: point.x + swing, y: point.y })) point.x += swing;
+    path.push([point.x, point.y]);
+  }
+  path.push([end.x, end.y]);
+  return path;
 }
 
 // The point "done" of the way along the path (measured along its length, so the speed stays even).
@@ -786,7 +854,7 @@ function showHut() {
   dragThing(mug, box, function (event) {
     if (!overThing(wit, event)) return false;
     if (player.windy.stage !== "covered") { witSays(wit, rules.words.shaky); return false; }
-    warmUpTogether();
+    sipCocoa(mug, wit);
     return true;
   });
 }
@@ -897,8 +965,10 @@ function showColdWit(box) {
   wit.dataset.y = spot.y;
   wit.style.left = spot.x + "%";
   wit.style.top = spot.y + "%";
-  wit.style.height = spot.size / 2 + "%";
-  wit.style.setProperty("--height", spot.size / 2); // for the emoji's size (css/style.css)
+  // Scott, 2026-10-21: bigger in the hut, so they're easy to see ("hutWitScale").
+  const height = spot.size / 2 * rules.hutWitScale;
+  wit.style.height = height + "%";
+  wit.style.setProperty("--height", height); // for the emoji's size (css/style.css)
   const bubble = document.createElement("span");
   bubble.className = "hut-wit-bubble";
   bubble.textContent = rules.words[stage];
@@ -960,6 +1030,24 @@ function dragThing(el, box, dropped) {
     el.style.left = el.dataset.x + "%";
     el.style.top = el.dataset.y + "%";
   });
+}
+
+// The little WIT holds the mug up to their mouth and takes a sip or two
+// (Scott, 2026-10-21), then they're warm.
+function sipCocoa(mug, wit) {
+  const rules = windyRules();
+  const height = parseFloat(wit.style.height);
+  mug.classList.remove("draggable");
+  mug.classList.add("sipping-cocoa");
+  mug.style.left = parseFloat(wit.style.left) + height * rules.cocoa.across + "%";
+  mug.style.top = parseFloat(wit.style.top) - height * rules.cocoa.up + "%";
+  mug.style.setProperty("--sips", rules.cocoa.sips);
+  mug.style.setProperty("--sip", rules.cocoa.sipSeconds + "s");
+  wit.classList.remove("shivering");
+  witSays(wit, rules.words.sipping);
+  setTimeout(function () {
+    if (player.at === rules.hut && player.windy.stage === "covered") warmUpTogether();
+  }, rules.cocoa.sips * rules.cocoa.sipSeconds * 1000 + 300);
 }
 
 function warmUpTogether() {

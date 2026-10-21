@@ -17,7 +17,8 @@
 //    flies across it, and as it passes over the little WIT a spot lights up
 //    for a moment. The spot is bigger than the little WIT, so there's still
 //    some luck: 3 searches, then they wander off again.
-// 6. Click the little WIT and ski down together to the Snowy Hut. There
+// 6. Click the little WIT: you ski over to them, the view zooms back out and you
+//    ski down together, side by side, to the Snowy Hut (the gems only if you pass them). There
 //    they're cold: sit them on the couch, cover them with the blanket, then
 //    give them the hot chocolate. Nothing says so: you figure it out.
 GAME_DATA.windyRescue = {
@@ -46,6 +47,9 @@ GAME_DATA.windyRescue = {
              // Your Snowy Owl and the Night Vision Potion stand beside you there (Scott,
              // 2026-10-21): x is how far in from you, height their height (percent of the view).
              "beside": { "owl": { "x": 11, "height": 13 }, "potion": { "x": 19, "height": 11 } } },
+  // Found them (Scott, 2026-10-21): you ski over beside them, x across and y down
+  // from them (percent of the zoomed-in view), in this many seconds.
+  "skiOver": { "seconds": 1.6, "x": 9, "y": 5 },
   "sipSeconds": 1.2,      // how long the sip takes (the potion tips up to your mouth) before the owl flies
   "owl": "pet_owl",       // the Snowy Owl's picture (🦉 until drawn)
   "flySeconds": 3,        // one flight across the magnified section
@@ -57,6 +61,10 @@ GAME_DATA.windyRescue = {
   "lostWit": "🧒",        // if no little WIT is drawn (they're in data/characters.js, one is picked at random)
   "binocularWit": 8,      // the little WIT's height in the Binocular View, percent of the slope picture
   "hutSpot": { "x": 50, "y": 72 },   // where the little WIT's feet are when you come in
+  "hutWitScale": 2.8,     // the little WIT is this much bigger in the hut than half your size (Scott, 2026-10-21: easier to see)
+  // The hot chocolate: they hold it up to their mouth (across and up from their
+  // feet, as a share of their height) and take this many sips before they're warm.
+  "cocoa": { "sips": 2, "sipSeconds": 1.1, "across": 0.18, "up": 0.62 },
   // In the Snowy Hut, things sit on the furniture they belong to and move with it.
   // x, y, width: percent of the hut picture, where they are when the furniture hasn't been moved.
   // The girls' hot chocolate mug, cut out of the hut drawing (art/raw/hut_mug.jpg) and erased from it:
@@ -77,6 +85,7 @@ GAME_DATA.windyRescue = {
              [40.5, 71], [31, 78], [29, 88], [31, 104]],
     "gems": [[65.5, 26], [40.5, 69]],
     "reach": 5,
+    "besideYou": 0.3,     // riding down together: the little WIT is this share of your height to your right
     "sizeTop": 9,
     "sizeBottom": 24,
     "words": {
@@ -102,6 +111,7 @@ GAME_DATA.windyRescue = {
     "cold": "Brrr! I'm so cold...",
     "sitting": "Still sooo chilly...",
     "covered": "Ahh, cozy!",
+    "sipping": "Mmm, warm!",
     "slips": "It keeps slipping off!",
     "shaky": "My hands are too cold to hold it!",
     "youSitFirst": "Sit down on the couch first, then snuggle under the blanket.",
