@@ -6,13 +6,14 @@
 // 2. Letting it fly while you own a Night Vision Potion starts the adventure:
 //    the owl spots a little future WIT lost on the ski slope.
 // 3. Sip the potion (backpack) and look through the binoculars: a blown-up,
-//    green view of the slope with a glow from the little WIT's lantern.
-//    That's the first clue.
-// 4. Ski down (rented skis) onto the dark slope, cut into 12 big sections, and
-//    choose the section to search: you ski down to it (Scott, 2026-10-21). A
-//    wrong one is "Not here...": you're back at the top to ski again (3 chances,
-//    then they wander somewhere new).
-// 5. The right section grows to fill the picture, with you in it. Each sip, your Snowy Owl
+//    green view of the slope with the little WIT in their lantern's glow.
+//    Remember where!
+// 4. Ski down (rented skis) onto the dark slope and click where you saw them:
+//    you ski down to that exact spot (Scott, 2026-10-21). Too far away is
+//    "Not here...": you're back at the top to ski again (3 chances, then they
+//    wander somewhere new).
+// 5. Close enough, and the view around you grows to fill the picture (about
+//    an eighth of the slope), with you in it. Each sip, your Snowy Owl
 //    flies across it, and as it passes over the little WIT a spot lights up
 //    for a moment. The spot is bigger than the little WIT, so there's still
 //    some luck: 3 searches, then they wander off again.
@@ -22,21 +23,26 @@
 GAME_DATA.windyRescue = {
   "potion": "potion_night_vision",
   "sips": 4,              // sips in one Night Vision Potion: one for the binoculars, three for the owl
-  "tries": 3,             // sections you can choose before the little WIT wanders off
+  "tries": 3,             // spots you can ski to before the little WIT wanders off
   "searches": 3,          // clicks in the magnified section before they wander off
   "adventurePoints": 1,
   "slope": "ski_slope",   // the slope place (data/places.js); its picture is the binocular view too
   "hut": "hut",           // where you warm up together
-  "columns": 4,           // the slope's 12 big sections: 4 across, 3 down
-  "rows": 3,
-  "glowSize": 0.6,        // the binoculars' lantern glow, as a share of one section's width
-  "zoomSeconds": 1.5,     // how long the chosen section takes to grow
-  // Skiing down to the section you chose (Scott, 2026-10-21). "start" is where you
-  // wait at the top (x, y of your feet, percent of the slope picture); "arrive" is
-  // where you stop, in percent of the section, and your height there once it's
-  // magnified (in the corner, so you don't cover where the little WIT might be).
-  // "weave" is how far you swing side to side on the way down.
-  "skiTo": { "seconds": 3, "start": [50, 12], "arrive": { "x": 14, "y": 94, "size": 28 }, "weave": 5 },
+  // The snowy slope's outline in the girls' drawing (x, y in percent of the picture),
+  // so the little WIT is only ever lost on the slope, never on the mountains.
+  "slopeShape": [[36, 2], [65, 2], [72.5, 45], [85, 99], [7, 99], [23.5, 39]],
+  "lostFrom": 18,         // the little WIT is at least this far down (percent), below where you start
+  "glowSize": 8,          // the binoculars' lantern glow, percent of the slope picture's width
+  "viewShare": 0.12,      // the zoomed-in view covers this share of the slope (Scott: 10 to 15%)
+  "viewMargin": 6,        // the little WIT must be this far inside the view (percent of it) to count as there
+  "zoomSeconds": 1.5,     // how long the view takes to grow
+  // Skiing down to the spot you click (Scott, 2026-10-21). "start" is where you
+  // wait at the top (x, y of your feet, percent of the slope picture); "seconds"
+  // is the time to ski all the way to the bottom (less for a spot higher up);
+  // "weave" is how far you swing side to side. "corner" is where you stand in the
+  // zoomed-in view (x, y of your feet, percent of the view) and your height there:
+  // the bottom corner further from the little WIT, so you don't cover them.
+  "skiTo": { "seconds": 5, "start": [50, 10], "weave": 5, "corner": { "x": 12, "y": 96, "size": 28 } },
   "owl": "pet_owl",       // the Snowy Owl's picture (🦉 until drawn)
   "flySeconds": 3,        // one flight across the magnified section
   "lightSize": 36,        // the lit spot's width, in percent of the magnified section...
@@ -80,7 +86,8 @@ GAME_DATA.windyRescue = {
     "owlSpotted": "🦉 Your PET flies back hooting and flapping (BONDING)! It spotted a little future WIT lost on the ski slope, and it's getting dark...",
     "sipped": "🌙 Everything glows green! You can see in the dark.",
     "tooDark": "🌑 It's too dark to see.",
-    "choose": "Choose a section to search.",
+    "choose": "Where did you see the little WIT? Click there to ski down.",
+    "offSlope": "That's the mountain! Click on the snowy slope.",
     "skiing": "⛷️ Whoosh!",
     "missed": "Not here... Back up to the top to ski again.",
     "searchHere": "Somewhere in here...",

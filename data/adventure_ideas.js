@@ -24,7 +24,7 @@ GAME_DATA.adventureIdeas = {
       "celebrate": "celebrate_bunny" },
     { "name": "Lost on Windy Peak", "status": "active", "favorite": true, "category": "rescue", "emoji": "🏔️",
       "unlock": "Let your Snowy Owl fly at the Windy Peak dropoff while you own a Night Vision Potion. The owl needs a falconry lesson at the Pet Training Field first.",
-      "idea": "Your owl spots a little future WIT lost on the slope at night. Sip the Night Vision Potion (4 sips) to look through the binoculars for a clue, then ski down: the slope has 12 sections, each look costs a sip, and you have 3 chances to pick the right one. Find them, ski down to the Snowy Hut together and warm up with hot chocolate. (Scott's design, 2026-10-15)",
+      "idea": "Your owl spots a little future WIT lost on the slope at night. Sip the Night Vision Potion (4 sips) to look through the binoculars for a clue, then ski down to where you saw them (3 chances); the owl's flights over the zoomed-in view narrow it down. Find them, ski down to the Snowy Hut together and warm up with hot chocolate. (Scott's design, 2026-10-15)",
       "needs": "Mostly things already in the game. A drawing of the lost little WIT.",
       "celebrate": "" },
     { "name": "The Goblin's Giggles", "status": "inactive", "category": "mischief", "emoji": "👺",

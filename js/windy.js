@@ -4,8 +4,8 @@
 //
 // player.windy.stage says how far along you are:
 //   ""         not started (let your Snowy Owl fly while you own a Night Vision Potion)
-//   "lost"     the owl spotted a little WIT in one of the slope's 12 sections
-//   "search"   you chose the right section: it's magnified, now find the exact spot
+//   "lost"     the owl spotted a little WIT somewhere on the ski slope
+//   "search"   you skied to the right spot: it's magnified, now find the exact spot
 //   "found"    you found them: click them to ski down together
 //   "cold"     in the Snowy Hut, standing and shivering
 //   "sitting"  sitting on the couch
@@ -40,16 +40,17 @@ function owlFlewOverSlope(pet, said) {
   return true;
 }
 
-// Start (or start again): the little WIT is lost in one of the slope's areas.
+// Start (or start again): the little WIT is lost somewhere on the slope.
 function startWindyRescue() {
   const rules = windyRules();
   player.windy.stage = "lost";
   player.windy.who = randomLittleWit(); // which little WIT is lost (js/game.js)
-  player.windy.spot = Math.floor(Math.random() * rules.columns * rules.rows);
+  player.windy.at = randomSlopeSpot(); // where on the slope they are (percent of the picture)
+  player.windy.view = null;            // the zoomed-in view around where you skied to
+  player.windy.wit = null;             // where they are in that view
   player.windy.tries = 0;
   player.windy.looked = [];
   player.windy.searched = [];
-  player.windy.glow = glowSpot(player.windy.spot); // the binoculars' lantern glow
   if (!adventureUnlocked("windy")) player.adventures.unlocked.push("windy"); // js/adventures.js
   revealAdventure("windy");
   writeSave(player);
@@ -110,10 +111,11 @@ function useSip() {
 // ---------------------------------------------------------------- the binoculars
 
 // Windy Peak's "Binocular View" spot. During the rescue it shows a blown-up view
-// of the ski slope: too dark to see, unless you've had a sip. Then the little
-// WIT's lantern glows somewhere in their section: the first clue.
+// of the ski slope: too dark to see, unless you've had a sip. Then you can see
+// the little WIT in their lantern's glow: remember where, then ski down there.
 function windyLook(spot) {
   if (player.windy.stage !== "lost") return false;
+  if (!player.windy.at) startWindyRescue(); // older saves (the slope had 12 sections)
   const rules = windyRules();
   const seeing = useSip();
   openInfoPanel("🔭", spot.name, seeing ? "" : rules.words.tooDark);
@@ -124,31 +126,16 @@ function windyLook(spot) {
   view.alt = "The ski slope";
   lens.appendChild(view);
   if (seeing) {
-    if (!player.windy.glow) player.windy.glow = glowSpot(player.windy.spot); // older saves
     const glow = document.createElement("span");
     glow.className = "slope-glow";
-    glow.style.left = player.windy.glow.x + "%";
-    glow.style.top = player.windy.glow.y + "%";
-    glow.style.width = rules.glowSize * 100 / rules.columns + "%";
+    glow.style.left = player.windy.at.x + "%";
+    glow.style.top = player.windy.at.y + "%";
+    glow.style.width = rules.glowSize + "%";
     lens.appendChild(glow);
-    lens.appendChild(sectionLines()); // so you can tell which of the 12 sections they're in
-    lens.appendChild(binocularWit(player.windy.glow)); // Scott, 2026-10-18: you can see the little WIT on the slope
+    lens.appendChild(binocularWit(player.windy.at)); // Scott, 2026-10-18: you can see the little WIT on the slope
   }
   document.getElementById("info-body").appendChild(lens);
   return true;
-}
-
-// Faint lines showing the slope's 12 sections, the same ones you choose from after skiing down.
-function sectionLines() {
-  const rules = windyRules();
-  const lines = document.createElement("div");
-  lines.className = "slope-pieces binocular-lines";
-  lines.style.gridTemplateColumns = "repeat(" + rules.columns + ", 1fr)";
-  lines.style.gridTemplateRows = "repeat(" + rules.rows + ", 1fr)";
-  for (let section = 0; section < rules.columns * rules.rows; section++) {
-    lines.appendChild(document.createElement("span"));
-  }
-  return lines;
 }
 
 // The little WIT, tiny in the middle of their lantern's glow.
@@ -164,15 +151,53 @@ function binocularWit(at) {
   return wit;
 }
 
-// A point somewhere inside a section (not too near its edges), in percent of the slope.
-function glowSpot(section) {
+// ---------------------------------------------------------------- the slope's shape
+
+// Is this point (percent of the slope picture) on the snowy slope, not the
+// mountains either side? "slopeShape" in data/windy.js is its outline.
+function onSlope(at) {
+  const shape = windyRules().slopeShape;
+  let inside = false;
+  for (let i = 0, j = shape.length - 1; i < shape.length; j = i++) {
+    const a = shape[i], b = shape[j];
+    if ((a[1] > at.y) !== (b[1] > at.y) && at.x < (b[0] - a[0]) * (at.y - a[1]) / (b[1] - a[1]) + a[0]) inside = !inside;
+  }
+  return inside;
+}
+
+// A random spot on the slope for the little WIT: not right at the top where you
+// start, and not hugging the edge, so the zoomed-in view always has snow around them.
+function randomSlopeSpot() {
   const rules = windyRules();
-  const column = section % rules.columns;
-  const row = Math.floor(section / rules.columns);
-  return {
-    x: (column + 0.25 + Math.random() * 0.5) * 100 / rules.columns,
-    y: (row + 0.25 + Math.random() * 0.5) * 100 / rules.rows
-  };
+  let at;
+  do {
+    at = { x: 5 + Math.random() * 90, y: rules.lostFrom + Math.random() * (95 - rules.lostFrom) };
+  } while (!onSlope(at) || !onSlope({ x: at.x - 4, y: at.y }) || !onSlope({ x: at.x + 4, y: at.y }));
+  return at;
+}
+
+// How big the zoomed-in view is, in percent of the picture's width (and of its
+// height: it keeps the picture's shape), so it covers "viewShare" of the slope.
+function viewSize() {
+  const shape = windyRules().slopeShape;
+  let area = 0; // the slope's area, in percent × percent (the shoelace formula)
+  for (let i = 0, j = shape.length - 1; i < shape.length; j = i++) {
+    area += (shape[j][0] + shape[i][0]) * (shape[j][1] - shape[i][1]);
+  }
+  return Math.sqrt(Math.abs(area) / 2 * windyRules().viewShare);
+}
+
+// The zoomed-in view around a spot you skied to: left, top and size in percent
+// of the picture, kept inside the picture.
+function viewAround(at) {
+  const size = viewSize();
+  const edge = function (middle) { return Math.max(0, Math.min(100 - size, middle - size / 2)); };
+  return { x: edge(at.x), y: edge(at.y), size: size };
+}
+
+// Where a picture point is inside the zoomed-in view (percent of the view).
+function inView(at, view) {
+  return { x: (at.x - view.x) / view.size * 100, y: (at.y - view.y) / view.size * 100 };
 }
 
 // ---------------------------------------------------------------- the slope
@@ -220,60 +245,63 @@ function sayWindy(text) {
   document.getElementById("place-description").textContent = text;
 }
 
-// The slope: its 12 sections to choose from, or the chosen one magnified.
-// "grow" makes the chosen section grow to fill the picture.
+// The dark slope to click on, or the zoomed-in view around where you skied to.
+// "grow" makes the view grow to fill the picture.
 function showSlope(grow) {
   const rules = windyRules();
   const state = player.windy;
+  if (!state.at || (state.stage !== "lost" && !state.view)) startWindyRescue(); // older saves (12 sections)
   const box = document.getElementById("place-windy");
   box.innerHTML = "";
   document.getElementById("place-image").classList.add("night");
   if (state.stage === "lost") {
-    box.appendChild(slopeSections());
+    box.appendChild(darkSlope());
     box.appendChild(skierAtTop());
     return sayWindy(rules.words.choose + " " + "🔦".repeat(rules.tries - state.tries));
   }
-  if (state.stage !== "search" && state.stage !== "found") return;
   box.appendChild(magnifiedSection(grow));
   sayWindy(state.stage === "search" ? rules.words.searchHere + " " + "🔦".repeat(rules.searches - state.searched.length) : "");
 }
 
-function slopeSections() {
-  const rules = windyRules();
-  const sections = document.createElement("div");
-  sections.className = "slope-pieces";
-  sections.style.gridTemplateColumns = "repeat(" + rules.columns + ", 1fr)";
-  sections.style.gridTemplateRows = "repeat(" + rules.rows + ", 1fr)";
-  for (let section = 0; section < rules.columns * rules.rows; section++) {
-    const piece = document.createElement("button");
-    piece.className = "slope-piece";
-    if (player.windy.looked.indexOf(section) !== -1) piece.textContent = "✖️";
-    piece.addEventListener("click", function () { chooseSection(section); });
-    sections.appendChild(piece);
-  }
-  return sections;
+// The whole dark slope: click where you saw the little WIT. Spots you already
+// skied to are crossed off.
+function darkSlope() {
+  const slope = document.createElement("div");
+  slope.className = "dark-slope";
+  player.windy.looked.forEach(function (at) { slope.appendChild(searchMark(at)); });
+  slope.addEventListener("click", function (event) {
+    const r = slope.getBoundingClientRect();
+    chooseSpot({ x: (event.clientX - r.left) / r.width * 100, y: (event.clientY - r.top) / r.height * 100 });
+  });
+  return slope;
 }
 
-// Choosing a section: you ski down to it (Scott, 2026-10-21). The right one is
-// then magnified; at a wrong one it's "Not here..." and you're back at the top
-// to ski again, with that section crossed off.
-function chooseSection(section) {
+// Clicking the dark slope (Scott, 2026-10-21): you ski down to that exact spot.
+// If the little WIT is close enough to be in the view around it, it zooms in;
+// if not it's "Not here..." and you're back at the top to ski again.
+function chooseSpot(at) {
   const rules = windyRules();
   const state = player.windy;
-  if (state.looked.indexOf(section) !== -1 || document.querySelector(".slope-pieces.skiing")) return;
-  if (section === state.spot) {
+  if (document.querySelector(".dark-slope.skiing")) return; // already on your way
+  if (!onSlope(at)) return sayWindy(rules.words.offSlope);
+  const view = viewAround(at);
+  const wit = inView(state.at, view);
+  const margin = rules.viewMargin;
+  const found = wit.x > margin && wit.x < 100 - margin && wit.y > margin && wit.y < 100 - margin;
+  if (found) {
     state.stage = "search";
+    state.view = view;
+    state.wit = wit;
     state.searched = [];
-    state.wit = witSpot();
     writeSave(player);
-    return skiToSection(section, function () { showSlope(true); });
+    return skiToSpot(at, function () { showSlope(true); });
   }
   state.tries++;
-  state.looked.push(section);
+  state.looked.push({ x: Math.round(at.x), y: Math.round(at.y) });
   const wandered = state.tries >= rules.tries;
   if (wandered) startWindyRescue(); // they wander somewhere new: look through the binoculars again
   writeSave(player);
-  skiToSection(section, function () {
+  skiToSpot(at, function () {
     sayWindy(wandered ? rules.words.wandered : rules.words.missed + " " + "🔦".repeat(rules.tries - state.tries));
     setTimeout(function () {
       if (player.at !== rules.slope || player.windy.stage !== "lost") return;
@@ -284,18 +312,7 @@ function chooseSection(section) {
   });
 }
 
-// Where the little WIT is in their section (percent of it): not in the corner
-// where you stop, so you never stand in front of them.
-function witSpot() {
-  const arrive = windyRules().skiTo.arrive;
-  let at;
-  do {
-    at = { x: 15 + Math.random() * 70, y: 15 + Math.random() * 70 };
-  } while (Math.abs(at.x - arrive.x) < 18 && arrive.y - at.y < 35);
-  return at;
-}
-
-// You, on skis, waiting at the top of the slope to choose a section.
+// You, on skis, waiting at the top of the slope.
 function skierAtTop() {
   const you = makeSkier(characterPicture(findCharacter(player.characterId)), "You");
   const start = windyRules().skiTo.start;
@@ -303,62 +320,60 @@ function skierAtTop() {
   return you;
 }
 
-// Ski from the top down to a section, weaving side to side, then "arrived".
-function skiToSection(section, arrived) {
+// Ski from the top down to a spot, weaving side to side, then "arrived".
+// Further down takes longer, so the speed stays about the same.
+function skiToSpot(at, arrived) {
   const rules = windyRules();
   const box = document.getElementById("place-windy");
   const you = box.querySelector(".skier") || box.appendChild(skierAtTop());
-  box.querySelector(".slope-pieces").classList.add("skiing"); // no choosing while you ski
+  box.querySelector(".dark-slope").classList.add("skiing"); // no choosing while you ski
   sayWindy(rules.words.skiing);
-  const path = pathToSection(section);
+  const path = pathToSpot(at);
+  const seconds = rules.skiTo.seconds * (0.4 + 0.6 * at.y / 100);
   const thisRide = ++skiRide;
   const start = performance.now();
   function glide(now) {
     if (thisRide !== skiRide || !you.isConnected || player.at !== rules.slope) return; // you left the slope
-    const done = Math.min((now - start) / (rules.skiTo.seconds * 1000), 1);
+    const done = Math.min((now - start) / (seconds * 1000), 1);
     placeSkier(you, done, 1, path);
     if (done < 1) return requestAnimationFrame(glide);
-    arrived();
+    setTimeout(arrived, 400); // a moment to see where you stopped
   }
   requestAnimationFrame(glide);
 }
 
-// The way down to a section: from the top, swinging left and right, to its
-// bottom-left corner ("arrive" in data/windy.js).
-function pathToSection(section) {
+// The way down to a spot: from the top, swinging left and right, kept on the slope.
+function pathToSpot(end) {
   const rules = windyRules();
   const start = rules.skiTo.start;
-  const arrive = rules.skiTo.arrive;
-  const end = [(section % rules.columns + arrive.x / 100) * 100 / rules.columns,
-               (Math.floor(section / rules.columns) + arrive.y / 100) * 100 / rules.rows];
-  const turns = Math.max(2, Math.round((end[1] - start[1]) / 15));
+  const turns = Math.max(2, Math.round((end.y - start[1]) / 12));
   const path = [start];
   for (let i = 1; i < turns; i++) {
     const part = i / turns;
     const swing = i % 2 ? rules.skiTo.weave : -rules.skiTo.weave;
-    path.push([start[0] + (end[0] - start[0]) * part + swing, start[1] + (end[1] - start[1]) * part]);
+    const point = { x: start[0] + (end.x - start[0]) * part, y: start[1] + (end.y - start[1]) * part };
+    if (onSlope({ x: point.x + swing, y: point.y })) point.x += swing;
+    path.push([point.x, point.y]);
   }
-  path.push(end);
+  path.push([end.x, end.y]);
   return path;
 }
 
-// The chosen section, magnified to fill the picture: the slope picture is
-// drawn 4 times wider and 3 times taller and slid so only that section shows.
+// The view around where you skied to, magnified to fill the picture: the slope
+// picture is drawn bigger and slid so only that part shows.
 function magnifiedSection(grow) {
   const rules = windyRules();
   const state = player.windy;
-  if (!state.wit) state.wit = { x: 50, y: 50 }; // older saves
-  const column = state.spot % rules.columns;
-  const row = Math.floor(state.spot / rules.columns);
+  const view = state.view;
   const zoom = document.createElement("div");
   zoom.className = "slope-zoom night";
   const img = document.createElement("img");
   img.src = picture("place_" + rules.slope);
   img.alt = "";
-  img.style.width = rules.columns * 100 + "%";
-  img.style.height = rules.rows * 100 + "%";
-  img.style.left = -column * 100 + "%";
-  img.style.top = -row * 100 + "%";
+  img.style.width = 10000 / view.size + "%";
+  img.style.height = 10000 / view.size + "%";
+  img.style.left = -view.x / view.size * 100 + "%";
+  img.style.top = -view.y / view.size * 100 + "%";
   zoom.appendChild(img);
   state.searched.forEach(function (at) { zoom.appendChild(searchMark(at)); });
   zoom.appendChild(skierInSection());
@@ -367,9 +382,9 @@ function magnifiedSection(grow) {
   else zoom.addEventListener("click", function (event) { searchHere(event, zoom); });
 
   if (grow) {
-    // Start the size and place of the section, then grow to the whole picture (a CSS transition).
+    // Start at the view's size and place, then grow to the whole picture (a CSS transition).
     zoom.style.transition = "none";
-    setBox(zoom, column * 100 / rules.columns, row * 100 / rules.rows, 100 / rules.columns, 100 / rules.rows);
+    setBox(zoom, view.x, view.y, view.size, view.size);
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         zoom.style.transition = "";
@@ -385,15 +400,16 @@ function magnifiedSection(grow) {
   return zoom;
 }
 
-// You, standing on your skis where you stopped, in the magnified section's corner.
+// You, standing on your skis in a bottom corner of the zoomed-in view: the
+// corner further from the little WIT, so you never stand in front of them.
 function skierInSection() {
-  const arrive = windyRules().skiTo.arrive;
+  const corner = windyRules().skiTo.corner;
   const you = makeSkier(characterPicture(findCharacter(player.characterId)), "You");
   you.classList.add("in-section");
-  you.style.left = arrive.x + "%";
-  you.style.top = arrive.y + "%";
-  you.style.height = arrive.size + "%";
-  you.style.fontSize = arrive.size * 0.8 + "cqh";
+  you.style.left = (player.windy.wit.x < 50 ? 100 - corner.x : corner.x) + "%";
+  you.style.top = corner.y + "%";
+  you.style.height = corner.size + "%";
+  you.style.fontSize = corner.size * 0.8 + "cqh";
   return you;
 }
 
