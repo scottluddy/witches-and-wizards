@@ -91,13 +91,17 @@ function nightVisionButton(item) {
 // One sip: you can see in the dark until you use it (a binocular look, or
 // watching the owl fly over the magnified section). The last sip uses up the potion.
 function sipNightVision() {
+  drinkSip();
+  if (player.at === windyRules().slope) showSlope(false);
+}
+
+function drinkSip() {
   const left = sipsLeft() - 1;
   player.windy.sips = left;
   player.windy.seeing = true;
   if (left === 0) removeOne(player.backpack, windyRules().potion); // js/items.js
   writeSave(player);
   document.getElementById("place-description").textContent = windyRules().words.sipped;
-  if (player.at === windyRules().slope) showSlope(false);
 }
 
 // Uses up the sip. Returns whether you could see.
@@ -377,6 +381,7 @@ function magnifiedSection(grow) {
   zoom.appendChild(img);
   state.searched.forEach(function (at) { zoom.appendChild(searchMark(at)); });
   zoom.appendChild(skierInSection());
+  if (state.stage === "search") zoom.append(perchedOwl(), potionBeside(zoom));
 
   if (state.stage === "found") zoom.appendChild(littleWitButton());
   else zoom.addEventListener("click", function (event) { searchHere(event, zoom); });
@@ -413,6 +418,75 @@ function skierInSection() {
   return you;
 }
 
+// Beside you in the zoomed-in view (Scott, 2026-10-21): your Snowy Owl, ready
+// to fly, and the Night Vision Potion. Click the potion to take a sip and send
+// the owl flying. "beside" in data/windy.js says how far in from you each one
+// stands (percent of the view) and how tall it is.
+function besideYou(what) {
+  const rules = windyRules();
+  const step = rules.skiTo.beside[what];
+  const left = player.windy.wit.x >= 50; // you're in the bottom-left corner
+  const x = left ? rules.skiTo.corner.x + step.x : 100 - rules.skiTo.corner.x - step.x;
+  return { x: x, y: rules.skiTo.corner.y, height: step.height };
+}
+
+function placeBeside(el, what) {
+  const at = besideYou(what);
+  el.style.left = at.x + "%";
+  el.style.top = at.y + "%";
+  el.style.height = at.height + "%";
+  el.style.fontSize = at.height * 0.8 + "cqh"; // the emoji, if there's no drawing
+}
+
+function perchedOwl() {
+  const owl = document.createElement("span");
+  owl.className = "perched-owl";
+  owl.appendChild(drawingOr(windyRules().owl, "🦉", "Snowy Owl"));
+  placeBeside(owl, "owl");
+  return owl;
+}
+
+function potionBeside(zoom) {
+  const rules = windyRules();
+  const potion = document.createElement("button");
+  potion.className = "potion-beside";
+  potion.title = "Night Vision Potion: take a sip";
+  potion.hidden = !hasNightVision() && !player.windy.seeing;
+  potion.appendChild(drawingOr(rules.potion, "🌙", "Night Vision Potion"));
+  placeBeside(potion, "potion");
+  potion.addEventListener("click", function (event) {
+    event.stopPropagation(); // not a search click on the snow
+    if (zoom.classList.contains("owl-flying") || potion.classList.contains("sipping")) return;
+    if (player.windy.seeing) return flyOwl(zoom); // already sipped (from the backpack)
+    // Tip the bottle up to your mouth, glug, then the owl takes off.
+    const view = zoom.getBoundingClientRect();
+    const you = windyRules().skiTo.corner;
+    const across = (besideYou("potion").x > 50 ? 1 : -1) * rules.skiTo.beside.potion.x; // towards you
+    potion.style.setProperty("--to-you", across / 100 * view.width * 0.85 + "px");
+    potion.style.setProperty("--up", you.size * 0.7 / 100 * view.height + "px");
+    potion.style.setProperty("--tip", across > 0 ? 1 : -1);
+    potion.style.setProperty("--sip", rules.sipSeconds + "s");
+    potion.classList.add("sipping");
+    setTimeout(function () {
+      potion.classList.remove("sipping");
+      drinkSip();
+      if (!hasNightVision()) potion.hidden = true; // that was the last sip
+      flyOwl(zoom);
+    }, rules.sipSeconds * 1000);
+  });
+  return potion;
+}
+
+// A drawing as an <img>, or an emoji if it isn't drawn yet.
+function drawingOr(name, emoji, alt) {
+  if (!isDrawn(name)) return document.createTextNode(emoji);
+  const img = document.createElement("img");
+  img.src = picture(name);
+  img.alt = alt;
+  img.draggable = false;
+  return img;
+}
+
 function setBox(el, left, top, width, height) {
   el.style.left = left + "%";
   el.style.top = top + "%";
@@ -444,7 +518,8 @@ function flyOwl(zoom) {
   const wit = player.windy.wit;
   if (!useSip() || !zoom.isConnected) return;
   const shape = zoomShape(zoom);
-  const angle = Math.random() * Math.PI * 2;
+  let angle = Math.random() * Math.PI * 2;
+  const perch = zoom.querySelector(".perched-owl"); // your owl beside you takes off from there
   const owl = document.createElement("span");
   owl.className = "flying-owl";
   if (isDrawn(rules.owl)) {
@@ -453,14 +528,22 @@ function flyOwl(zoom) {
     img.alt = "Snowy Owl";
     owl.appendChild(img);
   } else owl.textContent = "🦉";
-  const from = { x: wit.x - Math.cos(angle) * 90, y: wit.y - Math.sin(angle) * 90 * shape };
-  const to = { x: wit.x + Math.cos(angle) * 90, y: wit.y + Math.sin(angle) * 90 * shape };
+  let from = { x: wit.x - Math.cos(angle) * 90, y: wit.y - Math.sin(angle) * 90 * shape };
+  if (perch) {
+    // Straight from its perch over the little WIT and on out of sight (twice as far).
+    const at = besideYou("owl");
+    from = { x: at.x, y: at.y - at.height / 2 };
+    angle = Math.atan2(wit.y - from.y, wit.x - from.x);
+    perch.style.visibility = "hidden";
+  }
+  const to = { x: 2 * wit.x - from.x, y: 2 * wit.y - from.y };
   owl.style.left = from.x + "%";
   owl.style.top = from.y + "%";
   owl.style.transitionDuration = rules.flySeconds + "s";
   if (Math.cos(angle) < 0) owl.classList.add("facing-left");
   zoom.appendChild(owl);
   zoom.classList.replace("night", "night-vision"); // you can see while the owl flies over
+  zoom.classList.add("owl-flying");
   requestAnimationFrame(function () {
     requestAnimationFrame(function () {
       owl.style.left = to.x + "%";
@@ -471,6 +554,8 @@ function flyOwl(zoom) {
   setTimeout(function () {
     owl.remove();
     zoom.classList.replace("night-vision", "night");
+    zoom.classList.remove("owl-flying");
+    if (perch) perch.style.visibility = ""; // back beside you
   }, rules.flySeconds * 1000);
 }
 

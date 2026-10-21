@@ -1113,6 +1113,25 @@ body.holding-apple, body.holding-apple * {
 .dark-slope.skiing { pointer-events: none; } /* no choosing while you ski down */
 /* You in the magnified section's corner: clicks go through you to the snow. */
 .skier.in-section { transform: translate(-50%, -100%); pointer-events: none; }
+/* Your Snowy Owl and the Night Vision Potion beside you (js/windy.js perchedOwl, potionBeside). */
+.perched-owl, .potion-beside { position: absolute; transform: translate(-50%, -100%); line-height: 1; }
+.perched-owl { pointer-events: none; filter: drop-shadow(0 0 6px #fff); }
+.perched-owl img, .potion-beside img { height: 100%; width: auto; display: block; }
+.potion-beside { background: none; border: none; padding: 0; cursor: pointer; pointer-events: auto;
+  filter: drop-shadow(0 0 8px #c9a0ff); animation: potion-wiggle 1.6s ease-in-out infinite; }
+.potion-beside:hover { filter: drop-shadow(0 0 14px #e3ccff); }
+@keyframes potion-wiggle { 0%, 100% { transform: translate(-50%, -100%) rotate(-4deg); } 50% { transform: translate(-50%, -100%) rotate(4deg); } }
+/* The sip: the bottle flies up to your mouth, tips, glugs and comes back.
+   --to-you, --up and --tip are set when you click it (js/windy.js potionBeside). */
+.potion-beside.sipping { animation: potion-sip var(--sip, 1.2s) ease-in-out forwards; }
+@keyframes potion-sip {
+  0%   { transform: translate(-50%, -100%); }
+  35%  { transform: translate(calc(-50% + var(--to-you)), calc(-100% - var(--up))) rotate(calc(var(--tip) * 70deg)); }
+  55%  { transform: translate(calc(-50% + var(--to-you)), calc(-100% - var(--up))) rotate(calc(var(--tip) * 100deg)); }
+  70%  { transform: translate(calc(-50% + var(--to-you)), calc(-100% - var(--up))) rotate(calc(var(--tip) * 70deg)); }
+  100% { transform: translate(-50%, -100%); }
+}
+}
 /* The chosen section, magnified: it grows from its own place to fill the picture. */
 .slope-zoom { position: absolute; overflow: hidden; border-radius: 12px; cursor: crosshair; background: #000;
   transition-property: left, top, width, height; transition-timing-function: ease-in-out; }

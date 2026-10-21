@@ -42,7 +42,11 @@ GAME_DATA.windyRescue = {
   // "weave" is how far you swing side to side. "corner" is where you stand in the
   // zoomed-in view (x, y of your feet, percent of the view) and your height there:
   // the bottom corner further from the little WIT, so you don't cover them.
-  "skiTo": { "seconds": 5, "start": [50, 10], "weave": 5, "corner": { "x": 12, "y": 96, "size": 28 } },
+  "skiTo": { "seconds": 5, "start": [50, 10], "weave": 5, "corner": { "x": 12, "y": 96, "size": 28 },
+             // Your Snowy Owl and the Night Vision Potion stand beside you there (Scott,
+             // 2026-10-21): x is how far in from you, height their height (percent of the view).
+             "beside": { "owl": { "x": 11, "height": 13 }, "potion": { "x": 19, "height": 11 } } },
+  "sipSeconds": 1.2,      // how long the sip takes (the potion tips up to your mouth) before the owl flies
   "owl": "pet_owl",       // the Snowy Owl's picture (🦉 until drawn)
   "flySeconds": 3,        // one flight across the magnified section
   "lightSize": 36,        // the lit spot's width, in percent of the magnified section...
