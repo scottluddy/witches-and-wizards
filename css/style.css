@@ -1112,10 +1112,16 @@ body.holding-apple, body.holding-apple * {
 .slope-piece { background: transparent; border: 2px dashed rgba(200, 220, 255, 0.45); border-radius: 14px;
   font-size: 2.4rem; padding: 0; cursor: pointer; color: #fff; }
 .slope-piece:hover { background: rgba(255, 255, 255, 0.12); }
+.slope-pieces.skiing { pointer-events: none; } /* no choosing while you ski down (js/windy.js skiToSection) */
+/* The 12 sections, faintly, in the Binocular View (js/windy.js sectionLines). */
+.binocular-lines { pointer-events: none; }
+.binocular-lines span { border: 1px dashed rgba(255, 255, 255, 0.4); }
+/* You in the magnified section's corner: clicks go through you to the snow. */
+.skier.in-section { transform: translate(-50%, -100%); pointer-events: none; }
 /* The chosen section, magnified: it grows from its own place to fill the picture. */
 .slope-zoom { position: absolute; overflow: hidden; border-radius: 12px; cursor: crosshair; background: #000;
   transition-property: left, top, width, height; transition-timing-function: ease-in-out; }
-.slope-zoom img { position: absolute; max-width: none; }
+.slope-zoom > img { position: absolute; max-width: none; } /* the slope, not you or the owl */
 .search-mark { position: absolute; transform: translate(-50%, -50%); font-size: 1.6rem; pointer-events: none; }
 .flying-owl { position: absolute; transform: translate(-50%, -50%); font-size: 3rem; pointer-events: none;
   transition-property: left, top; transition-timing-function: linear; filter: drop-shadow(0 0 10px #fff); }

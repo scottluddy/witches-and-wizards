@@ -8,9 +8,11 @@
 // 3. Sip the potion (backpack) and look through the binoculars: a blown-up,
 //    green view of the slope with a glow from the little WIT's lantern.
 //    That's the first clue.
-// 4. Ski down onto the dark slope, cut into 12 big sections, and choose the
-//    section to search (3 chances, then they wander somewhere new).
-// 5. The right section grows to fill the picture. Each sip, your Snowy Owl
+// 4. Ski down (rented skis) onto the dark slope, cut into 12 big sections, and
+//    choose the section to search: you ski down to it (Scott, 2026-10-21). A
+//    wrong one is "Not here...": you're back at the top to ski again (3 chances,
+//    then they wander somewhere new).
+// 5. The right section grows to fill the picture, with you in it. Each sip, your Snowy Owl
 //    flies across it, and as it passes over the little WIT a spot lights up
 //    for a moment. The spot is bigger than the little WIT, so there's still
 //    some luck: 3 searches, then they wander off again.
@@ -29,6 +31,12 @@ GAME_DATA.windyRescue = {
   "rows": 3,
   "glowSize": 0.6,        // the binoculars' lantern glow, as a share of one section's width
   "zoomSeconds": 1.5,     // how long the chosen section takes to grow
+  // Skiing down to the section you chose (Scott, 2026-10-21). "start" is where you
+  // wait at the top (x, y of your feet, percent of the slope picture); "arrive" is
+  // where you stop, in percent of the section, and your height there once it's
+  // magnified (in the corner, so you don't cover where the little WIT might be).
+  // "weave" is how far you swing side to side on the way down.
+  "skiTo": { "seconds": 3, "start": [50, 12], "arrive": { "x": 14, "y": 94, "size": 28 }, "weave": 5 },
   "owl": "pet_owl",       // the Snowy Owl's picture (🦉 until drawn)
   "flySeconds": 3,        // one flight across the magnified section
   "lightSize": 36,        // the lit spot's width, in percent of the magnified section...
@@ -73,7 +81,8 @@ GAME_DATA.windyRescue = {
     "sipped": "🌙 Everything glows green! You can see in the dark.",
     "tooDark": "🌑 It's too dark to see.",
     "choose": "Choose a section to search.",
-    "missed": "Not here...",
+    "skiing": "⛷️ Whoosh!",
+    "missed": "Not here... Back up to the top to ski again.",
     "searchHere": "Somewhere in here...",
     "notThere": "Just snow...",
     "wandered": "The little WIT wandered off somewhere else on the slope!",

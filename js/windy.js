@@ -131,10 +131,24 @@ function windyLook(spot) {
     glow.style.top = player.windy.glow.y + "%";
     glow.style.width = rules.glowSize * 100 / rules.columns + "%";
     lens.appendChild(glow);
+    lens.appendChild(sectionLines()); // so you can tell which of the 12 sections they're in
     lens.appendChild(binocularWit(player.windy.glow)); // Scott, 2026-10-18: you can see the little WIT on the slope
   }
   document.getElementById("info-body").appendChild(lens);
   return true;
+}
+
+// Faint lines showing the slope's 12 sections, the same ones you choose from after skiing down.
+function sectionLines() {
+  const rules = windyRules();
+  const lines = document.createElement("div");
+  lines.className = "slope-pieces binocular-lines";
+  lines.style.gridTemplateColumns = "repeat(" + rules.columns + ", 1fr)";
+  lines.style.gridTemplateRows = "repeat(" + rules.rows + ", 1fr)";
+  for (let section = 0; section < rules.columns * rules.rows; section++) {
+    lines.appendChild(document.createElement("span"));
+  }
+  return lines;
 }
 
 // The little WIT, tiny in the middle of their lantern's glow.
@@ -216,6 +230,7 @@ function showSlope(grow) {
   document.getElementById("place-image").classList.add("night");
   if (state.stage === "lost") {
     box.appendChild(slopeSections());
+    box.appendChild(skierAtTop());
     return sayWindy(rules.words.choose + " " + "🔦".repeat(rules.tries - state.tries));
   }
   if (state.stage !== "search" && state.stage !== "found") return;
@@ -239,28 +254,92 @@ function slopeSections() {
   return sections;
 }
 
-// Choosing a section: the right one is magnified, a wrong one is crossed off.
+// Choosing a section: you ski down to it (Scott, 2026-10-21). The right one is
+// then magnified; at a wrong one it's "Not here..." and you're back at the top
+// to ski again, with that section crossed off.
 function chooseSection(section) {
   const rules = windyRules();
   const state = player.windy;
-  if (state.looked.indexOf(section) !== -1) return;
+  if (state.looked.indexOf(section) !== -1 || document.querySelector(".slope-pieces.skiing")) return;
   if (section === state.spot) {
     state.stage = "search";
     state.searched = [];
-    state.wit = { x: 15 + Math.random() * 70, y: 15 + Math.random() * 70 }; // percent of the section
+    state.wit = witSpot();
     writeSave(player);
-    return showSlope(true);
+    return skiToSection(section, function () { showSlope(true); });
   }
   state.tries++;
   state.looked.push(section);
+  const wandered = state.tries >= rules.tries;
+  if (wandered) startWindyRescue(); // they wander somewhere new: look through the binoculars again
   writeSave(player);
-  if (state.tries >= rules.tries) {
-    startWindyRescue(); // they wander somewhere new: look through the binoculars again
-    showSlope(false);
-    return sayWindy(rules.words.wandered);
+  skiToSection(section, function () {
+    sayWindy(wandered ? rules.words.wandered : rules.words.missed + " " + "🔦".repeat(rules.tries - state.tries));
+    setTimeout(function () {
+      if (player.at !== rules.slope || player.windy.stage !== "lost") return;
+      const said = document.getElementById("place-description").textContent;
+      showSlope(false);
+      sayWindy(said); // keep the "Not here..." words while you choose again
+    }, 1500);
+  });
+}
+
+// Where the little WIT is in their section (percent of it): not in the corner
+// where you stop, so you never stand in front of them.
+function witSpot() {
+  const arrive = windyRules().skiTo.arrive;
+  let at;
+  do {
+    at = { x: 15 + Math.random() * 70, y: 15 + Math.random() * 70 };
+  } while (Math.abs(at.x - arrive.x) < 18 && arrive.y - at.y < 35);
+  return at;
+}
+
+// You, on skis, waiting at the top of the slope to choose a section.
+function skierAtTop() {
+  const you = makeSkier(characterPicture(findCharacter(player.characterId)), "You");
+  const start = windyRules().skiTo.start;
+  placeSkier(you, 0, 1, [start, start]);
+  return you;
+}
+
+// Ski from the top down to a section, weaving side to side, then "arrived".
+function skiToSection(section, arrived) {
+  const rules = windyRules();
+  const box = document.getElementById("place-windy");
+  const you = box.querySelector(".skier") || box.appendChild(skierAtTop());
+  box.querySelector(".slope-pieces").classList.add("skiing"); // no choosing while you ski
+  sayWindy(rules.words.skiing);
+  const path = pathToSection(section);
+  const thisRide = ++skiRide;
+  const start = performance.now();
+  function glide(now) {
+    if (thisRide !== skiRide || !you.isConnected || player.at !== rules.slope) return; // you left the slope
+    const done = Math.min((now - start) / (rules.skiTo.seconds * 1000), 1);
+    placeSkier(you, done, 1, path);
+    if (done < 1) return requestAnimationFrame(glide);
+    arrived();
   }
-  showSlope(false);
-  sayWindy(rules.words.missed + " " + "🔦".repeat(rules.tries - state.tries));
+  requestAnimationFrame(glide);
+}
+
+// The way down to a section: from the top, swinging left and right, to its
+// bottom-left corner ("arrive" in data/windy.js).
+function pathToSection(section) {
+  const rules = windyRules();
+  const start = rules.skiTo.start;
+  const arrive = rules.skiTo.arrive;
+  const end = [(section % rules.columns + arrive.x / 100) * 100 / rules.columns,
+               (Math.floor(section / rules.columns) + arrive.y / 100) * 100 / rules.rows];
+  const turns = Math.max(2, Math.round((end[1] - start[1]) / 15));
+  const path = [start];
+  for (let i = 1; i < turns; i++) {
+    const part = i / turns;
+    const swing = i % 2 ? rules.skiTo.weave : -rules.skiTo.weave;
+    path.push([start[0] + (end[0] - start[0]) * part + swing, start[1] + (end[1] - start[1]) * part]);
+  }
+  path.push(end);
+  return path;
 }
 
 // The chosen section, magnified to fill the picture: the slope picture is
@@ -282,6 +361,7 @@ function magnifiedSection(grow) {
   img.style.top = -row * 100 + "%";
   zoom.appendChild(img);
   state.searched.forEach(function (at) { zoom.appendChild(searchMark(at)); });
+  zoom.appendChild(skierInSection());
 
   if (state.stage === "found") zoom.appendChild(littleWitButton());
   else zoom.addEventListener("click", function (event) { searchHere(event, zoom); });
@@ -303,6 +383,18 @@ function magnifiedSection(grow) {
     if (state.seeing && state.stage === "search") setTimeout(function () { flyOwl(zoom); }, 300);
   }
   return zoom;
+}
+
+// You, standing on your skis where you stopped, in the magnified section's corner.
+function skierInSection() {
+  const arrive = windyRules().skiTo.arrive;
+  const you = makeSkier(characterPicture(findCharacter(player.characterId)), "You");
+  you.classList.add("in-section");
+  you.style.left = arrive.x + "%";
+  you.style.top = arrive.y + "%";
+  you.style.height = arrive.size + "%";
+  you.style.fontSize = arrive.size * 0.8 + "cqh";
+  return you;
 }
 
 function setBox(el, left, top, width, height) {
@@ -492,10 +584,11 @@ function makeSkier(src, name) {
 
 // Put a skier where they are "done" of the way down (0 = top, 1 = bottom):
 // bigger as they come closer, leaning into each turn. Returns where their feet are.
-function placeSkier(skier, done, scale) {
+// "path" is the way down (the ride's, unless another is given).
+function placeSkier(skier, done, scale, path) {
   const ride = windyRules().ride;
-  const at = pointOnPath(done);
-  const ahead = pointOnPath(Math.min(done + 0.01, 1));
+  const at = pointOnPath(done, path);
+  const ahead = pointOnPath(Math.min(done + 0.01, 1), path);
   const lean = Math.max(-20, Math.min(20, (ahead.x - at.x) * 15));
   const size = ride.sizeTop + (ride.sizeBottom - ride.sizeTop) * Math.min(at.y, 100) / 100;
   skier.style.left = at.x + "%";
@@ -507,8 +600,8 @@ function placeSkier(skier, done, scale) {
 }
 
 // The point "done" of the way along the path (measured along its length, so the speed stays even).
-function pointOnPath(done) {
-  const path = windyRules().ride.path;
+function pointOnPath(done, path) {
+  path = path || windyRules().ride.path;
   const lengths = [];
   let total = 0;
   for (let i = 1; i < path.length; i++) {
