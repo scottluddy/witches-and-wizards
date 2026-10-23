@@ -215,8 +215,8 @@ function showCharacters() {
   showScreen("screen-character");
 }
 
-// The characters of the chosen kind. No boys are drawn yet, so until they
-// are a Wizard can pick from everyone rather than finding an empty page.
+// The characters of the chosen kind. If none of that kind are drawn yet,
+// everyone is shown rather than an empty page.
 function charactersToChoose() {
   const ofKind = GAME_DATA.characters.filter(function (c) { return c.kind === chosenKind; });
   return ofKind.length ? ofKind : GAME_DATA.characters;
